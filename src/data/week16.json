@@ -1,0 +1,996 @@
+{
+  "week": 16,
+  "period": "13.04.2026 - 19.04.2026",
+  "totals": {
+    "revenue_total": 125672.94300000012,
+    "revenue_cainiao": 81015.93700000009,
+    "revenue_uzumcb": 44657.00600000004,
+    "expense_total": 28565.32508542035,
+    "profit": 4955.669869751291,
+    "weight_gross": 11657,
+    "weight_volume": 14721.5,
+    "weight_net": 6771.99000000001
+  },
+  "byType": {
+    "CAINIAO": {
+      "count": 6,
+      "revenue": 81185.78000000009,
+      "revenue_cainiao": 81185.78000000009,
+      "revenue_uzumcb": 0,
+      "expense": 5125.512869751296,
+      "profit": 5125.512869751296,
+      "weight_gross": 4577,
+      "weight_volume": 5822.5,
+      "weight_net": 4289.3400000000065
+    },
+    "MPO": {
+      "count": 6,
+      "revenue": 2273.5460000000003,
+      "revenue_cainiao": 0,
+      "revenue_uzumcb": 2273.5460000000003,
+      "expense": 914.4596985128636,
+      "profit": 0,
+      "weight_gross": 4577,
+      "weight_volume": 5822.5,
+      "weight_net": 0
+    },
+    "MKO": {
+      "count": 9,
+      "revenue": 42383.460000000036,
+      "revenue_cainiao": 0,
+      "revenue_uzumcb": 42383.460000000036,
+      "expense": 22695.195517156204,
+      "profit": 0,
+      "weight_gross": 2503,
+      "weight_volume": 3076.5,
+      "weight_net": 2482.6500000000033
+    }
+  },
+  "parties": [
+    {
+      "col": 216,
+      "col_letter": "HH",
+      "name": "1071",
+      "num": "1071",
+      "type": "CAINIAO",
+      "date": "2026-04-13",
+      "revenue_total": 11704.088800000014,
+      "revenue_cainiao": 11704.088800000014,
+      "revenue_uzumcb": 0,
+      "expense_total": 857.4107193339823,
+      "profit": 857.4107193339823,
+      "marker1_tariff": 3.07,
+      "marker2_volnet": 1.4143081379354958,
+      "marker3_grossnet": 1.0615402042170312,
+      "weight_gross": 656,
+      "weight_volume": 874,
+      "weight_net": 617.9700000000012,
+      "products": {
+        "UZ": {
+          "total": 1752,
+          "RM": 0.2899543378995434,
+          "SRM": 0.014840182648401826,
+          "SRMA": 0.2893835616438356,
+          "SRMB": 0.3367579908675799,
+          "SRMC": 0.06906392694063927
+        },
+        "BY": {
+          "total": 4422,
+          "RRM": 0.25576662143826323,
+          "SRM": 0.2462686567164179,
+          "NRM": 0.49796472184531887
+        },
+        "KG": {
+          "total": 113,
+          "RM": 0.34513274336283184,
+          "NRM": 0.6548672566371682
+        },
+        "AZ": {
+          "total": 776,
+          "RM": 0.45618556701030927,
+          "NRM": 0.5438144329896907
+        }
+      }
+    },
+    {
+      "col": 217,
+      "col_letter": "HI",
+      "name": "1073",
+      "num": "1073",
+      "type": "CAINIAO",
+      "date": "2026-04-14",
+      "revenue_total": 14542.950100000022,
+      "revenue_cainiao": 14542.95010000002,
+      "revenue_uzumcb": 0,
+      "expense_total": 1263.797587846795,
+      "profit": 1263.797587846795,
+      "marker1_tariff": 3.2099999999999995,
+      "marker2_volnet": 1.31105065422982,
+      "marker3_grossnet": 1.0623137712138857,
+      "weight_gross": 820,
+      "weight_volume": 1012,
+      "weight_net": 771.9000000000016,
+      "products": {
+        "UZ": {
+          "total": 2518,
+          "RM": 0.24980142970611596,
+          "SRM": 0.027005559968228753,
+          "SRMA": 0.3113582208101668,
+          "SRMB": 0.34471803018268465,
+          "SRMC": 0.06711675933280381
+        },
+        "BY": {
+          "total": 5643,
+          "RRM": 0.21424774056353005,
+          "SRM": 0.25961368066631224,
+          "NRM": 0.5261385787701577
+        },
+        "KG": {
+          "total": 127,
+          "RM": 0.2992125984251969,
+          "NRM": 0.7007874015748031
+        },
+        "AZ": {
+          "total": 1111,
+          "RM": 0.38073807380738073,
+          "NRM": 0.6192619261926192
+        }
+      }
+    },
+    {
+      "col": 218,
+      "col_letter": "HJ",
+      "name": "1074",
+      "num": "1074",
+      "type": "CAINIAO",
+      "date": "2026-04-16",
+      "revenue_total": 19166.269900000014,
+      "revenue_cainiao": 19166.269900000018,
+      "revenue_uzumcb": 0,
+      "expense_total": 1473.982968661312,
+      "profit": 1473.982968661312,
+      "marker1_tariff": 3.2100000000000004,
+      "marker2_volnet": 1.3597448380057058,
+      "marker3_grossnet": 1.0684414776486375,
+      "weight_gross": 1082,
+      "weight_volume": 1377,
+      "weight_net": 1012.6900000000013,
+      "products": {
+        "UZ": {
+          "total": 2950,
+          "RM": 0.3220338983050847,
+          "SRM": 0.025084745762711864,
+          "SRMA": 0.2735593220338983,
+          "SRMB": 0.31559322033898307,
+          "SRMC": 0.06372881355932203
+        },
+        "BY": {
+          "total": 6329,
+          "RRM": 0.29562332121978196,
+          "SRM": 0.2558066045188813,
+          "NRM": 0.4485700742613367
+        },
+        "KG": {
+          "total": 178,
+          "RM": 0.43258426966292135,
+          "NRM": 0.5674157303370787
+        },
+        "AZ": {
+          "total": 1290,
+          "RM": 0.42248062015503873,
+          "NRM": 0.5775193798449613
+        }
+      }
+    },
+    {
+      "col": 219,
+      "col_letter": "HK",
+      "name": "1076",
+      "num": "1076",
+      "type": "CAINIAO",
+      "date": "2026-04-17",
+      "revenue_total": 10952.869200000014,
+      "revenue_cainiao": 10952.869200000012,
+      "revenue_uzumcb": 0,
+      "expense_total": 22.860213266680148,
+      "profit": 22.860213266680148,
+      "marker1_tariff": 4.21,
+      "marker2_volnet": 1.363739743522452,
+      "marker3_grossnet": 1.0846935740653243,
+      "weight_gross": 620,
+      "weight_volume": 779.5,
+      "weight_net": 571.5900000000012,
+      "products": {
+        "UZ": {
+          "total": 1658,
+          "RM": 0.25814234016887816,
+          "SRM": 0.020506634499396863,
+          "SRMA": 0.29613992762364294,
+          "SRMB": 0.35645355850422195,
+          "SRMC": 0.06875753920386007
+        },
+        "BY": {
+          "total": 4931,
+          "RRM": 0.21679172581626444,
+          "SRM": 0.23544919894544716,
+          "NRM": 0.5477590752382884
+        },
+        "KG": {
+          "total": 84,
+          "RM": 0.36904761904761907,
+          "NRM": 0.6309523809523809
+        },
+        "AZ": {
+          "total": 637,
+          "RM": 0.3877551020408163,
+          "NRM": 0.6122448979591837
+        }
+      }
+    },
+    {
+      "col": 220,
+      "col_letter": "HL",
+      "name": "1077",
+      "num": "1077",
+      "type": "CAINIAO",
+      "date": "2026-04-18",
+      "revenue_total": 19880.981600000014,
+      "revenue_cainiao": 19880.981600000014,
+      "revenue_uzumcb": 0,
+      "expense_total": 1517.7200170654032,
+      "profit": 1517.7200170654032,
+      "marker1_tariff": 3.21,
+      "marker2_volnet": 1.3497271929489854,
+      "marker3_grossnet": 1.05307337174253,
+      "weight_gross": 1104,
+      "weight_volume": 1415,
+      "weight_net": 1048.3600000000013,
+      "products": {
+        "UZ": {
+          "total": 3081,
+          "RM": 0.2742616033755274,
+          "SRM": 0.020772476468679,
+          "SRMA": 0.29503407984420643,
+          "SRMB": 0.3362544628367413,
+          "SRMC": 0.07367737747484583
+        },
+        "BY": {
+          "total": 7572,
+          "RRM": 0.2579239302694136,
+          "SRM": 0.23190702588483889,
+          "NRM": 0.5101690438457475
+        },
+        "KG": {
+          "total": 174,
+          "RM": 0.4367816091954023,
+          "NRM": 0.5632183908045977
+        },
+        "AZ": {
+          "total": 1376,
+          "RM": 0.3757267441860465,
+          "NRM": 0.6242732558139535
+        }
+      }
+    },
+    {
+      "col": 221,
+      "col_letter": "HM",
+      "name": "1078",
+      "num": "1078",
+      "type": "CAINIAO",
+      "date": "2026-04-19",
+      "revenue_total": 4938.6204000000025,
+      "revenue_cainiao": 4938.6204000000025,
+      "revenue_uzumcb": 0,
+      "expense_total": -10.258636422876407,
+      "profit": -10.258636422876407,
+      "marker1_tariff": 4.37,
+      "marker2_volnet": 1.3679121538057928,
+      "marker3_grossnet": 1.1055728366375586,
+      "weight_gross": 295,
+      "weight_volume": 365,
+      "weight_net": 266.8300000000002,
+      "products": {
+        "UZ": {
+          "total": 793,
+          "RM": 0.17528373266078184,
+          "SRM": 0.02395964691046658,
+          "SRMA": 0.4098360655737705,
+          "SRMB": 0.3329129886506936,
+          "SRMC": 0.058007566204287514
+        },
+        "BY": {
+          "total": 2648,
+          "RRM": 0.14501510574018128,
+          "SRM": 0.24395770392749244,
+          "NRM": 0.6110271903323263
+        },
+        "KG": {
+          "total": 41,
+          "RM": 0.2926829268292683,
+          "NRM": 0.7073170731707317
+        },
+        "AZ": {
+          "total": 278,
+          "RM": 0.32014388489208634,
+          "NRM": 0.6798561151079137
+        }
+      }
+    },
+    {
+      "col": 222,
+      "col_letter": "HN",
+      "name": "1071 UZUM MPO",
+      "num": "1071",
+      "type": "MPO",
+      "date": "2026-04-13",
+      "revenue_total": 180.99400000000003,
+      "revenue_cainiao": 0,
+      "revenue_uzumcb": 180.99400000000003,
+      "expense_total": 78.63463013630812,
+      "profit": 0,
+      "marker1_tariff": 3.07,
+      "marker2_volnet": null,
+      "marker3_grossnet": null,
+      "weight_gross": 656,
+      "weight_volume": 874,
+      "weight_net": null,
+      "products": {
+        "UZ": {
+          "total": null,
+          "RM": null,
+          "SRM": null,
+          "SRMA": null,
+          "SRMB": null,
+          "SRMC": null
+        },
+        "BY": {
+          "total": null,
+          "RRM": null,
+          "SRM": null,
+          "NRM": null
+        },
+        "KG": {
+          "total": null,
+          "RM": null,
+          "NRM": null
+        },
+        "AZ": {
+          "total": null,
+          "RM": null,
+          "NRM": null
+        }
+      }
+    },
+    {
+      "col": 223,
+      "col_letter": "HO",
+      "name": "1073 UZUM MPO",
+      "num": "1073",
+      "type": "MPO",
+      "date": "2026-04-14",
+      "revenue_total": 327.91,
+      "revenue_cainiao": 0,
+      "revenue_uzumcb": 327.91,
+      "expense_total": 148.78730005588687,
+      "profit": 0,
+      "marker1_tariff": 3.21,
+      "marker2_volnet": null,
+      "marker3_grossnet": null,
+      "weight_gross": 820,
+      "weight_volume": 1012,
+      "weight_net": null,
+      "products": {
+        "UZ": {
+          "total": null,
+          "RM": null,
+          "SRM": null,
+          "SRMA": null,
+          "SRMB": null,
+          "SRMC": null
+        },
+        "BY": {
+          "total": null,
+          "RRM": null,
+          "SRM": null,
+          "NRM": null
+        },
+        "KG": {
+          "total": null,
+          "RM": null,
+          "NRM": null
+        },
+        "AZ": {
+          "total": null,
+          "RM": null,
+          "NRM": null
+        }
+      }
+    },
+    {
+      "col": 224,
+      "col_letter": "HP",
+      "name": "1074 UZUM MPO",
+      "num": "1074",
+      "type": "MPO",
+      "date": "2026-04-16",
+      "revenue_total": 318.7580000000001,
+      "revenue_cainiao": 0,
+      "revenue_uzumcb": 318.7580000000001,
+      "expense_total": 138.92789603580917,
+      "profit": 0,
+      "marker1_tariff": 3.21,
+      "marker2_volnet": null,
+      "marker3_grossnet": null,
+      "weight_gross": 1082,
+      "weight_volume": 1377,
+      "weight_net": null,
+      "products": {
+        "UZ": {
+          "total": null,
+          "RM": null,
+          "SRM": null,
+          "SRMA": null,
+          "SRMB": null,
+          "SRMC": null
+        },
+        "BY": {
+          "total": null,
+          "RRM": null,
+          "SRM": null,
+          "NRM": null
+        },
+        "KG": {
+          "total": null,
+          "RM": null,
+          "NRM": null
+        },
+        "AZ": {
+          "total": null,
+          "RM": null,
+          "NRM": null
+        }
+      }
+    },
+    {
+      "col": 225,
+      "col_letter": "HQ",
+      "name": "1076 UZUM MPO",
+      "num": "1076",
+      "type": "MPO",
+      "date": "2026-04-17",
+      "revenue_total": 478.19199999999995,
+      "revenue_cainiao": 0,
+      "revenue_uzumcb": 478.19199999999995,
+      "expense_total": 162.57021152791384,
+      "profit": 0,
+      "marker1_tariff": 4.21,
+      "marker2_volnet": null,
+      "marker3_grossnet": null,
+      "weight_gross": 620,
+      "weight_volume": 779.5,
+      "weight_net": null,
+      "products": {
+        "UZ": {
+          "total": null,
+          "RM": null,
+          "SRM": null,
+          "SRMA": null,
+          "SRMB": null,
+          "SRMC": null
+        },
+        "BY": {
+          "total": null,
+          "RRM": null,
+          "SRM": null,
+          "NRM": null
+        },
+        "KG": {
+          "total": null,
+          "RM": null,
+          "NRM": null
+        },
+        "AZ": {
+          "total": null,
+          "RM": null,
+          "NRM": null
+        }
+      }
+    },
+    {
+      "col": 226,
+      "col_letter": "HR",
+      "name": "1077 UZUM MPO",
+      "num": "1077",
+      "type": "MPO",
+      "date": "2026-04-18",
+      "revenue_total": 433.4000000000001,
+      "revenue_cainiao": 0,
+      "revenue_uzumcb": 433.4000000000001,
+      "expense_total": 185.67541130455314,
+      "profit": 0,
+      "marker1_tariff": 3.2099999999999995,
+      "marker2_volnet": null,
+      "marker3_grossnet": null,
+      "weight_gross": 1104,
+      "weight_volume": 1415,
+      "weight_net": null,
+      "products": {
+        "UZ": {
+          "total": null,
+          "RM": null,
+          "SRM": null,
+          "SRMA": null,
+          "SRMB": null,
+          "SRMC": null
+        },
+        "BY": {
+          "total": null,
+          "RRM": null,
+          "SRM": null,
+          "NRM": null
+        },
+        "KG": {
+          "total": null,
+          "RM": null,
+          "NRM": null
+        },
+        "AZ": {
+          "total": null,
+          "RM": null,
+          "NRM": null
+        }
+      }
+    },
+    {
+      "col": 227,
+      "col_letter": "HS",
+      "name": "1078 UZUM MPO",
+      "num": "1078",
+      "type": "MPO",
+      "date": "2026-04-19",
+      "revenue_total": 534.2920000000001,
+      "revenue_cainiao": 0,
+      "revenue_uzumcb": 534.2920000000001,
+      "expense_total": 199.86424945239247,
+      "profit": 0,
+      "marker1_tariff": 4.37,
+      "marker2_volnet": null,
+      "marker3_grossnet": null,
+      "weight_gross": 295,
+      "weight_volume": 365,
+      "weight_net": null,
+      "products": {
+        "UZ": {
+          "total": null,
+          "RM": null,
+          "SRM": null,
+          "SRMA": null,
+          "SRMB": null,
+          "SRMC": null
+        },
+        "BY": {
+          "total": null,
+          "RRM": null,
+          "SRM": null,
+          "NRM": null
+        },
+        "KG": {
+          "total": null,
+          "RM": null,
+          "NRM": null
+        },
+        "AZ": {
+          "total": null,
+          "RM": null,
+          "NRM": null
+        }
+      }
+    },
+    {
+      "col": 228,
+      "col_letter": "HT",
+      "name": "98 UZUM MKO (A)",
+      "num": "98",
+      "type": "MKO",
+      "date": "2026-04-13",
+      "revenue_total": 5102.790000000006,
+      "revenue_cainiao": 0,
+      "revenue_uzumcb": 5102.790000000006,
+      "expense_total": 3200.9618351029803,
+      "profit": 0,
+      "marker1_tariff": 3.24,
+      "marker2_volnet": 1.1795373085695646,
+      "marker3_grossnet": 1.0003258390355148,
+      "weight_gross": 307,
+      "weight_volume": 362,
+      "weight_net": 306.90000000000055,
+      "products": {
+        "UZ": {
+          "total": null,
+          "RM": null,
+          "SRM": null,
+          "SRMA": null,
+          "SRMB": null,
+          "SRMC": null
+        },
+        "BY": {
+          "total": null,
+          "RRM": null,
+          "SRM": null,
+          "NRM": null
+        },
+        "KG": {
+          "total": null,
+          "RM": null,
+          "NRM": null
+        },
+        "AZ": {
+          "total": null,
+          "RM": null,
+          "NRM": null
+        }
+      }
+    },
+    {
+      "col": 229,
+      "col_letter": "HU",
+      "name": "99 UZUM MKO (A)",
+      "num": "99",
+      "type": "MKO",
+      "date": "2026-04-14",
+      "revenue_total": 4264.730000000005,
+      "revenue_cainiao": 0,
+      "revenue_uzumcb": 4264.730000000005,
+      "expense_total": 2537.6081972182337,
+      "profit": 0,
+      "marker1_tariff": 3.5399999999999996,
+      "marker2_volnet": 1.2425089892129424,
+      "marker3_grossnet": 0.9988014382740694,
+      "weight_gross": 250,
+      "weight_volume": 311,
+      "weight_net": 250.30000000000044,
+      "products": {
+        "UZ": {
+          "total": null,
+          "RM": null,
+          "SRM": null,
+          "SRMA": null,
+          "SRMB": null,
+          "SRMC": null
+        },
+        "BY": {
+          "total": null,
+          "RRM": null,
+          "SRM": null,
+          "NRM": null
+        },
+        "KG": {
+          "total": null,
+          "RM": null,
+          "NRM": null
+        },
+        "AZ": {
+          "total": null,
+          "RM": null,
+          "NRM": null
+        }
+      }
+    },
+    {
+      "col": 230,
+      "col_letter": "HV",
+      "name": "100 UZUM MKO (A)",
+      "num": "100",
+      "type": "MKO",
+      "date": "2026-04-16",
+      "revenue_total": 4582.6700000000055,
+      "revenue_cainiao": 0,
+      "revenue_uzumcb": 4582.6700000000055,
+      "expense_total": 2751.605042765842,
+      "profit": 0,
+      "marker1_tariff": 3.54,
+      "marker2_volnet": 1.1931315277040162,
+      "marker3_grossnet": 1.0019472473004054,
+      "weight_gross": 283,
+      "weight_volume": 337,
+      "weight_net": 282.4500000000005,
+      "products": {
+        "UZ": {
+          "total": null,
+          "RM": null,
+          "SRM": null,
+          "SRMA": null,
+          "SRMB": null,
+          "SRMC": null
+        },
+        "BY": {
+          "total": null,
+          "RRM": null,
+          "SRM": null,
+          "NRM": null
+        },
+        "KG": {
+          "total": null,
+          "RM": null,
+          "NRM": null
+        },
+        "AZ": {
+          "total": null,
+          "RM": null,
+          "NRM": null
+        }
+      }
+    },
+    {
+      "col": 231,
+      "col_letter": "HW",
+      "name": "101 UZUM MKO",
+      "num": "101",
+      "type": "MKO",
+      "date": "2026-04-16",
+      "revenue_total": 5730.709999999997,
+      "revenue_cainiao": 0,
+      "revenue_uzumcb": 5730.709999999997,
+      "expense_total": 2073.116456012622,
+      "profit": 0,
+      "marker1_tariff": 7.850000000000001,
+      "marker2_volnet": 1.4679865206402707,
+      "marker3_grossnet": 0.9856781802864371,
+      "weight_gross": 234,
+      "weight_volume": 348.5,
+      "weight_net": 237.39999999999984,
+      "products": {
+        "UZ": {
+          "total": null,
+          "RM": null,
+          "SRM": null,
+          "SRMA": null,
+          "SRMB": null,
+          "SRMC": null
+        },
+        "BY": {
+          "total": null,
+          "RRM": null,
+          "SRM": null,
+          "NRM": null
+        },
+        "KG": {
+          "total": null,
+          "RM": null,
+          "NRM": null
+        },
+        "AZ": {
+          "total": null,
+          "RM": null,
+          "NRM": null
+        }
+      }
+    },
+    {
+      "col": 232,
+      "col_letter": "HX",
+      "name": "102 UZUM MKO (A)",
+      "num": "102",
+      "type": "MKO",
+      "date": "2026-04-15",
+      "revenue_total": 4743.440000000005,
+      "revenue_cainiao": 0,
+      "revenue_uzumcb": 4743.440000000005,
+      "expense_total": 2368.435204995415,
+      "profit": 0,
+      "marker1_tariff": 4.37,
+      "marker2_volnet": 1.2760902765993534,
+      "marker3_grossnet": 1.0181571355845904,
+      "weight_gross": 300,
+      "weight_volume": 376,
+      "weight_net": 294.65000000000043,
+      "products": {
+        "UZ": {
+          "total": null,
+          "RM": null,
+          "SRM": null,
+          "SRMA": null,
+          "SRMB": null,
+          "SRMC": null
+        },
+        "BY": {
+          "total": null,
+          "RRM": null,
+          "SRM": null,
+          "NRM": null
+        },
+        "KG": {
+          "total": null,
+          "RM": null,
+          "NRM": null
+        },
+        "AZ": {
+          "total": null,
+          "RM": null,
+          "NRM": null
+        }
+      }
+    },
+    {
+      "col": 233,
+      "col_letter": "HY",
+      "name": "103 UZUM MKO (A)",
+      "num": "103",
+      "type": "MKO",
+      "date": "2026-04-17",
+      "revenue_total": 4075.7800000000034,
+      "revenue_cainiao": 0,
+      "revenue_uzumcb": 4075.7800000000034,
+      "expense_total": 2174.877518438331,
+      "profit": 0,
+      "marker1_tariff": 4.25,
+      "marker2_volnet": 1.2489991993594862,
+      "marker3_grossnet": 1.0168134507606073,
+      "weight_gross": 254,
+      "weight_volume": 312,
+      "weight_net": 249.8000000000003,
+      "products": {
+        "UZ": {
+          "total": null,
+          "RM": null,
+          "SRM": null,
+          "SRMA": null,
+          "SRMB": null,
+          "SRMC": null
+        },
+        "BY": {
+          "total": null,
+          "RRM": null,
+          "SRM": null,
+          "NRM": null
+        },
+        "KG": {
+          "total": null,
+          "RM": null,
+          "NRM": null
+        },
+        "AZ": {
+          "total": null,
+          "RM": null,
+          "NRM": null
+        }
+      }
+    },
+    {
+      "col": 234,
+      "col_letter": "HZ",
+      "name": "104 UZUM MKO (A)",
+      "num": "104",
+      "type": "MKO",
+      "date": "2026-04-17",
+      "revenue_total": 4850.120000000005,
+      "revenue_cainiao": 0,
+      "revenue_uzumcb": 4850.120000000005,
+      "expense_total": 2609.1730486030574,
+      "profit": 0,
+      "marker1_tariff": 4.37,
+      "marker2_volnet": 1.1722044189576637,
+      "marker3_grossnet": 1.0288412885815466,
+      "weight_gross": 305,
+      "weight_volume": 347.5,
+      "weight_net": 296.4500000000005,
+      "products": {
+        "UZ": {
+          "total": null,
+          "RM": null,
+          "SRM": null,
+          "SRMA": null,
+          "SRMB": null,
+          "SRMC": null
+        },
+        "BY": {
+          "total": null,
+          "RRM": null,
+          "SRM": null,
+          "NRM": null
+        },
+        "KG": {
+          "total": null,
+          "RM": null,
+          "NRM": null
+        },
+        "AZ": {
+          "total": null,
+          "RM": null,
+          "NRM": null
+        }
+      }
+    },
+    {
+      "col": 235,
+      "col_letter": "IA",
+      "name": "105 UZUM MKO (A)",
+      "num": "105",
+      "type": "MKO",
+      "date": "2026-04-18",
+      "revenue_total": 4771.2600000000075,
+      "revenue_cainiao": 0,
+      "revenue_uzumcb": 4771.2600000000075,
+      "expense_total": 2648.0299733254888,
+      "profit": 0,
+      "marker1_tariff": 3.54,
+      "marker2_volnet": 1.2715623459832404,
+      "marker3_grossnet": 1.01856415311319,
+      "weight_gross": 310,
+      "weight_volume": 387,
+      "weight_net": 304.35000000000065,
+      "products": {
+        "UZ": {
+          "total": null,
+          "RM": null,
+          "SRM": null,
+          "SRMA": null,
+          "SRMB": null,
+          "SRMC": null
+        },
+        "BY": {
+          "total": null,
+          "RRM": null,
+          "SRM": null,
+          "NRM": null
+        },
+        "KG": {
+          "total": null,
+          "RM": null,
+          "NRM": null
+        },
+        "AZ": {
+          "total": null,
+          "RM": null,
+          "NRM": null
+        }
+      }
+    },
+    {
+      "col": 236,
+      "col_letter": "IB",
+      "name": "106 UZUM MKO (A)",
+      "num": "106",
+      "type": "MKO",
+      "date": "2026-04-19",
+      "revenue_total": 4261.960000000003,
+      "revenue_cainiao": 0,
+      "revenue_uzumcb": 4261.960000000003,
+      "expense_total": 2331.388240694234,
+      "profit": 0,
+      "marker1_tariff": 4.54,
+      "marker2_volnet": 1.135010562704051,
+      "marker3_grossnet": 0.9986556558478958,
+      "weight_gross": 260,
+      "weight_volume": 295.5,
+      "weight_net": 260.3500000000003,
+      "products": {
+        "UZ": {
+          "total": null,
+          "RM": null,
+          "SRM": null,
+          "SRMA": null,
+          "SRMB": null,
+          "SRMC": null
+        },
+        "BY": {
+          "total": null,
+          "RRM": null,
+          "SRM": null,
+          "NRM": null
+        },
+        "KG": {
+          "total": null,
+          "RM": null,
+          "NRM": null
+        },
+        "AZ": {
+          "total": null,
+          "RM": null,
+          "NRM": null
+        }
+      }
+    }
+  ]
+}
