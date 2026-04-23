@@ -98,7 +98,7 @@ function Dashboard() {
 
   // Сводка по маркерам — счётчики критичных/предупреждений
   const markerSummary = useMemo(() => {
-    const sum = (key: "marker1_tariff" | "marker2_volnet" | "marker3_grossnet", t: typeof THRESHOLDS.marker1) => {
+    const sum = (key: "marker1_tariff" | "marker2_volnet" | "marker3_grossnet", t: { critical: number; warning: number; direction?: "above" | "below"; unit?: string }) => {
       const vals = filteredParties
         .map((p) => p[key])
         .filter((v): v is number => typeof v === "number" && Number.isFinite(v));
