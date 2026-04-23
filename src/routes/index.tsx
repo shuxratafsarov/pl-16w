@@ -361,7 +361,7 @@ function Dashboard() {
             />
             <MarkerBlock
               title="Маркер 2 — Коэффициент объёмного веса к нетто"
-              description="Чем выше коэффициент — тем больше «воздуха» возим. Норма ≤ 1.35."
+              description="Чем выше коэффициент — тем больше «воздуха» возим. Норма ≤ 1.35. Для MPO рассчитать нельзя — нетто-вес не выделяется."
               parties={filteredParties}
               metric="marker2_volnet"
               threshold={THRESHOLDS.marker2}
@@ -370,7 +370,7 @@ function Dashboard() {
             />
             <MarkerBlock
               title="Маркер 3 — Коэффициент брутто веса к нетто"
-              description="Доля упаковки и тары в массе. Норма ≤ 1.07."
+              description="Доля упаковки и тары в массе. Норма ≤ 1.07. Для MPO рассчитать нельзя — нетто-вес не выделяется."
               parties={filteredParties}
               metric="marker3_grossnet"
               threshold={THRESHOLDS.marker3}
