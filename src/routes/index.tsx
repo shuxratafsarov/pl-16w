@@ -361,7 +361,7 @@ function Dashboard() {
             />
             <MarkerBlock
               title="Маркер 2 — Коэффициент объёмного веса к нетто"
-              description="Чем выше коэффициент — тем больше «воздуха» возим. Норма ≤ 1.35."
+              description="Чем выше коэффициент — тем больше «воздуха» возим. Норма ≤ 1.35. Для MPO рассчитать нельзя — нетто-вес не выделяется."
               parties={filteredParties}
               metric="marker2_volnet"
               threshold={THRESHOLDS.marker2}
@@ -370,7 +370,7 @@ function Dashboard() {
             />
             <MarkerBlock
               title="Маркер 3 — Коэффициент брутто веса к нетто"
-              description="Доля упаковки и тары в массе. Норма ≤ 1.07."
+              description="Доля упаковки и тары в массе. Норма ≤ 1.07. Для MPO рассчитать нельзя — нетто-вес не выделяется."
               parties={filteredParties}
               metric="marker3_grossnet"
               threshold={THRESHOLDS.marker3}
@@ -395,6 +395,8 @@ function Dashboard() {
                   <th className="py-2 pr-3 font-medium">Дата</th>
                   <th className="py-2 pr-3 text-right font-medium">Выручка</th>
                   <th className="py-2 pr-3 text-right font-medium">Расход</th>
+                  <th className="py-2 pr-3 text-right font-medium">Прибыль</th>
+                  <th className="py-2 pr-3 text-right font-medium">Маржин.</th>
                   <th className="py-2 pr-3 text-right font-medium">Нетто, кг</th>
                   <th className="py-2 pr-3 text-right font-medium">М1 тариф</th>
                   <th className="py-2 pr-3 text-right font-medium">М2 vol/net</th>
@@ -406,6 +408,8 @@ function Dashboard() {
                   const m1 = p.marker1_tariff;
                   const m2 = p.marker2_volnet;
                   const m3 = p.marker3_grossnet;
+                  const gp = p.gross_profit;
+                  const mp = gp != null && p.revenue_total ? gp / p.revenue_total : null;
                   return (
                     <tr key={p.col} className="border-b last:border-b-0 hover:bg-accent/40">
                       <td className="py-2.5 pr-3 font-medium">{p.num}</td>
@@ -421,6 +425,12 @@ function Dashboard() {
                       <td className="py-2.5 pr-3 text-muted-foreground">{p.date}</td>
                       <td className="py-2.5 pr-3 text-right tabular-nums">{p.revenue_total != null ? fmtUSD(p.revenue_total) : "—"}</td>
                       <td className="py-2.5 pr-3 text-right tabular-nums">{p.expense_total != null ? fmtUSD(p.expense_total) : "—"}</td>
+                      <td className={cn("py-2.5 pr-3 text-right tabular-nums font-medium", gp != null && (gp >= 0 ? "text-success" : "text-destructive"))}>
+                        {gp != null ? fmtUSD(gp) : "—"}
+                      </td>
+                      <td className={cn("py-2.5 pr-3 text-right tabular-nums", mp != null && (mp >= 0 ? "text-success" : "text-destructive"))}>
+                        {mp != null ? fmtPct(mp) : "—"}
+                      </td>
                       <td className="py-2.5 pr-3 text-right tabular-nums">{p.weight_net != null ? fmtNum(p.weight_net, 1) : "—"}</td>
                       <td className="py-2.5 pr-3 text-right tabular-nums">
                         {typeof m1 === "number" ? (
@@ -430,12 +440,12 @@ function Dashboard() {
                       <td className="py-2.5 pr-3 text-right tabular-nums">
                         {typeof m2 === "number" ? (
                           <MetricCell value={fmtNum(m2, 3)} status={statusOf(m2, THRESHOLDS.marker2)} />
-                        ) : "—"}
+                        ) : <span className="text-muted-foreground/60">—</span>}
                       </td>
                       <td className="py-2.5 pr-3 text-right tabular-nums">
                         {typeof m3 === "number" ? (
                           <MetricCell value={fmtNum(m3, 3)} status={statusOf(m3, THRESHOLDS.marker3)} />
-                        ) : "—"}
+                        ) : <span className="text-muted-foreground/60">—</span>}
                       </td>
                     </tr>
                   );

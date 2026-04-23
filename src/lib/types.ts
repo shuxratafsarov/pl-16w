@@ -9,7 +9,9 @@ export type Party = {
   revenue_cainiao: number | null;
   revenue_uzumcb: number | null;
   expense_total: number | null;
-  profit: number | null;
+  expense_cainiao: number | null;
+  expense_uzumcb: number | null;
+  gross_profit: number | null;
   marker1_tariff: number | null;
   marker2_volnet: number | null;
   marker3_grossnet: number | null;
@@ -32,7 +34,9 @@ export type WeekData = {
     revenue_cainiao: number;
     revenue_uzumcb: number;
     expense_total: number;
-    profit: number;
+    expense_cainiao: number;
+    expense_uzumcb: number;
+    gross_profit: number;
     weight_gross: number;
     weight_volume: number;
     weight_net: number;
@@ -40,10 +44,8 @@ export type WeekData = {
   byType: Record<"CAINIAO" | "MPO" | "MKO", {
     count: number;
     revenue: number;
-    revenue_cainiao: number;
-    revenue_uzumcb: number;
     expense: number;
-    profit: number;
+    gross_profit: number;
     weight_gross: number;
     weight_volume: number;
     weight_net: number;
