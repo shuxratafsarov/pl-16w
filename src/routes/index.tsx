@@ -553,9 +553,22 @@ function Dashboard() {
         {/* === Уровень 1: Общие итоги === */}
         <section className="space-y-4">
           <div className="flex items-end justify-between gap-3">
-            <div>
+            <div className="flex items-center gap-2">
               <h2 className="text-lg font-semibold tracking-tight">Сводка за неделю</h2>
-              <p className="text-sm text-muted-foreground mt-0.5">Итоговые показатели из листа 3PL_weekly · колонка TOTAL</p>
+              <Tooltip>
+                <TooltipTrigger asChild>
+                  <button
+                    type="button"
+                    aria-label="Подробнее"
+                    className="inline-flex h-5 w-5 items-center justify-center rounded-full text-muted-foreground/70 hover:text-foreground hover:bg-muted/50 transition-colors"
+                  >
+                    <Info className="h-3.5 w-3.5" />
+                  </button>
+                </TooltipTrigger>
+                <TooltipContent side="bottom" className="max-w-xs bg-popover text-popover-foreground border shadow-md">
+                  <p className="text-xs leading-relaxed">Итоговые показатели из листа 3PL_weekly · колонка TOTAL</p>
+                </TooltipContent>
+              </Tooltip>
             </div>
           </div>
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
@@ -647,9 +660,22 @@ function Dashboard() {
 
         {/* === Уровень 2: Разбивка по типам === */}
         <section className="space-y-4">
-          <div>
+          <div className="flex items-center gap-2">
             <h2 className="text-lg font-semibold tracking-tight">Разбивка по типам бизнеса</h2>
-            <p className="text-sm text-muted-foreground mt-0.5">CAINIAO — C2M экспорт. UZUM MPO и UZUM MKO — два независимых направления Crossborder</p>
+            <Tooltip>
+              <TooltipTrigger asChild>
+                <button
+                  type="button"
+                  aria-label="Подробнее"
+                  className="inline-flex h-5 w-5 items-center justify-center rounded-full text-muted-foreground/70 hover:text-foreground hover:bg-muted/50 transition-colors"
+                >
+                  <Info className="h-3.5 w-3.5" />
+                </button>
+              </TooltipTrigger>
+              <TooltipContent side="bottom" className="max-w-xs bg-popover text-popover-foreground border shadow-md">
+                <p className="text-xs leading-relaxed">CAINIAO — C2M экспорт. UZUM MPO и UZUM MKO — два независимых направления Crossborder</p>
+              </TooltipContent>
+            </Tooltip>
           </div>
           <div className="grid grid-cols-1 lg:grid-cols-3 gap-4">
             {typeBreakdown.map((t) => {
@@ -1055,11 +1081,22 @@ function AlertsPanel({
           <div className="h-11 w-11 rounded-xl gradient-danger flex items-center justify-center text-white shadow-glow">
             <AlertTriangle className="h-5 w-5" />
           </div>
-          <div>
+          <div className="flex items-center gap-2">
             <h3 className="text-base font-semibold">Требует внимания</h3>
-            <p className="text-sm text-muted-foreground">
-              Партии с отклонением выше нормы — клик по карточке откроет детали партии
-            </p>
+            <Tooltip>
+              <TooltipTrigger asChild>
+                <button
+                  type="button"
+                  aria-label="Подробнее"
+                  className="inline-flex h-5 w-5 items-center justify-center rounded-full text-muted-foreground/70 hover:text-foreground hover:bg-muted/50 transition-colors"
+                >
+                  <Info className="h-3.5 w-3.5" />
+                </button>
+              </TooltipTrigger>
+              <TooltipContent side="bottom" className="max-w-xs bg-popover text-popover-foreground border shadow-md">
+                <p className="text-xs leading-relaxed">Партии с отклонением выше нормы — клик по карточке откроет детали партии</p>
+              </TooltipContent>
+            </Tooltip>
           </div>
         </div>
         <div className="flex items-center gap-2 text-xs">
