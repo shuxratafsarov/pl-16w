@@ -30,6 +30,7 @@ import {
   Banknote,
   Boxes,
   Calendar,
+  Info,
   type LucideIcon,
 } from "lucide-react";
 import data from "@/data/week16.json";
@@ -74,7 +75,7 @@ type MarkerKey = "marker1_tariff" | "marker2_volnet" | "marker3_grossnet";
 
 const MARKER_META: Record<MarkerKey, { title: string; short: string; unit: string; decimals: number; yLabel: string; description: string }> = {
   marker1_tariff: {
-    title: "Маркер 1 · Тариф линейхолла",
+    title: "Маркер 1 · Тариф Лайнхолла",
     short: "M1 · Тариф",
     unit: " $/кг",
     decimals: 2,
@@ -107,7 +108,7 @@ const CRIT_PCT = 0.2;
 
 /** Кнопки маркеров для шапки (включая M4 без графика-маркера). */
 const MARKER_BUTTONS: Array<{ id: string; short: string; title: string; description: string }> = [
-  { id: "marker-1", short: "M1", title: "Тариф линейхолла", description: MARKER_META.marker1_tariff.description },
+  { id: "marker-1", short: "M1", title: "Тариф Лайнхолла", description: MARKER_META.marker1_tariff.description },
   { id: "marker-2", short: "M2", title: "Объёмный / Нетто", description: MARKER_META.marker2_volnet.description },
   { id: "marker-3", short: "M3", title: "Брутто / Нетто", description: MARKER_META.marker3_grossnet.description },
   { id: "marker-4", short: "M4", title: "Соотношение продуктов", description: "Структура микса по странам и подтипам (RM/SRM/NRM и т. д.) в штуках или килограммах. Показывает, какие категории дают основной объём." },
@@ -289,7 +290,7 @@ function Dashboard() {
               </div>
               <div className="min-w-0">
                 <p className="text-[11px] font-semibold uppercase tracking-[0.12em] text-muted-foreground">3PL · P&amp;L Аналитика</p>
-                <h1 className="text-lg sm:text-xl font-bold tracking-tight truncate">Неделя {week.week} · {week.period}</h1>
+                <h1 className="text-lg sm:text-xl font-bold tracking-tight truncate">Неделя {week.week}</h1>
               </div>
             </div>
 
@@ -492,7 +493,7 @@ function Dashboard() {
                   key={t.type}
                   type="button"
                   onClick={() => setDetail({ kind: "type", type: t.type })}
-                  className="group relative overflow-hidden rounded-2xl glass-card p-6 shadow-elegant transition-all duration-300 hover:shadow-elevated hover:-translate-y-0.5 text-left cursor-pointer focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 focus-visible:ring-offset-background"
+                  className="group relative overflow-hidden rounded-2xl glass-card p-6 shadow-elegant transition-all duration-300 hover:shadow-elevated hover:-translate-y-0.5 text-left cursor-pointer focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 focus-visible:ring-offset-background flex flex-col h-full"
                 >
                   {/* glow accent */}
                   <div
@@ -561,8 +562,10 @@ function Dashboard() {
                   </div>
 
                   {t.note && (
-                    <div className="relative mt-4 rounded-lg bg-accent/30 border border-accent/50 px-3 py-2 text-xs text-muted-foreground leading-relaxed">
-                      ⓘ {t.note}
+                    <div className="relative mt-auto pt-4">
+                      <div className="rounded-lg bg-accent/30 border border-accent/50 px-3 py-2 text-xs text-muted-foreground leading-relaxed">
+                        ⓘ {t.note}
+                      </div>
                     </div>
                   )}
                 </button>
@@ -639,13 +642,38 @@ function Dashboard() {
             ))}
 
             {/* Маркер 4 — Соотношение продуктов (шт / кг) */}
+            <TooltipProvider delayDuration={150}>
             <SectionCard
               id="marker-4"
-              title="Маркер 4 · Соотношение продуктов"
-              description={
-                filter === "ALL"
-                  ? "Микс по странам и подтипам — все направления"
-                  : `Микс по странам и подтипам — ${TYPE_META[filter].label}`
+              title={
+                <div className="flex items-center gap-2.5 min-w-0">
+                  <span className="inline-flex h-7 min-w-7 items-center justify-center rounded-lg gradient-primary px-2 text-[11px] font-bold text-white shadow-glow tabular-nums">
+                    M4
+                  </span>
+                  <h2 className="text-base sm:text-lg font-bold tracking-tight text-card-foreground truncate">
+                    <span className="text-gradient">Маркер 4</span>
+                    <span className="text-muted-foreground font-medium mx-1.5">·</span>
+                    <span>Соотношение продуктов</span>
+                  </h2>
+                  <UITooltip>
+                    <TooltipTrigger asChild>
+                      <button
+                        type="button"
+                        aria-label="Описание маркера"
+                        className="inline-flex h-6 w-6 items-center justify-center rounded-full text-muted-foreground hover:text-primary hover:bg-primary/10 transition-colors"
+                      >
+                        <Info className="h-3.5 w-3.5" />
+                      </button>
+                    </TooltipTrigger>
+                    <TooltipContent side="bottom" className="max-w-sm text-xs leading-snug">
+                      <p className="font-semibold mb-0.5">Маркер 4 · Соотношение продуктов</p>
+                      <p className="opacity-90">
+                        Структура микса по странам и подтипам (RM/SRM/NRM и т. д.) в штуках или килограммах.
+                        Показывает, какие категории дают основной объём.
+                      </p>
+                    </TooltipContent>
+                  </UITooltip>
+                </div>
               }
             >
               <ProductMix
@@ -653,6 +681,7 @@ function Dashboard() {
                 scope={filter === "ALL" ? { kind: "all" } : { kind: "type", type: filter }}
               />
             </SectionCard>
+            </TooltipProvider>
           </div>
         </section>
 
@@ -934,8 +963,42 @@ function MarkerSection({
   const warnThr = avg * (1 + WARN_PCT);
   const critThr = avg * (1 + CRIT_PCT);
 
+  // Парсим "Маркер N · ..." на номер и название
+  const titleMatch = meta.title.match(/^Маркер\s+(\d+)\s*·\s*(.+)$/);
+  const markerNum = titleMatch?.[1] ?? "";
+  const markerName = titleMatch?.[2] ?? meta.title;
+
+  const styledTitle = (
+    <div className="flex items-center gap-2.5 min-w-0">
+      <span className="inline-flex h-7 min-w-7 items-center justify-center rounded-lg gradient-primary px-2 text-[11px] font-bold text-white shadow-glow tabular-nums">
+        M{markerNum}
+      </span>
+      <h2 className="text-base sm:text-lg font-bold tracking-tight text-card-foreground truncate">
+        <span className="text-gradient">Маркер {markerNum}</span>
+        <span className="text-muted-foreground font-medium mx-1.5">·</span>
+        <span>{markerName}</span>
+      </h2>
+      <UITooltip>
+        <TooltipTrigger asChild>
+          <button
+            type="button"
+            aria-label="Описание маркера"
+            className="inline-flex h-6 w-6 items-center justify-center rounded-full text-muted-foreground hover:text-primary hover:bg-primary/10 transition-colors"
+          >
+            <Info className="h-3.5 w-3.5" />
+          </button>
+        </TooltipTrigger>
+        <TooltipContent side="bottom" className="max-w-sm text-xs leading-snug">
+          <p className="font-semibold mb-0.5">Маркер {markerNum} · {markerName}</p>
+          <p className="opacity-90">{meta.description}</p>
+        </TooltipContent>
+      </UITooltip>
+    </div>
+  );
+
   return (
-    <SectionCard title={meta.title} description={meta.description}>
+    <TooltipProvider delayDuration={150}>
+    <SectionCard title={styledTitle}>
       <div className="grid grid-cols-2 lg:grid-cols-6 gap-3 mb-5">
         <MiniStat label="Партий с данными" value={fmtNum(total)} />
         <MiniStat label="Среднее" value={`${fmtNum(avg, meta.decimals)}${meta.unit}`} accent="primary" />
@@ -989,6 +1052,7 @@ function MarkerSection({
         })}
       </div>
     </SectionCard>
+    </TooltipProvider>
   );
 }
 

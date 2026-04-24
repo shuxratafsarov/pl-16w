@@ -9,7 +9,7 @@ export function SectionCard({
   className,
   id,
 }: {
-  title: string;
+  title: ReactNode;
   description?: ReactNode;
   children: ReactNode;
   action?: ReactNode;
@@ -19,8 +19,12 @@ export function SectionCard({
   return (
     <section id={id} className={cn("rounded-2xl glass-card p-6 shadow-elegant scroll-mt-24", className)}>
       <header className="mb-5 flex flex-wrap items-start justify-between gap-3">
-        <div>
-          <h2 className="text-base font-semibold tracking-tight text-card-foreground">{title}</h2>
+        <div className="min-w-0">
+          {typeof title === "string" ? (
+            <h2 className="text-base font-semibold tracking-tight text-card-foreground">{title}</h2>
+          ) : (
+            title
+          )}
           {description && (
             <p className="mt-1 text-sm text-muted-foreground">{description}</p>
           )}

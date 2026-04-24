@@ -20,7 +20,7 @@ type MarkerDef = {
 };
 
 const MARKERS: MarkerDef[] = [
-  { key: "marker1_tariff", short: "M1 · Тариф", title: "Тариф линейхолла", unit: " $/кг", decimals: 2, direction: "above", icon: Gauge, color: "var(--chart-1)" },
+  { key: "marker1_tariff", short: "M1 · Тариф", title: "Тариф Лайнхолла", unit: " $/кг", decimals: 2, direction: "above", icon: Gauge, color: "var(--chart-1)" },
   { key: "marker2_volnet", short: "M2 · Vol/Net", title: "Объёмный / Нетто", unit: "x", decimals: 3, direction: "above", icon: Layers, color: "var(--chart-2)" },
   { key: "marker3_grossnet", short: "M3 · Gross/Net", title: "Брутто / Нетто", unit: "x", decimals: 3, direction: "above", icon: Layers, color: "var(--chart-4)" },
   { key: "marker4_margin", short: "M4 · Маржа", title: "Маржа партии", unit: "%", decimals: 2, direction: "below", icon: Percent, color: "var(--chart-5)" },
