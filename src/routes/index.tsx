@@ -233,7 +233,7 @@ function Dashboard() {
         <div className="mx-auto max-w-[1440px] px-6 py-5 flex items-center justify-between gap-6">
           <div className="flex items-center gap-4">
             <div className="h-11 w-11 rounded-2xl gradient-primary shadow-glow flex items-center justify-center">
-              <Activity className="h-5 w-5 text-white" />
+              <LineChartIcon className="h-5 w-5 text-white" />
             </div>
             <div>
               <p className="text-[11px] font-semibold uppercase tracking-[0.12em] text-muted-foreground">3PL · P&amp;L Аналитика</p>
