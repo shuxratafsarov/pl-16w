@@ -59,7 +59,83 @@ import {
 } from "@/components/ui/dropdown-menu";
 import { cn } from "@/lib/utils";
 
-const week = data as WeekData;
+const rawWeek = data as WeekData;
+
+/** Расхождение по одной строке (до пересчёта). */
+type Discrepancy = {
+  scope: string; // "TOTAL" | "CAINIAO" | "MPO" | "MKO" | "UZUM CB"
+  metric: "Выручка" | "Расходы" | "Прибыль";
+  source: number; // что было в листе
+  computed: number; // что получилось из суммы партий
+  diff: number; // computed - source
+};
+
+/** Пересчёт агрегатов из истины-источника (партий) + сбор расхождений с тем, что было в JSON.
+ *  Это гарантирует 100% соответствие отображаемых сумм партиям, а в тултипе мы покажем,
+ *  где именно лист расходился с партиями (если расходился). */
+function reconcileWeek(src: WeekData): { week: WeekData; discrepancies: Discrepancy[] } {
+  const EPS = 0.5;
+  const discrepancies: Discrepancy[] = [];
+
+  const sumByType = (t: PartyType) => {
+    const ps = src.parties.filter((p) => p.type === t);
+    const r = ps.reduce((s, p) => s + (p.revenue ?? 0), 0);
+    const e = ps.reduce((s, p) => s + (p.expense ?? 0), 0);
+    const g = ps.reduce((s, p) => s + (p.gross_profit ?? 0), 0);
+    return { count: ps.length, revenue: r, expense: e, gross_profit: g, margin_pct: r > 0 ? (g / r) * 100 : 0 };
+  };
+
+  // Пересобираем byType
+  const newByType = {} as Record<PartyType, ReturnType<typeof sumByType> & { note?: string }>;
+  (["CAINIAO", "MPO", "MKO"] as PartyType[]).forEach((t) => {
+    const c = sumByType(t);
+    const old = src.byType[t];
+    if (old) {
+      if (Math.abs(c.revenue - old.revenue) > EPS)
+        discrepancies.push({ scope: t, metric: "Выручка", source: old.revenue, computed: c.revenue, diff: c.revenue - old.revenue });
+      if (Math.abs(c.expense - old.expense) > EPS)
+        discrepancies.push({ scope: t, metric: "Расходы", source: old.expense, computed: c.expense, diff: c.expense - old.expense });
+      if (Math.abs(c.gross_profit - old.gross_profit) > EPS)
+        discrepancies.push({ scope: t, metric: "Прибыль", source: old.gross_profit, computed: c.gross_profit, diff: c.gross_profit - old.gross_profit });
+    }
+    newByType[t] = { ...c, note: old?.note };
+  });
+
+  // Пересобираем totals
+  const tRev = newByType.CAINIAO.revenue + newByType.MPO.revenue + newByType.MKO.revenue;
+  const tExp = newByType.CAINIAO.expense + newByType.MPO.expense + newByType.MKO.expense;
+  const tGp = newByType.CAINIAO.gross_profit + newByType.MPO.gross_profit + newByType.MKO.gross_profit;
+  if (Math.abs(tRev - src.totals.revenue) > EPS)
+    discrepancies.push({ scope: "TOTAL", metric: "Выручка", source: src.totals.revenue, computed: tRev, diff: tRev - src.totals.revenue });
+  if (Math.abs(tExp - src.totals.expense) > EPS)
+    discrepancies.push({ scope: "TOTAL", metric: "Расходы", source: src.totals.expense, computed: tExp, diff: tExp - src.totals.expense });
+  if (Math.abs(tGp - src.totals.gross_profit) > EPS)
+    discrepancies.push({ scope: "TOTAL", metric: "Прибыль", source: src.totals.gross_profit, computed: tGp, diff: tGp - src.totals.gross_profit });
+
+  // Зонтик UZUM CB = MPO + MKO
+  const uRev = newByType.MPO.revenue + newByType.MKO.revenue;
+  const uExp = newByType.MPO.expense + newByType.MKO.expense;
+  const uGp = newByType.MPO.gross_profit + newByType.MKO.gross_profit;
+  const oldU = src.umbrella_uzum_cb;
+  if (Math.abs(uRev - oldU.revenue) > EPS)
+    discrepancies.push({ scope: "UZUM CB", metric: "Выручка", source: oldU.revenue, computed: uRev, diff: uRev - oldU.revenue });
+  if (Math.abs(uExp - oldU.expense) > EPS)
+    discrepancies.push({ scope: "UZUM CB", metric: "Расходы", source: oldU.expense, computed: uExp, diff: uExp - oldU.expense });
+  if (Math.abs(uGp - oldU.gross_profit) > EPS)
+    discrepancies.push({ scope: "UZUM CB", metric: "Прибыль", source: oldU.gross_profit, computed: uGp, diff: uGp - oldU.gross_profit });
+
+  const reconciled: WeekData = {
+    ...src,
+    totals: { revenue: tRev, expense: tExp, gross_profit: tGp, margin_pct: tRev > 0 ? (tGp / tRev) * 100 : 0 },
+    byType: newByType as WeekData["byType"],
+    umbrella_uzum_cb: { revenue: uRev, expense: uExp, gross_profit: uGp, margin_pct: uRev > 0 ? (uGp / uRev) * 100 : 0 },
+  };
+
+  return { week: reconciled, discrepancies };
+}
+
+const { week, discrepancies: SOURCE_DISCREPANCIES } = reconcileWeek(rawWeek);
+
 
 export const Route = createFileRoute("/")({
   component: Dashboard,
@@ -278,35 +354,11 @@ function Dashboard() {
   const revenuePie = typeBreakdown.map((t) => ({ name: TYPE_META[t.type].label, value: t.revenue, fill: TYPE_META[t.type].color }));
   const profitBar = typeBreakdown.map((t) => ({ name: TYPE_META[t.type].label, revenue: t.revenue, expense: t.expense, profit: t.gross_profit, margin: t.margin_pct, fill: TYPE_META[t.type].color }));
 
-  /** Сверка с источником: суммы по партиям должны совпадать с totals и byType из листа. */
+  /** Сверка с источником: расхождения собраны при reconcileWeek().
+   *  После пересчёта в шапке отображаются суммы из партий, поэтому здесь — те расхождения,
+   *  которые были обнаружены в исходном листе (и автоматически исправлены). */
   const sourceMatch = useMemo(() => {
-    const EPS = 0.5; // допускаем округление до полудоллара
-    const issues: string[] = [];
-    const sumRev = week.parties.reduce((s, p) => s + (p.revenue ?? 0), 0);
-    const sumExp = week.parties.reduce((s, p) => s + (p.expense ?? 0), 0);
-    const sumGp = week.parties.reduce((s, p) => s + (p.gross_profit ?? 0), 0);
-    if (Math.abs(sumRev - week.totals.revenue) > EPS) issues.push(`Выручка: партии Σ ${fmtUSD(sumRev)} ≠ TOTAL ${fmtUSD(week.totals.revenue)}`);
-    if (Math.abs(sumExp - week.totals.expense) > EPS) issues.push(`Расходы: партии Σ ${fmtUSD(sumExp)} ≠ TOTAL ${fmtUSD(week.totals.expense)}`);
-    if (Math.abs(sumGp - week.totals.gross_profit) > EPS) issues.push(`Прибыль: партии Σ ${fmtUSD(sumGp)} ≠ TOTAL ${fmtUSD(week.totals.gross_profit)}`);
-    (["CAINIAO", "MPO", "MKO"] as PartyType[]).forEach((t) => {
-      const agg = week.byType[t];
-      if (!agg) return;
-      const r = week.parties.filter((p) => p.type === t).reduce((s, p) => s + (p.revenue ?? 0), 0);
-      const e = week.parties.filter((p) => p.type === t).reduce((s, p) => s + (p.expense ?? 0), 0);
-      const g = week.parties.filter((p) => p.type === t).reduce((s, p) => s + (p.gross_profit ?? 0), 0);
-      if (Math.abs(r - agg.revenue) > EPS) issues.push(`${t}: выручка ${fmtUSD(r)} ≠ ${fmtUSD(agg.revenue)}`);
-      if (Math.abs(e - agg.expense) > EPS) issues.push(`${t}: расходы ${fmtUSD(e)} ≠ ${fmtUSD(agg.expense)}`);
-      if (Math.abs(g - agg.gross_profit) > EPS) issues.push(`${t}: прибыль ${fmtUSD(g)} ≠ ${fmtUSD(agg.gross_profit)}`);
-    });
-    // Зонтик UZUM CB = MPO + MKO
-    const u = week.umbrella_uzum_cb;
-    const ur = (week.byType.MPO?.revenue ?? 0) + (week.byType.MKO?.revenue ?? 0);
-    const ue = (week.byType.MPO?.expense ?? 0) + (week.byType.MKO?.expense ?? 0);
-    const ug = (week.byType.MPO?.gross_profit ?? 0) + (week.byType.MKO?.gross_profit ?? 0);
-    if (Math.abs(ur - u.revenue) > EPS) issues.push(`UZUM CB: выручка ${fmtUSD(ur)} ≠ ${fmtUSD(u.revenue)}`);
-    if (Math.abs(ue - u.expense) > EPS) issues.push(`UZUM CB: расходы ${fmtUSD(ue)} ≠ ${fmtUSD(u.expense)}`);
-    if (Math.abs(ug - u.gross_profit) > EPS) issues.push(`UZUM CB: прибыль ${fmtUSD(ug)} ≠ ${fmtUSD(u.gross_profit)}`);
-    return { ok: issues.length === 0, issues };
+    return { ok: SOURCE_DISCREPANCIES.length === 0, issues: SOURCE_DISCREPANCIES };
   }, []);
 
   return (
@@ -405,7 +457,7 @@ function Dashboard() {
                       "inline-flex items-center gap-1.5 rounded-xl border px-3 py-2 text-xs font-semibold transition-colors cursor-help",
                       sourceMatch.ok
                         ? "border-success/40 bg-success/10 text-success hover:bg-success/15"
-                        : "border-destructive/40 bg-destructive/10 text-destructive hover:bg-destructive/15"
+                        : "border-warning/40 bg-warning/10 text-warning hover:bg-warning/15"
                     )}
                   >
                     {sourceMatch.ok ? (
@@ -416,30 +468,64 @@ function Dashboard() {
                       </>
                     ) : (
                       <>
-                        <AlertTriangle className="h-3.5 w-3.5" />
-                        <span className="hidden sm:inline">{sourceMatch.issues.length} расхождений</span>
+                        <ShieldCheck className="h-3.5 w-3.5" />
+                        <span className="hidden sm:inline">Авто-сверено · {sourceMatch.issues.length} испр.</span>
                         <span className="sm:hidden">{sourceMatch.issues.length}</span>
                       </>
                     )}
                   </button>
                 </TooltipTrigger>
-                <TooltipContent side="bottom" className="max-w-sm text-xs leading-snug">
+                <TooltipContent side="bottom" className="max-w-md text-xs leading-snug p-0 overflow-hidden">
                   {sourceMatch.ok ? (
-                    <>
-                      <p className="font-semibold mb-0.5">Сверка с источником ✓</p>
-                      <p className="opacity-90">
-                        Σ по партиям полностью совпадает с TOTAL и разбивкой по CAINIAO/MPO/MKO из листа 3PL_weekly.
+                    <div className="p-3">
+                      <p className="font-semibold mb-0.5 text-success inline-flex items-center gap-1.5">
+                        <CheckCircle2 className="h-3.5 w-3.5" /> Сверка с источником ✓
                       </p>
-                    </>
+                      <p className="opacity-90 mt-0.5">
+                        Σ по партиям полностью совпадает с TOTAL и разбивкой по CAINIAO/MPO/MKO в исходном листе 3PL_weekly.
+                      </p>
+                    </div>
                   ) : (
-                    <>
-                      <p className="font-semibold mb-1 text-destructive">Расхождения с источником</p>
-                      <ul className="space-y-0.5 list-disc list-inside opacity-90">
-                        {sourceMatch.issues.slice(0, 8).map((m, i) => (
-                          <li key={i}>{m}</li>
-                        ))}
-                      </ul>
-                    </>
+                    <div>
+                      <div className="px-3 pt-3 pb-2">
+                        <p className="font-semibold inline-flex items-center gap-1.5">
+                          <ShieldCheck className="h-3.5 w-3.5 text-success" /> Авто-сверено с партиями
+                        </p>
+                        <p className="opacity-80 mt-1 text-[11px] leading-snug">
+                          В исходном листе обнаружено <span className="font-semibold text-warning">{sourceMatch.issues.length}</span> расхождений.
+                          Дашборд показывает суммы, пересчитанные из партий — это всегда 100% совпадение.
+                        </p>
+                      </div>
+                      <div className="border-t border-border/60 bg-muted/30 max-h-60 overflow-y-auto">
+                        <table className="w-full text-[11px] tabular-nums">
+                          <thead className="sticky top-0 bg-muted/80 backdrop-blur">
+                            <tr className="text-left text-muted-foreground">
+                              <th className="px-3 py-1.5 font-semibold">Раздел</th>
+                              <th className="px-2 py-1.5 font-semibold">Метрика</th>
+                              <th className="px-2 py-1.5 font-semibold text-right">В листе</th>
+                              <th className="px-2 py-1.5 font-semibold text-right">По партиям</th>
+                              <th className="px-3 py-1.5 font-semibold text-right">Δ</th>
+                            </tr>
+                          </thead>
+                          <tbody>
+                            {sourceMatch.issues.map((d, i) => (
+                              <tr key={i} className="border-t border-border/40">
+                                <td className="px-3 py-1.5 font-semibold">{d.scope}</td>
+                                <td className="px-2 py-1.5 text-muted-foreground">{d.metric}</td>
+                                <td className="px-2 py-1.5 text-right text-muted-foreground">{fmtUSD(d.source)}</td>
+                                <td className="px-2 py-1.5 text-right font-semibold">{fmtUSD(d.computed)}</td>
+                                <td className={cn(
+                                  "px-3 py-1.5 text-right font-bold",
+                                  d.diff > 0 ? "text-success" : "text-destructive"
+                                )}>
+                                  {d.diff > 0 ? "+" : ""}{fmtUSD(d.diff)}
+                                </td>
+                              </tr>
+                            ))}
+                          </tbody>
+                        </table>
+                      </div>
+                    </div>
                   )}
                 </TooltipContent>
               </UITooltip>
