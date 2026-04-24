@@ -65,10 +65,12 @@ function Dashboard() {
 
   const typeBreakdown = useMemo(
     () =>
-      (Object.keys(TYPE_META) as PartyType[]).map((t) => ({
-        type: t,
-        ...week.byType[t],
-      })),
+      (Object.keys(TYPE_META) as PartyType[])
+        .filter((t) => week.byType?.[t] != null)
+        .map((t) => ({
+          type: t,
+          ...week.byType[t],
+        })),
     []
   );
 
