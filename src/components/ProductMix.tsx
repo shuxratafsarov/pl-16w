@@ -234,8 +234,6 @@ export function ProductMix({ parties, scope }: { parties: Party[]; scope: Scope 
             <tbody>
               {[...byCountry.entries()].map(([country, items]) => {
                 const countrySum = items.reduce((s, r) => s + (unit === "pcs" ? r.pcs : r.kg), 0);
-                const meta = COUNTRY_META[country];
-                const flag = meta?.flag ?? "🏳";
                 return items.map((r, idx) => {
                   const v = unit === "pcs" ? r.pcs : r.kg;
                   const sharePct = countrySum > 0 ? (v / countrySum) * 100 : 0;
