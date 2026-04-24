@@ -39,6 +39,7 @@ import { SectionCard } from "@/components/SectionCard";
 import { StatCard } from "@/components/StatCard";
 import { StatusBadge } from "@/components/StatusBadge";
 import { MarkerChart } from "@/components/MarkerChart";
+import { DetailDialog, type DetailTarget } from "@/components/DetailDialog";
 import { cn } from "@/lib/utils";
 
 const week = data as WeekData;
@@ -117,6 +118,7 @@ function computeTypeAverages(parties: Party[]) {
 
 function Dashboard() {
   const [filter, setFilter] = useState<"ALL" | PartyType>("ALL");
+  const [detail, setDetail] = useState<DetailTarget | null>(null);
 
   const typeAverages = useMemo(() => computeTypeAverages(week.parties), []);
 
@@ -276,6 +278,7 @@ function Dashboard() {
               hint={<span>{week.parties.length} партий</span>}
               accent="primary"
               icon={<Wallet className="h-5 w-5" />}
+              onClick={() => setDetail({ kind: "kpi", metric: "revenue" })}
             />
             <StatCard
               label="Расходы"
@@ -283,6 +286,7 @@ function Dashboard() {
               hint={`${fmtPct(week.totals.expense / week.totals.revenue)} от выручки`}
               accent="destructive"
               icon={<Receipt className="h-5 w-5" />}
+              onClick={() => setDetail({ kind: "kpi", metric: "expense" })}
             />
             <StatCard
               label="Валовая прибыль"
@@ -290,6 +294,7 @@ function Dashboard() {
               hint={<span className="inline-flex items-center gap-1 text-success"><TrendingUp className="h-3 w-3" />положительная</span>}
               accent="success"
               icon={<TrendingUp className="h-5 w-5" />}
+              onClick={() => setDetail({ kind: "kpi", metric: "gross_profit" })}
             />
             <StatCard
               label="Маржа"
@@ -297,6 +302,7 @@ function Dashboard() {
               hint="GP / Выручка"
               accent="warning"
               icon={<Percent className="h-5 w-5" />}
+              onClick={() => setDetail({ kind: "kpi", metric: "margin" })}
             />
           </div>
 
@@ -360,9 +366,11 @@ function Dashboard() {
               const isHealthy = t.margin_pct >= 15;
               const counts = typeAlertCounts[t.type];
               return (
-                <div
+                <button
                   key={t.type}
-                  className="group relative overflow-hidden rounded-2xl glass-card p-6 shadow-elegant transition-all duration-300 hover:shadow-elevated hover:-translate-y-0.5"
+                  type="button"
+                  onClick={() => setDetail({ kind: "type", type: t.type })}
+                  className="group relative overflow-hidden rounded-2xl glass-card p-6 shadow-elegant transition-all duration-300 hover:shadow-elevated hover:-translate-y-0.5 text-left cursor-pointer focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 focus-visible:ring-offset-background"
                 >
                   {/* glow accent */}
                   <div
@@ -435,7 +443,7 @@ function Dashboard() {
                       ⓘ {t.note}
                     </div>
                   )}
-                </div>
+                </button>
               );
             })}
           </div>
@@ -539,8 +547,9 @@ function Dashboard() {
                   return (
                     <tr
                       key={p.col}
+                      onClick={() => setDetail({ kind: "party", col: p.col })}
                       className={cn(
-                        "border-b border-border/50 transition-colors",
+                        "border-b border-border/50 transition-colors cursor-pointer",
                         worst === "critical" && "row-critical",
                         worst === "warning" && "row-warning",
                         worst === "ok" && "hover:bg-muted/30"
@@ -601,6 +610,13 @@ function Dashboard() {
           Источник: 3PL_PL_2026 · лист 3PL_weekly (TOTAL колонка) · Маркеры 2-3 · Expenses
         </footer>
       </main>
+
+      <DetailDialog
+        target={detail}
+        week={week}
+        onOpenChange={(open) => !open && setDetail(null)}
+        onSelectParty={(col) => setDetail({ kind: "party", col })}
+      />
     </div>
   );
 }
