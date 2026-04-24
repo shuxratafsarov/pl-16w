@@ -473,7 +473,12 @@ function Dashboard() {
         </section>
 
         {/* === Топ-блок: Требует внимания === */}
-        <AlertsPanel alerts={alerts} criticalCount={criticalCount} warningCount={warningCount} />
+        <AlertsPanel
+          alerts={alerts}
+          criticalCount={criticalCount}
+          warningCount={warningCount}
+          onSelectParty={(col) => setDetail({ kind: "party", col })}
+        />
 
         {/* === Уровень 2: Разбивка по типам === */}
         <section className="space-y-4">
