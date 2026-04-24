@@ -20,11 +20,16 @@ import {
   Wallet,
   Receipt,
   Percent,
-  Activity,
   AlertTriangle,
   ShieldCheck,
   Flame,
   CheckCircle2,
+  LineChart as LineChartIcon,
+  Plane,
+  PackageCheck,
+  Banknote,
+  Boxes,
+  type LucideIcon,
 } from "lucide-react";
 import data from "@/data/week16.json";
 import type { Party, PartyType, WeekData } from "@/lib/types";
