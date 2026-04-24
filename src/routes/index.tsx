@@ -562,8 +562,10 @@ function Dashboard() {
                   </div>
 
                   {t.note && (
-                    <div className="relative mt-4 rounded-lg bg-accent/30 border border-accent/50 px-3 py-2 text-xs text-muted-foreground leading-relaxed">
-                      ⓘ {t.note}
+                    <div className="relative mt-auto pt-4">
+                      <div className="rounded-lg bg-accent/30 border border-accent/50 px-3 py-2 text-xs text-muted-foreground leading-relaxed">
+                        ⓘ {t.note}
+                      </div>
                     </div>
                   )}
                 </button>
