@@ -457,7 +457,7 @@ function Dashboard() {
                       "inline-flex items-center gap-1.5 rounded-xl border px-3 py-2 text-xs font-semibold transition-colors cursor-help",
                       sourceMatch.ok
                         ? "border-success/40 bg-success/10 text-success hover:bg-success/15"
-                        : "border-destructive/40 bg-destructive/10 text-destructive hover:bg-destructive/15"
+                        : "border-warning/40 bg-warning/10 text-warning hover:bg-warning/15"
                     )}
                   >
                     {sourceMatch.ok ? (
@@ -468,30 +468,64 @@ function Dashboard() {
                       </>
                     ) : (
                       <>
-                        <AlertTriangle className="h-3.5 w-3.5" />
-                        <span className="hidden sm:inline">{sourceMatch.issues.length} расхождений</span>
+                        <ShieldCheck className="h-3.5 w-3.5" />
+                        <span className="hidden sm:inline">Авто-сверено · {sourceMatch.issues.length} испр.</span>
                         <span className="sm:hidden">{sourceMatch.issues.length}</span>
                       </>
                     )}
                   </button>
                 </TooltipTrigger>
-                <TooltipContent side="bottom" className="max-w-sm text-xs leading-snug">
+                <TooltipContent side="bottom" className="max-w-md text-xs leading-snug p-0 overflow-hidden">
                   {sourceMatch.ok ? (
-                    <>
-                      <p className="font-semibold mb-0.5">Сверка с источником ✓</p>
-                      <p className="opacity-90">
-                        Σ по партиям полностью совпадает с TOTAL и разбивкой по CAINIAO/MPO/MKO из листа 3PL_weekly.
+                    <div className="p-3">
+                      <p className="font-semibold mb-0.5 text-success inline-flex items-center gap-1.5">
+                        <CheckCircle2 className="h-3.5 w-3.5" /> Сверка с источником ✓
                       </p>
-                    </>
+                      <p className="opacity-90 mt-0.5">
+                        Σ по партиям полностью совпадает с TOTAL и разбивкой по CAINIAO/MPO/MKO в исходном листе 3PL_weekly.
+                      </p>
+                    </div>
                   ) : (
-                    <>
-                      <p className="font-semibold mb-1 text-destructive">Расхождения с источником</p>
-                      <ul className="space-y-0.5 list-disc list-inside opacity-90">
-                        {sourceMatch.issues.slice(0, 8).map((m, i) => (
-                          <li key={i}>{m}</li>
-                        ))}
-                      </ul>
-                    </>
+                    <div>
+                      <div className="px-3 pt-3 pb-2">
+                        <p className="font-semibold inline-flex items-center gap-1.5">
+                          <ShieldCheck className="h-3.5 w-3.5 text-success" /> Авто-сверено с партиями
+                        </p>
+                        <p className="opacity-80 mt-1 text-[11px] leading-snug">
+                          В исходном листе обнаружено <span className="font-semibold text-warning">{sourceMatch.issues.length}</span> расхождений.
+                          Дашборд показывает суммы, пересчитанные из партий — это всегда 100% совпадение.
+                        </p>
+                      </div>
+                      <div className="border-t border-border/60 bg-muted/30 max-h-60 overflow-y-auto">
+                        <table className="w-full text-[11px] tabular-nums">
+                          <thead className="sticky top-0 bg-muted/80 backdrop-blur">
+                            <tr className="text-left text-muted-foreground">
+                              <th className="px-3 py-1.5 font-semibold">Раздел</th>
+                              <th className="px-2 py-1.5 font-semibold">Метрика</th>
+                              <th className="px-2 py-1.5 font-semibold text-right">В листе</th>
+                              <th className="px-2 py-1.5 font-semibold text-right">По партиям</th>
+                              <th className="px-3 py-1.5 font-semibold text-right">Δ</th>
+                            </tr>
+                          </thead>
+                          <tbody>
+                            {sourceMatch.issues.map((d, i) => (
+                              <tr key={i} className="border-t border-border/40">
+                                <td className="px-3 py-1.5 font-semibold">{d.scope}</td>
+                                <td className="px-2 py-1.5 text-muted-foreground">{d.metric}</td>
+                                <td className="px-2 py-1.5 text-right text-muted-foreground">{fmtUSD(d.source)}</td>
+                                <td className="px-2 py-1.5 text-right font-semibold">{fmtUSD(d.computed)}</td>
+                                <td className={cn(
+                                  "px-3 py-1.5 text-right font-bold",
+                                  d.diff > 0 ? "text-success" : "text-destructive"
+                                )}>
+                                  {d.diff > 0 ? "+" : ""}{fmtUSD(d.diff)}
+                                </td>
+                              </tr>
+                            ))}
+                          </tbody>
+                        </table>
+                      </div>
+                    </div>
                   )}
                 </TooltipContent>
               </UITooltip>
