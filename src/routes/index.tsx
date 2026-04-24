@@ -645,6 +645,7 @@ function Dashboard() {
                   allParties={week.parties}
                   typeAverages={typeAverages}
                   partyStatuses={partyStatuses}
+                  onSelectParty={(col) => setDetail({ kind: "party", col })}
                 />
               </div>
             ))}
