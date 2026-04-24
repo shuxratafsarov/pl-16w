@@ -39,6 +39,7 @@ import { SectionCard } from "@/components/SectionCard";
 import { StatCard } from "@/components/StatCard";
 import { StatusBadge } from "@/components/StatusBadge";
 import { MarkerChart } from "@/components/MarkerChart";
+import { ProductMix } from "@/components/ProductMix";
 import { DetailDialog, type DetailTarget } from "@/components/DetailDialog";
 import { cn } from "@/lib/utils";
 
@@ -514,6 +515,21 @@ function Dashboard() {
                 partyStatuses={partyStatuses}
               />
             ))}
+
+            {/* Маркер 4 — Соотношение продуктов (шт / кг) */}
+            <SectionCard
+              title="Маркер 4 · Соотношение продуктов"
+              description={
+                filter === "ALL"
+                  ? "Микс по странам и подтипам — все направления"
+                  : `Микс по странам и подтипам — ${TYPE_META[filter].label}`
+              }
+            >
+              <ProductMix
+                parties={parties}
+                scope={filter === "ALL" ? { kind: "all" } : { kind: "type", type: filter }}
+              />
+            </SectionCard>
           </div>
         </section>
 
