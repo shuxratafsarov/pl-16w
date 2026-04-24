@@ -505,19 +505,21 @@ function Dashboard() {
           </div>
 
           <div className="grid grid-cols-1 gap-4">
-            {(Object.keys(MARKER_META) as MarkerKey[]).map((m) => (
-              <MarkerSection
-                key={m}
-                metric={m}
-                parties={parties}
-                allParties={week.parties}
-                typeAverages={typeAverages}
-                partyStatuses={partyStatuses}
-              />
+            {(Object.keys(MARKER_META) as MarkerKey[]).map((m, i) => (
+              <div key={m} id={`marker-${i + 1}`} className="scroll-mt-24">
+                <MarkerSection
+                  metric={m}
+                  parties={parties}
+                  allParties={week.parties}
+                  typeAverages={typeAverages}
+                  partyStatuses={partyStatuses}
+                />
+              </div>
             ))}
 
             {/* Маркер 4 — Соотношение продуктов (шт / кг) */}
             <SectionCard
+              id="marker-4"
               title="Маркер 4 · Соотношение продуктов"
               description={
                 filter === "ALL"
