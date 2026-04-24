@@ -58,7 +58,7 @@ export function DetailDialog({
 
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
-      <DialogContent className="max-w-2xl max-h-[85vh] overflow-y-auto glass-card border-border">
+      <DialogContent className="max-w-3xl max-h-[88vh] overflow-y-auto glass-card border-border">
         {target?.kind === "kpi" && <KpiDetails metric={target.metric} week={week} onSelectParty={onSelectParty} />}
         {target?.kind === "type" && <TypeDetails type={target.type} week={week} onSelectParty={onSelectParty} />}
         {target?.kind === "party" && <PartyDetails col={target.col} week={week} />}
