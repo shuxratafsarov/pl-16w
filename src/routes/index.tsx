@@ -555,7 +555,7 @@ function Dashboard() {
           <div className="flex items-end justify-between gap-3">
             <div className="flex items-center gap-2">
               <h2 className="text-lg font-semibold tracking-tight">Сводка за неделю</h2>
-              <Tooltip>
+              <UITooltip>
                 <TooltipTrigger asChild>
                   <button
                     type="button"
@@ -568,7 +568,7 @@ function Dashboard() {
                 <TooltipContent side="bottom" className="max-w-xs bg-popover text-popover-foreground border shadow-md">
                   <p className="text-xs leading-relaxed">Итоговые показатели из листа 3PL_weekly · колонка TOTAL</p>
                 </TooltipContent>
-              </Tooltip>
+              </UITooltip>
             </div>
           </div>
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
@@ -662,7 +662,7 @@ function Dashboard() {
         <section className="space-y-4">
           <div className="flex items-center gap-2">
             <h2 className="text-lg font-semibold tracking-tight">Разбивка по типам бизнеса</h2>
-            <Tooltip>
+            <UITooltip>
               <TooltipTrigger asChild>
                 <button
                   type="button"
@@ -675,7 +675,7 @@ function Dashboard() {
               <TooltipContent side="bottom" className="max-w-xs bg-popover text-popover-foreground border shadow-md">
                 <p className="text-xs leading-relaxed">CAINIAO — C2M экспорт. UZUM MPO и UZUM MKO — два независимых направления Crossborder</p>
               </TooltipContent>
-            </Tooltip>
+            </UITooltip>
           </div>
           <div className="grid grid-cols-1 lg:grid-cols-3 gap-4">
             {typeBreakdown.map((t) => {
@@ -1083,7 +1083,7 @@ function AlertsPanel({
           </div>
           <div className="flex items-center gap-2">
             <h3 className="text-base font-semibold">Требует внимания</h3>
-            <Tooltip>
+            <UITooltip>
               <TooltipTrigger asChild>
                 <button
                   type="button"
@@ -1096,7 +1096,7 @@ function AlertsPanel({
               <TooltipContent side="bottom" className="max-w-xs bg-popover text-popover-foreground border shadow-md">
                 <p className="text-xs leading-relaxed">Партии с отклонением выше нормы — клик по карточке откроет детали партии</p>
               </TooltipContent>
-            </Tooltip>
+            </UITooltip>
           </div>
         </div>
         <div className="flex items-center gap-2 text-xs">
