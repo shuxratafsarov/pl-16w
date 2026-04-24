@@ -192,7 +192,7 @@ function KpiDetails({
         </div>
 
         {/* Топ партии */}
-        {metric !== "margin" && "top" in topParties && (
+        {metric !== "margin" && topParties.top && (
           <div>
             <p className="text-xs font-semibold uppercase tracking-wider text-muted-foreground mb-3">
               Топ-5 партий по «{meta.label.toLowerCase()}»
@@ -204,7 +204,7 @@ function KpiDetails({
             </div>
           </div>
         )}
-        {metric === "margin" && "best" in topParties && (
+        {metric === "margin" && topParties.best && topParties.worst && (
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
             <div>
               <p className="text-xs font-semibold uppercase tracking-wider text-success mb-3">Лучшие по марже</p>
