@@ -118,6 +118,7 @@ function computeTypeAverages(parties: Party[]) {
 
 function Dashboard() {
   const [filter, setFilter] = useState<"ALL" | PartyType>("ALL");
+  const [detail, setDetail] = useState<DetailTarget | null>(null);
 
   const typeAverages = useMemo(() => computeTypeAverages(week.parties), []);
 
