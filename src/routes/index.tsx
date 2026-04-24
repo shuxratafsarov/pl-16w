@@ -289,7 +289,7 @@ function Dashboard() {
               </div>
               <div className="min-w-0">
                 <p className="text-[11px] font-semibold uppercase tracking-[0.12em] text-muted-foreground">3PL · P&amp;L Аналитика</p>
-                <h1 className="text-lg sm:text-xl font-bold tracking-tight truncate">Неделя {week.week} · {week.period}</h1>
+                <h1 className="text-lg sm:text-xl font-bold tracking-tight truncate">Неделя {week.week}</h1>
               </div>
             </div>
 
