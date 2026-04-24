@@ -396,6 +396,54 @@ function Dashboard() {
             </div>
 
             <div className="flex items-center gap-3">
+              {/* Индикатор сверки с источником */}
+              <UITooltip>
+                <TooltipTrigger asChild>
+                  <button
+                    type="button"
+                    className={cn(
+                      "inline-flex items-center gap-1.5 rounded-xl border px-3 py-2 text-xs font-semibold transition-colors cursor-help",
+                      sourceMatch.ok
+                        ? "border-success/40 bg-success/10 text-success hover:bg-success/15"
+                        : "border-destructive/40 bg-destructive/10 text-destructive hover:bg-destructive/15"
+                    )}
+                  >
+                    {sourceMatch.ok ? (
+                      <>
+                        <CheckCircle2 className="h-3.5 w-3.5" />
+                        <span className="hidden sm:inline">100% соответствие источнику</span>
+                        <span className="sm:hidden">100%</span>
+                      </>
+                    ) : (
+                      <>
+                        <AlertTriangle className="h-3.5 w-3.5" />
+                        <span className="hidden sm:inline">{sourceMatch.issues.length} расхождений</span>
+                        <span className="sm:hidden">{sourceMatch.issues.length}</span>
+                      </>
+                    )}
+                  </button>
+                </TooltipTrigger>
+                <TooltipContent side="bottom" className="max-w-sm text-xs leading-snug">
+                  {sourceMatch.ok ? (
+                    <>
+                      <p className="font-semibold mb-0.5">Сверка с источником ✓</p>
+                      <p className="opacity-90">
+                        Σ по партиям полностью совпадает с TOTAL и разбивкой по CAINIAO/MPO/MKO из листа 3PL_weekly.
+                      </p>
+                    </>
+                  ) : (
+                    <>
+                      <p className="font-semibold mb-1 text-destructive">Расхождения с источником</p>
+                      <ul className="space-y-0.5 list-disc list-inside opacity-90">
+                        {sourceMatch.issues.slice(0, 8).map((m, i) => (
+                          <li key={i}>{m}</li>
+                        ))}
+                      </ul>
+                    </>
+                  )}
+                </TooltipContent>
+              </UITooltip>
+
               {(criticalCount > 0 || warningCount > 0) && (
                 <div className="hidden sm:flex items-center gap-2 rounded-xl border border-border/60 bg-card/60 px-3 py-2 text-xs">
                   {criticalCount > 0 && (
