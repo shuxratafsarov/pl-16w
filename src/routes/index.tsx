@@ -443,9 +443,14 @@ function Dashboard() {
           {/* UZUM CB umbrella */}
           <div className="rounded-2xl border border-dashed border-border bg-card/40 backdrop-blur-sm p-5">
             <div className="flex flex-wrap items-center justify-between gap-4">
-              <div>
-                <p className="text-[11px] font-semibold uppercase tracking-wider text-muted-foreground">Зонтик · UZUM Crossborder</p>
-                <p className="text-sm text-foreground mt-0.5">MPO + MKO вместе — для сверки с разделом «UZUM CB» в P&amp;L</p>
+              <div className="flex items-center gap-3">
+                <div className="h-10 w-10 rounded-xl bg-muted/60 border border-border flex items-center justify-center text-muted-foreground">
+                  <Boxes className="h-4 w-4" />
+                </div>
+                <div>
+                  <p className="text-[11px] font-semibold uppercase tracking-wider text-muted-foreground">Зонтик · UZUM Crossborder</p>
+                  <p className="text-sm text-foreground mt-0.5">MPO + MKO вместе — для сверки с разделом «UZUM CB» в P&amp;L</p>
+                </div>
               </div>
               <div className="flex items-center gap-6 text-sm">
                 <div className="text-right">
