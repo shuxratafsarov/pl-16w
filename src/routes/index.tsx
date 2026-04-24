@@ -501,73 +501,82 @@ function Dashboard() {
                     style={{ backgroundColor: meta.color }}
                   />
                   <div className="relative flex items-start justify-between gap-3">
-                    <div className="flex items-center gap-3">
+                    <div className="flex items-center gap-3 min-w-0">
                       <div
-                        className="h-10 w-10 rounded-xl flex items-center justify-center text-white shadow-glow"
+                        className="h-10 w-10 rounded-xl flex items-center justify-center text-white shadow-glow shrink-0"
                         style={{ backgroundColor: meta.color }}
                       >
                         <TypeIcon className="h-4 w-4" />
                       </div>
-                      <div>
-                        <p className="text-xs font-bold uppercase tracking-wider" style={{ color: meta.color }}>{meta.label}</p>
-                        <p className="text-xs text-muted-foreground mt-0.5">{meta.full}</p>
+                      <div className="min-w-0">
+                        <div className="flex items-center gap-1.5">
+                          <p className="text-xs font-bold uppercase tracking-wider truncate" style={{ color: meta.color }}>{meta.label}</p>
+                          {t.note && (
+                            <UITooltip>
+                              <TooltipTrigger asChild>
+                                <span
+                                  onClick={(e) => e.stopPropagation()}
+                                  className="inline-flex h-4 w-4 items-center justify-center rounded-full bg-muted/70 text-muted-foreground hover:bg-primary/20 hover:text-primary transition-colors cursor-help"
+                                >
+                                  <Info className="h-2.5 w-2.5" />
+                                </span>
+                              </TooltipTrigger>
+                              <TooltipContent side="top" className="max-w-xs text-xs leading-snug">
+                                {t.note}
+                              </TooltipContent>
+                            </UITooltip>
+                          )}
+                        </div>
+                        <p className="text-xs text-muted-foreground mt-0.5 truncate">{meta.full}</p>
                       </div>
                     </div>
-                    <span className="rounded-md bg-muted/60 px-2 py-0.5 text-xs font-medium text-muted-foreground">{t.count} партий</span>
+                    <span className="rounded-md bg-muted/60 px-2 py-0.5 text-[11px] font-medium text-muted-foreground shrink-0">{t.count} партий</span>
                   </div>
 
-                  {/* Alert badges */}
-                  {(counts.critical > 0 || counts.warning > 0) && (
-                    <div className="relative mt-4 flex flex-wrap gap-2">
-                      {counts.critical > 0 && (
-                        <span className="inline-flex items-center gap-1 rounded-md gradient-danger px-2 py-0.5 text-[11px] font-semibold text-white shadow-sm">
-                          <Flame className="h-3 w-3" /> {counts.critical} критич.
-                        </span>
-                      )}
-                      {counts.warning > 0 && (
-                        <span className="inline-flex items-center gap-1 rounded-md gradient-warn px-2 py-0.5 text-[11px] font-semibold text-white shadow-sm">
-                          <AlertTriangle className="h-3 w-3" /> {counts.warning} внимание
-                        </span>
-                      )}
-                    </div>
-                  )}
-                  {counts.critical === 0 && counts.warning === 0 && (
-                    <div className="relative mt-4">
+                  {/* Alert badges — fixed-height row so cards align perfectly */}
+                  <div className="relative mt-4 min-h-[24px] flex flex-wrap items-center gap-2">
+                    {counts.critical > 0 && (
+                      <span className="inline-flex items-center gap-1 rounded-md gradient-danger px-2 py-0.5 text-[11px] font-semibold text-white shadow-sm">
+                        <Flame className="h-3 w-3" /> {counts.critical} критич.
+                      </span>
+                    )}
+                    {counts.warning > 0 && (
+                      <span className="inline-flex items-center gap-1 rounded-md gradient-warn px-2 py-0.5 text-[11px] font-semibold text-white shadow-sm">
+                        <AlertTriangle className="h-3 w-3" /> {counts.warning} внимание
+                      </span>
+                    )}
+                    {counts.critical === 0 && counts.warning === 0 && (
                       <span className="inline-flex items-center gap-1 rounded-md bg-success/15 px-2 py-0.5 text-[11px] font-semibold text-success">
                         <ShieldCheck className="h-3 w-3" /> все маркеры в норме
                       </span>
-                    </div>
-                  )}
+                    )}
+                  </div>
 
-                  <div className="relative mt-5 grid grid-cols-2 gap-x-4 gap-y-3">
+                  {/* KPI grid — uniform layout across all cards */}
+                  <div className="relative mt-5 grid grid-cols-2 gap-x-4 gap-y-4 rounded-xl border border-border/50 bg-background/40 p-4">
                     <div>
                       <p className="text-[10px] uppercase text-muted-foreground tracking-wider font-semibold">Выручка</p>
-                      <p className="text-base font-bold tabular-nums mt-0.5">{fmtUSD(t.revenue)}</p>
+                      <p className="text-base font-bold tabular-nums mt-1">{fmtUSD(t.revenue)}</p>
                     </div>
                     <div>
                       <p className="text-[10px] uppercase text-muted-foreground tracking-wider font-semibold">Расходы</p>
-                      <p className="text-base font-bold tabular-nums mt-0.5">{fmtUSD(t.expense)}</p>
+                      <p className="text-base font-bold tabular-nums mt-1">{fmtUSD(t.expense)}</p>
                     </div>
                     <div>
                       <p className="text-[10px] uppercase text-muted-foreground tracking-wider font-semibold">Прибыль</p>
-                      <p className={cn("text-base font-bold tabular-nums mt-0.5", t.gross_profit >= 0 ? "text-success" : "text-destructive")}>{fmtUSD(t.gross_profit)}</p>
+                      <p className={cn("text-base font-bold tabular-nums mt-1", t.gross_profit >= 0 ? "text-success" : "text-destructive")}>{fmtUSD(t.gross_profit)}</p>
                     </div>
                     <div>
                       <p className="text-[10px] uppercase text-muted-foreground tracking-wider font-semibold">Маржа</p>
-                      <p className={cn("text-base font-bold tabular-nums mt-0.5 inline-flex items-center gap-1", isHealthy ? "text-success" : "text-warning")}>
+                      <p className={cn("text-base font-bold tabular-nums mt-1 inline-flex items-center gap-1", isHealthy ? "text-success" : "text-warning")}>
                         {isHealthy ? <ArrowUpRight className="h-3.5 w-3.5" /> : <ArrowDownRight className="h-3.5 w-3.5" />}
                         {t.margin_pct.toFixed(2)}%
                       </p>
                     </div>
                   </div>
 
-                  {t.note && (
-                    <div className="relative mt-auto pt-4">
-                      <div className="rounded-lg bg-accent/30 border border-accent/50 px-3 py-2 text-xs text-muted-foreground leading-relaxed">
-                        ⓘ {t.note}
-                      </div>
-                    </div>
-                  )}
+                  {/* Spacer to keep card heights aligned regardless of note presence */}
+                  <div className="mt-auto" />
                 </button>
               );
             })}
