@@ -7,12 +7,14 @@ export function StatCard({
   hint,
   accent = "default",
   icon,
+  onClick,
 }: {
   label: string;
   value: ReactNode;
   hint?: ReactNode;
   accent?: "default" | "primary" | "success" | "destructive" | "warning" | "cainiao" | "mpo" | "mko";
   icon?: ReactNode;
+  onClick?: () => void;
 }) {
   const iconBg: Record<string, string> = {
     default: "gradient-primary",
@@ -24,8 +26,17 @@ export function StatCard({
     mpo: "gradient-primary",
     mko: "gradient-primary",
   };
+  const clickable = !!onClick;
+  const Comp = clickable ? "button" : "div";
   return (
-    <div className="group relative overflow-hidden rounded-2xl glass-card p-5 shadow-elegant transition-all duration-300 hover:shadow-elevated hover:-translate-y-0.5">
+    <Comp
+      type={clickable ? "button" : undefined}
+      onClick={onClick}
+      className={cn(
+        "group relative overflow-hidden rounded-2xl glass-card p-5 shadow-elegant transition-all duration-300 hover:shadow-elevated hover:-translate-y-0.5 text-left w-full",
+        clickable && "cursor-pointer focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 focus-visible:ring-offset-background"
+      )}
+    >
       <div className="flex items-start justify-between gap-3">
         <div className="space-y-1.5 min-w-0">
           <p className="text-[11px] font-semibold uppercase tracking-[0.08em] text-muted-foreground">
@@ -47,6 +58,7 @@ export function StatCard({
           </div>
         )}
       </div>
-    </div>
+    </Comp>
   );
 }
+
