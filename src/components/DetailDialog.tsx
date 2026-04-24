@@ -18,12 +18,19 @@ import {
   Scale,
   Box,
   Gauge,
+  MessageSquare,
+  Save,
+  Trash2,
   type LucideIcon,
 } from "lucide-react";
+import { toast } from "sonner";
 import { fmtUSD, fmtNum, fmtPct } from "@/lib/format";
 import type { Party, PartyType, WeekData } from "@/lib/types";
 import { MarkersBlock } from "@/components/MarkersBlock";
 import { ProductMix } from "@/components/ProductMix";
+import { Textarea } from "@/components/ui/textarea";
+import { Button } from "@/components/ui/button";
+import { usePartyComment } from "@/lib/comments";
 import { cn } from "@/lib/utils";
 
 export type DetailTarget =
@@ -327,10 +334,22 @@ function TypeDetails({
 /* === Партия: полная карточка === */
 function PartyDetails({ col, week }: { col: string; week: WeekData }) {
   const party = week.parties.find((p) => p.col === col);
+  const comment = usePartyComment(col);
+
   if (!party) return null;
   const tMeta = TYPE_META[party.type];
   const TIcon = tMeta.icon;
   const isProfit = party.gross_profit >= 0;
+
+  const handleSave = () => {
+    comment.save();
+    toast.success(`Комментарий к партии №${party.num} сохранён`);
+  };
+
+  const handleClear = () => {
+    comment.clear();
+    toast.info(`Комментарий к партии №${party.num} удалён`);
+  };
 
   return (
     <>
@@ -357,7 +376,7 @@ function PartyDetails({ col, week }: { col: string; week: WeekData }) {
         </div>
       </DialogHeader>
 
-      <div className="mt-2 space-y-5">
+      <div className="mt-2 space-y-5 pb-24">
         {/* Финансы */}
         <div>
           <p className="text-xs font-semibold uppercase tracking-wider text-muted-foreground mb-3">Финансы</p>
@@ -418,6 +437,58 @@ function PartyDetails({ col, week }: { col: string; week: WeekData }) {
         {Array.isArray(party.mix) && party.mix.length > 0 && (
           <ProductMix parties={week.parties} scope={{ kind: "party", col: party.col }} />
         )}
+
+        {/* Комментарий к партии */}
+        <div className="rounded-xl border border-border bg-muted/20 p-4">
+          <div className="flex items-center justify-between gap-2 mb-2">
+            <p className="text-xs font-semibold uppercase tracking-wider text-muted-foreground inline-flex items-center gap-1.5">
+              <MessageSquare className="h-3 w-3" /> Комментарий аналитика
+            </p>
+            {comment.stored && !comment.dirty && (
+              <span className="text-[10px] uppercase tracking-wider text-success font-semibold">сохранён</span>
+            )}
+            {comment.dirty && (
+              <span className="text-[10px] uppercase tracking-wider text-warning font-semibold">не сохранено</span>
+            )}
+          </div>
+          <Textarea
+            value={comment.draft}
+            onChange={(e) => comment.setDraft(e.target.value)}
+            placeholder="Заметки по партии: причины отклонений, договорённости с поставщиком, действия…"
+            rows={4}
+            className="resize-y bg-background"
+          />
+          <p className="mt-2 text-[11px] text-muted-foreground">
+            Хранится локально в браузере. Привязано к партии №{party.num}.
+          </p>
+        </div>
+      </div>
+
+      {/* Sticky save bar */}
+      <div className="sticky bottom-0 -mx-6 mt-4 flex items-center justify-between gap-2 border-t border-border bg-background/95 backdrop-blur-md px-6 py-3">
+        <div className="text-xs text-muted-foreground">
+          {comment.dirty
+            ? "Есть несохранённые изменения"
+            : comment.stored
+            ? "Комментарий сохранён"
+            : "Без комментария"}
+        </div>
+        <div className="flex items-center gap-2">
+          {comment.stored && (
+            <Button type="button" variant="ghost" size="sm" onClick={handleClear}>
+              <Trash2 className="h-3.5 w-3.5 mr-1.5" /> Очистить
+            </Button>
+          )}
+          <Button
+            type="button"
+            size="sm"
+            onClick={handleSave}
+            disabled={!comment.dirty}
+            className="gradient-primary text-white shadow-glow"
+          >
+            <Save className="h-3.5 w-3.5 mr-1.5" /> Сохранить
+          </Button>
+        </div>
       </div>
     </>
   );
