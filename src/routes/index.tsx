@@ -547,8 +547,9 @@ function Dashboard() {
                   return (
                     <tr
                       key={p.col}
+                      onClick={() => setDetail({ kind: "party", col: p.col })}
                       className={cn(
-                        "border-b border-border/50 transition-colors",
+                        "border-b border-border/50 transition-colors cursor-pointer",
                         worst === "critical" && "row-critical",
                         worst === "warning" && "row-warning",
                         worst === "ok" && "hover:bg-muted/30"
