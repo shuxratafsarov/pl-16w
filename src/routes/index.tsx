@@ -279,8 +279,8 @@ function Dashboard() {
   const profitBar = typeBreakdown.map((t) => ({ name: TYPE_META[t.type].label, revenue: t.revenue, expense: t.expense, profit: t.gross_profit, margin: t.margin_pct, fill: TYPE_META[t.type].color }));
 
   return (
-    <div className="min-h-screen">
-      <TooltipProvider delayDuration={150}>
+    <TooltipProvider delayDuration={150}>
+      <div className="min-h-screen">
         {/* Header */}
         <header className="border-b border-border/60 bg-card/40 backdrop-blur-xl sticky top-0 z-30">
           <div className="mx-auto max-w-[1440px] px-6 py-4 flex items-center justify-between gap-4 flex-wrap">
@@ -383,7 +383,6 @@ function Dashboard() {
             </div>
           </div>
         </header>
-      </TooltipProvider>
 
       <main className="mx-auto max-w-[1440px] px-6 py-8 space-y-8">
         {/* === Уровень 1: Общие итоги === */}
@@ -794,7 +793,8 @@ function Dashboard() {
         onOpenChange={(open) => !open && setDetail(null)}
         onSelectParty={(col) => setDetail({ kind: "party", col })}
       />
-    </div>
+      </div>
+    </TooltipProvider>
   );
 }
 
