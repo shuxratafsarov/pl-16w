@@ -1024,6 +1024,7 @@ function MarkerSection({
         })}
       </div>
     </SectionCard>
+    </TooltipProvider>
   );
 }
 
