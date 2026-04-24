@@ -22,6 +22,7 @@ import {
 } from "lucide-react";
 import { fmtUSD, fmtNum, fmtPct } from "@/lib/format";
 import type { Party, PartyType, WeekData } from "@/lib/types";
+import { MarkersBlock } from "@/components/MarkersBlock";
 import { cn } from "@/lib/utils";
 
 export type DetailTarget =
