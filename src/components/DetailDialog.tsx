@@ -225,6 +225,14 @@ function KpiDetails({
             </div>
           </div>
         )}
+
+        {/* Маркеры по типам */}
+        <div>
+          <p className="text-xs font-semibold uppercase tracking-wider text-muted-foreground mb-3">
+            Маркеры по типам бизнеса · среднее
+          </p>
+          <MarkersBlock parties={week.parties} scope={{ kind: "all" }} />
+        </div>
       </div>
     </>
   );
