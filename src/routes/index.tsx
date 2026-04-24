@@ -105,6 +105,39 @@ const MARKER_META: Record<MarkerKey, { title: string; short: string; unit: strin
 const WARN_PCT = 0.1;
 const CRIT_PCT = 0.2;
 
+/** Кнопки маркеров для шапки (включая M4 без графика-маркера). */
+const MARKER_BUTTONS: Array<{ id: string; short: string; title: string; description: string }> = [
+  { id: "marker-1", short: "M1", title: "Тариф линейхолла", description: MARKER_META.marker1_tariff.description },
+  { id: "marker-2", short: "M2", title: "Объёмный / Нетто", description: MARKER_META.marker2_volnet.description },
+  { id: "marker-3", short: "M3", title: "Брутто / Нетто", description: MARKER_META.marker3_grossnet.description },
+  { id: "marker-4", short: "M4", title: "Соотношение продуктов", description: "Структура микса по странам и подтипам (RM/SRM/NRM и т. д.) в штуках или килограммах. Показывает, какие категории дают основной объём." },
+];
+
+/** Доступные недели (1–16). Даты-периоды для tooltip. */
+const WEEKS: Array<{ week: number; period: string }> = [
+  { week: 1, period: "2025-12-29 — 2026-01-04" },
+  { week: 2, period: "2026-01-05 — 2026-01-11" },
+  { week: 3, period: "2026-01-12 — 2026-01-18" },
+  { week: 4, period: "2026-01-19 — 2026-01-25" },
+  { week: 5, period: "2026-01-26 — 2026-02-01" },
+  { week: 6, period: "2026-02-02 — 2026-02-08" },
+  { week: 7, period: "2026-02-09 — 2026-02-15" },
+  { week: 8, period: "2026-02-16 — 2026-02-22" },
+  { week: 9, period: "2026-02-23 — 2026-03-01" },
+  { week: 10, period: "2026-03-02 — 2026-03-08" },
+  { week: 11, period: "2026-03-09 — 2026-03-15" },
+  { week: 12, period: "2026-03-16 — 2026-03-22" },
+  { week: 13, period: "2026-03-23 — 2026-03-29" },
+  { week: 14, period: "2026-03-30 — 2026-04-05" },
+  { week: 15, period: "2026-04-06 — 2026-04-12" },
+  { week: 16, period: "2026-04-13 — 2026-04-19" },
+];
+
+function scrollToMarker(id: string) {
+  const el = document.getElementById(id);
+  if (el) el.scrollIntoView({ behavior: "smooth", block: "start" });
+}
+
 type Status = "ok" | "warning" | "critical";
 
 function statusFromAvg(value: number, avg: number): Status {
