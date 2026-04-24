@@ -33,11 +33,15 @@ export const Route = createRootRoute({
       { title: "3PL P&L · Аналитика по маркерам" },
       { name: "description", content: "Аналитический дашборд по маркерам 3PL — выручка, расходы и ключевые показатели по типам партий CAINIAO, MPO, MKO." },
       { name: "author", content: "Lovable" },
-      { property: "og:title", content: "Lovable App" },
-      { property: "og:description", content: "Lovable Generated Project" },
+      { property: "og:title", content: "3PL P&L · Аналитика по маркерам" },
+      { property: "og:description", content: "Аналитический дашборд по маркерам 3PL — выручка, расходы и ключевые показатели по типам партий CAINIAO, MPO, MKO." },
       { property: "og:type", content: "website" },
       { name: "twitter:card", content: "summary" },
       { name: "twitter:site", content: "@Lovable" },
+      { name: "twitter:title", content: "3PL P&L · Аналитика по маркерам" },
+      { name: "twitter:description", content: "Аналитический дашборд по маркерам 3PL — выручка, расходы и ключевые показатели по типам партий CAINIAO, MPO, MKO." },
+      { property: "og:image", content: "https://pub-bb2e103a32db4e198524a2e9ed8f35b4.r2.dev/0018bb26-ec2e-4253-9aba-d605884ed94b/id-preview-81f48a5f--21094a53-75c3-4c79-a338-b3958b31f3be.lovable.app-1777010439707.png" },
+      { name: "twitter:image", content: "https://pub-bb2e103a32db4e198524a2e9ed8f35b4.r2.dev/0018bb26-ec2e-4253-9aba-d605884ed94b/id-preview-81f48a5f--21094a53-75c3-4c79-a338-b3958b31f3be.lovable.app-1777010439707.png" },
     ],
     links: [
       {
