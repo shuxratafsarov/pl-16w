@@ -278,6 +278,37 @@ function Dashboard() {
   const revenuePie = typeBreakdown.map((t) => ({ name: TYPE_META[t.type].label, value: t.revenue, fill: TYPE_META[t.type].color }));
   const profitBar = typeBreakdown.map((t) => ({ name: TYPE_META[t.type].label, revenue: t.revenue, expense: t.expense, profit: t.gross_profit, margin: t.margin_pct, fill: TYPE_META[t.type].color }));
 
+  /** Сверка с источником: суммы по партиям должны совпадать с totals и byType из листа. */
+  const sourceMatch = useMemo(() => {
+    const EPS = 0.5; // допускаем округление до полудоллара
+    const issues: string[] = [];
+    const sumRev = week.parties.reduce((s, p) => s + (p.revenue ?? 0), 0);
+    const sumExp = week.parties.reduce((s, p) => s + (p.expense ?? 0), 0);
+    const sumGp = week.parties.reduce((s, p) => s + (p.gross_profit ?? 0), 0);
+    if (Math.abs(sumRev - week.totals.revenue) > EPS) issues.push(`Выручка: партии Σ ${fmtUSD(sumRev)} ≠ TOTAL ${fmtUSD(week.totals.revenue)}`);
+    if (Math.abs(sumExp - week.totals.expense) > EPS) issues.push(`Расходы: партии Σ ${fmtUSD(sumExp)} ≠ TOTAL ${fmtUSD(week.totals.expense)}`);
+    if (Math.abs(sumGp - week.totals.gross_profit) > EPS) issues.push(`Прибыль: партии Σ ${fmtUSD(sumGp)} ≠ TOTAL ${fmtUSD(week.totals.gross_profit)}`);
+    (["CAINIAO", "MPO", "MKO"] as PartyType[]).forEach((t) => {
+      const agg = week.byType[t];
+      if (!agg) return;
+      const r = week.parties.filter((p) => p.type === t).reduce((s, p) => s + (p.revenue ?? 0), 0);
+      const e = week.parties.filter((p) => p.type === t).reduce((s, p) => s + (p.expense ?? 0), 0);
+      const g = week.parties.filter((p) => p.type === t).reduce((s, p) => s + (p.gross_profit ?? 0), 0);
+      if (Math.abs(r - agg.revenue) > EPS) issues.push(`${t}: выручка ${fmtUSD(r)} ≠ ${fmtUSD(agg.revenue)}`);
+      if (Math.abs(e - agg.expense) > EPS) issues.push(`${t}: расходы ${fmtUSD(e)} ≠ ${fmtUSD(agg.expense)}`);
+      if (Math.abs(g - agg.gross_profit) > EPS) issues.push(`${t}: прибыль ${fmtUSD(g)} ≠ ${fmtUSD(agg.gross_profit)}`);
+    });
+    // Зонтик UZUM CB = MPO + MKO
+    const u = week.umbrella_uzum_cb;
+    const ur = (week.byType.MPO?.revenue ?? 0) + (week.byType.MKO?.revenue ?? 0);
+    const ue = (week.byType.MPO?.expense ?? 0) + (week.byType.MKO?.expense ?? 0);
+    const ug = (week.byType.MPO?.gross_profit ?? 0) + (week.byType.MKO?.gross_profit ?? 0);
+    if (Math.abs(ur - u.revenue) > EPS) issues.push(`UZUM CB: выручка ${fmtUSD(ur)} ≠ ${fmtUSD(u.revenue)}`);
+    if (Math.abs(ue - u.expense) > EPS) issues.push(`UZUM CB: расходы ${fmtUSD(ue)} ≠ ${fmtUSD(u.expense)}`);
+    if (Math.abs(ug - u.gross_profit) > EPS) issues.push(`UZUM CB: прибыль ${fmtUSD(ug)} ≠ ${fmtUSD(u.gross_profit)}`);
+    return { ok: issues.length === 0, issues };
+  }, []);
+
   return (
     <TooltipProvider delayDuration={150}>
       <div className="min-h-screen">
@@ -365,6 +396,54 @@ function Dashboard() {
             </div>
 
             <div className="flex items-center gap-3">
+              {/* Индикатор сверки с источником */}
+              <UITooltip>
+                <TooltipTrigger asChild>
+                  <button
+                    type="button"
+                    className={cn(
+                      "inline-flex items-center gap-1.5 rounded-xl border px-3 py-2 text-xs font-semibold transition-colors cursor-help",
+                      sourceMatch.ok
+                        ? "border-success/40 bg-success/10 text-success hover:bg-success/15"
+                        : "border-destructive/40 bg-destructive/10 text-destructive hover:bg-destructive/15"
+                    )}
+                  >
+                    {sourceMatch.ok ? (
+                      <>
+                        <CheckCircle2 className="h-3.5 w-3.5" />
+                        <span className="hidden sm:inline">100% соответствие источнику</span>
+                        <span className="sm:hidden">100%</span>
+                      </>
+                    ) : (
+                      <>
+                        <AlertTriangle className="h-3.5 w-3.5" />
+                        <span className="hidden sm:inline">{sourceMatch.issues.length} расхождений</span>
+                        <span className="sm:hidden">{sourceMatch.issues.length}</span>
+                      </>
+                    )}
+                  </button>
+                </TooltipTrigger>
+                <TooltipContent side="bottom" className="max-w-sm text-xs leading-snug">
+                  {sourceMatch.ok ? (
+                    <>
+                      <p className="font-semibold mb-0.5">Сверка с источником ✓</p>
+                      <p className="opacity-90">
+                        Σ по партиям полностью совпадает с TOTAL и разбивкой по CAINIAO/MPO/MKO из листа 3PL_weekly.
+                      </p>
+                    </>
+                  ) : (
+                    <>
+                      <p className="font-semibold mb-1 text-destructive">Расхождения с источником</p>
+                      <ul className="space-y-0.5 list-disc list-inside opacity-90">
+                        {sourceMatch.issues.slice(0, 8).map((m, i) => (
+                          <li key={i}>{m}</li>
+                        ))}
+                      </ul>
+                    </>
+                  )}
+                </TooltipContent>
+              </UITooltip>
+
               {(criticalCount > 0 || warningCount > 0) && (
                 <div className="hidden sm:flex items-center gap-2 rounded-xl border border-border/60 bg-card/60 px-3 py-2 text-xs">
                   {criticalCount > 0 && (
@@ -473,7 +552,12 @@ function Dashboard() {
         </section>
 
         {/* === Топ-блок: Требует внимания === */}
-        <AlertsPanel alerts={alerts} criticalCount={criticalCount} warningCount={warningCount} />
+        <AlertsPanel
+          alerts={alerts}
+          criticalCount={criticalCount}
+          warningCount={warningCount}
+          onSelectParty={(col) => setDetail({ kind: "party", col })}
+        />
 
         {/* === Уровень 2: Разбивка по типам === */}
         <section className="space-y-4">
@@ -645,12 +729,12 @@ function Dashboard() {
                   allParties={week.parties}
                   typeAverages={typeAverages}
                   partyStatuses={partyStatuses}
+                  onSelectParty={(col) => setDetail({ kind: "party", col })}
                 />
               </div>
             ))}
 
             {/* Маркер 4 — Соотношение продуктов (шт / кг) */}
-            <TooltipProvider delayDuration={150}>
             <SectionCard
               id="marker-4"
               title={
@@ -689,7 +773,6 @@ function Dashboard() {
                 scope={filter === "ALL" ? { kind: "all" } : { kind: "type", type: filter }}
               />
             </SectionCard>
-            </TooltipProvider>
           </div>
         </section>
 
@@ -803,10 +886,12 @@ function AlertsPanel({
   alerts,
   criticalCount,
   warningCount,
+  onSelectParty,
 }: {
   alerts: Array<{ party: Party; marker: MarkerKey; value: number; avg: number; deviation: number; status: Status }>;
   criticalCount: number;
   warningCount: number;
+  onSelectParty?: (col: string) => void;
 }) {
   if (alerts.length === 0) {
     return (
@@ -827,6 +912,56 @@ function AlertsPanel({
   const critical = alerts.filter((a) => a.status === "critical");
   const warning = alerts.filter((a) => a.status === "warning");
 
+  const renderCard = (a: { party: Party; marker: MarkerKey; value: number; avg: number; deviation: number; status: Status }, i: number) => {
+    const meta = TYPE_META[a.party.type];
+    const m = MARKER_META[a.marker];
+    return (
+      <button
+        key={`${a.party.col}-${a.marker}-${i}`}
+        type="button"
+        onClick={() => onSelectParty?.(a.party.col)}
+        className={cn(
+          "w-full text-left rounded-xl border px-4 py-3 transition-all hover:-translate-y-0.5 hover:shadow-elegant focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 focus-visible:ring-offset-background cursor-pointer",
+          a.status === "critical"
+            ? "border-destructive/40 bg-destructive/5 hover:bg-destructive/10"
+            : "border-warning/40 bg-warning/5 hover:bg-warning/10"
+        )}
+      >
+        <div className="flex items-start justify-between gap-3">
+          <div className="min-w-0">
+            <div className="flex flex-wrap items-center gap-2">
+              <span
+                className="inline-flex items-center gap-1 rounded-md px-1.5 py-0.5 text-[10px] font-bold"
+                style={{ backgroundColor: `color-mix(in oklab, ${meta.color} 20%, transparent)`, color: meta.color }}
+              >
+                {meta.label}
+              </span>
+              <span className="text-sm font-bold tabular-nums">№{a.party.num}</span>
+              <span className="text-xs text-muted-foreground">·</span>
+              <span className="text-xs font-medium text-muted-foreground">{m.short}</span>
+            </div>
+            <p className="mt-1.5 text-xs text-muted-foreground">
+              Значение <span className="font-bold text-foreground tabular-nums">{fmtNum(a.value, m.decimals)}{m.unit}</span>
+              {" "}при среднем по типу <span className="tabular-nums">{fmtNum(a.avg, m.decimals)}{m.unit}</span>
+            </p>
+          </div>
+          <div className="text-right shrink-0">
+            <p className={cn("text-lg font-bold tabular-nums leading-none", a.status === "critical" ? "text-destructive" : "text-warning")}>
+              +{a.deviation.toFixed(1)}%
+            </p>
+            <p className="mt-1 text-[10px] uppercase tracking-wider text-muted-foreground font-semibold">от средн.</p>
+          </div>
+        </div>
+      </button>
+    );
+  };
+
+  const MAX_PER_COL = 5;
+  const critShown = critical.slice(0, MAX_PER_COL);
+  const warnShown = warning.slice(0, MAX_PER_COL);
+  const critRest = Math.max(0, critical.length - critShown.length);
+  const warnRest = Math.max(0, warning.length - warnShown.length);
+
   return (
     <section className="rounded-2xl glass-card p-6 shadow-elegant">
       <div className="flex flex-wrap items-start justify-between gap-3 mb-5">
@@ -837,7 +972,7 @@ function AlertsPanel({
           <div>
             <h3 className="text-base font-semibold">Требует внимания</h3>
             <p className="text-sm text-muted-foreground">
-              Партии с отклонением выше нормы (от среднего по своему типу)
+              Партии с отклонением выше нормы — клик по карточке откроет детали партии
             </p>
           </div>
         </div>
@@ -855,50 +990,55 @@ function AlertsPanel({
         </div>
       </div>
 
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
-        {[...critical, ...warning].slice(0, 8).map((a, i) => {
-          const meta = TYPE_META[a.party.type];
-          const m = MARKER_META[a.marker];
-          return (
-            <div
-              key={i}
-              className={cn(
-                "rounded-xl border px-4 py-3 transition-colors",
-                a.status === "critical" ? "border-destructive/40 bg-destructive/5" : "border-warning/40 bg-warning/5"
-              )}
-            >
-              <div className="flex items-start justify-between gap-3">
-                <div className="min-w-0">
-                  <div className="flex items-center gap-2">
-                    <span
-                      className="inline-flex items-center gap-1 rounded-md px-1.5 py-0.5 text-[10px] font-bold"
-                      style={{ backgroundColor: `color-mix(in oklab, ${meta.color} 20%, transparent)`, color: meta.color }}
-                    >
-                      {meta.label}
-                    </span>
-                    <span className="text-sm font-bold tabular-nums">№{a.party.num}</span>
-                    <span className="text-xs text-muted-foreground">·</span>
-                    <span className="text-xs font-medium text-muted-foreground">{m.short}</span>
-                  </div>
-                  <p className="mt-1.5 text-xs text-muted-foreground">
-                    Значение <span className="font-bold text-foreground tabular-nums">{fmtNum(a.value, m.decimals)}{m.unit}</span>
-                    {" "}при среднем по типу <span className="tabular-nums">{fmtNum(a.avg, m.decimals)}{m.unit}</span>
-                  </p>
-                </div>
-                <div className="text-right shrink-0">
-                  <p className={cn("text-lg font-bold tabular-nums leading-none", a.status === "critical" ? "text-destructive" : "text-warning")}>
-                    +{a.deviation.toFixed(1)}%
-                  </p>
-                  <p className="mt-1 text-[10px] uppercase tracking-wider text-muted-foreground font-semibold">от средн.</p>
-                </div>
-              </div>
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+        {/* Критичные */}
+        <div className="rounded-xl border border-destructive/30 bg-destructive/5 p-3">
+          <div className="flex items-center justify-between mb-3 px-1">
+            <div className="inline-flex items-center gap-2 text-destructive font-bold text-sm">
+              <Flame className="h-4 w-4" /> Критично
             </div>
-          );
-        })}
+            <span className="text-[11px] uppercase tracking-wider text-muted-foreground font-semibold">
+              {critical.length} {critical.length === 1 ? "партия" : "партий"}
+            </span>
+          </div>
+          {critical.length === 0 ? (
+            <div className="rounded-lg border border-dashed border-border/60 px-4 py-6 text-center text-xs text-muted-foreground">
+              Нет критических отклонений
+            </div>
+          ) : (
+            <div className="space-y-2">
+              {critShown.map((a, i) => renderCard(a, i))}
+              {critRest > 0 && (
+                <p className="text-[11px] text-muted-foreground text-center pt-1">…и ещё {critRest}</p>
+              )}
+            </div>
+          )}
+        </div>
+
+        {/* Внимание */}
+        <div className="rounded-xl border border-warning/30 bg-warning/5 p-3">
+          <div className="flex items-center justify-between mb-3 px-1">
+            <div className="inline-flex items-center gap-2 text-warning font-bold text-sm">
+              <AlertTriangle className="h-4 w-4" /> Внимание
+            </div>
+            <span className="text-[11px] uppercase tracking-wider text-muted-foreground font-semibold">
+              {warning.length} {warning.length === 1 ? "партия" : "партий"}
+            </span>
+          </div>
+          {warning.length === 0 ? (
+            <div className="rounded-lg border border-dashed border-border/60 px-4 py-6 text-center text-xs text-muted-foreground">
+              Нет предупреждений
+            </div>
+          ) : (
+            <div className="space-y-2">
+              {warnShown.map((a, i) => renderCard(a, i))}
+              {warnRest > 0 && (
+                <p className="text-[11px] text-muted-foreground text-center pt-1">…и ещё {warnRest}</p>
+              )}
+            </div>
+          )}
+        </div>
       </div>
-      {alerts.length > 8 && (
-        <p className="mt-3 text-xs text-muted-foreground text-center">…и ещё {alerts.length - 8}. См. таблицу ниже.</p>
-      )}
     </section>
   );
 }
@@ -949,12 +1089,14 @@ function MarkerSection({
   allParties,
   typeAverages,
   partyStatuses,
+  onSelectParty,
 }: {
   metric: MarkerKey;
   parties: Party[];
   allParties: Party[];
   typeAverages: Record<PartyType, Partial<Record<MarkerKey, number>>>;
   partyStatuses: Map<string, Record<MarkerKey, Status | null>>;
+  onSelectParty?: (col: string) => void;
 }) {
   const meta = MARKER_META[metric];
   const valid = parties.filter((p) => typeof p[metric] === "number" && Number.isFinite(p[metric] as number));
@@ -1006,7 +1148,6 @@ function MarkerSection({
   );
 
   return (
-    <TooltipProvider delayDuration={150}>
     <SectionCard title={styledTitle}>
       <div className="grid grid-cols-2 lg:grid-cols-6 gap-3 mb-5">
         <MiniStat label="Партий с данными" value={fmtNum(total)} />
@@ -1024,6 +1165,7 @@ function MarkerSection({
           threshold={{ critical: critThr, warning: warnThr, direction: "above", unit: meta.unit }}
           yLabel={meta.yLabel}
           decimals={meta.decimals}
+          onBarClick={onSelectParty}
         />
       ) : (
         <div className="flex h-48 items-center justify-center rounded-lg border border-dashed text-sm text-muted-foreground">
@@ -1061,7 +1203,6 @@ function MarkerSection({
         })}
       </div>
     </SectionCard>
-    </TooltipProvider>
   );
 }
 
