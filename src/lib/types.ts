@@ -16,10 +16,17 @@ export type Party = {
   marker2_volnet: number | null;
   marker3_grossnet: number | null;
   total_kg: number | null;
-  mix?: Partial<Record<CountryCode, { kg: number; pcs: number }>>;
+  mix?: MixRow[];
 };
 
-export type CountryCode = "UZ" | "BY" | "AZ" | "KG";
+export type CountryCode = "UZ" | "BY" | "AZ" | "KG" | "KZ";
+
+export type MixRow = {
+  country: CountryCode | string;
+  subtype: string;
+  pcs: number;
+  kg: number;
+};
 
 export type TypeAggregate = {
   count: number;
