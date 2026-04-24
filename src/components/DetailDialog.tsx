@@ -22,6 +22,7 @@ import {
 } from "lucide-react";
 import { fmtUSD, fmtNum, fmtPct } from "@/lib/format";
 import type { Party, PartyType, WeekData } from "@/lib/types";
+import { MarkersBlock } from "@/components/MarkersBlock";
 import { cn } from "@/lib/utils";
 
 export type DetailTarget =
@@ -57,7 +58,7 @@ export function DetailDialog({
 
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
-      <DialogContent className="max-w-2xl max-h-[85vh] overflow-y-auto glass-card border-border">
+      <DialogContent className="max-w-3xl max-h-[88vh] overflow-y-auto glass-card border-border">
         {target?.kind === "kpi" && <KpiDetails metric={target.metric} week={week} onSelectParty={onSelectParty} />}
         {target?.kind === "type" && <TypeDetails type={target.type} week={week} onSelectParty={onSelectParty} />}
         {target?.kind === "party" && <PartyDetails col={target.col} week={week} />}
@@ -224,6 +225,14 @@ function KpiDetails({
             </div>
           </div>
         )}
+
+        {/* Маркеры по типам */}
+        <div>
+          <p className="text-xs font-semibold uppercase tracking-wider text-muted-foreground mb-3">
+            Маркеры по типам бизнеса · среднее
+          </p>
+          <MarkersBlock parties={week.parties} scope={{ kind: "all" }} />
+        </div>
       </div>
     </>
   );
@@ -285,6 +294,13 @@ function TypeDetails({
             ⓘ {agg.note}
           </div>
         )}
+
+        <div>
+          <p className="text-xs font-semibold uppercase tracking-wider text-muted-foreground mb-3">
+            Маркеры партий направления
+          </p>
+          <MarkersBlock parties={week.parties} scope={{ kind: "type", type }} />
+        </div>
 
         <div>
           <p className="text-xs font-semibold uppercase tracking-wider text-muted-foreground mb-3">
@@ -376,25 +392,12 @@ function PartyDetails({ col, week }: { col: string; week: WeekData }) {
           </div>
         )}
 
-        {/* Маркеры */}
+        {/* Маркеры — 4 спидометра со сравнением со средним по типу */}
         <div>
           <p className="text-xs font-semibold uppercase tracking-wider text-muted-foreground mb-3 inline-flex items-center gap-1.5">
-            <Gauge className="h-3 w-3" /> Маркеры
+            <Gauge className="h-3 w-3" /> Маркеры партии vs средн. по {tMeta.label}
           </p>
-          <div className="grid grid-cols-3 gap-2">
-            <MiniBox
-              label="M1 · Тариф"
-              value={party.marker1_tariff != null ? `${fmtNum(party.marker1_tariff, 2)} $/кг` : "—"}
-            />
-            <MiniBox
-              label="M2 · Vol/Net"
-              value={party.marker2_volnet != null ? `${fmtNum(party.marker2_volnet, 3)}x` : "—"}
-            />
-            <MiniBox
-              label="M3 · Gross/Net"
-              value={party.marker3_grossnet != null ? `${fmtNum(party.marker3_grossnet, 3)}x` : "—"}
-            />
-          </div>
+          <MarkersBlock parties={week.parties} scope={{ kind: "party", col: party.col }} />
         </div>
 
         {party.total_kg != null && (
