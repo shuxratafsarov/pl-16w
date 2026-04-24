@@ -793,7 +793,8 @@ function Dashboard() {
         onOpenChange={(open) => !open && setDetail(null)}
         onSelectParty={(col) => setDetail({ kind: "party", col })}
       />
-    </div>
+      </div>
+    </TooltipProvider>
   );
 }
 
