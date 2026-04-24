@@ -610,6 +610,13 @@ function Dashboard() {
           Источник: 3PL_PL_2026 · лист 3PL_weekly (TOTAL колонка) · Маркеры 2-3 · Expenses
         </footer>
       </main>
+
+      <DetailDialog
+        target={detail}
+        week={week}
+        onOpenChange={(open) => !open && setDetail(null)}
+        onSelectParty={(col) => setDetail({ kind: "party", col })}
+      />
     </div>
   );
 }
