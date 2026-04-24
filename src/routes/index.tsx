@@ -807,10 +807,12 @@ function AlertsPanel({
   alerts,
   criticalCount,
   warningCount,
+  onSelectParty,
 }: {
   alerts: Array<{ party: Party; marker: MarkerKey; value: number; avg: number; deviation: number; status: Status }>;
   criticalCount: number;
   warningCount: number;
+  onSelectParty?: (col: string) => void;
 }) {
   if (alerts.length === 0) {
     return (
@@ -831,6 +833,56 @@ function AlertsPanel({
   const critical = alerts.filter((a) => a.status === "critical");
   const warning = alerts.filter((a) => a.status === "warning");
 
+  const renderCard = (a: { party: Party; marker: MarkerKey; value: number; avg: number; deviation: number; status: Status }, i: number) => {
+    const meta = TYPE_META[a.party.type];
+    const m = MARKER_META[a.marker];
+    return (
+      <button
+        key={`${a.party.col}-${a.marker}-${i}`}
+        type="button"
+        onClick={() => onSelectParty?.(a.party.col)}
+        className={cn(
+          "w-full text-left rounded-xl border px-4 py-3 transition-all hover:-translate-y-0.5 hover:shadow-elegant focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 focus-visible:ring-offset-background cursor-pointer",
+          a.status === "critical"
+            ? "border-destructive/40 bg-destructive/5 hover:bg-destructive/10"
+            : "border-warning/40 bg-warning/5 hover:bg-warning/10"
+        )}
+      >
+        <div className="flex items-start justify-between gap-3">
+          <div className="min-w-0">
+            <div className="flex flex-wrap items-center gap-2">
+              <span
+                className="inline-flex items-center gap-1 rounded-md px-1.5 py-0.5 text-[10px] font-bold"
+                style={{ backgroundColor: `color-mix(in oklab, ${meta.color} 20%, transparent)`, color: meta.color }}
+              >
+                {meta.label}
+              </span>
+              <span className="text-sm font-bold tabular-nums">№{a.party.num}</span>
+              <span className="text-xs text-muted-foreground">·</span>
+              <span className="text-xs font-medium text-muted-foreground">{m.short}</span>
+            </div>
+            <p className="mt-1.5 text-xs text-muted-foreground">
+              Значение <span className="font-bold text-foreground tabular-nums">{fmtNum(a.value, m.decimals)}{m.unit}</span>
+              {" "}при среднем по типу <span className="tabular-nums">{fmtNum(a.avg, m.decimals)}{m.unit}</span>
+            </p>
+          </div>
+          <div className="text-right shrink-0">
+            <p className={cn("text-lg font-bold tabular-nums leading-none", a.status === "critical" ? "text-destructive" : "text-warning")}>
+              +{a.deviation.toFixed(1)}%
+            </p>
+            <p className="mt-1 text-[10px] uppercase tracking-wider text-muted-foreground font-semibold">от средн.</p>
+          </div>
+        </div>
+      </button>
+    );
+  };
+
+  const MAX_PER_COL = 5;
+  const critShown = critical.slice(0, MAX_PER_COL);
+  const warnShown = warning.slice(0, MAX_PER_COL);
+  const critRest = Math.max(0, critical.length - critShown.length);
+  const warnRest = Math.max(0, warning.length - warnShown.length);
+
   return (
     <section className="rounded-2xl glass-card p-6 shadow-elegant">
       <div className="flex flex-wrap items-start justify-between gap-3 mb-5">
@@ -841,7 +893,7 @@ function AlertsPanel({
           <div>
             <h3 className="text-base font-semibold">Требует внимания</h3>
             <p className="text-sm text-muted-foreground">
-              Партии с отклонением выше нормы (от среднего по своему типу)
+              Партии с отклонением выше нормы — клик по карточке откроет детали партии
             </p>
           </div>
         </div>
@@ -859,50 +911,55 @@ function AlertsPanel({
         </div>
       </div>
 
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
-        {[...critical, ...warning].slice(0, 8).map((a, i) => {
-          const meta = TYPE_META[a.party.type];
-          const m = MARKER_META[a.marker];
-          return (
-            <div
-              key={i}
-              className={cn(
-                "rounded-xl border px-4 py-3 transition-colors",
-                a.status === "critical" ? "border-destructive/40 bg-destructive/5" : "border-warning/40 bg-warning/5"
-              )}
-            >
-              <div className="flex items-start justify-between gap-3">
-                <div className="min-w-0">
-                  <div className="flex items-center gap-2">
-                    <span
-                      className="inline-flex items-center gap-1 rounded-md px-1.5 py-0.5 text-[10px] font-bold"
-                      style={{ backgroundColor: `color-mix(in oklab, ${meta.color} 20%, transparent)`, color: meta.color }}
-                    >
-                      {meta.label}
-                    </span>
-                    <span className="text-sm font-bold tabular-nums">№{a.party.num}</span>
-                    <span className="text-xs text-muted-foreground">·</span>
-                    <span className="text-xs font-medium text-muted-foreground">{m.short}</span>
-                  </div>
-                  <p className="mt-1.5 text-xs text-muted-foreground">
-                    Значение <span className="font-bold text-foreground tabular-nums">{fmtNum(a.value, m.decimals)}{m.unit}</span>
-                    {" "}при среднем по типу <span className="tabular-nums">{fmtNum(a.avg, m.decimals)}{m.unit}</span>
-                  </p>
-                </div>
-                <div className="text-right shrink-0">
-                  <p className={cn("text-lg font-bold tabular-nums leading-none", a.status === "critical" ? "text-destructive" : "text-warning")}>
-                    +{a.deviation.toFixed(1)}%
-                  </p>
-                  <p className="mt-1 text-[10px] uppercase tracking-wider text-muted-foreground font-semibold">от средн.</p>
-                </div>
-              </div>
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+        {/* Критичные */}
+        <div className="rounded-xl border border-destructive/30 bg-destructive/5 p-3">
+          <div className="flex items-center justify-between mb-3 px-1">
+            <div className="inline-flex items-center gap-2 text-destructive font-bold text-sm">
+              <Flame className="h-4 w-4" /> Критично
             </div>
-          );
-        })}
+            <span className="text-[11px] uppercase tracking-wider text-muted-foreground font-semibold">
+              {critical.length} {critical.length === 1 ? "партия" : "партий"}
+            </span>
+          </div>
+          {critical.length === 0 ? (
+            <div className="rounded-lg border border-dashed border-border/60 px-4 py-6 text-center text-xs text-muted-foreground">
+              Нет критических отклонений
+            </div>
+          ) : (
+            <div className="space-y-2">
+              {critShown.map((a, i) => renderCard(a, i))}
+              {critRest > 0 && (
+                <p className="text-[11px] text-muted-foreground text-center pt-1">…и ещё {critRest}</p>
+              )}
+            </div>
+          )}
+        </div>
+
+        {/* Внимание */}
+        <div className="rounded-xl border border-warning/30 bg-warning/5 p-3">
+          <div className="flex items-center justify-between mb-3 px-1">
+            <div className="inline-flex items-center gap-2 text-warning font-bold text-sm">
+              <AlertTriangle className="h-4 w-4" /> Внимание
+            </div>
+            <span className="text-[11px] uppercase tracking-wider text-muted-foreground font-semibold">
+              {warning.length} {warning.length === 1 ? "партия" : "партий"}
+            </span>
+          </div>
+          {warning.length === 0 ? (
+            <div className="rounded-lg border border-dashed border-border/60 px-4 py-6 text-center text-xs text-muted-foreground">
+              Нет предупреждений
+            </div>
+          ) : (
+            <div className="space-y-2">
+              {warnShown.map((a, i) => renderCard(a, i))}
+              {warnRest > 0 && (
+                <p className="text-[11px] text-muted-foreground text-center pt-1">…и ещё {warnRest}</p>
+              )}
+            </div>
+          )}
+        </div>
       </div>
-      {alerts.length > 8 && (
-        <p className="mt-3 text-xs text-muted-foreground text-center">…и ещё {alerts.length - 8}. См. таблицу ниже.</p>
-      )}
     </section>
   );
 }
