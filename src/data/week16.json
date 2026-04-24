@@ -1,6 +1,6 @@
 {
   "week": 16,
-  "period": "13 — 19 апреля 2026",
+  "period": "2026-04-13 — 2026-04-19",
   "totals": {
     "revenue": 125672.94,
     "expense": 97107.62,
@@ -10,11 +10,10 @@
   "byType": {
     "CAINIAO": {
       "count": 6,
-      "revenue": 81015.94,
+      "revenue": 81185.78,
       "expense": 76060.27,
-      "gross_profit": 4955.67,
-      "margin_pct": 6.12,
-      "note": "Включает корректировку выручки $-169.84 и overhead-расходы (ФОТ, E-Transit и др.) на уровне TOTAL"
+      "gross_profit": 5125.51,
+      "margin_pct": 6.31
     },
     "MPO": {
       "count": 6,
@@ -48,11 +47,11 @@
       "gross_profit": 857.41,
       "margin_pct": 7.33,
       "weight_net": 617.97,
-      "weight_gross": 643.45,
-      "weight_vol": 857.28,
-      "marker1_tariff": 12.838,
-      "marker2_volnet": 1.3873,
-      "marker3_grossnet": 1.0412,
+      "weight_gross": null,
+      "weight_vol": null,
+      "marker1_tariff": 3.07,
+      "marker2_volnet": null,
+      "marker3_grossnet": null,
       "total_kg": 617.97
     },
     {
@@ -65,11 +64,11 @@
       "gross_profit": 1263.8,
       "margin_pct": 8.69,
       "weight_net": 771.9,
-      "weight_gross": 798.53,
-      "weight_vol": 985.51,
-      "marker1_tariff": 12.984,
-      "marker2_volnet": 1.2767,
-      "marker3_grossnet": 1.0345,
+      "weight_gross": null,
+      "weight_vol": null,
+      "marker1_tariff": 3.21,
+      "marker2_volnet": null,
+      "marker3_grossnet": null,
       "total_kg": 771.9
     },
     {
@@ -82,11 +81,11 @@
       "gross_profit": 1473.98,
       "margin_pct": 7.69,
       "weight_net": 1012.69,
-      "weight_gross": 1059.15,
-      "weight_vol": 1347.92,
-      "marker1_tariff": 12.757,
-      "marker2_volnet": 1.331,
-      "marker3_grossnet": 1.0459,
+      "weight_gross": null,
+      "weight_vol": null,
+      "marker1_tariff": 3.21,
+      "marker2_volnet": null,
+      "marker3_grossnet": null,
       "total_kg": 1012.69
     },
     {
@@ -99,11 +98,11 @@
       "gross_profit": 22.86,
       "margin_pct": 0.21,
       "weight_net": 571.59,
-      "weight_gross": 584.8,
-      "weight_vol": 735.25,
-      "marker1_tariff": 13.009,
-      "marker2_volnet": 1.2863,
-      "marker3_grossnet": 1.0231,
+      "weight_gross": null,
+      "weight_vol": null,
+      "marker1_tariff": 4.21,
+      "marker2_volnet": null,
+      "marker3_grossnet": null,
       "total_kg": 571.59
     },
     {
@@ -116,11 +115,11 @@
       "gross_profit": 1517.72,
       "margin_pct": 7.63,
       "weight_net": 1048.36,
-      "weight_gross": 1070.8,
-      "weight_vol": 1372.45,
-      "marker1_tariff": 12.903,
-      "marker2_volnet": 1.3091,
-      "marker3_grossnet": 1.0214,
+      "weight_gross": null,
+      "weight_vol": null,
+      "marker1_tariff": 3.21,
+      "marker2_volnet": null,
+      "marker3_grossnet": null,
       "total_kg": 1048.36
     },
     {
@@ -133,11 +132,11 @@
       "gross_profit": -10.26,
       "margin_pct": -0.21,
       "weight_net": 266.83,
-      "weight_gross": 261.31,
-      "weight_vol": 323.32,
-      "marker1_tariff": 13.11,
-      "marker2_volnet": 1.2117,
-      "marker3_grossnet": 0.9793,
+      "weight_gross": null,
+      "weight_vol": null,
+      "marker1_tariff": 4.37,
+      "marker2_volnet": null,
+      "marker3_grossnet": null,
       "total_kg": 266.83
     },
     {
@@ -150,12 +149,12 @@
       "gross_profit": 78.63,
       "margin_pct": 43.45,
       "weight_net": null,
-      "weight_gross": null,
-      "weight_vol": null,
-      "marker1_tariff": 8.98,
+      "weight_gross": 656,
+      "weight_vol": 874,
+      "marker1_tariff": 3.07,
       "marker2_volnet": null,
       "marker3_grossnet": null,
-      "total_kg": 12.05
+      "total_kg": 874
     },
     {
       "col": "HO",
@@ -167,12 +166,12 @@
       "gross_profit": 148.79,
       "margin_pct": 45.37,
       "weight_net": null,
-      "weight_gross": null,
-      "weight_vol": null,
-      "marker1_tariff": 8.98,
+      "weight_gross": 820,
+      "weight_vol": 1012,
+      "marker1_tariff": 3.21,
       "marker2_volnet": null,
       "marker3_grossnet": null,
-      "total_kg": 20.75
+      "total_kg": 1012
     },
     {
       "col": "HP",
@@ -184,12 +183,12 @@
       "gross_profit": 138.93,
       "margin_pct": 43.58,
       "weight_net": null,
-      "weight_gross": null,
-      "weight_vol": null,
-      "marker1_tariff": 8.98,
+      "weight_gross": 1082,
+      "weight_vol": 1377,
+      "marker1_tariff": 3.21,
       "marker2_volnet": null,
       "marker3_grossnet": null,
-      "total_kg": 21.85
+      "total_kg": 1377
     },
     {
       "col": "HQ",
@@ -201,12 +200,12 @@
       "gross_profit": 162.57,
       "margin_pct": 34.0,
       "weight_net": null,
-      "weight_gross": null,
-      "weight_vol": null,
-      "marker1_tariff": 8.98,
+      "weight_gross": 620,
+      "weight_vol": 779.5,
+      "marker1_tariff": 4.21,
       "marker2_volnet": null,
       "marker3_grossnet": null,
-      "total_kg": 34.4
+      "total_kg": 779.5
     },
     {
       "col": "HR",
@@ -218,12 +217,12 @@
       "gross_profit": 185.68,
       "margin_pct": 42.84,
       "weight_net": null,
-      "weight_gross": null,
-      "weight_vol": null,
-      "marker1_tariff": 8.98,
+      "weight_gross": 1104,
+      "weight_vol": 1415,
+      "marker1_tariff": 3.21,
       "marker2_volnet": null,
       "marker3_grossnet": null,
-      "total_kg": 32.5
+      "total_kg": 1415
     },
     {
       "col": "HS",
@@ -235,12 +234,12 @@
       "gross_profit": 199.86,
       "margin_pct": 37.41,
       "weight_net": null,
-      "weight_gross": null,
-      "weight_vol": null,
-      "marker1_tariff": 8.98,
+      "weight_gross": 295,
+      "weight_vol": 365,
+      "marker1_tariff": 4.37,
       "marker2_volnet": null,
       "marker3_grossnet": null,
-      "total_kg": 34.4
+      "total_kg": 365
     },
     {
       "col": "HT",
@@ -251,13 +250,13 @@
       "expense": 1901.83,
       "gross_profit": 3200.96,
       "margin_pct": 62.73,
-      "weight_net": null,
-      "weight_gross": null,
-      "weight_vol": null,
-      "marker1_tariff": 10.9,
-      "marker2_volnet": null,
-      "marker3_grossnet": null,
-      "total_kg": 306.9
+      "weight_net": 16.25,
+      "weight_gross": 307,
+      "weight_vol": 362,
+      "marker1_tariff": 3.24,
+      "marker2_volnet": 22.2769,
+      "marker3_grossnet": 18.8923,
+      "total_kg": 362
     },
     {
       "col": "HU",
@@ -268,13 +267,13 @@
       "expense": 1727.12,
       "gross_profit": 2537.61,
       "margin_pct": 59.5,
-      "weight_net": null,
-      "weight_gross": null,
-      "weight_vol": null,
-      "marker1_tariff": 10.9,
-      "marker2_volnet": null,
-      "marker3_grossnet": null,
-      "total_kg": 250.3
+      "weight_net": 16.9,
+      "weight_gross": 250,
+      "weight_vol": 311,
+      "marker1_tariff": 3.54,
+      "marker2_volnet": 18.4024,
+      "marker3_grossnet": 14.7929,
+      "total_kg": 311
     },
     {
       "col": "HV",
@@ -285,13 +284,13 @@
       "expense": 1831.06,
       "gross_profit": 2751.61,
       "margin_pct": 60.04,
-      "weight_net": null,
-      "weight_gross": null,
-      "weight_vol": null,
-      "marker1_tariff": 10.9,
-      "marker2_volnet": null,
-      "marker3_grossnet": null,
-      "total_kg": 282.45
+      "weight_net": 23.85,
+      "weight_gross": 283,
+      "weight_vol": 337,
+      "marker1_tariff": 3.54,
+      "marker2_volnet": 14.13,
+      "marker3_grossnet": 11.8658,
+      "total_kg": 337
     },
     {
       "col": "HW",
@@ -302,13 +301,13 @@
       "expense": 3657.59,
       "gross_profit": 2073.12,
       "margin_pct": 36.18,
-      "weight_net": null,
-      "weight_gross": null,
-      "weight_vol": null,
-      "marker1_tariff": 16.7,
-      "marker2_volnet": null,
-      "marker3_grossnet": null,
-      "total_kg": 237.4
+      "weight_net": 8.8,
+      "weight_gross": 234,
+      "weight_vol": 348.5,
+      "marker1_tariff": 7.85,
+      "marker2_volnet": 39.6023,
+      "marker3_grossnet": 26.5909,
+      "total_kg": 348.5
     },
     {
       "col": "HX",
@@ -319,13 +318,13 @@
       "expense": 2375.0,
       "gross_profit": 2368.44,
       "margin_pct": 49.93,
-      "weight_net": null,
-      "weight_gross": null,
-      "weight_vol": null,
-      "marker1_tariff": 10.9,
-      "marker2_volnet": null,
-      "marker3_grossnet": null,
-      "total_kg": 294.65
+      "weight_net": 23.2,
+      "weight_gross": 300,
+      "weight_vol": 376,
+      "marker1_tariff": 4.37,
+      "marker2_volnet": 16.2069,
+      "marker3_grossnet": 12.931,
+      "total_kg": 376
     },
     {
       "col": "HY",
@@ -336,13 +335,13 @@
       "expense": 1900.9,
       "gross_profit": 2174.88,
       "margin_pct": 53.36,
-      "weight_net": null,
-      "weight_gross": null,
-      "weight_vol": null,
-      "marker1_tariff": 10.9,
-      "marker2_volnet": null,
-      "marker3_grossnet": null,
-      "total_kg": 249.8
+      "weight_net": 21.9,
+      "weight_gross": 254,
+      "weight_vol": 312,
+      "marker1_tariff": 4.25,
+      "marker2_volnet": 14.2466,
+      "marker3_grossnet": 11.5982,
+      "total_kg": 312
     },
     {
       "col": "HZ",
@@ -353,13 +352,13 @@
       "expense": 2240.95,
       "gross_profit": 2609.17,
       "margin_pct": 53.8,
-      "weight_net": null,
-      "weight_gross": null,
-      "weight_vol": null,
-      "marker1_tariff": 10.9,
-      "marker2_volnet": null,
-      "marker3_grossnet": null,
-      "total_kg": 296.45
+      "weight_net": 9.3,
+      "weight_gross": 305,
+      "weight_vol": 347.5,
+      "marker1_tariff": 4.37,
+      "marker2_volnet": 37.3656,
+      "marker3_grossnet": 32.7957,
+      "total_kg": 347.5
     },
     {
       "col": "IA",
@@ -370,13 +369,13 @@
       "expense": 2123.23,
       "gross_profit": 2648.03,
       "margin_pct": 55.5,
-      "weight_net": null,
-      "weight_gross": null,
-      "weight_vol": null,
-      "marker1_tariff": 10.9,
-      "marker2_volnet": null,
-      "marker3_grossnet": null,
-      "total_kg": 304.35
+      "weight_net": 35.2,
+      "weight_gross": 310,
+      "weight_vol": 387,
+      "marker1_tariff": 3.54,
+      "marker2_volnet": 10.9943,
+      "marker3_grossnet": 8.8068,
+      "total_kg": 387
     },
     {
       "col": "IB",
@@ -387,13 +386,13 @@
       "expense": 1930.57,
       "gross_profit": 2331.39,
       "margin_pct": 54.7,
-      "weight_net": null,
-      "weight_gross": null,
-      "weight_vol": null,
-      "marker1_tariff": 10.9,
-      "marker2_volnet": null,
-      "marker3_grossnet": null,
-      "total_kg": 260.35
+      "weight_net": 11.85,
+      "weight_gross": 260,
+      "weight_vol": 295.5,
+      "marker1_tariff": 4.54,
+      "marker2_volnet": 24.9367,
+      "marker3_grossnet": 21.9409,
+      "total_kg": 295.5
     }
   ]
 }
