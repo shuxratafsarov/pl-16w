@@ -23,6 +23,7 @@ import {
 import { fmtUSD, fmtNum, fmtPct } from "@/lib/format";
 import type { Party, PartyType, WeekData } from "@/lib/types";
 import { MarkersBlock } from "@/components/MarkersBlock";
+import { ProductMix } from "@/components/ProductMix";
 import { cn } from "@/lib/utils";
 
 export type DetailTarget =
@@ -233,6 +234,9 @@ function KpiDetails({
           </p>
           <MarkersBlock parties={week.parties} scope={{ kind: "all" }} />
         </div>
+
+        {/* Микс товаров */}
+        <ProductMix parties={week.parties} scope={{ kind: "all" }} />
       </div>
     </>
   );
@@ -312,6 +316,9 @@ function TypeDetails({
             ))}
           </div>
         </div>
+
+        {/* Микс товаров по направлению */}
+        <ProductMix parties={week.parties} scope={{ kind: "type", type }} />
       </div>
     </>
   );
@@ -405,6 +412,11 @@ function PartyDetails({ col, week }: { col: string; week: WeekData }) {
             <Box className="h-3.5 w-3.5" />
             Тарифицируемый вес: <span className="font-semibold text-foreground tabular-nums">{fmtNum(party.total_kg, 1)} кг</span>
           </div>
+        )}
+
+        {/* Микс товаров партии */}
+        {party.mix && Object.keys(party.mix).length > 0 && (
+          <ProductMix parties={week.parties} scope={{ kind: "party", col: party.col }} />
         )}
       </div>
     </>
