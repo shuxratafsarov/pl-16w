@@ -366,9 +366,11 @@ function Dashboard() {
               const isHealthy = t.margin_pct >= 15;
               const counts = typeAlertCounts[t.type];
               return (
-                <div
+                <button
                   key={t.type}
-                  className="group relative overflow-hidden rounded-2xl glass-card p-6 shadow-elegant transition-all duration-300 hover:shadow-elevated hover:-translate-y-0.5"
+                  type="button"
+                  onClick={() => setDetail({ kind: "type", type: t.type })}
+                  className="group relative overflow-hidden rounded-2xl glass-card p-6 shadow-elegant transition-all duration-300 hover:shadow-elevated hover:-translate-y-0.5 text-left cursor-pointer focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 focus-visible:ring-offset-background"
                 >
                   {/* glow accent */}
                   <div
@@ -441,7 +443,7 @@ function Dashboard() {
                       ⓘ {t.note}
                     </div>
                   )}
-                </div>
+                </button>
               );
             })}
           </div>
