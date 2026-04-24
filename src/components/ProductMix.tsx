@@ -250,7 +250,6 @@ export function ProductMix({ parties, scope }: { parties: Party[]; scope: Scope 
                       <td className="px-2 py-2 font-bold">
                         {idx === 0 ? (
                           <span className="inline-flex items-center gap-1.5">
-                            <span className="text-base leading-none">{flag}</span>
                             <span>{country}</span>
                           </span>
                         ) : (
