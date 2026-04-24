@@ -297,6 +297,13 @@ function TypeDetails({
 
         <div>
           <p className="text-xs font-semibold uppercase tracking-wider text-muted-foreground mb-3">
+            Маркеры партий направления
+          </p>
+          <MarkersBlock parties={week.parties} scope={{ kind: "type", type }} />
+        </div>
+
+        <div>
+          <p className="text-xs font-semibold uppercase tracking-wider text-muted-foreground mb-3">
             Партии направления ({parties.length})
           </p>
           <div className="space-y-1.5">
