@@ -145,14 +145,26 @@ function MarkerMiniChart({
   }, [data, marker.direction]);
 
   // раскраска баров
-  const colored = useMemo(() => {
-    if (!stats) return data;
+  type ColoredDatum = {
+    name: string;
+    value: number | null;
+    fill: string;
+    barFill: string;
+    outline?: string;
+    col?: string;
+  };
+  const colored = useMemo<ColoredDatum[]>(() => {
+    if (!stats) return data.map((d) => ({ ...d, barFill: d.fill }));
     return data.map((d) => {
       const v = d.value as number;
       const s = statusFromAvg(v, stats.avg, marker.direction);
-      const isHighlight = "col" in d && d.col === highlightCol;
+      const dCol = "col" in d ? d.col : undefined;
+      const isHighlight = dCol != null && dCol === highlightCol;
       return {
-        ...d,
+        name: d.name as string,
+        value: d.value,
+        fill: d.fill,
+        col: dCol,
         // если статус ok — цвет сегмента (тип), иначе — статусный цвет
         barFill: s === "ok" ? d.fill : statusColor(s),
         outline: isHighlight ? "var(--ring)" : undefined,
