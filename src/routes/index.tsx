@@ -107,7 +107,7 @@ const CRIT_PCT = 0.2;
 
 /** Кнопки маркеров для шапки (включая M4 без графика-маркера). */
 const MARKER_BUTTONS: Array<{ id: string; short: string; title: string; description: string }> = [
-  { id: "marker-1", short: "M1", title: "Тариф линейхолла", description: MARKER_META.marker1_tariff.description },
+  { id: "marker-1", short: "M1", title: "Тариф Лайнхолла", description: MARKER_META.marker1_tariff.description },
   { id: "marker-2", short: "M2", title: "Объёмный / Нетто", description: MARKER_META.marker2_volnet.description },
   { id: "marker-3", short: "M3", title: "Брутто / Нетто", description: MARKER_META.marker3_grossnet.description },
   { id: "marker-4", short: "M4", title: "Соотношение продуктов", description: "Структура микса по странам и подтипам (RM/SRM/NRM и т. д.) в штуках или килограммах. Показывает, какие категории дают основной объём." },
