@@ -47,10 +47,10 @@ export const Route = createFileRoute("/")({
   component: Dashboard,
 });
 
-const TYPE_META: Record<PartyType, { label: string; full: string; color: string; accent: "cainiao" | "mpo" | "mko" }> = {
-  CAINIAO: { label: "CAINIAO", full: "Cainiao C2M", color: "var(--cainiao)", accent: "cainiao" },
-  MPO: { label: "UZUM MPO", full: "UZUM Crossborder · MPO", color: "var(--mpo)", accent: "mpo" },
-  MKO: { label: "UZUM MKO", full: "UZUM Crossborder · MKO", color: "var(--mko)", accent: "mko" },
+const TYPE_META: Record<PartyType, { label: string; full: string; color: string; accent: "cainiao" | "mpo" | "mko"; icon: LucideIcon }> = {
+  CAINIAO: { label: "CAINIAO", full: "Cainiao C2M · авиа Китай→UZ", color: "var(--cainiao)", accent: "cainiao", icon: Plane },
+  MPO: { label: "UZUM MPO", full: "UZUM Crossborder · MPO", color: "var(--mpo)", accent: "mpo", icon: PackageCheck },
+  MKO: { label: "UZUM MKO", full: "UZUM Crossborder · MKO", color: "var(--mko)", accent: "mko", icon: Banknote },
 };
 
 type MarkerKey = "marker1_tariff" | "marker2_volnet" | "marker3_grossnet";
