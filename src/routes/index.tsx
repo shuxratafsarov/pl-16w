@@ -20,11 +20,16 @@ import {
   Wallet,
   Receipt,
   Percent,
-  Activity,
   AlertTriangle,
   ShieldCheck,
   Flame,
   CheckCircle2,
+  LineChart as LineChartIcon,
+  Plane,
+  PackageCheck,
+  Banknote,
+  Boxes,
+  type LucideIcon,
 } from "lucide-react";
 import data from "@/data/week16.json";
 import type { Party, PartyType, WeekData } from "@/lib/types";
@@ -42,10 +47,10 @@ export const Route = createFileRoute("/")({
   component: Dashboard,
 });
 
-const TYPE_META: Record<PartyType, { label: string; full: string; color: string; accent: "cainiao" | "mpo" | "mko" }> = {
-  CAINIAO: { label: "CAINIAO", full: "Cainiao C2M", color: "var(--cainiao)", accent: "cainiao" },
-  MPO: { label: "UZUM MPO", full: "UZUM Crossborder · MPO", color: "var(--mpo)", accent: "mpo" },
-  MKO: { label: "UZUM MKO", full: "UZUM Crossborder · MKO", color: "var(--mko)", accent: "mko" },
+const TYPE_META: Record<PartyType, { label: string; full: string; color: string; accent: "cainiao" | "mpo" | "mko"; icon: LucideIcon }> = {
+  CAINIAO: { label: "CAINIAO", full: "Cainiao C2M · авиа Китай→UZ", color: "var(--cainiao)", accent: "cainiao", icon: Plane },
+  MPO: { label: "UZUM MPO", full: "UZUM Crossborder · MPO", color: "var(--mpo)", accent: "mpo", icon: PackageCheck },
+  MKO: { label: "UZUM MKO", full: "UZUM Crossborder · MKO", color: "var(--mko)", accent: "mko", icon: Banknote },
 };
 
 type MarkerKey = "marker1_tariff" | "marker2_volnet" | "marker3_grossnet";
@@ -228,7 +233,7 @@ function Dashboard() {
         <div className="mx-auto max-w-[1440px] px-6 py-5 flex items-center justify-between gap-6">
           <div className="flex items-center gap-4">
             <div className="h-11 w-11 rounded-2xl gradient-primary shadow-glow flex items-center justify-center">
-              <Activity className="h-5 w-5 text-white" />
+              <LineChartIcon className="h-5 w-5 text-white" />
             </div>
             <div>
               <p className="text-[11px] font-semibold uppercase tracking-[0.12em] text-muted-foreground">3PL · P&amp;L Аналитика</p>
@@ -351,6 +356,7 @@ function Dashboard() {
           <div className="grid grid-cols-1 lg:grid-cols-3 gap-4">
             {typeBreakdown.map((t) => {
               const meta = TYPE_META[t.type];
+              const TypeIcon = meta.icon;
               const isHealthy = t.margin_pct >= 15;
               const counts = typeAlertCounts[t.type];
               return (
@@ -369,7 +375,7 @@ function Dashboard() {
                         className="h-10 w-10 rounded-xl flex items-center justify-center text-white shadow-glow"
                         style={{ backgroundColor: meta.color }}
                       >
-                        <Activity className="h-4 w-4" />
+                        <TypeIcon className="h-4 w-4" />
                       </div>
                       <div>
                         <p className="text-xs font-bold uppercase tracking-wider" style={{ color: meta.color }}>{meta.label}</p>
@@ -437,9 +443,14 @@ function Dashboard() {
           {/* UZUM CB umbrella */}
           <div className="rounded-2xl border border-dashed border-border bg-card/40 backdrop-blur-sm p-5">
             <div className="flex flex-wrap items-center justify-between gap-4">
-              <div>
-                <p className="text-[11px] font-semibold uppercase tracking-wider text-muted-foreground">Зонтик · UZUM Crossborder</p>
-                <p className="text-sm text-foreground mt-0.5">MPO + MKO вместе — для сверки с разделом «UZUM CB» в P&amp;L</p>
+              <div className="flex items-center gap-3">
+                <div className="h-10 w-10 rounded-xl bg-muted/60 border border-border flex items-center justify-center text-muted-foreground">
+                  <Boxes className="h-4 w-4" />
+                </div>
+                <div>
+                  <p className="text-[11px] font-semibold uppercase tracking-wider text-muted-foreground">Зонтик · UZUM Crossborder</p>
+                  <p className="text-sm text-foreground mt-0.5">MPO + MKO вместе — для сверки с разделом «UZUM CB» в P&amp;L</p>
+                </div>
               </div>
               <div className="flex items-center gap-6 text-sm">
                 <div className="text-right">
