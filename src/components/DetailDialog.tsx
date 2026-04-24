@@ -415,7 +415,7 @@ function PartyDetails({ col, week }: { col: string; week: WeekData }) {
         )}
 
         {/* Микс товаров партии */}
-        {party.mix && Object.keys(party.mix).length > 0 && (
+        {Array.isArray(party.mix) && party.mix.length > 0 && (
           <ProductMix parties={week.parties} scope={{ kind: "party", col: party.col }} />
         )}
       </div>
