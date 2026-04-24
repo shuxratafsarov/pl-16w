@@ -18,12 +18,19 @@ import {
   Scale,
   Box,
   Gauge,
+  MessageSquare,
+  Save,
+  Trash2,
   type LucideIcon,
 } from "lucide-react";
+import { toast } from "sonner";
 import { fmtUSD, fmtNum, fmtPct } from "@/lib/format";
 import type { Party, PartyType, WeekData } from "@/lib/types";
 import { MarkersBlock } from "@/components/MarkersBlock";
 import { ProductMix } from "@/components/ProductMix";
+import { Textarea } from "@/components/ui/textarea";
+import { Button } from "@/components/ui/button";
+import { usePartyComment } from "@/lib/comments";
 import { cn } from "@/lib/utils";
 
 export type DetailTarget =
