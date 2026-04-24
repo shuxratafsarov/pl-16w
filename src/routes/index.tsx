@@ -651,7 +651,6 @@ function Dashboard() {
             ))}
 
             {/* Маркер 4 — Соотношение продуктов (шт / кг) */}
-            <TooltipProvider delayDuration={150}>
             <SectionCard
               id="marker-4"
               title={
@@ -690,7 +689,6 @@ function Dashboard() {
                 scope={filter === "ALL" ? { kind: "all" } : { kind: "type", type: filter }}
               />
             </SectionCard>
-            </TooltipProvider>
           </div>
         </section>
 
