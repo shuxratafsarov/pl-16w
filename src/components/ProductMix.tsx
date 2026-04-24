@@ -234,8 +234,6 @@ export function ProductMix({ parties, scope }: { parties: Party[]; scope: Scope 
             <tbody>
               {[...byCountry.entries()].map(([country, items]) => {
                 const countrySum = items.reduce((s, r) => s + (unit === "pcs" ? r.pcs : r.kg), 0);
-                const meta = COUNTRY_META[country];
-                const flag = meta?.flag ?? "🏳";
                 return items.map((r, idx) => {
                   const v = unit === "pcs" ? r.pcs : r.kg;
                   const sharePct = countrySum > 0 ? (v / countrySum) * 100 : 0;
@@ -250,7 +248,6 @@ export function ProductMix({ parties, scope }: { parties: Party[]; scope: Scope 
                       <td className="px-2 py-2 font-bold">
                         {idx === 0 ? (
                           <span className="inline-flex items-center gap-1.5">
-                            <span className="text-base leading-none">{flag}</span>
                             <span>{country}</span>
                           </span>
                         ) : (

@@ -29,6 +29,7 @@ import {
   PackageCheck,
   Banknote,
   Boxes,
+  Calendar,
   type LucideIcon,
 } from "lucide-react";
 import data from "@/data/week16.json";
@@ -41,6 +42,20 @@ import { StatusBadge } from "@/components/StatusBadge";
 import { MarkerChart } from "@/components/MarkerChart";
 import { ProductMix } from "@/components/ProductMix";
 import { DetailDialog, type DetailTarget } from "@/components/DetailDialog";
+import {
+  Tooltip as UITooltip,
+  TooltipContent,
+  TooltipProvider,
+  TooltipTrigger,
+} from "@/components/ui/tooltip";
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuLabel,
+  DropdownMenuSeparator,
+  DropdownMenuTrigger,
+} from "@/components/ui/dropdown-menu";
 import { cn } from "@/lib/utils";
 
 const week = data as WeekData;
@@ -89,6 +104,39 @@ const MARKER_META: Record<MarkerKey, { title: string; short: string; unit: strin
  */
 const WARN_PCT = 0.1;
 const CRIT_PCT = 0.2;
+
+/** Кнопки маркеров для шапки (включая M4 без графика-маркера). */
+const MARKER_BUTTONS: Array<{ id: string; short: string; title: string; description: string }> = [
+  { id: "marker-1", short: "M1", title: "Тариф линейхолла", description: MARKER_META.marker1_tariff.description },
+  { id: "marker-2", short: "M2", title: "Объёмный / Нетто", description: MARKER_META.marker2_volnet.description },
+  { id: "marker-3", short: "M3", title: "Брутто / Нетто", description: MARKER_META.marker3_grossnet.description },
+  { id: "marker-4", short: "M4", title: "Соотношение продуктов", description: "Структура микса по странам и подтипам (RM/SRM/NRM и т. д.) в штуках или килограммах. Показывает, какие категории дают основной объём." },
+];
+
+/** Доступные недели (1–16). Даты-периоды для tooltip. */
+const WEEKS: Array<{ week: number; period: string }> = [
+  { week: 1, period: "2025-12-29 — 2026-01-04" },
+  { week: 2, period: "2026-01-05 — 2026-01-11" },
+  { week: 3, period: "2026-01-12 — 2026-01-18" },
+  { week: 4, period: "2026-01-19 — 2026-01-25" },
+  { week: 5, period: "2026-01-26 — 2026-02-01" },
+  { week: 6, period: "2026-02-02 — 2026-02-08" },
+  { week: 7, period: "2026-02-09 — 2026-02-15" },
+  { week: 8, period: "2026-02-16 — 2026-02-22" },
+  { week: 9, period: "2026-02-23 — 2026-03-01" },
+  { week: 10, period: "2026-03-02 — 2026-03-08" },
+  { week: 11, period: "2026-03-09 — 2026-03-15" },
+  { week: 12, period: "2026-03-16 — 2026-03-22" },
+  { week: 13, period: "2026-03-23 — 2026-03-29" },
+  { week: 14, period: "2026-03-30 — 2026-04-05" },
+  { week: 15, period: "2026-04-06 — 2026-04-12" },
+  { week: 16, period: "2026-04-13 — 2026-04-19" },
+];
+
+function scrollToMarker(id: string) {
+  const el = document.getElementById(id);
+  if (el) el.scrollIntoView({ behavior: "smooth", block: "start" });
+}
 
 type Status = "ok" | "warning" | "critical";
 
@@ -231,37 +279,110 @@ function Dashboard() {
 
   return (
     <div className="min-h-screen">
-      {/* Header */}
-      <header className="border-b border-border/60 bg-card/40 backdrop-blur-xl sticky top-0 z-30">
-        <div className="mx-auto max-w-[1440px] px-6 py-5 flex items-center justify-between gap-6">
-          <div className="flex items-center gap-4">
-            <div className="h-11 w-11 rounded-2xl gradient-primary shadow-glow flex items-center justify-center">
-              <LineChartIcon className="h-5 w-5 text-white" />
-            </div>
-            <div>
-              <p className="text-[11px] font-semibold uppercase tracking-[0.12em] text-muted-foreground">3PL · P&amp;L Аналитика</p>
-              <h1 className="text-xl font-bold tracking-tight">Неделя {week.week} · {week.period}</h1>
-            </div>
-          </div>
-          <div className="flex items-center gap-3">
-            {(criticalCount > 0 || warningCount > 0) && (
-              <div className="hidden sm:flex items-center gap-2 rounded-xl border border-border/60 bg-card/60 px-3 py-2 text-xs">
-                {criticalCount > 0 && (
-                  <span className="inline-flex items-center gap-1.5 text-destructive font-semibold">
-                    <Flame className="h-3.5 w-3.5" /> {criticalCount} критич.
-                  </span>
-                )}
-                {warningCount > 0 && (
-                  <span className="inline-flex items-center gap-1.5 text-warning font-semibold">
-                    <AlertTriangle className="h-3.5 w-3.5" /> {warningCount} внимание
-                  </span>
-                )}
+      <TooltipProvider delayDuration={150}>
+        {/* Header */}
+        <header className="border-b border-border/60 bg-card/40 backdrop-blur-xl sticky top-0 z-30">
+          <div className="mx-auto max-w-[1440px] px-6 py-4 flex items-center justify-between gap-4 flex-wrap">
+            <div className="flex items-center gap-4 min-w-0">
+              <div className="h-11 w-11 rounded-2xl gradient-primary shadow-glow flex items-center justify-center shrink-0">
+                <LineChartIcon className="h-5 w-5 text-white" />
               </div>
-            )}
-            <ThemeToggle />
+              <div className="min-w-0">
+                <p className="text-[11px] font-semibold uppercase tracking-[0.12em] text-muted-foreground">3PL · P&amp;L Аналитика</p>
+                <h1 className="text-lg sm:text-xl font-bold tracking-tight truncate">Неделя {week.week} · {week.period}</h1>
+              </div>
+            </div>
+
+            {/* Центр: селектор недели + кнопки маркеров */}
+            <div className="flex items-center gap-2 flex-wrap">
+              {/* Week selector */}
+              <DropdownMenu>
+                <DropdownMenuTrigger asChild>
+                  <button
+                    type="button"
+                    className="inline-flex items-center gap-2 rounded-xl border border-border/60 bg-card/60 px-3 py-2 text-xs font-semibold hover:bg-muted/60 transition-colors"
+                  >
+                    <Calendar className="h-3.5 w-3.5 text-primary" />
+                    Неделя {week.week}
+                    <span className="text-muted-foreground font-normal hidden md:inline">· {week.period}</span>
+                  </button>
+                </DropdownMenuTrigger>
+                <DropdownMenuContent align="center" className="max-h-[60vh] overflow-y-auto w-56">
+                  <DropdownMenuLabel className="text-[10px] uppercase tracking-wider text-muted-foreground">
+                    Выбрать неделю (наведите для дат)
+                  </DropdownMenuLabel>
+                  <DropdownMenuSeparator />
+                  {WEEKS.map((w) => {
+                    const isCurrent = w.week === week.week;
+                    return (
+                      <UITooltip key={w.week}>
+                        <TooltipTrigger asChild>
+                          <DropdownMenuItem
+                            disabled={!isCurrent}
+                            className={cn(
+                              "flex items-center justify-between gap-2 text-xs cursor-pointer",
+                              isCurrent && "bg-primary/10 text-primary font-semibold"
+                            )}
+                          >
+                            <span>Неделя {w.week}</span>
+                            {isCurrent ? (
+                              <span className="text-[10px] uppercase">текущая</span>
+                            ) : (
+                              <span className="text-[10px] text-muted-foreground">нет данных</span>
+                            )}
+                          </DropdownMenuItem>
+                        </TooltipTrigger>
+                        <TooltipContent side="right" className="text-xs">
+                          {w.period}
+                        </TooltipContent>
+                      </UITooltip>
+                    );
+                  })}
+                </DropdownMenuContent>
+              </DropdownMenu>
+
+              {/* Marker quick-jump buttons */}
+              <div className="inline-flex rounded-xl border border-border/60 bg-card/60 p-1 gap-0.5">
+                {MARKER_BUTTONS.map((b) => (
+                  <UITooltip key={b.id}>
+                    <TooltipTrigger asChild>
+                      <button
+                        type="button"
+                        onClick={() => scrollToMarker(b.id)}
+                        className="px-2.5 py-1 rounded-lg text-xs font-bold text-muted-foreground hover:text-foreground hover:bg-primary/15 transition-colors tabular-nums"
+                      >
+                        {b.short}
+                      </button>
+                    </TooltipTrigger>
+                    <TooltipContent side="bottom" className="max-w-xs text-xs leading-snug">
+                      <p className="font-semibold mb-0.5">{b.short} · {b.title}</p>
+                      <p className="opacity-90">{b.description}</p>
+                    </TooltipContent>
+                  </UITooltip>
+                ))}
+              </div>
+            </div>
+
+            <div className="flex items-center gap-3">
+              {(criticalCount > 0 || warningCount > 0) && (
+                <div className="hidden sm:flex items-center gap-2 rounded-xl border border-border/60 bg-card/60 px-3 py-2 text-xs">
+                  {criticalCount > 0 && (
+                    <span className="inline-flex items-center gap-1.5 text-destructive font-semibold">
+                      <Flame className="h-3.5 w-3.5" /> {criticalCount} критич.
+                    </span>
+                  )}
+                  {warningCount > 0 && (
+                    <span className="inline-flex items-center gap-1.5 text-warning font-semibold">
+                      <AlertTriangle className="h-3.5 w-3.5" /> {warningCount} внимание
+                    </span>
+                  )}
+                </div>
+              )}
+              <ThemeToggle />
+            </div>
           </div>
-        </div>
-      </header>
+        </header>
+      </TooltipProvider>
 
       <main className="mx-auto max-w-[1440px] px-6 py-8 space-y-8">
         {/* === Уровень 1: Общие итоги === */}
@@ -505,19 +626,21 @@ function Dashboard() {
           </div>
 
           <div className="grid grid-cols-1 gap-4">
-            {(Object.keys(MARKER_META) as MarkerKey[]).map((m) => (
-              <MarkerSection
-                key={m}
-                metric={m}
-                parties={parties}
-                allParties={week.parties}
-                typeAverages={typeAverages}
-                partyStatuses={partyStatuses}
-              />
+            {(Object.keys(MARKER_META) as MarkerKey[]).map((m, i) => (
+              <div key={m} id={`marker-${i + 1}`} className="scroll-mt-24">
+                <MarkerSection
+                  metric={m}
+                  parties={parties}
+                  allParties={week.parties}
+                  typeAverages={typeAverages}
+                  partyStatuses={partyStatuses}
+                />
+              </div>
             ))}
 
             {/* Маркер 4 — Соотношение продуктов (шт / кг) */}
             <SectionCard
+              id="marker-4"
               title="Маркер 4 · Соотношение продуктов"
               description={
                 filter === "ALL"
