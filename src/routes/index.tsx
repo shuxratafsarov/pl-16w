@@ -640,13 +640,38 @@ function Dashboard() {
             ))}
 
             {/* Маркер 4 — Соотношение продуктов (шт / кг) */}
+            <TooltipProvider delayDuration={150}>
             <SectionCard
               id="marker-4"
-              title="Маркер 4 · Соотношение продуктов"
-              description={
-                filter === "ALL"
-                  ? "Микс по странам и подтипам — все направления"
-                  : `Микс по странам и подтипам — ${TYPE_META[filter].label}`
+              title={
+                <div className="flex items-center gap-2.5 min-w-0">
+                  <span className="inline-flex h-7 min-w-7 items-center justify-center rounded-lg gradient-primary px-2 text-[11px] font-bold text-white shadow-glow tabular-nums">
+                    M4
+                  </span>
+                  <h2 className="text-base sm:text-lg font-bold tracking-tight text-card-foreground truncate">
+                    <span className="text-gradient">Маркер 4</span>
+                    <span className="text-muted-foreground font-medium mx-1.5">·</span>
+                    <span>Соотношение продуктов</span>
+                  </h2>
+                  <UITooltip>
+                    <TooltipTrigger asChild>
+                      <button
+                        type="button"
+                        aria-label="Описание маркера"
+                        className="inline-flex h-6 w-6 items-center justify-center rounded-full text-muted-foreground hover:text-primary hover:bg-primary/10 transition-colors"
+                      >
+                        <Info className="h-3.5 w-3.5" />
+                      </button>
+                    </TooltipTrigger>
+                    <TooltipContent side="bottom" className="max-w-sm text-xs leading-snug">
+                      <p className="font-semibold mb-0.5">Маркер 4 · Соотношение продуктов</p>
+                      <p className="opacity-90">
+                        Структура микса по странам и подтипам (RM/SRM/NRM и т. д.) в штуках или килограммах.
+                        Показывает, какие категории дают основной объём.
+                      </p>
+                    </TooltipContent>
+                  </UITooltip>
+                </div>
               }
             >
               <ProductMix
@@ -654,6 +679,7 @@ function Dashboard() {
                 scope={filter === "ALL" ? { kind: "all" } : { kind: "type", type: filter }}
               />
             </SectionCard>
+            </TooltipProvider>
           </div>
         </section>
 
