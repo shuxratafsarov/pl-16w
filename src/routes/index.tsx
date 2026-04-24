@@ -935,8 +935,42 @@ function MarkerSection({
   const warnThr = avg * (1 + WARN_PCT);
   const critThr = avg * (1 + CRIT_PCT);
 
+  // Парсим "Маркер N · ..." на номер и название
+  const titleMatch = meta.title.match(/^Маркер\s+(\d+)\s*·\s*(.+)$/);
+  const markerNum = titleMatch?.[1] ?? "";
+  const markerName = titleMatch?.[2] ?? meta.title;
+
+  const styledTitle = (
+    <div className="flex items-center gap-2.5 min-w-0">
+      <span className="inline-flex h-7 min-w-7 items-center justify-center rounded-lg gradient-primary px-2 text-[11px] font-bold text-white shadow-glow tabular-nums">
+        M{markerNum}
+      </span>
+      <h2 className="text-base sm:text-lg font-bold tracking-tight text-card-foreground truncate">
+        <span className="text-gradient">Маркер {markerNum}</span>
+        <span className="text-muted-foreground font-medium mx-1.5">·</span>
+        <span>{markerName}</span>
+      </h2>
+      <UITooltip>
+        <TooltipTrigger asChild>
+          <button
+            type="button"
+            aria-label="Описание маркера"
+            className="inline-flex h-6 w-6 items-center justify-center rounded-full text-muted-foreground hover:text-primary hover:bg-primary/10 transition-colors"
+          >
+            <Info className="h-3.5 w-3.5" />
+          </button>
+        </TooltipTrigger>
+        <TooltipContent side="bottom" className="max-w-sm text-xs leading-snug">
+          <p className="font-semibold mb-0.5">Маркер {markerNum} · {markerName}</p>
+          <p className="opacity-90">{meta.description}</p>
+        </TooltipContent>
+      </UITooltip>
+    </div>
+  );
+
   return (
-    <SectionCard title={meta.title} description={meta.description}>
+    <TooltipProvider delayDuration={150}>
+    <SectionCard title={styledTitle}>
       <div className="grid grid-cols-2 lg:grid-cols-6 gap-3 mb-5">
         <MiniStat label="Партий с данными" value={fmtNum(total)} />
         <MiniStat label="Среднее" value={`${fmtNum(avg, meta.decimals)}${meta.unit}`} accent="primary" />
