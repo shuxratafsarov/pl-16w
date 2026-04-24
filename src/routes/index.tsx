@@ -383,7 +383,6 @@ function Dashboard() {
             </div>
           </div>
         </header>
-      </TooltipProvider>
 
       <main className="mx-auto max-w-[1440px] px-6 py-8 space-y-8">
         {/* === Уровень 1: Общие итоги === */}
