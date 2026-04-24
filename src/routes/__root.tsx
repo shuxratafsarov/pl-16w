@@ -74,6 +74,7 @@ function RootComponent() {
   return (
     <ThemeProvider>
       <Outlet />
+      <Toaster richColors position="bottom-right" />
     </ThemeProvider>
   );
 }
