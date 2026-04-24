@@ -950,12 +950,14 @@ function MarkerSection({
   allParties,
   typeAverages,
   partyStatuses,
+  onSelectParty,
 }: {
   metric: MarkerKey;
   parties: Party[];
   allParties: Party[];
   typeAverages: Record<PartyType, Partial<Record<MarkerKey, number>>>;
   partyStatuses: Map<string, Record<MarkerKey, Status | null>>;
+  onSelectParty?: (col: string) => void;
 }) {
   const meta = MARKER_META[metric];
   const valid = parties.filter((p) => typeof p[metric] === "number" && Number.isFinite(p[metric] as number));
@@ -1007,7 +1009,6 @@ function MarkerSection({
   );
 
   return (
-    <TooltipProvider delayDuration={150}>
     <SectionCard title={styledTitle}>
       <div className="grid grid-cols-2 lg:grid-cols-6 gap-3 mb-5">
         <MiniStat label="Партий с данными" value={fmtNum(total)} />
@@ -1025,6 +1026,7 @@ function MarkerSection({
           threshold={{ critical: critThr, warning: warnThr, direction: "above", unit: meta.unit }}
           yLabel={meta.yLabel}
           decimals={meta.decimals}
+          onBarClick={onSelectParty}
         />
       ) : (
         <div className="flex h-48 items-center justify-center rounded-lg border border-dashed text-sm text-muted-foreground">
@@ -1062,7 +1064,6 @@ function MarkerSection({
         })}
       </div>
     </SectionCard>
-    </TooltipProvider>
   );
 }
 
