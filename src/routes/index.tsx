@@ -278,6 +278,37 @@ function Dashboard() {
   const revenuePie = typeBreakdown.map((t) => ({ name: TYPE_META[t.type].label, value: t.revenue, fill: TYPE_META[t.type].color }));
   const profitBar = typeBreakdown.map((t) => ({ name: TYPE_META[t.type].label, revenue: t.revenue, expense: t.expense, profit: t.gross_profit, margin: t.margin_pct, fill: TYPE_META[t.type].color }));
 
+  /** Сверка с источником: суммы по партиям должны совпадать с totals и byType из листа. */
+  const sourceMatch = useMemo(() => {
+    const EPS = 0.5; // допускаем округление до полудоллара
+    const issues: string[] = [];
+    const sumRev = week.parties.reduce((s, p) => s + (p.revenue ?? 0), 0);
+    const sumExp = week.parties.reduce((s, p) => s + (p.expense ?? 0), 0);
+    const sumGp = week.parties.reduce((s, p) => s + (p.gross_profit ?? 0), 0);
+    if (Math.abs(sumRev - week.totals.revenue) > EPS) issues.push(`Выручка: партии Σ ${fmtUSD(sumRev)} ≠ TOTAL ${fmtUSD(week.totals.revenue)}`);
+    if (Math.abs(sumExp - week.totals.expense) > EPS) issues.push(`Расходы: партии Σ ${fmtUSD(sumExp)} ≠ TOTAL ${fmtUSD(week.totals.expense)}`);
+    if (Math.abs(sumGp - week.totals.gross_profit) > EPS) issues.push(`Прибыль: партии Σ ${fmtUSD(sumGp)} ≠ TOTAL ${fmtUSD(week.totals.gross_profit)}`);
+    (["CAINIAO", "MPO", "MKO"] as PartyType[]).forEach((t) => {
+      const agg = week.byType[t];
+      if (!agg) return;
+      const r = week.parties.filter((p) => p.type === t).reduce((s, p) => s + (p.revenue ?? 0), 0);
+      const e = week.parties.filter((p) => p.type === t).reduce((s, p) => s + (p.expense ?? 0), 0);
+      const g = week.parties.filter((p) => p.type === t).reduce((s, p) => s + (p.gross_profit ?? 0), 0);
+      if (Math.abs(r - agg.revenue) > EPS) issues.push(`${t}: выручка ${fmtUSD(r)} ≠ ${fmtUSD(agg.revenue)}`);
+      if (Math.abs(e - agg.expense) > EPS) issues.push(`${t}: расходы ${fmtUSD(e)} ≠ ${fmtUSD(agg.expense)}`);
+      if (Math.abs(g - agg.gross_profit) > EPS) issues.push(`${t}: прибыль ${fmtUSD(g)} ≠ ${fmtUSD(agg.gross_profit)}`);
+    });
+    // Зонтик UZUM CB = MPO + MKO
+    const u = week.umbrella_uzum_cb;
+    const ur = (week.byType.MPO?.revenue ?? 0) + (week.byType.MKO?.revenue ?? 0);
+    const ue = (week.byType.MPO?.expense ?? 0) + (week.byType.MKO?.expense ?? 0);
+    const ug = (week.byType.MPO?.gross_profit ?? 0) + (week.byType.MKO?.gross_profit ?? 0);
+    if (Math.abs(ur - u.revenue) > EPS) issues.push(`UZUM CB: выручка ${fmtUSD(ur)} ≠ ${fmtUSD(u.revenue)}`);
+    if (Math.abs(ue - u.expense) > EPS) issues.push(`UZUM CB: расходы ${fmtUSD(ue)} ≠ ${fmtUSD(u.expense)}`);
+    if (Math.abs(ug - u.gross_profit) > EPS) issues.push(`UZUM CB: прибыль ${fmtUSD(ug)} ≠ ${fmtUSD(u.gross_profit)}`);
+    return { ok: issues.length === 0, issues };
+  }, []);
+
   return (
     <TooltipProvider delayDuration={150}>
       <div className="min-h-screen">
