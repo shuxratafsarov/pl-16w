@@ -30,6 +30,7 @@ import {
   Banknote,
   Boxes,
   Calendar,
+  Info,
   type LucideIcon,
 } from "lucide-react";
 import data from "@/data/week16.json";
