@@ -39,6 +39,7 @@ import { SectionCard } from "@/components/SectionCard";
 import { StatCard } from "@/components/StatCard";
 import { StatusBadge } from "@/components/StatusBadge";
 import { MarkerChart } from "@/components/MarkerChart";
+import { DetailDialog, type DetailTarget } from "@/components/DetailDialog";
 import { cn } from "@/lib/utils";
 
 const week = data as WeekData;
