@@ -74,7 +74,7 @@ type MarkerKey = "marker1_tariff" | "marker2_volnet" | "marker3_grossnet";
 
 const MARKER_META: Record<MarkerKey, { title: string; short: string; unit: string; decimals: number; yLabel: string; description: string }> = {
   marker1_tariff: {
-    title: "Маркер 1 · Тариф линейхолла",
+    title: "Маркер 1 · Тариф Лайнхолла",
     short: "M1 · Тариф",
     unit: " $/кг",
     decimals: 2,
