@@ -278,6 +278,7 @@ function Dashboard() {
               hint={<span>{week.parties.length} партий</span>}
               accent="primary"
               icon={<Wallet className="h-5 w-5" />}
+              onClick={() => setDetail({ kind: "kpi", metric: "revenue" })}
             />
             <StatCard
               label="Расходы"
@@ -285,6 +286,7 @@ function Dashboard() {
               hint={`${fmtPct(week.totals.expense / week.totals.revenue)} от выручки`}
               accent="destructive"
               icon={<Receipt className="h-5 w-5" />}
+              onClick={() => setDetail({ kind: "kpi", metric: "expense" })}
             />
             <StatCard
               label="Валовая прибыль"
@@ -292,6 +294,7 @@ function Dashboard() {
               hint={<span className="inline-flex items-center gap-1 text-success"><TrendingUp className="h-3 w-3" />положительная</span>}
               accent="success"
               icon={<TrendingUp className="h-5 w-5" />}
+              onClick={() => setDetail({ kind: "kpi", metric: "gross_profit" })}
             />
             <StatCard
               label="Маржа"
@@ -299,6 +302,7 @@ function Dashboard() {
               hint="GP / Выручка"
               accent="warning"
               icon={<Percent className="h-5 w-5" />}
+              onClick={() => setDetail({ kind: "kpi", metric: "margin" })}
             />
           </div>
 
