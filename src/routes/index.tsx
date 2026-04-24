@@ -356,6 +356,7 @@ function Dashboard() {
           <div className="grid grid-cols-1 lg:grid-cols-3 gap-4">
             {typeBreakdown.map((t) => {
               const meta = TYPE_META[t.type];
+              const TypeIcon = meta.icon;
               const isHealthy = t.margin_pct >= 15;
               const counts = typeAlertCounts[t.type];
               return (
@@ -374,7 +375,7 @@ function Dashboard() {
                         className="h-10 w-10 rounded-xl flex items-center justify-center text-white shadow-glow"
                         style={{ backgroundColor: meta.color }}
                       >
-                        <Activity className="h-4 w-4" />
+                        <TypeIcon className="h-4 w-4" />
                       </div>
                       <div>
                         <p className="text-xs font-bold uppercase tracking-wider" style={{ color: meta.color }}>{meta.label}</p>
