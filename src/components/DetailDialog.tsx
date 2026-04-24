@@ -392,25 +392,12 @@ function PartyDetails({ col, week }: { col: string; week: WeekData }) {
           </div>
         )}
 
-        {/* Маркеры */}
+        {/* Маркеры — 4 спидометра со сравнением со средним по типу */}
         <div>
           <p className="text-xs font-semibold uppercase tracking-wider text-muted-foreground mb-3 inline-flex items-center gap-1.5">
-            <Gauge className="h-3 w-3" /> Маркеры
+            <Gauge className="h-3 w-3" /> Маркеры партии vs средн. по {tMeta.label}
           </p>
-          <div className="grid grid-cols-3 gap-2">
-            <MiniBox
-              label="M1 · Тариф"
-              value={party.marker1_tariff != null ? `${fmtNum(party.marker1_tariff, 2)} $/кг` : "—"}
-            />
-            <MiniBox
-              label="M2 · Vol/Net"
-              value={party.marker2_volnet != null ? `${fmtNum(party.marker2_volnet, 3)}x` : "—"}
-            />
-            <MiniBox
-              label="M3 · Gross/Net"
-              value={party.marker3_grossnet != null ? `${fmtNum(party.marker3_grossnet, 3)}x` : "—"}
-            />
-          </div>
+          <MarkersBlock parties={week.parties} scope={{ kind: "party", col: party.col }} />
         </div>
 
         {party.total_kg != null && (
