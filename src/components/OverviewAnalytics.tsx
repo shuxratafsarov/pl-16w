@@ -1231,9 +1231,11 @@ export function OverviewAnalytics({
             const Icon = TYPE_META[t.type].icon;
             const share = totals.revenue > 0 ? (t.revenue / totals.revenue) * 100 : 0;
             return (
-              <div
+              <button
                 key={t.type}
-                className="relative overflow-hidden rounded-2xl glass-card p-5 shadow-elegant"
+                type="button"
+                onClick={() => setTypeDrill(t.type)}
+                className="text-left relative overflow-hidden rounded-2xl glass-card p-5 shadow-elegant transition-all hover:shadow-elevated hover:-translate-y-0.5 focus:outline-none focus:ring-2 focus:ring-primary/40 cursor-pointer"
               >
                 <div
                   className="absolute -top-16 -right-16 h-32 w-32 rounded-full opacity-25 blur-3xl"
@@ -1302,7 +1304,7 @@ export function OverviewAnalytics({
                     style={{ width: `${share}%`, backgroundColor: t.color }}
                   />
                 </div>
-              </div>
+              </button>
             );
           })}
         </div>
