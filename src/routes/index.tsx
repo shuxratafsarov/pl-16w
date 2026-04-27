@@ -44,6 +44,55 @@ for (const path in WEEK_MODULES) {
 }
 const AVAILABLE_WEEKS = Object.keys(ALL_WEEKS).map(Number).sort((a, b) => a - b);
 const DEFAULT_WEEK = AVAILABLE_WEEKS[AVAILABLE_WEEKS.length - 1] ?? 16;
+/** Сентинел: «Общий свод» = агрегат по всем неделям. */
+const OVERVIEW_KEY = 0;
+
+/** Собирает синтетический WeekData по всем неделям: все партии «склеены», агрегаты пересчитаются дальше через reconcileWeek. */
+function buildOverview(weeks: Record<number, WeekData>): WeekData {
+  const list = Object.keys(weeks)
+    .map(Number)
+    .sort((a, b) => a - b)
+    .map((n) => weeks[n]);
+  if (list.length === 0) {
+    return {
+      week: OVERVIEW_KEY,
+      period: "Общий свод · нет данных",
+      totals: { revenue: 0, expense: 0, gross_profit: 0, margin_pct: 0 },
+      byType: {
+        CAINIAO: { count: 0, revenue: 0, expense: 0, gross_profit: 0, margin_pct: 0 },
+        MPO: { count: 0, revenue: 0, expense: 0, gross_profit: 0, margin_pct: 0 },
+        MKO: { count: 0, revenue: 0, expense: 0, gross_profit: 0, margin_pct: 0 },
+      },
+      umbrella_uzum_cb: { revenue: 0, expense: 0, gross_profit: 0, margin_pct: 0 },
+      parties: [],
+    };
+  }
+  // Период: от начала первой до конца последней недели
+  const firstP = list[0].period.split("—")[0]?.trim() ?? "";
+  const lastP = list[list.length - 1].period.split("—")[1]?.trim() ?? "";
+  const period = `${firstP} — ${lastP}`;
+
+  // Склеиваем партии. col делаем уникальным: w{N}-{col}, чтобы карты по col не конфликтовали.
+  const parties: Party[] = list.flatMap((w) =>
+    w.parties.map((p) => ({ ...p, col: `w${w.week}-${p.col}`, num: `W${w.week} · ${p.num}` }))
+  );
+
+  // Пустые агрегаты (reconcileWeek пересчитает из parties).
+  const emptyAgg = { count: 0, revenue: 0, expense: 0, gross_profit: 0, margin_pct: 0 };
+  return {
+    week: OVERVIEW_KEY,
+    period,
+    totals: { revenue: 0, expense: 0, gross_profit: 0, margin_pct: 0 },
+    byType: {
+      CAINIAO: { ...emptyAgg },
+      MPO: { ...emptyAgg },
+      MKO: { ...emptyAgg },
+    },
+    umbrella_uzum_cb: { revenue: 0, expense: 0, gross_profit: 0, margin_pct: 0 },
+    parties,
+  };
+}
+const OVERVIEW_WEEK: WeekData = buildOverview(ALL_WEEKS);
 import { fmtUSD, fmtNum, fmtPct } from "@/lib/format";
 import { ThemeToggle } from "@/components/ThemeToggle";
 import { SectionCard } from "@/components/SectionCard";
@@ -256,10 +305,11 @@ function Dashboard() {
   const [filter, setFilter] = useState<"ALL" | PartyType>("ALL");
   const [detail, setDetail] = useState<DetailTarget | null>(null);
 
+  const isOverview = selectedWeek === OVERVIEW_KEY;
   const { week, discrepancies: SOURCE_DISCREPANCIES } = useMemo(() => {
-    const raw = ALL_WEEKS[selectedWeek];
+    const raw = isOverview ? OVERVIEW_WEEK : ALL_WEEKS[selectedWeek];
     return reconcileWeek(raw);
-  }, [selectedWeek]);
+  }, [selectedWeek, isOverview]);
 
   const typeAverages = useMemo(() => computeTypeAverages(week.parties), [week]);
 
@@ -388,7 +438,9 @@ function Dashboard() {
               </div>
               <div className="min-w-0">
                 <p className="text-[11px] font-semibold uppercase tracking-[0.12em] text-muted-foreground">3PL · P&amp;L Аналитика</p>
-                <h1 className="text-lg sm:text-xl font-bold tracking-tight truncate">Неделя {week.week}</h1>
+                <h1 className="text-lg sm:text-xl font-bold tracking-tight truncate">
+                  {isOverview ? `Общий свод · ${AVAILABLE_WEEKS.length} нед.` : `Неделя ${week.week}`}
+                </h1>
               </div>
             </div>
 
@@ -402,7 +454,7 @@ function Dashboard() {
                     className="inline-flex items-center gap-2 rounded-xl border border-border/60 bg-card/60 px-3 py-2 text-xs font-semibold hover:bg-muted/60 transition-colors"
                   >
                     <Calendar className="h-3.5 w-3.5 text-primary" />
-                    Неделя {week.week}
+                    {isOverview ? `Общий свод · ${AVAILABLE_WEEKS.length} нед.` : `Неделя ${week.week}`}
                     <span className="text-muted-foreground font-normal hidden md:inline">· {week.period}</span>
                   </button>
                 </DropdownMenuTrigger>
@@ -411,8 +463,26 @@ function Dashboard() {
                     Выбрать неделю (наведите для дат)
                   </DropdownMenuLabel>
                   <DropdownMenuSeparator />
+                  <DropdownMenuItem
+                    onSelect={() => setSelectedWeek(OVERVIEW_KEY)}
+                    className={cn(
+                      "flex items-center justify-between gap-2 text-xs cursor-pointer",
+                      isOverview && "bg-primary/10 text-primary font-semibold"
+                    )}
+                  >
+                    <span className="inline-flex items-center gap-1.5">
+                      <Boxes className="h-3.5 w-3.5" />
+                      Общий свод
+                    </span>
+                    {isOverview ? (
+                      <span className="text-[10px] uppercase">текущий</span>
+                    ) : (
+                      <span className="text-[10px] text-muted-foreground">все недели</span>
+                    )}
+                  </DropdownMenuItem>
+                  <DropdownMenuSeparator />
                   {WEEKS.map((w) => {
-                    const isCurrent = w.week === week.week;
+                    const isCurrent = !isOverview && w.week === week.week;
                     const hasData = AVAILABLE_WEEKS.includes(w.week);
                     return (
                       <UITooltip key={w.week}>
