@@ -2177,22 +2177,32 @@ export function OverviewAnalytics({
           const { country, type } = matrixDrill;
           const tMeta = TYPE_META[type];
           const cColor = COUNTRY_COLORS[country] ?? "var(--primary)";
-          // По неделям: для каждой партии этого типа — доля страны в её mix → выручка/расход/штуки
-          const series = sortedWeeks.map((w) => {
-            let pcs = 0, kg = 0, rev = 0, exp = 0;
-            w.parties.filter((p) => p.type === type).forEach((p) => {
-              const totalMix = (p.mix ?? []).reduce((s, m) => s + (m.pcs ?? 0), 0);
-              const cMix = (p.mix ?? []).filter((m) => m.country === country);
-              const cPcs = cMix.reduce((s, m) => s + (m.pcs ?? 0), 0);
-              const cKg = cMix.reduce((s, m) => s + (m.kg ?? 0), 0);
-              pcs += cPcs; kg += cKg;
-              if (totalMix > 0 && cPcs > 0) {
-                const share = cPcs / totalMix;
-                rev += (p.revenue ?? 0) * share;
-                exp += (p.expense ?? 0) * share;
-              }
-            });
-            return { label: `W${w.week}`, period: w.period, pcs, kg, revenue: Math.round(rev), expense: Math.round(exp), gross_profit: Math.round(rev - exp), margin_pct: rev > 0 ? ((rev - exp) / rev) * 100 : 0 };
+          // Та же аллокация, что и в матрице VolumeAndBreakdown:
+          // для каждого периода — берём итог типа за период и распределяем
+          // на страну пропорционально доле страны в выручке/штуках периода.
+          const series = volumeWeeklyData.map((d) => {
+            const tv = d.byType[type];
+            const cv = d.byCountry[country];
+            if (!tv || !cv) {
+              return { label: d.label, period: d.period, pcs: 0, kg: 0, revenue: 0, expense: 0, gross_profit: 0, margin_pct: 0 };
+            }
+            const periodCountryRev = Object.values(d.byCountry).reduce((s, v) => s + (v.revenue ?? 0), 0);
+            const cShareRev = periodCountryRev > 0 ? cv.revenue / periodCountryRev : 0;
+            const cSharePcs = d.pcs > 0 ? cv.pcs / d.pcs : 0;
+            const rev = (tv.revenue ?? 0) * cShareRev;
+            const exp = (tv.expense ?? 0) * cShareRev;
+            const pcs = (tv.pcs ?? 0) * cSharePcs;
+            const kg = (tv.kg ?? 0) * cSharePcs;
+            return {
+              label: d.label,
+              period: d.period,
+              pcs: Math.round(pcs),
+              kg: Math.round(kg * 10) / 10,
+              revenue: Math.round(rev),
+              expense: Math.round(exp),
+              gross_profit: Math.round(rev - exp),
+              margin_pct: rev > 0 ? ((rev - exp) / rev) * 100 : 0,
+            };
           }).filter((r) => r.pcs > 0 || r.revenue > 0);
           const totalRev = series.reduce((s, r) => s + r.revenue, 0);
           const totalExp = series.reduce((s, r) => s + r.expense, 0);
