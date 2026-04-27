@@ -1432,6 +1432,12 @@ export function OverviewAnalytics({
             label: TYPE_META[t].label,
             color: TYPE_META[t].color,
           }))}
+          onKpiClick={(k) => setVolumeKpiDrill(k)}
+          onPeriodClick={(label) => {
+            const m = label.match(/W(\d+)/);
+            if (m) setPeriodDrill(Number(m[1]));
+          }}
+          onMatrixCellClick={(country, type) => setMatrixDrill({ country, type: type as PartyType })}
         />
       </section>
 
