@@ -34,6 +34,30 @@ import {
   type LucideIcon,
 } from "lucide-react";
 import type { Party, PartyType, WeekData } from "@/lib/types";
+import { fmtUSD, fmtNum, fmtPct } from "@/lib/format";
+import { ThemeToggle } from "@/components/ThemeToggle";
+import { SectionCard } from "@/components/SectionCard";
+import { StatCard } from "@/components/StatCard";
+import { StatusBadge } from "@/components/StatusBadge";
+import { MarkerChart } from "@/components/MarkerChart";
+import { ProductMix } from "@/components/ProductMix";
+import { DetailDialog, type DetailTarget } from "@/components/DetailDialog";
+import { OverviewAnalytics } from "@/components/OverviewAnalytics";
+import {
+  Tooltip as UITooltip,
+  TooltipContent,
+  TooltipProvider,
+  TooltipTrigger,
+} from "@/components/ui/tooltip";
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuLabel,
+  DropdownMenuSeparator,
+  DropdownMenuTrigger,
+} from "@/components/ui/dropdown-menu";
+import { cn } from "@/lib/utils";
 
 // Загружаем все недели из src/data/week*.json (eager — запекаются в бандл).
 const WEEK_MODULES = import.meta.glob("@/data/week*.json", { eager: true, import: "default" }) as Record<string, WeekData>;
@@ -93,45 +117,17 @@ function buildOverview(weeks: Record<number, WeekData>): WeekData {
   };
 }
 const OVERVIEW_WEEK: WeekData = buildOverview(ALL_WEEKS);
-import { fmtUSD, fmtNum, fmtPct } from "@/lib/format";
-import { ThemeToggle } from "@/components/ThemeToggle";
-import { SectionCard } from "@/components/SectionCard";
-import { StatCard } from "@/components/StatCard";
-import { StatusBadge } from "@/components/StatusBadge";
-import { MarkerChart } from "@/components/MarkerChart";
-import { ProductMix } from "@/components/ProductMix";
-import { DetailDialog, type DetailTarget } from "@/components/DetailDialog";
-import { OverviewAnalytics } from "@/components/OverviewAnalytics";
-import {
-  Tooltip as UITooltip,
-  TooltipContent,
-  TooltipProvider,
-  TooltipTrigger,
-} from "@/components/ui/tooltip";
-import {
-  DropdownMenu,
-  DropdownMenuContent,
-  DropdownMenuItem,
-  DropdownMenuLabel,
-  DropdownMenuSeparator,
-  DropdownMenuTrigger,
-} from "@/components/ui/dropdown-menu";
-import { cn } from "@/lib/utils";
-
-// rawWeek removed — данные теперь выбираются по выбранной неделе в компоненте
 
 /** Расхождение по одной строке (до пересчёта). */
 type Discrepancy = {
-  scope: string; // "TOTAL" | "CAINIAO" | "MPO" | "MKO" | "UZUM CB"
+  scope: string;
   metric: "Выручка" | "Расходы" | "Прибыль";
-  source: number; // что было в листе
-  computed: number; // что получилось из суммы партий
-  diff: number; // computed - source
+  source: number;
+  computed: number;
+  diff: number;
 };
 
-/** Пересчёт агрегатов из истины-источника (партий) + сбор расхождений с тем, что было в JSON.
- *  Это гарантирует 100% соответствие отображаемых сумм партиям, а в тултипе мы покажем,
- *  где именно лист расходился с партиями (если расходился). */
+/** Пересчёт агрегатов из истины-источника (партий) + сбор расхождений с тем, что было в JSON. */
 function reconcileWeek(src: WeekData): { week: WeekData; discrepancies: Discrepancy[] } {
   const EPS = 0.5;
   const discrepancies: Discrepancy[] = [];
@@ -144,7 +140,6 @@ function reconcileWeek(src: WeekData): { week: WeekData; discrepancies: Discrepa
     return { count: ps.length, revenue: r, expense: e, gross_profit: g, margin_pct: r > 0 ? (g / r) * 100 : 0 };
   };
 
-  // Пересобираем byType
   const newByType = {} as Record<PartyType, ReturnType<typeof sumByType> & { note?: string }>;
   (["CAINIAO", "MPO", "MKO"] as PartyType[]).forEach((t) => {
     const c = sumByType(t);
@@ -160,7 +155,6 @@ function reconcileWeek(src: WeekData): { week: WeekData; discrepancies: Discrepa
     newByType[t] = { ...c, note: old?.note };
   });
 
-  // Пересобираем totals
   const tRev = newByType.CAINIAO.revenue + newByType.MPO.revenue + newByType.MKO.revenue;
   const tExp = newByType.CAINIAO.expense + newByType.MPO.expense + newByType.MKO.expense;
   const tGp = newByType.CAINIAO.gross_profit + newByType.MPO.gross_profit + newByType.MKO.gross_profit;
@@ -171,7 +165,6 @@ function reconcileWeek(src: WeekData): { week: WeekData; discrepancies: Discrepa
   if (Math.abs(tGp - src.totals.gross_profit) > EPS)
     discrepancies.push({ scope: "TOTAL", metric: "Прибыль", source: src.totals.gross_profit, computed: tGp, diff: tGp - src.totals.gross_profit });
 
-  // Зонтик UZUM CB = MPO + MKO
   const uRev = newByType.MPO.revenue + newByType.MKO.revenue;
   const uExp = newByType.MPO.expense + newByType.MKO.expense;
   const uGp = newByType.MPO.gross_profit + newByType.MKO.gross_profit;
@@ -192,8 +185,6 @@ function reconcileWeek(src: WeekData): { week: WeekData; discrepancies: Discrepa
 
   return { week: reconciled, discrepancies };
 }
-
-// week + SOURCE_DISCREPANCIES теперь вычисляются внутри Dashboard через useMemo по выбранной неделе
 
 
 export const Route = createFileRoute("/")({
@@ -301,7 +292,7 @@ function computeTypeAverages(parties: Party[]) {
   return result;
 }
 
-function Dashboard() {
+export function Dashboard() {
   const [selectedWeek, setSelectedWeek] = useState<number>(DEFAULT_WEEK);
   const [filter, setFilter] = useState<"ALL" | PartyType>("ALL");
   const [detail, setDetail] = useState<DetailTarget | null>(null);
@@ -1450,4 +1441,4 @@ function MiniStat({ label, value, accent }: { label: string; value: string; acce
   );
 }
 
-export { Dashboard };
+
