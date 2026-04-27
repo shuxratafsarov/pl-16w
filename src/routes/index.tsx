@@ -101,6 +101,7 @@ import { StatusBadge } from "@/components/StatusBadge";
 import { MarkerChart } from "@/components/MarkerChart";
 import { ProductMix } from "@/components/ProductMix";
 import { DetailDialog, type DetailTarget } from "@/components/DetailDialog";
+import { OverviewAnalytics } from "@/components/OverviewAnalytics";
 import {
   Tooltip as UITooltip,
   TooltipContent,
