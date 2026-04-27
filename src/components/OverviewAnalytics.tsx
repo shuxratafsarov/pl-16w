@@ -258,23 +258,26 @@ export function OverviewAnalytics({
     const filteredParties = (w: WeekData) =>
       typeFilter === "ALL" ? w.parties : w.parties.filter((p) => p.type === typeFilter);
     return MARKERS.map((m) => {
-      // Тренд по неделям (среднее)
+      const isSum = m.key === "marker4_pcs";
+      const reduce = (vals: number[]) =>
+        vals.length ? (isSum ? vals.reduce((s, v) => s + v, 0) : vals.reduce((s, v) => s + v, 0) / vals.length) : null;
+      // Тренд по неделям (сумма для M4, среднее для остальных)
       const series = sortedWeeks.map((w) => {
         const ps = filteredParties(w);
         const vals = ps.map((p) => getVal(p, m.key)).filter((v): v is number => v != null);
-        const avg = vals.length ? vals.reduce((s, v) => s + v, 0) / vals.length : null;
-        return { label: `W${w.week}`, period: w.period, value: avg };
+        return { label: `W${w.week}`, period: w.period, value: reduce(vals) };
       });
-      // Среднее по типу за весь период
+      // По типу за весь период
       const byTypeAvg = (["CAINIAO", "MPO", "MKO"] as PartyType[]).map((t) => {
         const ps = sortedWeeks.flatMap((w) => w.parties.filter((p) => p.type === t));
         const vals = ps.map((p) => getVal(p, m.key)).filter((v): v is number => v != null);
-        const avg = vals.length ? vals.reduce((s, v) => s + v, 0) / vals.length : null;
-        return { type: t, label: TYPE_META[t].label, color: TYPE_META[t].color, value: avg, count: vals.length };
+        return { type: t, label: TYPE_META[t].label, color: TYPE_META[t].color, value: reduce(vals), count: vals.length };
       }).filter((d) => d.value != null);
       // Глобальная статистика
       const allVals = sortedWeeks.flatMap((w) => filteredParties(w).map((p) => getVal(p, m.key))).filter((v): v is number => v != null);
-      const globalAvg = allVals.length ? allVals.reduce((s, v) => s + v, 0) / allVals.length : null;
+      const globalAvg = isSum
+        ? (series.filter(s => s.value != null).length ? series.reduce((s, x) => s + (x.value ?? 0), 0) / series.filter(s => s.value != null).length : null)
+        : (allVals.length ? allVals.reduce((s, v) => s + v, 0) / allVals.length : null);
       const min = allVals.length ? Math.min(...allVals) : null;
       const max = allVals.length ? Math.max(...allVals) : null;
       // Тренд: первые 4 vs последние 4 непустые недели
