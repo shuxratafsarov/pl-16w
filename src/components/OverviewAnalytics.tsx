@@ -12,6 +12,7 @@ import {
   LineChart,
   Pie,
   PieChart,
+  ReferenceLine,
   ResponsiveContainer,
   Tooltip,
   XAxis,
@@ -33,6 +34,12 @@ import {
   ArrowDownRight,
   Layers,
   Globe2,
+  Gauge,
+  AlertTriangle,
+  CheckCircle2,
+  Sparkles,
+  Target,
+  Scale,
   type LucideIcon,
 } from "lucide-react";
 import type { Party, PartyType, WeekData } from "@/lib/types";
@@ -55,6 +62,14 @@ const METRIC_META: Record<MetricKey, { label: string; color: string; format: (v:
   expense: { label: "Расходы", color: "var(--destructive)", format: (v) => fmtUSD(v) },
   gross_profit: { label: "Прибыль", color: "var(--success)", format: (v) => fmtUSD(v) },
   margin_pct: { label: "Маржа %", color: "var(--warning)", format: (v) => `${v.toFixed(2)}%` },
+};
+
+const COUNTRY_COLORS: Record<string, string> = {
+  UZ: "var(--cainiao)",
+  BY: "var(--mpo)",
+  KG: "var(--mko)",
+  AZ: "var(--warning)",
+  KZ: "var(--success)",
 };
 
 export function OverviewAnalytics({
@@ -184,13 +199,122 @@ export function OverviewAnalytics({
     return list.sort((a, b) => b.gross_profit - a.gross_profit).slice(0, 10);
   }, [sortedWeeks, typeFilter]);
 
-  const COUNTRY_COLORS: Record<string, string> = {
-    UZ: "var(--cainiao)",
-    BY: "var(--mpo)",
-    KG: "var(--mko)",
-    AZ: "var(--warning)",
-    KZ: "var(--success)",
-  };
+  /** Week-over-Week изменение выручки и GP. */
+  const wowSeries = useMemo(() => {
+    return weeklySeries.map((w, i) => {
+      const prev = weeklySeries[i - 1];
+      const wowRev = prev && prev.revenue > 0 ? ((w.revenue - prev.revenue) / prev.revenue) * 100 : 0;
+      const wowGp = prev && prev.gross_profit !== 0 ? ((w.gross_profit - prev.gross_profit) / Math.abs(prev.gross_profit)) * 100 : 0;
+      return { label: w.label, period: w.period, wowRev, wowGp };
+    });
+  }, [weeklySeries]);
+
+  /** Накопительная выручка и прибыль по неделям. */
+  const cumulativeSeries = useMemo(() => {
+    let r = 0;
+    let g = 0;
+    return weeklySeries.map((w) => {
+      r += w.revenue;
+      g += w.gross_profit;
+      return { label: w.label, period: w.period, cumRevenue: r, cumProfit: g };
+    });
+  }, [weeklySeries]);
+
+  /** Аналитика по маркерам M1..M4 — динамика по неделям + распределение по типам + статусы. */
+  const markersAnalytics = useMemo(() => {
+    type MK = "marker1_tariff" | "marker2_volnet" | "marker3_grossnet" | "marker4_margin";
+    const MARKERS: { key: MK; short: string; title: string; unit: string; decimals: number; direction: "above" | "below"; color: string }[] = [
+      { key: "marker1_tariff", short: "M1 · Тариф", title: "Тариф Лайнхолла", unit: " $/кг", decimals: 2, direction: "above", color: "var(--chart-1)" },
+      { key: "marker2_volnet", short: "M2 · Vol/Net", title: "Объёмный / Нетто", unit: "x", decimals: 3, direction: "above", color: "var(--chart-2)" },
+      { key: "marker3_grossnet", short: "M3 · Gross/Net", title: "Брутто / Нетто", unit: "x", decimals: 3, direction: "above", color: "var(--chart-4)" },
+      { key: "marker4_margin", short: "M4 · Маржа", title: "Маржа партии", unit: "%", decimals: 2, direction: "below", color: "var(--chart-5)" },
+    ];
+    const getVal = (p: Party, k: MK): number | null => {
+      if (k === "marker4_margin") return p.margin_pct;
+      const v = p[k as keyof Party] as number | null;
+      return typeof v === "number" && Number.isFinite(v) ? v : null;
+    };
+    const filteredParties = (w: WeekData) =>
+      typeFilter === "ALL" ? w.parties : w.parties.filter((p) => p.type === typeFilter);
+    return MARKERS.map((m) => {
+      // Тренд по неделям (среднее)
+      const series = sortedWeeks.map((w) => {
+        const ps = filteredParties(w);
+        const vals = ps.map((p) => getVal(p, m.key)).filter((v): v is number => v != null);
+        const avg = vals.length ? vals.reduce((s, v) => s + v, 0) / vals.length : null;
+        return { label: `W${w.week}`, period: w.period, value: avg };
+      });
+      // Среднее по типу за весь период
+      const byTypeAvg = (["CAINIAO", "MPO", "MKO"] as PartyType[]).map((t) => {
+        const ps = sortedWeeks.flatMap((w) => w.parties.filter((p) => p.type === t));
+        const vals = ps.map((p) => getVal(p, m.key)).filter((v): v is number => v != null);
+        const avg = vals.length ? vals.reduce((s, v) => s + v, 0) / vals.length : null;
+        return { type: t, label: TYPE_META[t].label, color: TYPE_META[t].color, value: avg, count: vals.length };
+      }).filter((d) => d.value != null);
+      // Глобальная статистика
+      const allVals = sortedWeeks.flatMap((w) => filteredParties(w).map((p) => getVal(p, m.key))).filter((v): v is number => v != null);
+      const globalAvg = allVals.length ? allVals.reduce((s, v) => s + v, 0) / allVals.length : null;
+      const min = allVals.length ? Math.min(...allVals) : null;
+      const max = allVals.length ? Math.max(...allVals) : null;
+      // Тренд: первые 4 vs последние 4 непустые недели
+      const valid = series.filter((s) => s.value != null) as { label: string; period: string; value: number }[];
+      const first = valid.slice(0, 4);
+      const last = valid.slice(-4);
+      const avgArr = (a: typeof valid) => (a.length ? a.reduce((s, x) => s + x.value, 0) / a.length : 0);
+      const firstAvg = avgArr(first);
+      const lastAvg = avgArr(last);
+      const trendPct = firstAvg !== 0 ? ((lastAvg - firstAvg) / Math.abs(firstAvg)) * 100 : 0;
+      // Доля партий в зоне риска относительно глобального среднего
+      let warnCount = 0;
+      let critCount = 0;
+      if (globalAvg != null && globalAvg !== 0) {
+        allVals.forEach((v) => {
+          const ratio = v / globalAvg;
+          if (m.direction === "above") {
+            if (ratio >= 1.2) critCount++;
+            else if (ratio >= 1.1) warnCount++;
+          } else {
+            if (ratio <= 0.8) critCount++;
+            else if (ratio <= 0.9) warnCount++;
+          }
+        });
+      }
+      const total = allVals.length;
+      return { meta: m, series, byTypeAvg, globalAvg, min, max, trendPct, warnCount, critCount, total };
+    });
+  }, [sortedWeeks, typeFilter]);
+
+  /** Insights — автоматические выводы. */
+  const insights = useMemo(() => {
+    const items: { tone: "good" | "warn" | "bad" | "info"; title: string; text: string }[] = [];
+    if (totals.revTrend >= 5) {
+      items.push({ tone: "good", title: "Растущая выручка", text: `Средняя выручка последних 4 недель выше первых 4 на ${totals.revTrend.toFixed(1)}%.` });
+    } else if (totals.revTrend <= -5) {
+      items.push({ tone: "bad", title: "Падение выручки", text: `Выручка снизилась на ${Math.abs(totals.revTrend).toFixed(1)}% относительно начала периода.` });
+    }
+    if (totals.margin < 5) {
+      items.push({ tone: "bad", title: "Низкая маржа", text: `Средняя маржа ${totals.margin.toFixed(2)}% — ниже целевого порога 5%.` });
+    } else if (totals.margin >= 15) {
+      items.push({ tone: "good", title: "Высокая маржа", text: `Средняя маржа ${totals.margin.toFixed(2)}% — выше отраслевого ориентира.` });
+    }
+    // Лидер по прибыли
+    const leader = [...typeBreakdown].sort((a, b) => b.profit - a.profit)[0];
+    if (leader && leader.profit > 0) {
+      items.push({ tone: "info", title: `Лидер по прибыли — ${leader.label}`, text: `Принёс ${fmtUSD(leader.profit)} (${leader.margin.toFixed(2)}% маржи) за ${leader.count} партий.` });
+    }
+    // Убыточный тип
+    const loser = typeBreakdown.find((t) => t.profit < 0);
+    if (loser) {
+      items.push({ tone: "warn", title: `${loser.label} убыточен`, text: `Совокупный убыток ${fmtUSD(loser.profit)} при выручке ${fmtUSD(loser.revenue)}.` });
+    }
+    // Худшая неделя по марже
+    const worstMargin = [...weeklySeries].filter((w) => w.revenue > 0).sort((a, b) => a.margin_pct - b.margin_pct)[0];
+    if (worstMargin && worstMargin.margin_pct < 0) {
+      items.push({ tone: "bad", title: `Убыточная неделя ${worstMargin.label}`, text: `Маржа ${worstMargin.margin_pct.toFixed(2)}% · ${worstMargin.period}.` });
+    }
+    return items;
+  }, [totals, typeBreakdown, weeklySeries]);
+
 
   return (
     <div className="space-y-8">
@@ -553,7 +677,382 @@ export function OverviewAnalytics({
         </div>
       </SectionCard>
 
-      {/* Карточки типов */}
+      {/* Накопительные показатели */}
+      <SectionCard
+        title="Накопительная выручка и прибыль"
+        description="Как нарастает оборот и валовая прибыль с начала периода"
+      >
+        <div className="h-72">
+          <ResponsiveContainer>
+            <AreaChart data={cumulativeSeries} margin={{ top: 8, right: 16, left: 0, bottom: 0 }}>
+              <defs>
+                <linearGradient id="grad-cum-rev" x1="0" y1="0" x2="0" y2="1">
+                  <stop offset="0%" stopColor="var(--primary)" stopOpacity={0.4} />
+                  <stop offset="100%" stopColor="var(--primary)" stopOpacity={0.02} />
+                </linearGradient>
+                <linearGradient id="grad-cum-gp" x1="0" y1="0" x2="0" y2="1">
+                  <stop offset="0%" stopColor="var(--success)" stopOpacity={0.4} />
+                  <stop offset="100%" stopColor="var(--success)" stopOpacity={0.02} />
+                </linearGradient>
+              </defs>
+              <CartesianGrid stroke="var(--border)" strokeDasharray="3 3" vertical={false} />
+              <XAxis dataKey="label" stroke="var(--muted-foreground)" fontSize={11} />
+              <YAxis
+                stroke="var(--muted-foreground)"
+                fontSize={11}
+                tickFormatter={(v) => `$${(v / 1000).toFixed(0)}k`}
+              />
+              <Tooltip
+                contentStyle={{
+                  background: "var(--popover)",
+                  border: "1px solid var(--border)",
+                  borderRadius: 12,
+                  fontSize: 12,
+                }}
+                formatter={(v: number, n) => [fmtUSD(v), n as string]}
+              />
+              <Legend iconType="circle" wrapperStyle={{ fontSize: 12 }} />
+              <Area
+                type="monotone"
+                dataKey="cumRevenue"
+                name="Σ Выручка"
+                stroke="var(--primary)"
+                strokeWidth={2.5}
+                fill="url(#grad-cum-rev)"
+              />
+              <Area
+                type="monotone"
+                dataKey="cumProfit"
+                name="Σ Прибыль"
+                stroke="var(--success)"
+                strokeWidth={2.5}
+                fill="url(#grad-cum-gp)"
+              />
+            </AreaChart>
+          </ResponsiveContainer>
+        </div>
+      </SectionCard>
+
+      {/* WoW динамика */}
+      <SectionCard
+        title="Темп роста week‑over‑week"
+        description="Прирост выручки и прибыли неделя к неделе, %"
+      >
+        <div className="h-64">
+          <ResponsiveContainer>
+            <BarChart data={wowSeries} margin={{ top: 8, right: 16, left: 0, bottom: 0 }}>
+              <CartesianGrid stroke="var(--border)" strokeDasharray="3 3" vertical={false} />
+              <XAxis dataKey="label" stroke="var(--muted-foreground)" fontSize={11} />
+              <YAxis
+                stroke="var(--muted-foreground)"
+                fontSize={11}
+                tickFormatter={(v) => `${v.toFixed(0)}%`}
+              />
+              <Tooltip
+                contentStyle={{
+                  background: "var(--popover)",
+                  border: "1px solid var(--border)",
+                  borderRadius: 12,
+                  fontSize: 12,
+                }}
+                formatter={(v: number, n) => [`${v.toFixed(1)}%`, n as string]}
+              />
+              <Legend iconType="circle" wrapperStyle={{ fontSize: 12 }} />
+              <ReferenceLine y={0} stroke="var(--muted-foreground)" strokeOpacity={0.5} />
+              <Bar dataKey="wowRev" name="Δ Выручка" radius={[4, 4, 0, 0]}>
+                {wowSeries.map((d, i) => (
+                  <Cell key={`r-${i}`} fill={d.wowRev >= 0 ? "var(--primary)" : "var(--destructive)"} />
+                ))}
+              </Bar>
+              <Bar dataKey="wowGp" name="Δ Прибыль" radius={[4, 4, 0, 0]}>
+                {wowSeries.map((d, i) => (
+                  <Cell key={`g-${i}`} fill={d.wowGp >= 0 ? "var(--success)" : "var(--destructive)"} />
+                ))}
+              </Bar>
+            </BarChart>
+          </ResponsiveContainer>
+        </div>
+      </SectionCard>
+
+      {/* Аналитика по маркерам M1..M4 */}
+      <section className="space-y-3">
+        <div className="flex items-center justify-between gap-2 flex-wrap">
+          <h3 className="text-base font-semibold tracking-tight inline-flex items-center gap-2">
+            <Gauge className="h-4 w-4 text-primary" /> Аналитика по маркерам · M1–M4
+          </h3>
+          <p className="text-xs text-muted-foreground">
+            Динамика среднего значения по неделям, разбивка по типам и доля партий в зоне риска
+          </p>
+        </div>
+
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-4">
+          {markersAnalytics.map((m) => {
+            const trendBad = m.meta.direction === "above" ? m.trendPct > 0 : m.trendPct < 0;
+            const trendGood = m.meta.direction === "above" ? m.trendPct < 0 : m.trendPct > 0;
+            const valid = m.series.filter((s) => s.value != null);
+            return (
+              <div
+                key={m.meta.key}
+                className="rounded-2xl glass-card p-4 shadow-elegant space-y-3"
+              >
+                <div className="flex items-start justify-between gap-3">
+                  <div className="flex items-center gap-3 min-w-0">
+                    <div
+                      className="h-10 w-10 rounded-xl flex items-center justify-center shrink-0"
+                      style={{
+                        backgroundColor: `color-mix(in oklab, ${m.meta.color} 22%, transparent)`,
+                        color: m.meta.color,
+                      }}
+                    >
+                      <Gauge className="h-4 w-4" />
+                    </div>
+                    <div className="min-w-0">
+                      <p className="text-sm font-bold truncate">{m.meta.short}</p>
+                      <p className="text-[11px] text-muted-foreground truncate">{m.meta.title}</p>
+                    </div>
+                  </div>
+                  <div className="text-right shrink-0">
+                    <p className="text-[10px] uppercase tracking-wider text-muted-foreground font-semibold">
+                      средн. за период
+                    </p>
+                    <p className="text-base font-bold tabular-nums">
+                      {m.globalAvg != null ? `${fmtNum(m.globalAvg, m.meta.decimals)}${m.meta.unit}` : "—"}
+                    </p>
+                  </div>
+                </div>
+
+                {/* мини-метрики */}
+                <div className="grid grid-cols-3 gap-2 text-center">
+                  <div className="rounded-lg border border-border/60 bg-card/40 px-2 py-1.5">
+                    <p className="text-[9px] uppercase text-muted-foreground tracking-wider font-semibold">min</p>
+                    <p className="text-xs font-bold tabular-nums">
+                      {m.min != null ? `${fmtNum(m.min, m.meta.decimals)}${m.meta.unit}` : "—"}
+                    </p>
+                  </div>
+                  <div className="rounded-lg border border-border/60 bg-card/40 px-2 py-1.5">
+                    <p className="text-[9px] uppercase text-muted-foreground tracking-wider font-semibold">тренд 4w</p>
+                    <p
+                      className={cn(
+                        "text-xs font-bold tabular-nums inline-flex items-center justify-center gap-0.5",
+                        trendBad ? "text-destructive" : trendGood ? "text-success" : "text-muted-foreground"
+                      )}
+                    >
+                      {m.trendPct >= 0 ? <ArrowUpRight className="h-3 w-3" /> : <ArrowDownRight className="h-3 w-3" />}
+                      {m.trendPct >= 0 ? "+" : ""}
+                      {m.trendPct.toFixed(1)}%
+                    </p>
+                  </div>
+                  <div className="rounded-lg border border-border/60 bg-card/40 px-2 py-1.5">
+                    <p className="text-[9px] uppercase text-muted-foreground tracking-wider font-semibold">max</p>
+                    <p className="text-xs font-bold tabular-nums">
+                      {m.max != null ? `${fmtNum(m.max, m.meta.decimals)}${m.meta.unit}` : "—"}
+                    </p>
+                  </div>
+                </div>
+
+                {/* линия по неделям */}
+                <div className="h-32">
+                  <ResponsiveContainer>
+                    <LineChart data={m.series} margin={{ top: 4, right: 8, left: 0, bottom: 0 }}>
+                      <CartesianGrid stroke="var(--border)" strokeDasharray="3 3" vertical={false} />
+                      <XAxis dataKey="label" stroke="var(--muted-foreground)" fontSize={9} tickLine={false} axisLine={false} />
+                      <YAxis hide domain={["auto", "auto"]} />
+                      <Tooltip
+                        cursor={{ stroke: "var(--accent)", strokeWidth: 1 }}
+                        contentStyle={{
+                          background: "var(--popover)",
+                          border: "1px solid var(--border)",
+                          borderRadius: 10,
+                          fontSize: 11,
+                          padding: "6px 10px",
+                        }}
+                        formatter={(v: number) => [
+                          v != null ? `${fmtNum(v, m.meta.decimals)}${m.meta.unit}` : "—",
+                          m.meta.short,
+                        ]}
+                      />
+                      {m.globalAvg != null && (
+                        <ReferenceLine y={m.globalAvg} stroke="var(--muted-foreground)" strokeDasharray="3 3" strokeOpacity={0.6} />
+                      )}
+                      <Line
+                        type="monotone"
+                        dataKey="value"
+                        stroke={m.meta.color}
+                        strokeWidth={2}
+                        dot={{ r: 2.5 }}
+                        connectNulls
+                      />
+                    </LineChart>
+                  </ResponsiveContainer>
+                </div>
+
+                {/* по типам */}
+                {m.byTypeAvg.length > 0 && (
+                  <div className="space-y-1.5">
+                    <p className="text-[10px] uppercase tracking-wider text-muted-foreground font-semibold">
+                      Среднее по типам
+                    </p>
+                    {m.byTypeAvg.map((t) => {
+                      const pct =
+                        m.max != null && m.min != null && m.max > m.min && t.value != null
+                          ? ((t.value - m.min) / (m.max - m.min)) * 100
+                          : 50;
+                      return (
+                        <div key={t.type} className="flex items-center gap-2 text-xs">
+                          <span
+                            className="h-2 w-2 rounded-full shrink-0"
+                            style={{ backgroundColor: t.color }}
+                          />
+                          <span className="font-semibold w-20 shrink-0">{t.label}</span>
+                          <div className="flex-1 h-1.5 rounded-full bg-muted/40 overflow-hidden">
+                            <div
+                              className="h-full rounded-full"
+                              style={{ width: `${Math.max(4, Math.min(100, pct))}%`, backgroundColor: t.color }}
+                            />
+                          </div>
+                          <span className="tabular-nums font-semibold w-20 text-right">
+                            {t.value != null ? `${fmtNum(t.value, m.meta.decimals)}${m.meta.unit}` : "—"}
+                          </span>
+                        </div>
+                      );
+                    })}
+                  </div>
+                )}
+
+                {/* зоны риска */}
+                {m.total > 0 && (
+                  <div className="flex items-center gap-2 text-[11px] pt-1 border-t border-border/60">
+                    <span className="inline-flex items-center gap-1 text-success font-semibold">
+                      <CheckCircle2 className="h-3 w-3" /> норма {m.total - m.warnCount - m.critCount}
+                    </span>
+                    <span className="inline-flex items-center gap-1 text-warning font-semibold">
+                      <AlertTriangle className="h-3 w-3" /> внимание {m.warnCount}
+                    </span>
+                    <span className="inline-flex items-center gap-1 text-destructive font-semibold">
+                      <AlertTriangle className="h-3 w-3" /> критич. {m.critCount}
+                    </span>
+                    <span className="ml-auto text-muted-foreground">
+                      {m.meta.direction === "above" ? "↑ выше = хуже" : "↓ ниже = хуже"}
+                    </span>
+                  </div>
+                )}
+              </div>
+            );
+          })}
+        </div>
+      </section>
+
+      {/* Insights / автоматические выводы */}
+      {insights.length > 0 && (
+        <SectionCard
+          title="Ключевые выводы"
+          description="Автоматическая интерпретация показателей"
+        >
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
+            {insights.map((it, i) => {
+              const palette =
+                it.tone === "good"
+                  ? { bg: "bg-success/5", border: "border-success/30", text: "text-success", Icon: CheckCircle2 }
+                  : it.tone === "bad"
+                    ? { bg: "bg-destructive/5", border: "border-destructive/30", text: "text-destructive", Icon: AlertTriangle }
+                    : it.tone === "warn"
+                      ? { bg: "bg-warning/5", border: "border-warning/30", text: "text-warning", Icon: AlertTriangle }
+                      : { bg: "bg-primary/5", border: "border-primary/30", text: "text-primary", Icon: Sparkles };
+              const Icon = palette.Icon;
+              return (
+                <div
+                  key={i}
+                  className={cn("rounded-xl border p-4 flex items-start gap-3", palette.bg, palette.border)}
+                >
+                  <div className={cn("h-8 w-8 rounded-lg flex items-center justify-center shrink-0", palette.bg, palette.text)}>
+                    <Icon className="h-4 w-4" />
+                  </div>
+                  <div className="min-w-0">
+                    <p className={cn("text-sm font-bold", palette.text)}>{it.title}</p>
+                    <p className="text-xs text-muted-foreground mt-0.5">{it.text}</p>
+                  </div>
+                </div>
+              );
+            })}
+          </div>
+        </SectionCard>
+      )}
+
+      {/* Эффективность типов · scatter-style карточки */}
+      <SectionCard
+        title="Эффективность типов · доля выручки vs маржа"
+        description="Сравнение вклада в оборот и рентабельности"
+      >
+        <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
+          {typeBreakdown.map((t) => {
+            const share = totals.revenue > 0 ? (t.revenue / totals.revenue) * 100 : 0;
+            const score = share * 0.4 + Math.max(0, t.margin) * 0.6;
+            return (
+              <div
+                key={t.type}
+                className="rounded-xl border border-border bg-card/40 p-4 space-y-3"
+              >
+                <div className="flex items-center justify-between">
+                  <span className="text-xs font-bold uppercase tracking-wider" style={{ color: t.color }}>
+                    {t.label}
+                  </span>
+                  <span className="inline-flex items-center gap-1 text-[10px] font-bold uppercase text-muted-foreground">
+                    <Target className="h-3 w-3" /> score {score.toFixed(1)}
+                  </span>
+                </div>
+                <div>
+                  <div className="flex items-center justify-between text-[10px] text-muted-foreground font-semibold uppercase tracking-wider">
+                    <span>Доля выручки</span>
+                    <span>{share.toFixed(1)}%</span>
+                  </div>
+                  <div className="mt-1 h-1.5 rounded-full bg-muted/40 overflow-hidden">
+                    <div
+                      className="h-full rounded-full"
+                      style={{ width: `${Math.max(2, share)}%`, backgroundColor: t.color }}
+                    />
+                  </div>
+                </div>
+                <div>
+                  <div className="flex items-center justify-between text-[10px] text-muted-foreground font-semibold uppercase tracking-wider">
+                    <span>Маржа</span>
+                    <span
+                      className={cn(
+                        t.margin >= 15 ? "text-success" : t.margin >= 5 ? "text-warning" : "text-destructive"
+                      )}
+                    >
+                      {t.margin.toFixed(2)}%
+                    </span>
+                  </div>
+                  <div className="mt-1 h-1.5 rounded-full bg-muted/40 overflow-hidden">
+                    <div
+                      className={cn(
+                        "h-full rounded-full",
+                        t.margin >= 15 ? "bg-success" : t.margin >= 5 ? "bg-warning" : "bg-destructive"
+                      )}
+                      style={{ width: `${Math.max(2, Math.min(100, Math.abs(t.margin) * 2))}%` }}
+                    />
+                  </div>
+                </div>
+                <div className="flex items-center justify-between text-[11px] text-muted-foreground pt-1 border-t border-border/60">
+                  <span className="inline-flex items-center gap-1">
+                    <Scale className="h-3 w-3" /> {t.count} партий
+                  </span>
+                  <span
+                    className={cn(
+                      "font-bold tabular-nums",
+                      t.profit >= 0 ? "text-success" : "text-destructive"
+                    )}
+                  >
+                    {fmtUSD(t.profit)}
+                  </span>
+                </div>
+              </div>
+            );
+          })}
+        </div>
+      </SectionCard>
+
+
       <section>
         <h3 className="text-base font-semibold tracking-tight mb-3 inline-flex items-center gap-2">
           <Layers className="h-4 w-4 text-primary" /> Сводка по типам бизнеса · период
