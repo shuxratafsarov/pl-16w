@@ -94,6 +94,7 @@ export function OverviewAnalytics({
 }) {
   const [typeFilter, setTypeFilter] = useState<TypeFilter>("ALL");
   const [metric, setMetric] = useState<MetricKey>("revenue");
+  const [kpiDrill, setKpiDrill] = useState<KpiDrillKey | null>(null);
 
   const sortedWeeks = useMemo(
     () => Object.keys(weeksMap).map(Number).sort((a, b) => a - b).map((n) => weeksMap[n]),
