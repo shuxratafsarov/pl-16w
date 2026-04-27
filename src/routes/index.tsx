@@ -118,6 +118,74 @@ function buildOverview(weeks: Record<number, WeekData>): WeekData {
 }
 const OVERVIEW_WEEK: WeekData = buildOverview(ALL_WEEKS);
 
+/** Расхождение по одной строке (до пересчёта). */
+type Discrepancy = {
+  scope: string;
+  metric: "Выручка" | "Расходы" | "Прибыль";
+  source: number;
+  computed: number;
+  diff: number;
+};
+
+/** Пересчёт агрегатов из истины-источника (партий) + сбор расхождений с тем, что было в JSON. */
+function reconcileWeek(src: WeekData): { week: WeekData; discrepancies: Discrepancy[] } {
+  const EPS = 0.5;
+  const discrepancies: Discrepancy[] = [];
+
+  const sumByType = (t: PartyType) => {
+    const ps = src.parties.filter((p) => p.type === t);
+    const r = ps.reduce((s, p) => s + (p.revenue ?? 0), 0);
+    const e = ps.reduce((s, p) => s + (p.expense ?? 0), 0);
+    const g = ps.reduce((s, p) => s + (p.gross_profit ?? 0), 0);
+    return { count: ps.length, revenue: r, expense: e, gross_profit: g, margin_pct: r > 0 ? (g / r) * 100 : 0 };
+  };
+
+  const newByType = {} as Record<PartyType, ReturnType<typeof sumByType> & { note?: string }>;
+  (["CAINIAO", "MPO", "MKO"] as PartyType[]).forEach((t) => {
+    const c = sumByType(t);
+    const old = src.byType[t];
+    if (old) {
+      if (Math.abs(c.revenue - old.revenue) > EPS)
+        discrepancies.push({ scope: t, metric: "Выручка", source: old.revenue, computed: c.revenue, diff: c.revenue - old.revenue });
+      if (Math.abs(c.expense - old.expense) > EPS)
+        discrepancies.push({ scope: t, metric: "Расходы", source: old.expense, computed: c.expense, diff: c.expense - old.expense });
+      if (Math.abs(c.gross_profit - old.gross_profit) > EPS)
+        discrepancies.push({ scope: t, metric: "Прибыль", source: old.gross_profit, computed: c.gross_profit, diff: c.gross_profit - old.gross_profit });
+    }
+    newByType[t] = { ...c, note: old?.note };
+  });
+
+  const tRev = newByType.CAINIAO.revenue + newByType.MPO.revenue + newByType.MKO.revenue;
+  const tExp = newByType.CAINIAO.expense + newByType.MPO.expense + newByType.MKO.expense;
+  const tGp = newByType.CAINIAO.gross_profit + newByType.MPO.gross_profit + newByType.MKO.gross_profit;
+  if (Math.abs(tRev - src.totals.revenue) > EPS)
+    discrepancies.push({ scope: "TOTAL", metric: "Выручка", source: src.totals.revenue, computed: tRev, diff: tRev - src.totals.revenue });
+  if (Math.abs(tExp - src.totals.expense) > EPS)
+    discrepancies.push({ scope: "TOTAL", metric: "Расходы", source: src.totals.expense, computed: tExp, diff: tExp - src.totals.expense });
+  if (Math.abs(tGp - src.totals.gross_profit) > EPS)
+    discrepancies.push({ scope: "TOTAL", metric: "Прибыль", source: src.totals.gross_profit, computed: tGp, diff: tGp - src.totals.gross_profit });
+
+  const uRev = newByType.MPO.revenue + newByType.MKO.revenue;
+  const uExp = newByType.MPO.expense + newByType.MKO.expense;
+  const uGp = newByType.MPO.gross_profit + newByType.MKO.gross_profit;
+  const oldU = src.umbrella_uzum_cb;
+  if (Math.abs(uRev - oldU.revenue) > EPS)
+    discrepancies.push({ scope: "UZUM CB", metric: "Выручка", source: oldU.revenue, computed: uRev, diff: uRev - oldU.revenue });
+  if (Math.abs(uExp - oldU.expense) > EPS)
+    discrepancies.push({ scope: "UZUM CB", metric: "Расходы", source: oldU.expense, computed: uExp, diff: uExp - oldU.expense });
+  if (Math.abs(uGp - oldU.gross_profit) > EPS)
+    discrepancies.push({ scope: "UZUM CB", metric: "Прибыль", source: oldU.gross_profit, computed: uGp, diff: uGp - oldU.gross_profit });
+
+  const reconciled: WeekData = {
+    ...src,
+    totals: { revenue: tRev, expense: tExp, gross_profit: tGp, margin_pct: tRev > 0 ? (tGp / tRev) * 100 : 0 },
+    byType: newByType as WeekData["byType"],
+    umbrella_uzum_cb: { revenue: uRev, expense: uExp, gross_profit: uGp, margin_pct: uRev > 0 ? (uGp / uRev) * 100 : 0 },
+  };
+
+  return { week: reconciled, discrepancies };
+}
+
 
 export const Route = createFileRoute("/")({
   component: Dashboard,
