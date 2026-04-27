@@ -1,0 +1,873 @@
+import { useMemo, useState } from "react";
+import {
+  Area,
+  AreaChart,
+  Bar,
+  BarChart,
+  CartesianGrid,
+  Cell,
+  ComposedChart,
+  Legend,
+  Line,
+  LineChart,
+  Pie,
+  PieChart,
+  ResponsiveContainer,
+  Tooltip,
+  XAxis,
+  YAxis,
+} from "recharts";
+import {
+  TrendingUp,
+  TrendingDown,
+  Wallet,
+  Receipt,
+  Percent,
+  Boxes,
+  Plane,
+  PackageCheck,
+  Banknote,
+  Activity,
+  Filter,
+  ArrowUpRight,
+  ArrowDownRight,
+  Layers,
+  Globe2,
+  type LucideIcon,
+} from "lucide-react";
+import type { Party, PartyType, WeekData } from "@/lib/types";
+import { fmtUSD, fmtNum, fmtPct } from "@/lib/format";
+import { SectionCard } from "@/components/SectionCard";
+import { StatCard } from "@/components/StatCard";
+import { cn } from "@/lib/utils";
+
+const TYPE_META: Record<PartyType, { label: string; full: string; color: string; icon: LucideIcon }> = {
+  CAINIAO: { label: "CAINIAO", full: "Cainiao C2M", color: "var(--cainiao)", icon: Plane },
+  MPO: { label: "UZUM MPO", full: "UZUM Crossborder · MPO", color: "var(--mpo)", icon: PackageCheck },
+  MKO: { label: "UZUM MKO", full: "UZUM Crossborder · MKO", color: "var(--mko)", icon: Banknote },
+};
+
+type TypeFilter = "ALL" | PartyType;
+type MetricKey = "revenue" | "expense" | "gross_profit" | "margin_pct";
+
+const METRIC_META: Record<MetricKey, { label: string; color: string; format: (v: number) => string }> = {
+  revenue: { label: "Выручка", color: "var(--primary)", format: (v) => fmtUSD(v) },
+  expense: { label: "Расходы", color: "var(--destructive)", format: (v) => fmtUSD(v) },
+  gross_profit: { label: "Прибыль", color: "var(--success)", format: (v) => fmtUSD(v) },
+  margin_pct: { label: "Маржа %", color: "var(--warning)", format: (v) => `${v.toFixed(2)}%` },
+};
+
+export function OverviewAnalytics({
+  weeksMap,
+}: {
+  weeksMap: Record<number, WeekData>;
+}) {
+  const [typeFilter, setTypeFilter] = useState<TypeFilter>("ALL");
+  const [metric, setMetric] = useState<MetricKey>("revenue");
+
+  const sortedWeeks = useMemo(
+    () => Object.keys(weeksMap).map(Number).sort((a, b) => a - b).map((n) => weeksMap[n]),
+    [weeksMap]
+  );
+
+  /** Агрегаты по неделям с учётом фильтра по типу. */
+  const weeklySeries = useMemo(() => {
+    return sortedWeeks.map((w) => {
+      const parties =
+        typeFilter === "ALL" ? w.parties : w.parties.filter((p) => p.type === typeFilter);
+      const revenue = parties.reduce((s, p) => s + (p.revenue ?? 0), 0);
+      const expense = parties.reduce((s, p) => s + (p.expense ?? 0), 0);
+      const gross_profit = parties.reduce((s, p) => s + (p.gross_profit ?? 0), 0);
+      const margin_pct = revenue > 0 ? (gross_profit / revenue) * 100 : 0;
+      // Доли по типам (для stacked даже когда фильтр ALL)
+      const byType = (["CAINIAO", "MPO", "MKO"] as PartyType[]).reduce((acc, t) => {
+        const ps = w.parties.filter((p) => p.type === t);
+        const r = ps.reduce((s, p) => s + (p.revenue ?? 0), 0);
+        const e = ps.reduce((s, p) => s + (p.expense ?? 0), 0);
+        const gp = ps.reduce((s, p) => s + (p.gross_profit ?? 0), 0);
+        acc[`${t}_revenue`] = r;
+        acc[`${t}_expense`] = e;
+        acc[`${t}_profit`] = gp;
+        return acc;
+      }, {} as Record<string, number>);
+      return {
+        week: w.week,
+        label: `W${w.week}`,
+        period: w.period,
+        revenue,
+        expense,
+        gross_profit,
+        margin_pct,
+        parties: parties.length,
+        ...byType,
+      };
+    });
+  }, [sortedWeeks, typeFilter]);
+
+  /** Глобальные KPI с дельтой между первой и последней неделей. */
+  const totals = useMemo(() => {
+    const sum = (k: "revenue" | "expense" | "gross_profit") =>
+      weeklySeries.reduce((s, w) => s + w[k], 0);
+    const revenue = sum("revenue");
+    const expense = sum("expense");
+    const gross_profit = sum("gross_profit");
+    const margin = revenue > 0 ? (gross_profit / revenue) * 100 : 0;
+    const partiesTotal = weeklySeries.reduce((s, w) => s + w.parties, 0);
+    const avgWeekly = weeklySeries.length > 0 ? revenue / weeklySeries.length : 0;
+    // Тренд: сравним среднее последних 4 недель и первых 4
+    const first = weeklySeries.slice(0, 4);
+    const last = weeklySeries.slice(-4);
+    const avg = (arr: typeof weeklySeries, k: "revenue" | "gross_profit") =>
+      arr.length ? arr.reduce((s, w) => s + w[k], 0) / arr.length : 0;
+    const revFirst = avg(first, "revenue");
+    const revLast = avg(last, "revenue");
+    const revTrend = revFirst > 0 ? ((revLast - revFirst) / revFirst) * 100 : 0;
+    const gpFirst = avg(first, "gross_profit");
+    const gpLast = avg(last, "gross_profit");
+    const gpTrend = gpFirst !== 0 ? ((gpLast - gpFirst) / Math.abs(gpFirst)) * 100 : 0;
+    return { revenue, expense, gross_profit, margin, partiesTotal, avgWeekly, revTrend, gpTrend };
+  }, [weeklySeries]);
+
+  /** Лучшая / худшая неделя по выбранной метрике. */
+  const extremes = useMemo(() => {
+    if (weeklySeries.length === 0) return null;
+    const sorted = [...weeklySeries].sort((a, b) => (b[metric] as number) - (a[metric] as number));
+    return { best: sorted[0], worst: sorted[sorted.length - 1] };
+  }, [weeklySeries, metric]);
+
+  /** Распределение по типам за весь период. */
+  const typeBreakdown = useMemo(() => {
+    return (["CAINIAO", "MPO", "MKO"] as PartyType[]).map((t) => {
+      const all: Party[] = sortedWeeks.flatMap((w) => w.parties.filter((p) => p.type === t));
+      const revenue = all.reduce((s, p) => s + (p.revenue ?? 0), 0);
+      const expense = all.reduce((s, p) => s + (p.expense ?? 0), 0);
+      const profit = all.reduce((s, p) => s + (p.gross_profit ?? 0), 0);
+      const margin = revenue > 0 ? (profit / revenue) * 100 : 0;
+      return {
+        type: t,
+        label: TYPE_META[t].label,
+        color: TYPE_META[t].color,
+        count: all.length,
+        revenue,
+        expense,
+        profit,
+        margin,
+      };
+    });
+  }, [sortedWeeks]);
+
+  /** Mix по странам (агрегат по всем неделям с фильтром по типу). */
+  const countryBreakdown = useMemo(() => {
+    const map = new Map<string, { pcs: number; kg: number }>();
+    sortedWeeks.forEach((w) => {
+      w.parties.forEach((p) => {
+        if (typeFilter !== "ALL" && p.type !== typeFilter) return;
+        (p.mix ?? []).forEach((m) => {
+          const cur = map.get(m.country) ?? { pcs: 0, kg: 0 };
+          cur.pcs += m.pcs ?? 0;
+          cur.kg += m.kg ?? 0;
+          map.set(m.country, cur);
+        });
+      });
+    });
+    return Array.from(map.entries())
+      .map(([country, v]) => ({ country, ...v }))
+      .filter((r) => r.pcs > 0 || r.kg > 0)
+      .sort((a, b) => b.pcs - a.pcs);
+  }, [sortedWeeks, typeFilter]);
+
+  /** Топ-партий по прибыли за весь период (с учётом фильтра). */
+  const topParties = useMemo(() => {
+    const list = sortedWeeks.flatMap((w) =>
+      w.parties.filter((p) => typeFilter === "ALL" || p.type === typeFilter).map((p) => ({ ...p, _week: w.week }))
+    );
+    return list.sort((a, b) => b.gross_profit - a.gross_profit).slice(0, 10);
+  }, [sortedWeeks, typeFilter]);
+
+  const COUNTRY_COLORS: Record<string, string> = {
+    UZ: "var(--cainiao)",
+    BY: "var(--mpo)",
+    KG: "var(--mko)",
+    AZ: "var(--warning)",
+    KZ: "var(--success)",
+  };
+
+  return (
+    <div className="space-y-8">
+      {/* Фильтры */}
+      <div className="flex flex-wrap items-center justify-between gap-3 rounded-2xl glass-card p-4 shadow-elegant">
+        <div className="flex items-center gap-2 text-sm font-semibold">
+          <Filter className="h-4 w-4 text-primary" />
+          Фильтры аналитики
+        </div>
+        <div className="flex flex-wrap items-center gap-2">
+          <span className="text-xs text-muted-foreground uppercase tracking-wider font-semibold">Тип</span>
+          <div className="inline-flex rounded-xl border border-border bg-card/60 p-1 gap-0.5">
+            {(["ALL", "CAINIAO", "MPO", "MKO"] as TypeFilter[]).map((f) => (
+              <button
+                key={f}
+                onClick={() => setTypeFilter(f)}
+                className={cn(
+                  "px-3 py-1.5 text-xs font-semibold rounded-lg transition-all",
+                  typeFilter === f
+                    ? "gradient-primary text-white shadow-glow"
+                    : "text-muted-foreground hover:text-foreground"
+                )}
+              >
+                {f === "ALL" ? "Все" : TYPE_META[f].label}
+              </button>
+            ))}
+          </div>
+          <span className="text-xs text-muted-foreground uppercase tracking-wider font-semibold ml-2">Метрика</span>
+          <div className="inline-flex rounded-xl border border-border bg-card/60 p-1 gap-0.5">
+            {(Object.keys(METRIC_META) as MetricKey[]).map((m) => (
+              <button
+                key={m}
+                onClick={() => setMetric(m)}
+                className={cn(
+                  "px-3 py-1.5 text-xs font-semibold rounded-lg transition-all",
+                  metric === m
+                    ? "gradient-primary text-white shadow-glow"
+                    : "text-muted-foreground hover:text-foreground"
+                )}
+              >
+                {METRIC_META[m].label}
+              </button>
+            ))}
+          </div>
+        </div>
+      </div>
+
+      {/* KPI с трендами */}
+      <section className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+        <StatCard
+          label="Σ Выручка · период"
+          value={fmtUSD(totals.revenue)}
+          hint={
+            <span
+              className={cn(
+                "inline-flex items-center gap-1",
+                totals.revTrend >= 0 ? "text-success" : "text-destructive"
+              )}
+            >
+              {totals.revTrend >= 0 ? (
+                <ArrowUpRight className="h-3 w-3" />
+              ) : (
+                <ArrowDownRight className="h-3 w-3" />
+              )}
+              {totals.revTrend >= 0 ? "+" : ""}
+              {totals.revTrend.toFixed(1)}% тренд (4 нед)
+            </span>
+          }
+          accent="primary"
+          icon={<Wallet className="h-5 w-5" />}
+        />
+        <StatCard
+          label="Σ Расходы"
+          value={fmtUSD(totals.expense)}
+          hint={`${fmtPct(totals.expense / totals.revenue)} от выручки`}
+          accent="destructive"
+          icon={<Receipt className="h-5 w-5" />}
+        />
+        <StatCard
+          label="Σ Валовая прибыль"
+          value={fmtUSD(totals.gross_profit)}
+          hint={
+            <span
+              className={cn(
+                "inline-flex items-center gap-1",
+                totals.gpTrend >= 0 ? "text-success" : "text-destructive"
+              )}
+            >
+              {totals.gpTrend >= 0 ? (
+                <TrendingUp className="h-3 w-3" />
+              ) : (
+                <TrendingDown className="h-3 w-3" />
+              )}
+              {totals.gpTrend >= 0 ? "+" : ""}
+              {totals.gpTrend.toFixed(1)}% тренд (4 нед)
+            </span>
+          }
+          accent="success"
+          icon={<TrendingUp className="h-5 w-5" />}
+        />
+        <StatCard
+          label="Средняя маржа"
+          value={`${totals.margin.toFixed(2)}%`}
+          hint={`${totals.partiesTotal} партий · ${fmtUSD(totals.avgWeekly)}/нед`}
+          accent="warning"
+          icon={<Percent className="h-5 w-5" />}
+        />
+      </section>
+
+      {/* Главный тренд: выбранная метрика по неделям */}
+      <SectionCard
+        title={`Динамика по неделям · ${METRIC_META[metric].label}`}
+        description={
+          typeFilter === "ALL"
+            ? "Все типы суммарно"
+            : `Только ${TYPE_META[typeFilter as PartyType].full}`
+        }
+      >
+        <div className="h-72">
+          <ResponsiveContainer>
+            <AreaChart data={weeklySeries} margin={{ top: 8, right: 16, left: 0, bottom: 0 }}>
+              <defs>
+                <linearGradient id="grad-metric" x1="0" y1="0" x2="0" y2="1">
+                  <stop offset="0%" stopColor={METRIC_META[metric].color} stopOpacity={0.45} />
+                  <stop offset="100%" stopColor={METRIC_META[metric].color} stopOpacity={0.02} />
+                </linearGradient>
+              </defs>
+              <CartesianGrid stroke="var(--border)" strokeDasharray="3 3" vertical={false} />
+              <XAxis dataKey="label" stroke="var(--muted-foreground)" fontSize={11} />
+              <YAxis
+                stroke="var(--muted-foreground)"
+                fontSize={11}
+                tickFormatter={(v) =>
+                  metric === "margin_pct" ? `${v.toFixed(0)}%` : `$${(v / 1000).toFixed(0)}k`
+                }
+              />
+              <Tooltip
+                contentStyle={{
+                  background: "var(--popover)",
+                  border: "1px solid var(--border)",
+                  borderRadius: 12,
+                  fontSize: 12,
+                }}
+                labelFormatter={(l, payload) => {
+                  const p = payload?.[0]?.payload as (typeof weeklySeries)[number] | undefined;
+                  return p ? `${l} · ${p.period}` : l;
+                }}
+                formatter={(v: number) => [METRIC_META[metric].format(v), METRIC_META[metric].label]}
+              />
+              <Area
+                type="monotone"
+                dataKey={metric}
+                stroke={METRIC_META[metric].color}
+                strokeWidth={2.5}
+                fill="url(#grad-metric)"
+              />
+            </AreaChart>
+          </ResponsiveContainer>
+        </div>
+        {extremes && (
+          <div className="mt-3 grid grid-cols-1 sm:grid-cols-2 gap-3">
+            <div className="rounded-xl border border-success/30 bg-success/5 px-4 py-3 text-sm">
+              <p className="text-[10px] uppercase tracking-wider text-success font-bold">Лучшая неделя</p>
+              <p className="font-semibold mt-0.5">
+                {extremes.best.label} · {METRIC_META[metric].format(extremes.best[metric] as number)}
+              </p>
+              <p className="text-xs text-muted-foreground">{extremes.best.period}</p>
+            </div>
+            <div className="rounded-xl border border-destructive/30 bg-destructive/5 px-4 py-3 text-sm">
+              <p className="text-[10px] uppercase tracking-wider text-destructive font-bold">Худшая неделя</p>
+              <p className="font-semibold mt-0.5">
+                {extremes.worst.label} · {METRIC_META[metric].format(extremes.worst[metric] as number)}
+              </p>
+              <p className="text-xs text-muted-foreground">{extremes.worst.period}</p>
+            </div>
+          </div>
+        )}
+      </SectionCard>
+
+      {/* Stacked outflow + Margin overlay */}
+      <div className="grid grid-cols-1 lg:grid-cols-3 gap-4">
+        <SectionCard
+          title="Выручка по типам · стэк по неделям"
+          description="Видно, как меняется доля CAINIAO / MPO / MKO"
+          className="lg:col-span-2"
+        >
+          <div className="h-72">
+            <ResponsiveContainer>
+              <BarChart data={weeklySeries} margin={{ top: 8, right: 16, left: 0, bottom: 0 }}>
+                <CartesianGrid stroke="var(--border)" strokeDasharray="3 3" vertical={false} />
+                <XAxis dataKey="label" stroke="var(--muted-foreground)" fontSize={11} />
+                <YAxis
+                  stroke="var(--muted-foreground)"
+                  fontSize={11}
+                  tickFormatter={(v) => `$${(v / 1000).toFixed(0)}k`}
+                />
+                <Tooltip
+                  contentStyle={{
+                    background: "var(--popover)",
+                    border: "1px solid var(--border)",
+                    borderRadius: 12,
+                    fontSize: 12,
+                  }}
+                  formatter={(v: number, n) => [fmtUSD(v), n as string]}
+                />
+                <Legend iconType="circle" wrapperStyle={{ fontSize: 12 }} />
+                <Bar
+                  dataKey="CAINIAO_revenue"
+                  stackId="rev"
+                  name="CAINIAO"
+                  fill="var(--cainiao)"
+                  radius={[0, 0, 0, 0]}
+                />
+                <Bar dataKey="MPO_revenue" stackId="rev" name="UZUM MPO" fill="var(--mpo)" />
+                <Bar
+                  dataKey="MKO_revenue"
+                  stackId="rev"
+                  name="UZUM MKO"
+                  fill="var(--mko)"
+                  radius={[6, 6, 0, 0]}
+                />
+              </BarChart>
+            </ResponsiveContainer>
+          </div>
+        </SectionCard>
+
+        <SectionCard title="Доли типов · период" description="Структура выручки за весь период">
+          <div className="h-72">
+            <ResponsiveContainer>
+              <PieChart>
+                <Pie
+                  data={typeBreakdown.map((t) => ({ name: t.label, value: t.revenue, fill: t.color }))}
+                  dataKey="value"
+                  nameKey="name"
+                  cx="50%"
+                  cy="50%"
+                  innerRadius={55}
+                  outerRadius={95}
+                  paddingAngle={3}
+                >
+                  {typeBreakdown.map((t, i) => (
+                    <Cell key={i} fill={t.color} stroke="var(--card)" strokeWidth={2} />
+                  ))}
+                </Pie>
+                <Tooltip
+                  contentStyle={{
+                    background: "var(--popover)",
+                    border: "1px solid var(--border)",
+                    borderRadius: 12,
+                    fontSize: 12,
+                  }}
+                  formatter={(v: number, n) => [fmtUSD(v), n as string]}
+                />
+                <Legend iconType="circle" wrapperStyle={{ fontSize: 11 }} />
+              </PieChart>
+            </ResponsiveContainer>
+          </div>
+        </SectionCard>
+      </div>
+
+      {/* Прибыль + Маржа (двойная ось) */}
+      <SectionCard
+        title="Прибыль и маржа · по неделям"
+        description="Бары — валовая прибыль, линия — маржа %"
+      >
+        <div className="h-72">
+          <ResponsiveContainer>
+            <ComposedChart data={weeklySeries} margin={{ top: 8, right: 16, left: 0, bottom: 0 }}>
+              <CartesianGrid stroke="var(--border)" strokeDasharray="3 3" vertical={false} />
+              <XAxis dataKey="label" stroke="var(--muted-foreground)" fontSize={11} />
+              <YAxis
+                yAxisId="left"
+                stroke="var(--muted-foreground)"
+                fontSize={11}
+                tickFormatter={(v) => `$${(v / 1000).toFixed(0)}k`}
+              />
+              <YAxis
+                yAxisId="right"
+                orientation="right"
+                stroke="var(--warning)"
+                fontSize={11}
+                tickFormatter={(v) => `${v.toFixed(0)}%`}
+              />
+              <Tooltip
+                contentStyle={{
+                  background: "var(--popover)",
+                  border: "1px solid var(--border)",
+                  borderRadius: 12,
+                  fontSize: 12,
+                }}
+                formatter={(v: number, n: string) =>
+                  n === "Маржа %" ? [`${v.toFixed(2)}%`, n] : [fmtUSD(v), n]
+                }
+              />
+              <Legend iconType="circle" wrapperStyle={{ fontSize: 12 }} />
+              <Bar
+                yAxisId="left"
+                dataKey="gross_profit"
+                name="Прибыль"
+                fill="var(--success)"
+                radius={[6, 6, 0, 0]}
+              />
+              <Line
+                yAxisId="right"
+                type="monotone"
+                dataKey="margin_pct"
+                name="Маржа %"
+                stroke="var(--warning)"
+                strokeWidth={2.5}
+                dot={{ r: 3 }}
+              />
+            </ComposedChart>
+          </ResponsiveContainer>
+        </div>
+      </SectionCard>
+
+      {/* Выручка vs Расходы — линии */}
+      <SectionCard
+        title="Выручка vs Расходы · тренд"
+        description="Сравнение динамики оборота и операционных затрат"
+      >
+        <div className="h-72">
+          <ResponsiveContainer>
+            <LineChart data={weeklySeries} margin={{ top: 8, right: 16, left: 0, bottom: 0 }}>
+              <CartesianGrid stroke="var(--border)" strokeDasharray="3 3" vertical={false} />
+              <XAxis dataKey="label" stroke="var(--muted-foreground)" fontSize={11} />
+              <YAxis
+                stroke="var(--muted-foreground)"
+                fontSize={11}
+                tickFormatter={(v) => `$${(v / 1000).toFixed(0)}k`}
+              />
+              <Tooltip
+                contentStyle={{
+                  background: "var(--popover)",
+                  border: "1px solid var(--border)",
+                  borderRadius: 12,
+                  fontSize: 12,
+                }}
+                formatter={(v: number, n) => [fmtUSD(v), n as string]}
+              />
+              <Legend iconType="circle" wrapperStyle={{ fontSize: 12 }} />
+              <Line
+                type="monotone"
+                dataKey="revenue"
+                name="Выручка"
+                stroke="var(--primary)"
+                strokeWidth={2.5}
+                dot={{ r: 3 }}
+              />
+              <Line
+                type="monotone"
+                dataKey="expense"
+                name="Расходы"
+                stroke="var(--destructive)"
+                strokeWidth={2.5}
+                dot={{ r: 3 }}
+              />
+            </LineChart>
+          </ResponsiveContainer>
+        </div>
+      </SectionCard>
+
+      {/* Карточки типов */}
+      <section>
+        <h3 className="text-base font-semibold tracking-tight mb-3 inline-flex items-center gap-2">
+          <Layers className="h-4 w-4 text-primary" /> Сводка по типам бизнеса · период
+        </h3>
+        <div className="grid grid-cols-1 lg:grid-cols-3 gap-4">
+          {typeBreakdown.map((t) => {
+            const Icon = TYPE_META[t.type].icon;
+            const share = totals.revenue > 0 ? (t.revenue / totals.revenue) * 100 : 0;
+            return (
+              <div
+                key={t.type}
+                className="relative overflow-hidden rounded-2xl glass-card p-5 shadow-elegant"
+              >
+                <div
+                  className="absolute -top-16 -right-16 h-32 w-32 rounded-full opacity-25 blur-3xl"
+                  style={{ backgroundColor: t.color }}
+                />
+                <div className="relative flex items-center gap-3">
+                  <div
+                    className="h-10 w-10 rounded-xl flex items-center justify-center text-white shadow-glow"
+                    style={{ backgroundColor: t.color }}
+                  >
+                    <Icon className="h-4 w-4" />
+                  </div>
+                  <div>
+                    <p className="text-xs font-bold uppercase tracking-wider" style={{ color: t.color }}>
+                      {t.label}
+                    </p>
+                    <p className="text-xs text-muted-foreground">
+                      {t.count} партий · доля {share.toFixed(1)}%
+                    </p>
+                  </div>
+                </div>
+                <div className="relative mt-4 grid grid-cols-2 gap-3 text-sm">
+                  <div>
+                    <p className="text-[10px] uppercase text-muted-foreground tracking-wider font-semibold">
+                      Выручка
+                    </p>
+                    <p className="font-bold tabular-nums">{fmtUSD(t.revenue)}</p>
+                  </div>
+                  <div>
+                    <p className="text-[10px] uppercase text-muted-foreground tracking-wider font-semibold">
+                      Расходы
+                    </p>
+                    <p className="font-bold tabular-nums">{fmtUSD(t.expense)}</p>
+                  </div>
+                  <div>
+                    <p className="text-[10px] uppercase text-muted-foreground tracking-wider font-semibold">
+                      Прибыль
+                    </p>
+                    <p
+                      className={cn(
+                        "font-bold tabular-nums",
+                        t.profit >= 0 ? "text-success" : "text-destructive"
+                      )}
+                    >
+                      {fmtUSD(t.profit)}
+                    </p>
+                  </div>
+                  <div>
+                    <p className="text-[10px] uppercase text-muted-foreground tracking-wider font-semibold">
+                      Маржа
+                    </p>
+                    <p
+                      className={cn(
+                        "font-bold tabular-nums",
+                        t.margin >= 15 ? "text-success" : t.margin >= 5 ? "text-warning" : "text-destructive"
+                      )}
+                    >
+                      {t.margin.toFixed(2)}%
+                    </p>
+                  </div>
+                </div>
+                {/* доля‑бар */}
+                <div className="relative mt-3 h-1.5 w-full rounded-full bg-muted/40 overflow-hidden">
+                  <div
+                    className="h-full rounded-full"
+                    style={{ width: `${share}%`, backgroundColor: t.color }}
+                  />
+                </div>
+              </div>
+            );
+          })}
+        </div>
+      </section>
+
+      {/* География */}
+      {countryBreakdown.length > 0 && (
+        <SectionCard
+          title="География · агрегат за период"
+          description={
+            typeFilter === "ALL"
+              ? "Объёмы по странам по всем типам"
+              : `Объёмы по странам · ${TYPE_META[typeFilter as PartyType].label}`
+          }
+        >
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-4">
+            <div className="h-64">
+              <ResponsiveContainer>
+                <BarChart
+                  data={countryBreakdown}
+                  margin={{ top: 8, right: 16, left: 0, bottom: 0 }}
+                  layout="vertical"
+                >
+                  <CartesianGrid stroke="var(--border)" strokeDasharray="3 3" horizontal={false} />
+                  <XAxis
+                    type="number"
+                    stroke="var(--muted-foreground)"
+                    fontSize={11}
+                    tickFormatter={(v) => fmtNum(v, 0)}
+                  />
+                  <YAxis
+                    type="category"
+                    dataKey="country"
+                    stroke="var(--muted-foreground)"
+                    fontSize={11}
+                    width={50}
+                  />
+                  <Tooltip
+                    contentStyle={{
+                      background: "var(--popover)",
+                      border: "1px solid var(--border)",
+                      borderRadius: 12,
+                      fontSize: 12,
+                    }}
+                    formatter={(v: number) => [`${fmtNum(v, 0)} шт`, "Штук"]}
+                  />
+                  <Bar dataKey="pcs" name="Штук" radius={[0, 6, 6, 0]}>
+                    {countryBreakdown.map((c, i) => (
+                      <Cell key={i} fill={COUNTRY_COLORS[c.country] ?? "var(--primary)"} />
+                    ))}
+                  </Bar>
+                </BarChart>
+              </ResponsiveContainer>
+            </div>
+            <div className="space-y-2">
+              <div className="flex items-center gap-2 text-xs font-semibold text-muted-foreground uppercase tracking-wider mb-1">
+                <Globe2 className="h-3.5 w-3.5" /> Распределение
+              </div>
+              {countryBreakdown.map((c) => {
+                const totalPcs = countryBreakdown.reduce((s, r) => s + r.pcs, 0);
+                const share = totalPcs > 0 ? (c.pcs / totalPcs) * 100 : 0;
+                const color = COUNTRY_COLORS[c.country] ?? "var(--primary)";
+                return (
+                  <div key={c.country} className="rounded-lg border border-border/60 bg-card/40 p-3">
+                    <div className="flex items-center justify-between text-sm">
+                      <span className="font-semibold inline-flex items-center gap-2">
+                        <span className="h-2.5 w-2.5 rounded-full" style={{ backgroundColor: color }} />
+                        {c.country}
+                      </span>
+                      <span className="text-xs text-muted-foreground tabular-nums">
+                        {fmtNum(c.pcs, 0)} шт · {fmtNum(c.kg, 1)} кг
+                      </span>
+                    </div>
+                    <div className="mt-2 h-1.5 w-full rounded-full bg-muted/40 overflow-hidden">
+                      <div className="h-full rounded-full" style={{ width: `${share}%`, backgroundColor: color }} />
+                    </div>
+                    <p className="mt-1 text-[10px] text-muted-foreground">{share.toFixed(1)}% от объёма</p>
+                  </div>
+                );
+              })}
+            </div>
+          </div>
+        </SectionCard>
+      )}
+
+      {/* Топ-10 партий */}
+      <SectionCard
+        title="Топ‑10 партий по прибыли"
+        description={typeFilter === "ALL" ? "За весь период" : `Только ${TYPE_META[typeFilter as PartyType].label}`}
+      >
+        <div className="overflow-x-auto -mx-2">
+          <table className="w-full text-sm">
+            <thead>
+              <tr className="border-b border-border text-left text-[11px] uppercase tracking-wider text-muted-foreground">
+                <th className="px-3 py-2 font-semibold">#</th>
+                <th className="px-3 py-2 font-semibold">Партия</th>
+                <th className="px-3 py-2 font-semibold">Тип</th>
+                <th className="px-3 py-2 font-semibold">Неделя</th>
+                <th className="px-3 py-2 font-semibold text-right">Выручка</th>
+                <th className="px-3 py-2 font-semibold text-right">Прибыль</th>
+                <th className="px-3 py-2 font-semibold text-right">Маржа</th>
+              </tr>
+            </thead>
+            <tbody>
+              {topParties.map((p, i) => {
+                const meta = TYPE_META[p.type];
+                return (
+                  <tr key={p.col} className="border-b border-border/50 hover:bg-muted/30 transition-colors">
+                    <td className="px-3 py-2 text-xs font-bold text-muted-foreground tabular-nums">
+                      {i + 1}
+                    </td>
+                    <td className="px-3 py-2 font-semibold tabular-nums">{p.num}</td>
+                    <td className="px-3 py-2">
+                      <span
+                        className="inline-flex items-center gap-1.5 rounded-md px-2 py-0.5 text-xs font-semibold"
+                        style={{
+                          backgroundColor: `color-mix(in oklab, ${meta.color} 18%, transparent)`,
+                          color: meta.color,
+                        }}
+                      >
+                        <span
+                          className="h-1.5 w-1.5 rounded-full"
+                          style={{ backgroundColor: meta.color }}
+                        />
+                        {meta.label}
+                      </span>
+                    </td>
+                    <td className="px-3 py-2 text-muted-foreground text-xs">W{p._week}</td>
+                    <td className="px-3 py-2 text-right tabular-nums">{fmtUSD(p.revenue)}</td>
+                    <td
+                      className={cn(
+                        "px-3 py-2 text-right font-bold tabular-nums",
+                        p.gross_profit >= 0 ? "text-success" : "text-destructive"
+                      )}
+                    >
+                      {fmtUSD(p.gross_profit)}
+                    </td>
+                    <td className="px-3 py-2 text-right tabular-nums">
+                      {p.margin_pct != null ? (
+                        <span
+                          className={cn(
+                            "font-semibold",
+                            p.margin_pct >= 15
+                              ? "text-success"
+                              : p.margin_pct >= 5
+                                ? "text-warning"
+                                : "text-destructive"
+                          )}
+                        >
+                          {p.margin_pct.toFixed(2)}%
+                        </span>
+                      ) : (
+                        <span className="text-muted-foreground">—</span>
+                      )}
+                    </td>
+                  </tr>
+                );
+              })}
+            </tbody>
+          </table>
+        </div>
+      </SectionCard>
+
+      {/* Таблица недель */}
+      <SectionCard title="Сводная таблица по неделям" description="Все 16 недель в одной матрице">
+        <div className="overflow-x-auto -mx-2">
+          <table className="w-full text-sm">
+            <thead>
+              <tr className="border-b border-border text-left text-[11px] uppercase tracking-wider text-muted-foreground">
+                <th className="px-3 py-2 font-semibold">Неделя</th>
+                <th className="px-3 py-2 font-semibold">Период</th>
+                <th className="px-3 py-2 font-semibold text-right">Партий</th>
+                <th className="px-3 py-2 font-semibold text-right">Выручка</th>
+                <th className="px-3 py-2 font-semibold text-right">Расходы</th>
+                <th className="px-3 py-2 font-semibold text-right">Прибыль</th>
+                <th className="px-3 py-2 font-semibold text-right">Маржа</th>
+              </tr>
+            </thead>
+            <tbody>
+              {weeklySeries.map((w) => (
+                <tr key={w.week} className="border-b border-border/50 hover:bg-muted/30 transition-colors">
+                  <td className="px-3 py-2 font-semibold">W{w.week}</td>
+                  <td className="px-3 py-2 text-xs text-muted-foreground">{w.period}</td>
+                  <td className="px-3 py-2 text-right tabular-nums">{w.parties}</td>
+                  <td className="px-3 py-2 text-right tabular-nums">{fmtUSD(w.revenue)}</td>
+                  <td className="px-3 py-2 text-right tabular-nums text-muted-foreground">
+                    {fmtUSD(w.expense)}
+                  </td>
+                  <td
+                    className={cn(
+                      "px-3 py-2 text-right font-bold tabular-nums",
+                      w.gross_profit >= 0 ? "text-success" : "text-destructive"
+                    )}
+                  >
+                    {fmtUSD(w.gross_profit)}
+                  </td>
+                  <td className="px-3 py-2 text-right tabular-nums">
+                    <span
+                      className={cn(
+                        "font-semibold",
+                        w.margin_pct >= 15
+                          ? "text-success"
+                          : w.margin_pct >= 5
+                            ? "text-warning"
+                            : "text-destructive"
+                      )}
+                    >
+                      {w.margin_pct.toFixed(2)}%
+                    </span>
+                  </td>
+                </tr>
+              ))}
+              <tr className="bg-muted/40 font-bold">
+                <td className="px-3 py-2">Σ</td>
+                <td className="px-3 py-2 text-xs text-muted-foreground">Итого</td>
+                <td className="px-3 py-2 text-right tabular-nums">{totals.partiesTotal}</td>
+                <td className="px-3 py-2 text-right tabular-nums">{fmtUSD(totals.revenue)}</td>
+                <td className="px-3 py-2 text-right tabular-nums">{fmtUSD(totals.expense)}</td>
+                <td className="px-3 py-2 text-right tabular-nums text-success">
+                  {fmtUSD(totals.gross_profit)}
+                </td>
+                <td className="px-3 py-2 text-right tabular-nums">{totals.margin.toFixed(2)}%</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </SectionCard>
+
+      <div className="flex items-center justify-center gap-2 text-xs text-muted-foreground py-2">
+        <Activity className="h-3.5 w-3.5" />
+        <Boxes className="h-3.5 w-3.5" />
+        Аналитика построена по {sortedWeeks.length} неделям · фильтр: {typeFilter === "ALL" ? "Все типы" : TYPE_META[typeFilter as PartyType].label}
+      </div>
+    </div>
+  );
+}

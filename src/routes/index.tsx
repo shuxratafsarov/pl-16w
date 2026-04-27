@@ -101,6 +101,7 @@ import { StatusBadge } from "@/components/StatusBadge";
 import { MarkerChart } from "@/components/MarkerChart";
 import { ProductMix } from "@/components/ProductMix";
 import { DetailDialog, type DetailTarget } from "@/components/DetailDialog";
+import { OverviewAnalytics } from "@/components/OverviewAnalytics";
 import {
   Tooltip as UITooltip,
   TooltipContent,
@@ -639,6 +640,10 @@ function Dashboard() {
         </header>
 
       <main className="mx-auto max-w-[1440px] px-6 py-8 space-y-8">
+        {isOverview ? (
+          <OverviewAnalytics weeksMap={ALL_WEEKS} />
+        ) : (
+        <>
         {/* === Уровень 1: Общие итоги === */}
         <section className="space-y-4">
           <div className="flex items-end justify-between gap-3">
@@ -1069,6 +1074,8 @@ function Dashboard() {
         <footer className="text-center text-xs text-muted-foreground py-4">
           Источник: 3PL_PL_2026 · лист 3PL_weekly (TOTAL колонка) · Маркеры 2-3 · Expenses
         </footer>
+        </>
+        )}
       </main>
 
       <DetailDialog
