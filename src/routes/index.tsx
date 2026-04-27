@@ -292,7 +292,7 @@ function computeTypeAverages(parties: Party[]) {
   return result;
 }
 
-export function Dashboard() {
+function Dashboard() {
   const [selectedWeek, setSelectedWeek] = useState<number>(DEFAULT_WEEK);
   const [filter, setFilter] = useState<"ALL" | PartyType>("ALL");
   const [detail, setDetail] = useState<DetailTarget | null>(null);
