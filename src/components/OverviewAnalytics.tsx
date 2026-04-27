@@ -440,6 +440,7 @@ export function OverviewAnalytics({
           hint={`${totals.partiesTotal} партий · ${fmtUSD(totals.avgWeekly)}/нед`}
           accent="warning"
           icon={<Percent className="h-5 w-5" />}
+          onClick={() => setKpiDrill("margin")}
         />
       </section>
 
