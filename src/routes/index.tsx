@@ -363,7 +363,7 @@ function Dashboard() {
           type: t,
           ...week.byType[t],
         })),
-    []
+    [week]
   );
 
   const revenuePie = typeBreakdown.map((t) => ({ name: TYPE_META[t.type].label, value: t.revenue, fill: TYPE_META[t.type].color }));
