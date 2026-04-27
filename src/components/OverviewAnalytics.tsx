@@ -334,26 +334,6 @@ export function OverviewAnalytics({
     return list.sort((a, b) => b.gross_profit - a.gross_profit).slice(0, 10);
   }, [sortedWeeks, typeFilter]);
 
-  /** Week-over-Week изменение выручки и GP. */
-  const wowSeries = useMemo(() => {
-    return weeklySeries.map((w, i) => {
-      const prev = weeklySeries[i - 1];
-      const wowRev = prev && prev.revenue > 0 ? ((w.revenue - prev.revenue) / prev.revenue) * 100 : 0;
-      const wowGp = prev && prev.gross_profit !== 0 ? ((w.gross_profit - prev.gross_profit) / Math.abs(prev.gross_profit)) * 100 : 0;
-      return { label: w.label, period: w.period, wowRev, wowGp };
-    });
-  }, [weeklySeries]);
-
-  /** Накопительная выручка и прибыль по неделям. */
-  const cumulativeSeries = useMemo(() => {
-    let r = 0;
-    let g = 0;
-    return weeklySeries.map((w) => {
-      r += w.revenue;
-      g += w.gross_profit;
-      return { label: w.label, period: w.period, cumRevenue: r, cumProfit: g };
-    });
-  }, [weeklySeries]);
 
   /** Данные для VolumeAndBreakdown — по неделям с byCountry/byType. */
   const volumeWeeklyData = useMemo<VBPeriodPoint[]>(() => {
