@@ -643,7 +643,18 @@ function Dashboard() {
 
       <main className="mx-auto max-w-[1440px] px-6 py-8 space-y-8">
         {isOverview ? (
-          <OverviewAnalytics weeksMap={ALL_WEEKS} />
+          <Tabs defaultValue="weekly" className="space-y-4">
+            <TabsList>
+              <TabsTrigger value="weekly">Понедельная аналитика</TabsTrigger>
+              <TabsTrigger value="monthly">3PL Monthly</TabsTrigger>
+            </TabsList>
+            <TabsContent value="weekly" className="space-y-4">
+              <OverviewAnalytics weeksMap={ALL_WEEKS} />
+            </TabsContent>
+            <TabsContent value="monthly" className="space-y-4">
+              <MonthlyView />
+            </TabsContent>
+          </Tabs>
         ) : (
           <div className="space-y-8">
         {/* === Уровень 1: Общие итоги === */}
