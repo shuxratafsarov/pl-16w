@@ -72,13 +72,15 @@ const TYPE_META: Record<PartyType, { label: string; full: string; color: string;
 };
 
 type TypeFilter = "ALL" | PartyType;
-type MetricKey = "revenue" | "expense" | "gross_profit" | "margin_pct";
+type MetricKey = "revenue" | "expense" | "gross_profit" | "margin_pct" | "pcs" | "kg";
 
 const METRIC_META: Record<MetricKey, { label: string; color: string; format: (v: number) => string }> = {
   revenue: { label: "Выручка", color: "var(--primary)", format: (v) => fmtUSD(v) },
   expense: { label: "Расходы", color: "var(--destructive)", format: (v) => fmtUSD(v) },
   gross_profit: { label: "Прибыль", color: "var(--success)", format: (v) => fmtUSD(v) },
   margin_pct: { label: "Маржа %", color: "var(--warning)", format: (v) => `${v.toFixed(2)}%` },
+  pcs: { label: "Штуки", color: "var(--cainiao)", format: (v) => `${fmtNum(v, 0)} шт` },
+  kg: { label: "Кг", color: "var(--mpo)", format: (v) => `${fmtNum(v, 0)} кг` },
 };
 
 const COUNTRY_COLORS: Record<string, string> = {
