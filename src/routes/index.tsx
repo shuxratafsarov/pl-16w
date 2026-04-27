@@ -413,11 +413,13 @@ function Dashboard() {
                   <DropdownMenuSeparator />
                   {WEEKS.map((w) => {
                     const isCurrent = w.week === week.week;
+                    const hasData = AVAILABLE_WEEKS.includes(w.week);
                     return (
                       <UITooltip key={w.week}>
                         <TooltipTrigger asChild>
                           <DropdownMenuItem
-                            disabled={!isCurrent}
+                            disabled={!hasData}
+                            onSelect={() => hasData && setSelectedWeek(w.week)}
                             className={cn(
                               "flex items-center justify-between gap-2 text-xs cursor-pointer",
                               isCurrent && "bg-primary/10 text-primary font-semibold"
@@ -426,6 +428,8 @@ function Dashboard() {
                             <span>Неделя {w.week}</span>
                             {isCurrent ? (
                               <span className="text-[10px] uppercase">текущая</span>
+                            ) : hasData ? (
+                              <span className="text-[10px] text-muted-foreground">открыть</span>
                             ) : (
                               <span className="text-[10px] text-muted-foreground">нет данных</span>
                             )}
