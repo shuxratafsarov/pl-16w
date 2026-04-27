@@ -378,8 +378,9 @@ export function OverviewAnalytics({
     const byTypeWithShare = byType.map((t) => ({ ...t, share: (Math.abs(t.value) / totalAbs) * 100 }));
 
     const partyMetric = (p: Party): number => {
-      if (kpiDrill === "margin") return p.margin_pct;
-      return (p[kpiDrill] as number) ?? 0;
+      if (kpiDrill === "margin") return p.margin_pct ?? 0;
+      const v = p[kpiDrill] as number | null | undefined;
+      return typeof v === "number" ? v : 0;
     };
     const allParties = sortedWeeks.flatMap((w) =>
       w.parties
