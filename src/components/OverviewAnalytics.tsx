@@ -332,6 +332,76 @@ export function OverviewAnalytics({
   }, [totals, typeBreakdown, weeklySeries]);
 
 
+  /** Drill-down данные для активного KPI: серия по неделям + по типам + топ партий. */
+  const kpiDrillData = useMemo(() => {
+    if (!kpiDrill) return null;
+    const valueOf = (v: { revenue: number; expense: number; gross_profit: number; margin_pct: number }) => {
+      if (kpiDrill === "margin") return v.margin_pct;
+      return v[kpiDrill] as number;
+    };
+    const series = weeklySeries.map((w) => ({
+      label: w.label,
+      period: w.period,
+      value: valueOf(w),
+      revenue: w.revenue,
+      expense: w.expense,
+      gross_profit: w.gross_profit,
+      margin_pct: w.margin_pct,
+      parties: w.parties,
+    }));
+    const validSeries = series.filter((s) => Number.isFinite(s.value));
+    const sorted = [...validSeries].sort((a, b) => b.value - a.value);
+    const best = sorted[0] ?? null;
+    const worst = sorted[sorted.length - 1] ?? null;
+
+    const byType = (["CAINIAO", "MPO", "MKO"] as PartyType[]).map((t) => {
+      const all = sortedWeeks.flatMap((w) => w.parties.filter((p) => p.type === t));
+      const revenue = all.reduce((s, p) => s + (p.revenue ?? 0), 0);
+      const expense = all.reduce((s, p) => s + (p.expense ?? 0), 0);
+      const gross_profit = all.reduce((s, p) => s + (p.gross_profit ?? 0), 0);
+      const margin_pct = revenue > 0 ? (gross_profit / revenue) * 100 : 0;
+      const value = valueOf({ revenue, expense, gross_profit, margin_pct });
+      return {
+        type: t,
+        label: TYPE_META[t].label,
+        full: TYPE_META[t].full,
+        color: TYPE_META[t].color,
+        count: all.length,
+        revenue,
+        expense,
+        gross_profit,
+        margin_pct,
+        value,
+      };
+    });
+    const totalAbs = byType.reduce((s, t) => s + Math.abs(t.value), 0) || 1;
+    const byTypeWithShare = byType.map((t) => ({ ...t, share: (Math.abs(t.value) / totalAbs) * 100 }));
+
+    const partyMetric = (p: Party): number => {
+      if (kpiDrill === "margin") return p.margin_pct;
+      return (p[kpiDrill] as number) ?? 0;
+    };
+    const allParties = sortedWeeks.flatMap((w) =>
+      w.parties
+        .filter((p) => typeFilter === "ALL" || p.type === typeFilter)
+        .map((p) => ({ p, week: w.week, period: w.period }))
+    );
+    const topParties = [...allParties]
+      .filter(({ p }) => Number.isFinite(partyMetric(p)))
+      .sort((a, b) => partyMetric(b.p) - partyMetric(a.p))
+      .slice(0, 10);
+    const bottomParties = [...allParties]
+      .filter(({ p }) => Number.isFinite(partyMetric(p)))
+      .sort((a, b) => partyMetric(a.p) - partyMetric(b.p))
+      .slice(0, 5);
+
+    const total = validSeries.reduce((s, w) => s + w.value, 0);
+    const avg = validSeries.length ? total / validSeries.length : 0;
+
+    return { series, best, worst, byType: byTypeWithShare, topParties, bottomParties, total, avg, partyMetric };
+  }, [kpiDrill, weeklySeries, sortedWeeks, typeFilter]);
+
+
   return (
     <>
     <div className="space-y-8">
