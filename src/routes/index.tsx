@@ -44,6 +44,55 @@ for (const path in WEEK_MODULES) {
 }
 const AVAILABLE_WEEKS = Object.keys(ALL_WEEKS).map(Number).sort((a, b) => a - b);
 const DEFAULT_WEEK = AVAILABLE_WEEKS[AVAILABLE_WEEKS.length - 1] ?? 16;
+/** Сентинел: «Общий свод» = агрегат по всем неделям. */
+const OVERVIEW_KEY = 0;
+
+/** Собирает синтетический WeekData по всем неделям: все партии «склеены», агрегаты пересчитаются дальше через reconcileWeek. */
+function buildOverview(weeks: Record<number, WeekData>): WeekData {
+  const list = Object.keys(weeks)
+    .map(Number)
+    .sort((a, b) => a - b)
+    .map((n) => weeks[n]);
+  if (list.length === 0) {
+    return {
+      week: OVERVIEW_KEY,
+      period: "Общий свод · нет данных",
+      totals: { revenue: 0, expense: 0, gross_profit: 0, margin_pct: 0 },
+      byType: {
+        CAINIAO: { count: 0, revenue: 0, expense: 0, gross_profit: 0, margin_pct: 0 },
+        MPO: { count: 0, revenue: 0, expense: 0, gross_profit: 0, margin_pct: 0 },
+        MKO: { count: 0, revenue: 0, expense: 0, gross_profit: 0, margin_pct: 0 },
+      },
+      umbrella_uzum_cb: { revenue: 0, expense: 0, gross_profit: 0, margin_pct: 0 },
+      parties: [],
+    };
+  }
+  // Период: от начала первой до конца последней недели
+  const firstP = list[0].period.split("—")[0]?.trim() ?? "";
+  const lastP = list[list.length - 1].period.split("—")[1]?.trim() ?? "";
+  const period = `${firstP} — ${lastP}`;
+
+  // Склеиваем партии. col делаем уникальным: w{N}-{col}, чтобы карты по col не конфликтовали.
+  const parties: Party[] = list.flatMap((w) =>
+    w.parties.map((p) => ({ ...p, col: `w${w.week}-${p.col}`, num: `W${w.week} · ${p.num}` }))
+  );
+
+  // Пустые агрегаты (reconcileWeek пересчитает из parties).
+  const emptyAgg = { count: 0, revenue: 0, expense: 0, gross_profit: 0, margin_pct: 0 };
+  return {
+    week: OVERVIEW_KEY,
+    period,
+    totals: { revenue: 0, expense: 0, gross_profit: 0, margin_pct: 0 },
+    byType: {
+      CAINIAO: { ...emptyAgg },
+      MPO: { ...emptyAgg },
+      MKO: { ...emptyAgg },
+    },
+    umbrella_uzum_cb: { revenue: 0, expense: 0, gross_profit: 0, margin_pct: 0 },
+    parties,
+  };
+}
+const OVERVIEW_WEEK: WeekData = buildOverview(ALL_WEEKS);
 import { fmtUSD, fmtNum, fmtPct } from "@/lib/format";
 import { ThemeToggle } from "@/components/ThemeToggle";
 import { SectionCard } from "@/components/SectionCard";
