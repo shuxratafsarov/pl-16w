@@ -43,6 +43,8 @@ import { MarkerChart } from "@/components/MarkerChart";
 import { ProductMix } from "@/components/ProductMix";
 import { DetailDialog, type DetailTarget } from "@/components/DetailDialog";
 import { OverviewAnalytics } from "@/components/OverviewAnalytics";
+import { MonthlyView } from "@/components/MonthlyView";
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import {
   Tooltip as UITooltip,
   TooltipContent,
