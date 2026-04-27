@@ -432,6 +432,7 @@ export function OverviewAnalytics({
           }
           accent="success"
           icon={<TrendingUp className="h-5 w-5" />}
+          onClick={() => setKpiDrill("gross_profit")}
         />
         <StatCard
           label="Средняя маржа"
