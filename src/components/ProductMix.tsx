@@ -16,6 +16,8 @@ const COUNTRY_META: Record<string, { label: string; flag: string; color: string 
   AZ: { label: "Азербайджан", flag: "🇦🇿", color: "hsl(265 80% 60%)" },
   KG: { label: "Киргизия", flag: "🇰🇬", color: "hsl(160 70% 45%)" },
   KZ: { label: "Казахстан", flag: "🇰🇿", color: "hsl(0 70% 55%)" },
+  MPO: { label: "UZUM MPO", flag: "", color: "hsl(45 90% 55%)" },
+  MKO: { label: "UZUM MKO", flag: "", color: "hsl(255 85% 65%)" },
 };
 
 // Палитра подтипов внутри каждой страны (оттенки от базового цвета)
@@ -55,18 +57,33 @@ function colorFor(country: string, subtype: string, idx: number): string {
 
 function aggregate(parties: Party[]): MixRow[] {
   const map = new Map<string, MixRow>();
-  for (const p of parties) {
-    if (!p.mix) continue;
-    for (const r of p.mix) {
-      const key = `${r.country}|${r.subtype}`;
-      const prev = map.get(key) ?? { country: r.country, subtype: r.subtype, pcs: 0, kg: 0 };
-      prev.pcs += r.pcs;
-      prev.kg += r.kg;
-      map.set(key, prev);
+  const addRow = (r: MixRow, factor = 1) => {
+    const key = `${r.country}|${r.subtype}`;
+    const prev = map.get(key) ?? { country: r.country, subtype: r.subtype, pcs: 0, kg: 0 };
+    prev.pcs += r.pcs * factor;
+    prev.kg += r.kg;
+    map.set(key, prev);
+  };
+
+  (["CAINIAO", "MPO", "MKO"] as PartyType[]).forEach((type) => {
+    const typed = parties.filter((p) => p.type === type);
+    const exactPcs = typed.reduce((s, p) => s + (typeof p.total_pcs === "number" ? p.total_pcs : 0), 0);
+    const typedRows = typed.flatMap((p) => p.mix ?? []);
+    const mixPcs = typedRows.reduce((s, r) => s + (r.pcs ?? 0), 0);
+
+    if (exactPcs > 0 && mixPcs > exactPcs) {
+      const factor = exactPcs / mixPcs;
+      typedRows.forEach((r) => addRow(r, factor));
+    } else {
+      typedRows.forEach((r) => addRow(r));
+      if (exactPcs > mixPcs) {
+        addRow({ country: type, subtype: "TOTAL", pcs: exactPcs - mixPcs, kg: 0 });
+      }
     }
-  }
+  });
+
   // Sort by country (UZ, BY, AZ, KG, KZ), then by pcs desc
-  const order = ["UZ", "BY", "AZ", "KG", "KZ"];
+  const order = ["UZ", "BY", "AZ", "KG", "KZ", "MPO", "MKO"];
   return [...map.values()].sort((a, b) => {
     const oa = order.indexOf(a.country as string);
     const ob = order.indexOf(b.country as string);
@@ -135,7 +152,7 @@ export function ProductMix({ parties, scope }: { parties: Party[]; scope: Scope 
             M4 · Продуктовый микс ({unit === "pcs" ? "штуки" : "кг"})
           </p>
           <p className="text-[10px] text-muted-foreground/70 mt-0.5">
-            Из листа Expenses · {rows.length} категорий
+            Из листа 3PL weekly · {rows.length} категорий
           </p>
         </div>
         <div className="inline-flex rounded-lg border border-border bg-muted/40 p-0.5 text-xs">
