@@ -2,69 +2,229 @@
   {
     "month": 1,
     "month_name": "Январь",
+    "period": "2026-01",
     "revenue": 464802.05,
-    "gross_profit": 38715.22,
     "expense": 426086.83,
+    "gross_profit": 38715.22,
     "margin_pct": 8.33,
-    "revenue_cainiao": 382189.5,
-    "revenue_uzum_cb": 82612.56,
     "by_country": {
-      "UZ_C2M": 102225.19,
-      "BY_C2M": 221451.42,
-      "AZ_C2M": 51807.12,
-      "KG_C2M": 6705.77,
-      "UZ_UZUM_MPO": 5727.77
+      "UZ": {
+        "revenue": 102225.19,
+        "expense": 71075.32,
+        "gross_profit": 31149.87,
+        "margin_pct": 30.47,
+        "pcs": 69392,
+        "kg": 5406.77
+      },
+      "BY": {
+        "revenue": 221451.42,
+        "expense": 238119.25,
+        "gross_profit": -16667.83,
+        "margin_pct": -7.53,
+        "pcs": 148804,
+        "kg": 11544.7
+      },
+      "AZ": {
+        "revenue": 51807.12,
+        "expense": 48349.81,
+        "gross_profit": 3457.31,
+        "margin_pct": 6.67,
+        "pcs": 25322,
+        "kg": 2820.71
+      },
+      "KG": {
+        "revenue": 6705.77,
+        "expense": 4044.61,
+        "gross_profit": 2661.16,
+        "margin_pct": 39.68,
+        "pcs": 4004,
+        "kg": 361.7
+      }
+    },
+    "by_type": {
+      "CAINIAO": {
+        "revenue": 382189.5,
+        "pcs": 247522
+      },
+      "MPO": {
+        "revenue": 5727.77,
+        "pcs": 864
+      },
+      "MKO": {
+        "revenue": 76884.79,
+        "pcs": 9536
+      }
     }
   },
   {
     "month": 2,
     "month_name": "Февраль",
+    "period": "2026-02",
     "revenue": 386217.72,
-    "gross_profit": 42236.21,
     "expense": 343981.51,
+    "gross_profit": 42236.21,
     "margin_pct": 10.94,
-    "revenue_cainiao": 311006.33,
-    "revenue_uzum_cb": 75211.39,
     "by_country": {
-      "UZ_C2M": 77745.37,
-      "BY_C2M": 188010.22,
-      "AZ_C2M": 40066.59,
-      "KG_C2M": 5184.15,
-      "UZ_UZUM_MPO": 4011.3
+      "UZ": {
+        "revenue": 77745.37,
+        "expense": 53525.38,
+        "gross_profit": 24219.99,
+        "margin_pct": 31.15,
+        "pcs": 54505,
+        "kg": 4057.96
+      },
+      "BY": {
+        "revenue": 188010.22,
+        "expense": 195752.17,
+        "gross_profit": -7741.95,
+        "margin_pct": -4.12,
+        "pcs": 135694,
+        "kg": 9735.12
+      },
+      "AZ": {
+        "revenue": 40066.59,
+        "expense": 36678.14,
+        "gross_profit": 3388.44,
+        "margin_pct": 8.46,
+        "pcs": 20287,
+        "kg": 2159.66
+      },
+      "KG": {
+        "revenue": 5184.15,
+        "expense": 3084.96,
+        "gross_profit": 2099.2,
+        "margin_pct": 40.49,
+        "pcs": 3195,
+        "kg": 274.93
+      }
+    },
+    "by_type": {
+      "CAINIAO": {
+        "revenue": 311006.33,
+        "pcs": 213681
+      },
+      "MPO": {
+        "revenue": 4011.3,
+        "pcs": 640
+      },
+      "MKO": {
+        "revenue": 71200.09,
+        "pcs": 9216
+      }
     }
   },
   {
     "month": 3,
     "month_name": "Март",
+    "period": "2026-03",
     "revenue": 597789.66,
-    "gross_profit": 110190.27,
     "expense": 487599.39,
+    "gross_profit": 110190.27,
     "margin_pct": 18.43,
-    "revenue_cainiao": 452939.2,
-    "revenue_uzum_cb": 144850.46,
     "by_country": {
-      "UZ_C2M": 111266.86,
-      "BY_C2M": 276409.14,
-      "AZ_C2M": 57759.83,
-      "KG_C2M": 7503.37,
-      "UZ_UZUM_MPO": 6130.56
+      "UZ": {
+        "revenue": 111266.86,
+        "expense": 71902.32,
+        "gross_profit": 39364.54,
+        "margin_pct": 35.38,
+        "pcs": 72830,
+        "kg": 5952.9
+      },
+      "BY": {
+        "revenue": 276409.14,
+        "expense": 282423.78,
+        "gross_profit": -6014.63,
+        "margin_pct": -2.18,
+        "pcs": 185755,
+        "kg": 14572.32
+      },
+      "AZ": {
+        "revenue": 57759.83,
+        "expense": 51559.61,
+        "gross_profit": 6200.22,
+        "margin_pct": 10.73,
+        "pcs": 27706,
+        "kg": 3145.36
+      },
+      "KG": {
+        "revenue": 7503.37,
+        "expense": 4231.34,
+        "gross_profit": 3272.03,
+        "margin_pct": 43.61,
+        "pcs": 4192,
+        "kg": 411.59
+      }
+    },
+    "by_type": {
+      "CAINIAO": {
+        "revenue": 452939.2,
+        "pcs": 290483
+      },
+      "MPO": {
+        "revenue": 6130.56,
+        "pcs": 1282
+      },
+      "MKO": {
+        "revenue": 138719.9,
+        "pcs": 22474
+      }
     }
   },
   {
     "month": 4,
     "month_name": "Апрель",
+    "period": "2026-04",
     "revenue": 398481.4,
-    "gross_profit": 85160.96,
     "expense": 313320.44,
+    "gross_profit": 85160.96,
     "margin_pct": 21.37,
-    "revenue_cainiao": 289048.98,
-    "revenue_uzum_cb": 109432.42,
     "by_country": {
-      "UZ_C2M": 71311.21,
-      "BY_C2M": 174552.94,
-      "AZ_C2M": 38060.08,
-      "KG_C2M": 5124.76,
-      "UZ_UZUM_MPO": 4774.62
+      "UZ": {
+        "revenue": 71311.21,
+        "expense": 44599.73,
+        "gross_profit": 26711.48,
+        "margin_pct": 37.46,
+        "pcs": 46264,
+        "kg": 3784.81
+      },
+      "BY": {
+        "revenue": 174552.94,
+        "expense": 178230.98,
+        "gross_profit": -3678.04,
+        "margin_pct": -2.11,
+        "pcs": 118357,
+        "kg": 9075.69
+      },
+      "AZ": {
+        "revenue": 38060.08,
+        "expense": 33186.82,
+        "gross_profit": 4873.25,
+        "margin_pct": 12.8,
+        "pcs": 18675,
+        "kg": 2056.29
+      },
+      "KG": {
+        "revenue": 5124.76,
+        "expense": 2809.55,
+        "gross_profit": 2315.21,
+        "margin_pct": 45.18,
+        "pcs": 2598,
+        "kg": 284.78
+      }
+    },
+    "by_type": {
+      "CAINIAO": {
+        "revenue": 289048.98,
+        "pcs": 185894
+      },
+      "MPO": {
+        "revenue": 4774.62,
+        "pcs": 1046
+      },
+      "MKO": {
+        "revenue": 104657.8,
+        "pcs": 17766
+      }
     }
   }
 ]
