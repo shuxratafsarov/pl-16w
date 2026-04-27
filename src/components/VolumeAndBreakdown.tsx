@@ -356,6 +356,12 @@ export function VolumeAndBreakdown({ periodKind, data, countries, types, title, 
                   stackId="stk"
                   fill={s.color}
                   radius={i === slices.length - 1 ? [6, 6, 0, 0] : [0, 0, 0, 0]}
+                  cursor={onPeriodClick ? "pointer" : undefined}
+                  onClick={
+                    onPeriodClick
+                      ? (d: { label?: string }) => d?.label && onPeriodClick(d.label)
+                      : undefined
+                  }
                 />
               ))}
             </BarChart>
