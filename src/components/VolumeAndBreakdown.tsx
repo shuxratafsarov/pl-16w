@@ -209,6 +209,7 @@ export function VolumeAndBreakdown({ periodKind, data, countries, types, title, 
           icon={<Boxes className="h-5 w-5" />}
           accent="primary"
           hint={`за ${data.length} ${periodLabel}`}
+          onClick={onKpiClick ? () => onKpiClick("pcs") : undefined}
         />
         <StatCard
           label="Σ Килограмм"
@@ -216,6 +217,7 @@ export function VolumeAndBreakdown({ periodKind, data, countries, types, title, 
           icon={<Scale className="h-5 w-5" />}
           accent="default"
           hint={`${fmtNum(totals.kg / 1000, 2)} тонн`}
+          onClick={onKpiClick ? () => onKpiClick("kg") : undefined}
         />
         <StatCard
           label="Средний вес посылки"
@@ -223,6 +225,7 @@ export function VolumeAndBreakdown({ periodKind, data, countries, types, title, 
           icon={<Package className="h-5 w-5" />}
           accent="default"
           hint="кг × 1000 / шт"
+          onClick={onKpiClick ? () => onKpiClick("avgw") : undefined}
         />
         <StatCard
           label="Выручка / шт"
@@ -230,6 +233,7 @@ export function VolumeAndBreakdown({ periodKind, data, countries, types, title, 
           icon={<BarChart3 className="h-5 w-5" />}
           accent="success"
           hint="ср. чек на посылку"
+          onClick={onKpiClick ? () => onKpiClick("rev_per_pcs") : undefined}
         />
       </div>
 
