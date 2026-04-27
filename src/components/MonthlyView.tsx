@@ -443,6 +443,32 @@ export function MonthlyView() {
         </div>
       </SectionCard>
 
+      {/* === Объём + матрица Страна×Тип === */}
+      <section className="space-y-3">
+        <div className="flex items-center justify-between gap-2 flex-wrap">
+          <h3 className="text-base font-semibold tracking-tight inline-flex items-center gap-2">
+            <Boxes className="h-4 w-4 text-primary" /> Объём, география и продукт · детальная разбивка
+          </h3>
+          <p className="text-xs text-muted-foreground">
+            Динамика по штукам и кг + матрица Страна × Тип по выручке/расходам/марже
+          </p>
+        </div>
+        <VolumeAndBreakdown
+          periodKind="month"
+          data={volumeMonthlyData}
+          countries={(["BY", "UZ", "AZ", "KG"] as CountryKey[]).map((cc) => ({
+            key: cc,
+            label: COUNTRY_NAMES[cc],
+            color: COUNTRY_COLORS[cc],
+          }))}
+          types={(["CAINIAO", "MPO", "MKO"] as const).map((t) => ({
+            key: t,
+            label: t,
+            color: TYPE_COLORS[t],
+          }))}
+        />
+      </section>
+
       {/* === MoM таблица === */}
       <SectionCard
         title="Подробно по месяцам · MoM динамика"
