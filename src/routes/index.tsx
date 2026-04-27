@@ -640,6 +640,10 @@ function Dashboard() {
         </header>
 
       <main className="mx-auto max-w-[1440px] px-6 py-8 space-y-8">
+        {isOverview ? (
+          <OverviewAnalytics weeksMap={ALL_WEEKS} />
+        ) : (
+        <>
         {/* === Уровень 1: Общие итоги === */}
         <section className="space-y-4">
           <div className="flex items-end justify-between gap-3">
