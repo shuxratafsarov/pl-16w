@@ -343,6 +343,61 @@ export function OverviewAnalytics({
     });
   }, [weeklySeries]);
 
+  /** Данные для VolumeAndBreakdown — по неделям с byCountry/byType. */
+  const volumeWeeklyData = useMemo<VBPeriodPoint[]>(() => {
+    return sortedWeeks.map((w) => {
+      const parties = typeFilter === "ALL" ? w.parties : w.parties.filter((p) => p.type === typeFilter);
+      // byType (нативно)
+      const byType: VBPeriodPoint["byType"] = {};
+      (["CAINIAO", "MPO", "MKO"] as PartyType[]).forEach((t) => {
+        const ps = parties.filter((p) => p.type === t);
+        const pcs = ps.reduce((s, p) => {
+          const totalMix = (p.mix ?? []).reduce((ss, m) => ss + (m.pcs ?? 0), 0);
+          return s + (typeof p.total_pcs === "number" ? p.total_pcs : totalMix);
+        }, 0);
+        const kg = ps.reduce((s, p) => s + ((p.mix ?? []).reduce((ss, m) => ss + (m.kg ?? 0), 0)), 0);
+        byType[t] = {
+          pcs,
+          kg,
+          revenue: ps.reduce((s, p) => s + (p.revenue ?? 0), 0),
+          expense: ps.reduce((s, p) => s + (p.expense ?? 0), 0),
+          gross_profit: ps.reduce((s, p) => s + (p.gross_profit ?? 0), 0),
+        };
+      });
+      // byCountry — аллокация по mix
+      const byCountry: VBPeriodPoint["byCountry"] = {};
+      parties.forEach((p) => {
+        const mix = p.mix ?? [];
+        const totalMixPcs = mix.reduce((s, m) => s + (m.pcs ?? 0), 0);
+        if (totalMixPcs <= 0) return;
+        mix.forEach((m) => {
+          const cc = m.country;
+          const share = (m.pcs ?? 0) / totalMixPcs;
+          const cur = byCountry[cc] ?? { pcs: 0, kg: 0, revenue: 0, expense: 0, gross_profit: 0 };
+          cur.pcs += m.pcs ?? 0;
+          cur.kg += m.kg ?? 0;
+          cur.revenue += (p.revenue ?? 0) * share;
+          cur.expense += (p.expense ?? 0) * share;
+          cur.gross_profit += (p.gross_profit ?? 0) * share;
+          byCountry[cc] = cur;
+        });
+      });
+      const totalPcs = Object.values(byCountry).reduce((s, v) => s + v.pcs, 0);
+      const totalKg = Object.values(byCountry).reduce((s, v) => s + v.kg, 0);
+      return {
+        label: `W${w.week}`,
+        period: w.period,
+        pcs: totalPcs,
+        kg: totalKg,
+        revenue: parties.reduce((s, p) => s + (p.revenue ?? 0), 0),
+        expense: parties.reduce((s, p) => s + (p.expense ?? 0), 0),
+        gross_profit: parties.reduce((s, p) => s + (p.gross_profit ?? 0), 0),
+        byCountry,
+        byType,
+      };
+    });
+  }, [sortedWeeks, typeFilter]);
+
   /** Аналитика по маркерам M1..M4 — динамика по неделям + распределение по типам + статусы. */
   const markersAnalytics = useMemo(() => {
     type MK = "marker1_tariff" | "marker2_volnet" | "marker3_grossnet" | "marker4_pcs";
