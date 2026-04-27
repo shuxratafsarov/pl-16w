@@ -634,6 +634,14 @@ function Dashboard() {
                   )}
                 </div>
               )}
+              <Link
+                to="/audit"
+                className="inline-flex items-center gap-1.5 rounded-xl border border-border/60 bg-card/60 px-3 py-2 text-xs font-semibold hover:bg-muted/60 transition-colors"
+              >
+                <ShieldCheck className="h-3.5 w-3.5 text-primary" />
+                <span className="hidden sm:inline">Проверка достоверности</span>
+                <span className="sm:hidden">Аудит</span>
+              </Link>
               <ThemeToggle />
             </div>
           </div>
