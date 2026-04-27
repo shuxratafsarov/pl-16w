@@ -156,13 +156,52 @@ def main():
                     f"json_sum_over_parties={type_pcs_json[t]}"
                 )
 
+    # ============================================================
+    # MONTHLY VALIDATION (3PL_monthly sheet vs src/data/monthly.json)
+    # ============================================================
+    monthly_path = os.path.join(DATA_DIR, "monthly.json")
+    if os.path.exists(monthly_path):
+        wsm = wb["3PL_monthly"]
+        months = json.load(open(monthly_path))
+        M = {
+            "REV": 10, "EXP": 94,
+            "rev": {"UZ": 16, "BY": 25, "AZ": 34, "KG": 43},
+            "exp": {"UZ": 96, "BY": 116, "AZ": 161, "KG": 196},
+            "pcs": {"UZ": 23, "BY": 32, "AZ": 41, "KG": 50},
+            "kg":  {"UZ": 20, "BY": 29, "AZ": 38, "KG": 47},
+        }
+        for m in months:
+            mo = m["month"]
+            c = 4 + mo  # row 6 col 5..16 = month 1..12
+            xr = num(wsm.cell(M["REV"], c).value) or 0
+            xe = num(wsm.cell(M["EXP"], c).value) or 0
+            if not near(xr, m["revenue"], TOL_MONEY):
+                issues.append(f"MONTH{mo} revenue excel={xr:.2f} json={m['revenue']}")
+            if not near(xe, m["expense"], TOL_MONEY):
+                issues.append(f"MONTH{mo} expense excel={xe:.2f} json={m['expense']}")
+            for cc in ("UZ", "BY", "AZ", "KG"):
+                jc = m["by_country"][cc]
+                xcr = num(wsm.cell(M["rev"][cc], c).value) or 0
+                xce = num(wsm.cell(M["exp"][cc], c).value) or 0
+                xcp = int(num(wsm.cell(M["pcs"][cc], c).value) or 0)
+                xck = num(wsm.cell(M["kg"][cc], c).value) or 0
+                if not near(xcr, jc["revenue"], TOL_MONEY):
+                    issues.append(f"MONTH{mo} {cc} revenue excel={xcr:.2f} json={jc['revenue']}")
+                if not near(xce, jc["expense"], TOL_MONEY):
+                    issues.append(f"MONTH{mo} {cc} expense excel={xce:.2f} json={jc['expense']}")
+                if not near(xcp, jc["pcs"], TOL_PCS):
+                    issues.append(f"MONTH{mo} {cc} pcs excel={xcp} json={jc['pcs']}")
+                if not near(xck, jc["kg"], 0.05):
+                    issues.append(f"MONTH{mo} {cc} kg excel={xck:.2f} json={jc['kg']}")
+
     if issues:
-        print(f"✗ {len(issues)} DISCREPANCIES vs 3PL_weekly:")
+        print(f"✗ {len(issues)} DISCREPANCIES vs source:")
         for i in issues:
             print(" ", i)
         sys.exit(1)
-    print("✓ All values match 3PL_weekly 100% (M1–M4 + revenue/expense + UI sums)")
+    print("✓ All values match source 100% (weekly M1–M4 + revenue/expense + monthly per country)")
 
 
 if __name__ == "__main__":
     main()
+

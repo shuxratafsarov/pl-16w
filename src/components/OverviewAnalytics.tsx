@@ -46,6 +46,7 @@ import type { Party, PartyType, WeekData } from "@/lib/types";
 import { fmtUSD, fmtNum, fmtPct } from "@/lib/format";
 import { SectionCard } from "@/components/SectionCard";
 import { StatCard } from "@/components/StatCard";
+import { CountryDetailDialog, type CountryDetailData } from "@/components/CountryDetailDialog";
 import {
   Dialog,
   DialogContent,
@@ -95,6 +96,7 @@ export function OverviewAnalytics({
   const [typeFilter, setTypeFilter] = useState<TypeFilter>("ALL");
   const [metric, setMetric] = useState<MetricKey>("revenue");
   const [kpiDrill, setKpiDrill] = useState<KpiDrillKey | null>(null);
+  const [countryDrill, setCountryDrill] = useState<string | null>(null);
 
   const sortedWeeks = useMemo(
     () => Object.keys(weeksMap).map(Number).sort((a, b) => a - b).map((n) => weeksMap[n]),
@@ -207,7 +209,111 @@ export function OverviewAnalytics({
       .sort((a, b) => b.pcs - a.pcs);
   }, [sortedWeeks, typeFilter]);
 
-  /** Топ-партий по прибыли за весь период (с учётом фильтра). */
+  /** Подробные данные по выбранной стране для модалки. */
+  const countryDetailData = useMemo<CountryDetailData | null>(() => {
+    if (!countryDrill) return null;
+    const cc = countryDrill;
+    const totalAllPcs = countryBreakdown.reduce((s, r) => s + r.pcs, 0);
+
+    // Trend по неделям
+    const trend = sortedWeeks.map((w) => {
+      let pcs = 0;
+      let kg = 0;
+      let revenue = 0;
+      let expense = 0;
+      let totalWeekPcs = 0;
+      w.parties.forEach((p) => {
+        if (typeFilter !== "ALL" && p.type !== typeFilter) return;
+        const partyTotalMixPcs = (p.mix ?? []).reduce((s, m) => s + (m.pcs ?? 0), 0);
+        const countryMix = (p.mix ?? []).filter((m) => m.country === cc);
+        const partyCountryPcs = countryMix.reduce((s, m) => s + (m.pcs ?? 0), 0);
+        const partyCountryKg = countryMix.reduce((s, m) => s + (m.kg ?? 0), 0);
+        pcs += partyCountryPcs;
+        kg += partyCountryKg;
+        // Аллокация revenue/expense пропорционально доле штук этой страны в партии
+        if (partyTotalMixPcs > 0 && partyCountryPcs > 0) {
+          const share = partyCountryPcs / partyTotalMixPcs;
+          revenue += (p.revenue ?? 0) * share;
+          expense += (p.expense ?? 0) * share;
+        }
+        totalWeekPcs += partyTotalMixPcs;
+      });
+      return {
+        label: `W${w.week}`,
+        period: w.period,
+        pcs,
+        kg: Math.round(kg * 10) / 10,
+        revenue: Math.round(revenue),
+        expense: Math.round(expense),
+        gross_profit: Math.round(revenue - expense),
+      };
+    }).filter((p) => p.pcs > 0);
+
+    // Subtypes по стране (агрегат)
+    const subMap = new Map<string, { pcs: number; kg: number }>();
+    sortedWeeks.forEach((w) => {
+      w.parties.forEach((p) => {
+        if (typeFilter !== "ALL" && p.type !== typeFilter) return;
+        (p.mix ?? []).forEach((m) => {
+          if (m.country !== cc) return;
+          const prev = subMap.get(m.subtype) ?? { pcs: 0, kg: 0 };
+          prev.pcs += m.pcs ?? 0;
+          prev.kg += m.kg ?? 0;
+          subMap.set(m.subtype, prev);
+        });
+      });
+    });
+    const subtypes = Array.from(subMap.entries())
+      .map(([name, v]) => ({ name, pcs: v.pcs, kg: Math.round(v.kg * 10) / 10 }))
+      .sort((a, b) => b.pcs - a.pcs);
+
+    // Top parties (по доле страны в партии × прибыль)
+    const partyContribs: { label: string; week: number; revenue: number; gross_profit: number; margin_pct: number | null }[] = [];
+    sortedWeeks.forEach((w) => {
+      w.parties.forEach((p) => {
+        if (typeFilter !== "ALL" && p.type !== typeFilter) return;
+        const partyTotalMixPcs = (p.mix ?? []).reduce((s, m) => s + (m.pcs ?? 0), 0);
+        const partyCountryPcs = (p.mix ?? []).filter((m) => m.country === cc).reduce((s, m) => s + (m.pcs ?? 0), 0);
+        if (partyCountryPcs === 0 || partyTotalMixPcs === 0) return;
+        const share = partyCountryPcs / partyTotalMixPcs;
+        const rev = (p.revenue ?? 0) * share;
+        const exp = (p.expense ?? 0) * share;
+        const gp = rev - exp;
+        partyContribs.push({
+          label: `${p.type} #${p.num}`,
+          week: w.week,
+          revenue: Math.round(rev),
+          gross_profit: Math.round(gp),
+          margin_pct: rev > 0 ? (gp / rev) * 100 : null,
+        });
+      });
+    });
+    const topParties = partyContribs.sort((a, b) => b.gross_profit - a.gross_profit).slice(0, 8);
+
+    const totalPcs = trend.reduce((s, t) => s + t.pcs, 0);
+    const totalKg = trend.reduce((s, t) => s + t.kg, 0);
+    const totalRev = trend.reduce((s, t) => s + (t.revenue ?? 0), 0);
+    const totalExp = trend.reduce((s, t) => s + (t.expense ?? 0), 0);
+    const totalGp = totalRev - totalExp;
+
+    return {
+      country: cc,
+      totals: {
+        pcs: totalPcs,
+        kg: Math.round(totalKg * 10) / 10,
+        revenue: totalRev,
+        expense: totalExp,
+        gross_profit: totalGp,
+        margin_pct: totalRev > 0 ? (totalGp / totalRev) * 100 : 0,
+      },
+      share_pct: totalAllPcs > 0 ? (totalPcs / totalAllPcs) * 100 : 0,
+      trend,
+      subtypes,
+      topParties,
+      trendKind: "week",
+    };
+  }, [countryDrill, sortedWeeks, typeFilter, countryBreakdown]);
+
   const topParties = useMemo(() => {
     const list = sortedWeeks.flatMap((w) =>
       w.parties.filter((p) => typeFilter === "ALL" || p.type === typeFilter).map((p) => ({ ...p, _week: w.week }))
@@ -1280,7 +1386,13 @@ export function OverviewAnalytics({
                     }}
                     formatter={(v: number) => [`${fmtNum(v, 0)} шт`, "Штук"]}
                   />
-                  <Bar dataKey="pcs" name="Штук" radius={[0, 6, 6, 0]}>
+                  <Bar
+                    dataKey="pcs"
+                    name="Штук"
+                    radius={[0, 6, 6, 0]}
+                    cursor="pointer"
+                    onClick={(d: { country?: string }) => d?.country && setCountryDrill(d.country)}
+                  >
                     {countryBreakdown.map((c, i) => (
                       <Cell key={i} fill={COUNTRY_COLORS[c.country] ?? "var(--primary)"} />
                     ))}
@@ -1291,13 +1403,21 @@ export function OverviewAnalytics({
             <div className="space-y-2">
               <div className="flex items-center gap-2 text-xs font-semibold text-muted-foreground uppercase tracking-wider mb-1">
                 <Globe2 className="h-3.5 w-3.5" /> Распределение
+                <span className="ml-auto text-[10px] font-medium normal-case tracking-normal text-muted-foreground/70">
+                  кликабельно
+                </span>
               </div>
               {countryBreakdown.map((c) => {
                 const totalPcs = countryBreakdown.reduce((s, r) => s + r.pcs, 0);
                 const share = totalPcs > 0 ? (c.pcs / totalPcs) * 100 : 0;
                 const color = COUNTRY_COLORS[c.country] ?? "var(--primary)";
                 return (
-                  <div key={c.country} className="rounded-lg border border-border/60 bg-card/40 p-3">
+                  <button
+                    type="button"
+                    key={c.country}
+                    onClick={() => setCountryDrill(c.country)}
+                    className="block w-full text-left rounded-lg border border-border/60 bg-card/40 p-3 transition-all hover:border-primary/60 hover:bg-card/80 hover:shadow-md focus:outline-none focus:ring-2 focus:ring-primary/40"
+                  >
                     <div className="flex items-center justify-between text-sm">
                       <span className="font-semibold inline-flex items-center gap-2">
                         <span className="h-2.5 w-2.5 rounded-full" style={{ backgroundColor: color }} />
@@ -1308,16 +1428,17 @@ export function OverviewAnalytics({
                       </span>
                     </div>
                     <div className="mt-2 h-1.5 w-full rounded-full bg-muted/40 overflow-hidden">
-                      <div className="h-full rounded-full" style={{ width: `${share}%`, backgroundColor: color }} />
+                      <div className="h-full rounded-full transition-all" style={{ width: `${share}%`, backgroundColor: color }} />
                     </div>
-                    <p className="mt-1 text-[10px] text-muted-foreground">{share.toFixed(1)}% от объёма</p>
-                  </div>
+                    <p className="mt-1 text-[10px] text-muted-foreground">{share.toFixed(1)}% от объёма · нажмите для деталей</p>
+                  </button>
                 );
               })}
             </div>
           </div>
         </SectionCard>
       )}
+
 
       {/* Топ-10 партий */}
       <SectionCard
@@ -1642,6 +1763,12 @@ export function OverviewAnalytics({
         })()}
       </DialogContent>
     </Dialog>
+
+    <CountryDetailDialog
+      open={!!countryDrill}
+      onOpenChange={(o) => !o && setCountryDrill(null)}
+      data={countryDetailData}
+    />
     </>
   );
 }
