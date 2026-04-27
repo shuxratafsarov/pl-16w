@@ -176,6 +176,50 @@ export function MonthlyView() {
     }));
   }, []);
 
+  /** Данные для VolumeAndBreakdown — по месяцам. */
+  const volumeMonthlyData = useMemo<VBPeriodPoint[]>(() => {
+    return DATA.map((m) => {
+      const byCountry: VBPeriodPoint["byCountry"] = {};
+      (Object.keys(m.by_country) as CountryKey[]).forEach((cc) => {
+        const v = m.by_country[cc];
+        byCountry[cc] = {
+          pcs: v.pcs,
+          kg: v.kg,
+          revenue: v.revenue,
+          expense: v.expense,
+          gross_profit: v.gross_profit,
+        };
+      });
+      const byType: VBPeriodPoint["byType"] = {};
+      (["CAINIAO", "MPO", "MKO"] as const).forEach((t) => {
+        const tv = m.by_type[t];
+        // Расходы по типам в monthly не выделены — оценим пропорционально доле выручки типа.
+        const typeShare = m.revenue > 0 ? tv.revenue / m.revenue : 0;
+        const expense = m.expense * typeShare;
+        byType[t] = {
+          pcs: tv.pcs,
+          kg: 0, // в monthly нет кг по типу — оставим 0 (страновой агрегат kg показан в KPI)
+          revenue: tv.revenue,
+          expense,
+          gross_profit: tv.revenue - expense,
+        };
+      });
+      const totalPcs = Object.values(byCountry).reduce((s, v) => s + v.pcs, 0);
+      const totalKg = Object.values(byCountry).reduce((s, v) => s + v.kg, 0);
+      return {
+        label: m.month_name,
+        period: m.period,
+        pcs: totalPcs,
+        kg: totalKg,
+        revenue: m.revenue,
+        expense: m.expense,
+        gross_profit: m.gross_profit,
+        byCountry,
+        byType,
+      };
+    });
+  }, []);
+
   /** MoM deltas. */
   const momRows = useMemo(
     () =>
