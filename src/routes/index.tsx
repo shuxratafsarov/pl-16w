@@ -331,7 +331,7 @@ function Dashboard() {
       if (a.status !== b.status) return a.status === "critical" ? -1 : 1;
       return b.deviation - a.deviation;
     });
-  }, [partyStatuses, typeAverages]);
+  }, [partyStatuses, typeAverages, week]);
 
   const criticalCount = alerts.filter((a) => a.status === "critical").length;
   const warningCount = alerts.filter((a) => a.status === "warning").length;
