@@ -33,8 +33,17 @@ import {
   Info,
   type LucideIcon,
 } from "lucide-react";
-import data from "@/data/week16.json";
 import type { Party, PartyType, WeekData } from "@/lib/types";
+
+// Загружаем все недели из src/data/week*.json (eager — запекаются в бандл).
+const WEEK_MODULES = import.meta.glob("@/data/week*.json", { eager: true, import: "default" }) as Record<string, WeekData>;
+const ALL_WEEKS: Record<number, WeekData> = {};
+for (const path in WEEK_MODULES) {
+  const m = path.match(/week(\d+)\.json$/);
+  if (m) ALL_WEEKS[Number(m[1])] = WEEK_MODULES[path];
+}
+const AVAILABLE_WEEKS = Object.keys(ALL_WEEKS).map(Number).sort((a, b) => a - b);
+const DEFAULT_WEEK = AVAILABLE_WEEKS[AVAILABLE_WEEKS.length - 1] ?? 16;
 import { fmtUSD, fmtNum, fmtPct } from "@/lib/format";
 import { ThemeToggle } from "@/components/ThemeToggle";
 import { SectionCard } from "@/components/SectionCard";
