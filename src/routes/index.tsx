@@ -374,7 +374,7 @@ function Dashboard() {
    *  которые были обнаружены в исходном листе (и автоматически исправлены). */
   const sourceMatch = useMemo(() => {
     return { ok: SOURCE_DISCREPANCIES.length === 0, issues: SOURCE_DISCREPANCIES };
-  }, []);
+  }, [SOURCE_DISCREPANCIES]);
 
   return (
     <TooltipProvider delayDuration={150}>
