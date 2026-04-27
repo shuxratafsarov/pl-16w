@@ -143,7 +143,7 @@ function reconcileWeek(src: WeekData): { week: WeekData; discrepancies: Discrepa
   return { week: reconciled, discrepancies };
 }
 
-const { week, discrepancies: SOURCE_DISCREPANCIES } = reconcileWeek(rawWeek);
+// week + SOURCE_DISCREPANCIES теперь вычисляются внутри Dashboard через useMemo по выбранной неделе
 
 
 export const Route = createFileRoute("/")({
