@@ -454,7 +454,7 @@ function Dashboard() {
                     className="inline-flex items-center gap-2 rounded-xl border border-border/60 bg-card/60 px-3 py-2 text-xs font-semibold hover:bg-muted/60 transition-colors"
                   >
                     <Calendar className="h-3.5 w-3.5 text-primary" />
-                    Неделя {week.week}
+                    {isOverview ? `Общий свод · ${AVAILABLE_WEEKS.length} нед.` : `Неделя ${week.week}`}
                     <span className="text-muted-foreground font-normal hidden md:inline">· {week.period}</span>
                   </button>
                 </DropdownMenuTrigger>
