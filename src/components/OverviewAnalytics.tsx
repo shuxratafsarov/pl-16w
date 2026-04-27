@@ -275,7 +275,9 @@ export function OverviewAnalytics({
       }).filter((d) => d.value != null);
       // Глобальная статистика
       const allVals = sortedWeeks.flatMap((w) => filteredParties(w).map((p) => getVal(p, m.key))).filter((v): v is number => v != null);
-      const globalAvg = allVals.length ? allVals.reduce((s, v) => s + v, 0) / allVals.length : null;
+      const globalAvg = isSum
+        ? (series.filter(s => s.value != null).length ? series.reduce((s, x) => s + (x.value ?? 0), 0) / series.filter(s => s.value != null).length : null)
+        : (allVals.length ? allVals.reduce((s, v) => s + v, 0) / allVals.length : null);
       const min = allVals.length ? Math.min(...allVals) : null;
       const max = allVals.length ? Math.max(...allVals) : null;
       // Тренд: первые 4 vs последние 4 непустые недели
