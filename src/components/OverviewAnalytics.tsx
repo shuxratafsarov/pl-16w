@@ -46,7 +46,22 @@ import type { Party, PartyType, WeekData } from "@/lib/types";
 import { fmtUSD, fmtNum, fmtPct } from "@/lib/format";
 import { SectionCard } from "@/components/SectionCard";
 import { StatCard } from "@/components/StatCard";
+import {
+  Dialog,
+  DialogContent,
+  DialogHeader,
+  DialogTitle,
+  DialogDescription,
+} from "@/components/ui/dialog";
 import { cn } from "@/lib/utils";
+
+type KpiDrillKey = "revenue" | "expense" | "gross_profit" | "margin";
+const KPI_DRILL_META: Record<KpiDrillKey, { label: string; description: string; color: string; icon: LucideIcon; format: (v: number) => string }> = {
+  revenue: { label: "Σ Выручка", description: "Совокупная выручка за весь период с разбивкой по неделям, типам и партиям.", color: "var(--primary)", icon: Wallet, format: (v) => fmtUSD(v) },
+  expense: { label: "Σ Расходы", description: "Все операционные расходы по партиям: 1-я миля, линейхолл, FOT, последняя миля.", color: "var(--destructive)", icon: Receipt, format: (v) => fmtUSD(v) },
+  gross_profit: { label: "Σ Валовая прибыль", description: "Что осталось после операционных расходов в каждой неделе.", color: "var(--success)", icon: TrendingUp, format: (v) => fmtUSD(v) },
+  margin: { label: "Средняя маржа", description: "GP ÷ Выручка по неделям. Цель — не ниже 5%, оптимум 15%+.", color: "var(--warning)", icon: Percent, format: (v) => `${v.toFixed(2)}%` },
+};
 
 const TYPE_META: Record<PartyType, { label: string; full: string; color: string; icon: LucideIcon }> = {
   CAINIAO: { label: "CAINIAO", full: "Cainiao C2M", color: "var(--cainiao)", icon: Plane },
@@ -79,6 +94,7 @@ export function OverviewAnalytics({
 }) {
   const [typeFilter, setTypeFilter] = useState<TypeFilter>("ALL");
   const [metric, setMetric] = useState<MetricKey>("revenue");
+  const [kpiDrill, setKpiDrill] = useState<KpiDrillKey | null>(null);
 
   const sortedWeeks = useMemo(
     () => Object.keys(weeksMap).map(Number).sort((a, b) => a - b).map((n) => weeksMap[n]),
@@ -316,7 +332,79 @@ export function OverviewAnalytics({
   }, [totals, typeBreakdown, weeklySeries]);
 
 
+  /** Drill-down данные для активного KPI: серия по неделям + по типам + топ партий. */
+  const kpiDrillData = useMemo(() => {
+    if (!kpiDrill) return null;
+    const valueOf = (v: { revenue: number; expense: number; gross_profit: number; margin_pct: number }) => {
+      if (kpiDrill === "margin") return v.margin_pct;
+      return v[kpiDrill] as number;
+    };
+    const series = weeklySeries.map((w) => ({
+      label: w.label,
+      period: w.period,
+      value: valueOf(w),
+      revenue: w.revenue,
+      expense: w.expense,
+      gross_profit: w.gross_profit,
+      margin_pct: w.margin_pct,
+      parties: w.parties,
+    }));
+    const validSeries = series.filter((s) => Number.isFinite(s.value));
+    const sorted = [...validSeries].sort((a, b) => b.value - a.value);
+    const best = sorted[0] ?? null;
+    const worst = sorted[sorted.length - 1] ?? null;
+
+    const byType = (["CAINIAO", "MPO", "MKO"] as PartyType[]).map((t) => {
+      const all = sortedWeeks.flatMap((w) => w.parties.filter((p) => p.type === t));
+      const revenue = all.reduce((s, p) => s + (p.revenue ?? 0), 0);
+      const expense = all.reduce((s, p) => s + (p.expense ?? 0), 0);
+      const gross_profit = all.reduce((s, p) => s + (p.gross_profit ?? 0), 0);
+      const margin_pct = revenue > 0 ? (gross_profit / revenue) * 100 : 0;
+      const value = valueOf({ revenue, expense, gross_profit, margin_pct });
+      return {
+        type: t,
+        label: TYPE_META[t].label,
+        full: TYPE_META[t].full,
+        color: TYPE_META[t].color,
+        count: all.length,
+        revenue,
+        expense,
+        gross_profit,
+        margin_pct,
+        value,
+      };
+    });
+    const totalAbs = byType.reduce((s, t) => s + Math.abs(t.value), 0) || 1;
+    const byTypeWithShare = byType.map((t) => ({ ...t, share: (Math.abs(t.value) / totalAbs) * 100 }));
+
+    const partyMetric = (p: Party): number => {
+      if (kpiDrill === "margin") return p.margin_pct ?? 0;
+      const v = p[kpiDrill] as number | null | undefined;
+      return typeof v === "number" ? v : 0;
+    };
+    const allParties = sortedWeeks.flatMap((w) =>
+      w.parties
+        .filter((p) => typeFilter === "ALL" || p.type === typeFilter)
+        .map((p) => ({ p, week: w.week, period: w.period }))
+    );
+    const topParties = [...allParties]
+      .filter(({ p }) => Number.isFinite(partyMetric(p)))
+      .sort((a, b) => partyMetric(b.p) - partyMetric(a.p))
+      .slice(0, 10);
+    const bottomParties = [...allParties]
+      .filter(({ p }) => Number.isFinite(partyMetric(p)))
+      .sort((a, b) => partyMetric(a.p) - partyMetric(b.p))
+      .slice(0, 5);
+
+    const total = validSeries.reduce((s, w) => s + w.value, 0);
+    const avg = validSeries.length ? total / validSeries.length : 0;
+
+    return { series, best, worst, byType: byTypeWithShare, topParties, bottomParties, total, avg, partyMetric };
+  }, [kpiDrill, weeklySeries, sortedWeeks, typeFilter]);
+
+
   return (
+    <>
     <div className="space-y-8">
       {/* Фильтры */}
       <div className="flex flex-wrap items-center justify-between gap-3 rounded-2xl glass-card p-4 shadow-elegant">
@@ -385,6 +473,7 @@ export function OverviewAnalytics({
           }
           accent="primary"
           icon={<Wallet className="h-5 w-5" />}
+          onClick={() => setKpiDrill("revenue")}
         />
         <StatCard
           label="Σ Расходы"
@@ -392,6 +481,7 @@ export function OverviewAnalytics({
           hint={`${fmtPct(totals.expense / totals.revenue)} от выручки`}
           accent="destructive"
           icon={<Receipt className="h-5 w-5" />}
+          onClick={() => setKpiDrill("expense")}
         />
         <StatCard
           label="Σ Валовая прибыль"
@@ -414,6 +504,7 @@ export function OverviewAnalytics({
           }
           accent="success"
           icon={<TrendingUp className="h-5 w-5" />}
+          onClick={() => setKpiDrill("gross_profit")}
         />
         <StatCard
           label="Средняя маржа"
@@ -421,6 +512,7 @@ export function OverviewAnalytics({
           hint={`${totals.partiesTotal} партий · ${fmtUSD(totals.avgWeekly)}/нед`}
           accent="warning"
           icon={<Percent className="h-5 w-5" />}
+          onClick={() => setKpiDrill("margin")}
         />
       </section>
 
@@ -1368,5 +1460,180 @@ export function OverviewAnalytics({
         Аналитика построена по {sortedWeeks.length} неделям · фильтр: {typeFilter === "ALL" ? "Все типы" : TYPE_META[typeFilter as PartyType].label}
       </div>
     </div>
+
+    {/* Drill-down dialog для KPI карточек "Общего свода" */}
+    <Dialog open={kpiDrill !== null} onOpenChange={(o) => !o && setKpiDrill(null)}>
+      <DialogContent className="max-w-5xl max-h-[90vh] overflow-y-auto">
+        {kpiDrill && kpiDrillData && (() => {
+          const meta = KPI_DRILL_META[kpiDrill];
+          const Icon = meta.icon;
+          const { series, best, worst, byType, topParties, bottomParties, avg, partyMetric } = kpiDrillData;
+          const isMargin = kpiDrill === "margin";
+          const fmt = (v: number) => meta.format(v);
+          return (
+            <>
+              <DialogHeader>
+                <div className="flex items-start gap-3">
+                  <div className="h-11 w-11 shrink-0 rounded-xl flex items-center justify-center text-white" style={{ background: meta.color }}>
+                    <Icon className="h-5 w-5" />
+                  </div>
+                  <div className="flex-1 min-w-0">
+                    <DialogTitle className="text-xl">{meta.label} · {sortedWeeks.length} нед.</DialogTitle>
+                    <DialogDescription className="text-sm">{meta.description}</DialogDescription>
+                  </div>
+                </div>
+              </DialogHeader>
+
+              <div className="space-y-6 mt-2">
+                {/* Сводка */}
+                <div className="grid grid-cols-2 sm:grid-cols-4 gap-3">
+                  <div className="rounded-xl bg-muted/40 border border-border/60 p-3">
+                    <p className="text-[10px] uppercase tracking-wider text-muted-foreground font-semibold">{isMargin ? "Среднее" : "Итого"}</p>
+                    <p className="text-lg font-bold tabular-nums mt-1">{isMargin ? fmt(avg) : fmt(kpiDrillData.total)}</p>
+                  </div>
+                  <div className="rounded-xl bg-muted/40 border border-border/60 p-3">
+                    <p className="text-[10px] uppercase tracking-wider text-muted-foreground font-semibold">Среднее/нед</p>
+                    <p className="text-lg font-bold tabular-nums mt-1">{fmt(avg)}</p>
+                  </div>
+                  {best && (
+                    <div className="rounded-xl bg-success/10 border border-success/30 p-3">
+                      <p className="text-[10px] uppercase tracking-wider text-success font-semibold">Лучшая · {best.label}</p>
+                      <p className="text-lg font-bold tabular-nums mt-1 text-success">{fmt(best.value)}</p>
+                    </div>
+                  )}
+                  {worst && (
+                    <div className="rounded-xl bg-destructive/10 border border-destructive/30 p-3">
+                      <p className="text-[10px] uppercase tracking-wider text-destructive font-semibold">Худшая · {worst.label}</p>
+                      <p className="text-lg font-bold tabular-nums mt-1 text-destructive">{fmt(worst.value)}</p>
+                    </div>
+                  )}
+                </div>
+
+                {/* График по неделям */}
+                <div>
+                  <p className="text-xs uppercase tracking-wider text-muted-foreground font-semibold mb-2">Динамика по неделям</p>
+                  <div className="h-64">
+                    <ResponsiveContainer>
+                      <ComposedChart data={series} margin={{ top: 8, right: 16, left: 0, bottom: 0 }}>
+                        <defs>
+                          <linearGradient id="kpi-drill-grad" x1="0" y1="0" x2="0" y2="1">
+                            <stop offset="0%" stopColor={meta.color} stopOpacity={0.5} />
+                            <stop offset="100%" stopColor={meta.color} stopOpacity={0} />
+                          </linearGradient>
+                        </defs>
+                        <CartesianGrid strokeDasharray="3 3" stroke="var(--border)" opacity={0.3} />
+                        <XAxis dataKey="label" tick={{ fontSize: 11 }} stroke="var(--muted-foreground)" />
+                        <YAxis tick={{ fontSize: 11 }} stroke="var(--muted-foreground)" tickFormatter={(v) => isMargin ? `${v.toFixed(0)}%` : `${(v / 1000).toFixed(0)}k`} />
+                        <Tooltip
+                          contentStyle={{ background: "var(--popover)", border: "1px solid var(--border)", borderRadius: 12, fontSize: 12 }}
+                          formatter={(v: number) => [fmt(v), meta.label]}
+                          labelFormatter={(l, payload) => {
+                            const p = payload?.[0]?.payload as { period?: string } | undefined;
+                            return `${l}${p?.period ? ` · ${p.period}` : ""}`;
+                          }}
+                        />
+                        <ReferenceLine y={avg} stroke={meta.color} strokeDasharray="4 4" strokeOpacity={0.5} label={{ value: "среднее", fill: "var(--muted-foreground)", fontSize: 10, position: "right" }} />
+                        <Area type="monotone" dataKey="value" stroke={meta.color} strokeWidth={2} fill="url(#kpi-drill-grad)" />
+                      </ComposedChart>
+                    </ResponsiveContainer>
+                  </div>
+                </div>
+
+                {/* По типам */}
+                <div>
+                  <p className="text-xs uppercase tracking-wider text-muted-foreground font-semibold mb-2">Разбивка по типам бизнеса</p>
+                  <div className="grid grid-cols-1 md:grid-cols-3 gap-3">
+                    {byType.map((t) => {
+                      const TypeIcon = TYPE_META[t.type].icon;
+                      return (
+                        <div key={t.type} className="rounded-xl border border-border bg-card/60 p-4">
+                          <div className="flex items-center gap-2 mb-2">
+                            <div className="h-8 w-8 rounded-lg flex items-center justify-center text-white" style={{ background: t.color }}>
+                              <TypeIcon className="h-4 w-4" />
+                            </div>
+                            <div className="min-w-0">
+                              <p className="text-sm font-semibold truncate">{t.label}</p>
+                              <p className="text-[10px] text-muted-foreground">{t.count} партий</p>
+                            </div>
+                          </div>
+                          <p className="text-xl font-bold tabular-nums">{fmt(t.value)}</p>
+                          {!isMargin && (
+                            <div className="mt-2">
+                              <div className="h-1.5 rounded-full bg-muted overflow-hidden">
+                                <div className="h-full rounded-full" style={{ width: `${t.share}%`, background: t.color }} />
+                              </div>
+                              <p className="text-[10px] text-muted-foreground mt-1">{t.share.toFixed(1)}% от итого</p>
+                            </div>
+                          )}
+                          <div className="mt-2 grid grid-cols-2 gap-1 text-[10px] text-muted-foreground">
+                            <span>Выручка: <b className="text-foreground tabular-nums">{fmtUSD(t.revenue)}</b></span>
+                            <span>Маржа: <b className="text-foreground tabular-nums">{t.margin_pct.toFixed(1)}%</b></span>
+                          </div>
+                        </div>
+                      );
+                    })}
+                  </div>
+                </div>
+
+                {/* Топ партий */}
+                <div>
+                  <p className="text-xs uppercase tracking-wider text-muted-foreground font-semibold mb-2">
+                    Топ-10 партий по {meta.label.toLowerCase()}
+                    {typeFilter !== "ALL" && <span className="ml-1 text-[10px] normal-case">· фильтр: {TYPE_META[typeFilter as PartyType].label}</span>}
+                  </p>
+                  <div className="rounded-xl border border-border overflow-hidden">
+                    <table className="w-full text-xs">
+                      <thead className="bg-muted/50 text-[10px] uppercase tracking-wider text-muted-foreground">
+                        <tr>
+                          <th className="px-3 py-2 text-left">#</th>
+                          <th className="px-3 py-2 text-left">Партия</th>
+                          <th className="px-3 py-2 text-left">Тип</th>
+                          <th className="px-3 py-2 text-left">Неделя</th>
+                          <th className="px-3 py-2 text-right">{meta.label}</th>
+                        </tr>
+                      </thead>
+                      <tbody>
+                        {topParties.map(({ p, week, period }, i) => (
+                          <tr key={`${p.col}-${week}`} className="border-t border-border/50 hover:bg-muted/30">
+                            <td className="px-3 py-2 text-muted-foreground tabular-nums">{i + 1}</td>
+                            <td className="px-3 py-2 font-mono">{p.col}</td>
+                            <td className="px-3 py-2"><span className="px-1.5 py-0.5 rounded text-[10px] font-semibold text-white" style={{ background: TYPE_META[p.type].color }}>{TYPE_META[p.type].label}</span></td>
+                            <td className="px-3 py-2 text-muted-foreground">W{week} · {period}</td>
+                            <td className="px-3 py-2 text-right tabular-nums font-semibold">{fmt(partyMetric(p))}</td>
+                          </tr>
+                        ))}
+                      </tbody>
+                    </table>
+                  </div>
+                </div>
+
+                {/* Антирейтинг */}
+                {bottomParties.length > 0 && (
+                  <div>
+                    <p className="text-xs uppercase tracking-wider text-destructive font-semibold mb-2">Антирейтинг · 5 худших</p>
+                    <div className="rounded-xl border border-destructive/30 bg-destructive/5 overflow-hidden">
+                      <table className="w-full text-xs">
+                        <tbody>
+                          {bottomParties.map(({ p, week, period }, i) => (
+                            <tr key={`${p.col}-${week}`} className="border-t border-destructive/20 first:border-t-0">
+                              <td className="px-3 py-2 text-muted-foreground tabular-nums">{i + 1}</td>
+                              <td className="px-3 py-2 font-mono">{p.col}</td>
+                              <td className="px-3 py-2"><span className="px-1.5 py-0.5 rounded text-[10px] font-semibold text-white" style={{ background: TYPE_META[p.type].color }}>{TYPE_META[p.type].label}</span></td>
+                              <td className="px-3 py-2 text-muted-foreground">W{week} · {period}</td>
+                              <td className="px-3 py-2 text-right tabular-nums font-semibold text-destructive">{fmt(partyMetric(p))}</td>
+                            </tr>
+                          ))}
+                        </tbody>
+                      </table>
+                    </div>
+                  </div>
+                )}
+              </div>
+            </>
+          );
+        })()}
+      </DialogContent>
+    </Dialog>
+    </>
   );
 }
