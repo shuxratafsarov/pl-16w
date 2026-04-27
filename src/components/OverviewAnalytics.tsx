@@ -100,6 +100,10 @@ export function OverviewAnalytics({
   const [metric, setMetric] = useState<MetricKey>("revenue");
   const [kpiDrill, setKpiDrill] = useState<KpiDrillKey | null>(null);
   const [countryDrill, setCountryDrill] = useState<string | null>(null);
+  const [typeDrill, setTypeDrill] = useState<PartyType | null>(null);
+  const [volumeKpiDrill, setVolumeKpiDrill] = useState<"pcs" | "kg" | "avgw" | "rev_per_pcs" | null>(null);
+  const [periodDrill, setPeriodDrill] = useState<number | null>(null); // week number
+  const [matrixDrill, setMatrixDrill] = useState<{ country: string; type: PartyType } | null>(null);
 
   const sortedWeeks = useMemo(
     () => Object.keys(weeksMap).map(Number).sort((a, b) => a - b).map((n) => weeksMap[n]),
