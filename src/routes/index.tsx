@@ -68,7 +68,7 @@ import {
 } from "@/components/ui/dropdown-menu";
 import { cn } from "@/lib/utils";
 
-const rawWeek = data as WeekData;
+// rawWeek removed — данные теперь выбираются по выбранной неделе в компоненте
 
 /** Расхождение по одной строке (до пересчёта). */
 type Discrepancy = {
