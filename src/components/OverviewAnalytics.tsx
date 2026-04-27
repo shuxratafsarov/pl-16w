@@ -1154,9 +1154,11 @@ export function OverviewAnalytics({
             const share = totals.revenue > 0 ? (t.revenue / totals.revenue) * 100 : 0;
             const score = share * 0.4 + Math.max(0, t.margin) * 0.6;
             return (
-              <div
+              <button
                 key={t.type}
-                className="rounded-xl border border-border bg-card/40 p-4 space-y-3"
+                type="button"
+                onClick={() => setTypeDrill(t.type)}
+                className="text-left rounded-xl border border-border bg-card/40 p-4 space-y-3 transition-all hover:border-primary/60 hover:bg-card/80 hover:shadow-md focus:outline-none focus:ring-2 focus:ring-primary/40 cursor-pointer"
               >
                 <div className="flex items-center justify-between">
                   <span className="text-xs font-bold uppercase tracking-wider" style={{ color: t.color }}>
@@ -1212,7 +1214,8 @@ export function OverviewAnalytics({
                     {fmtUSD(t.profit)}
                   </span>
                 </div>
-              </div>
+                <p className="text-[10px] text-muted-foreground/70 italic">нажмите для деталей</p>
+              </button>
             );
           })}
         </div>
