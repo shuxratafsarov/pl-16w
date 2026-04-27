@@ -46,7 +46,22 @@ import type { Party, PartyType, WeekData } from "@/lib/types";
 import { fmtUSD, fmtNum, fmtPct } from "@/lib/format";
 import { SectionCard } from "@/components/SectionCard";
 import { StatCard } from "@/components/StatCard";
+import {
+  Dialog,
+  DialogContent,
+  DialogHeader,
+  DialogTitle,
+  DialogDescription,
+} from "@/components/ui/dialog";
 import { cn } from "@/lib/utils";
+
+type KpiDrillKey = "revenue" | "expense" | "gross_profit" | "margin";
+const KPI_DRILL_META: Record<KpiDrillKey, { label: string; description: string; color: string; icon: LucideIcon; format: (v: number) => string }> = {
+  revenue: { label: "Σ Выручка", description: "Совокупная выручка за весь период с разбивкой по неделям, типам и партиям.", color: "var(--primary)", icon: Wallet, format: (v) => fmtUSD(v) },
+  expense: { label: "Σ Расходы", description: "Все операционные расходы по партиям: 1-я миля, линейхолл, FOT, последняя миля.", color: "var(--destructive)", icon: Receipt, format: (v) => fmtUSD(v) },
+  gross_profit: { label: "Σ Валовая прибыль", description: "Что осталось после операционных расходов в каждой неделе.", color: "var(--success)", icon: TrendingUp, format: (v) => fmtUSD(v) },
+  margin: { label: "Средняя маржа", description: "GP ÷ Выручка по неделям. Цель — не ниже 5%, оптимум 15%+.", color: "var(--warning)", icon: Percent, format: (v) => `${v.toFixed(2)}%` },
+};
 
 const TYPE_META: Record<PartyType, { label: string; full: string; color: string; icon: LucideIcon }> = {
   CAINIAO: { label: "CAINIAO", full: "Cainiao C2M", color: "var(--cainiao)", icon: Plane },
