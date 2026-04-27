@@ -722,7 +722,11 @@ export function OverviewAnalytics({
                 stroke="var(--muted-foreground)"
                 fontSize={11}
                 tickFormatter={(v) =>
-                  metric === "margin_pct" ? `${v.toFixed(0)}%` : `$${(v / 1000).toFixed(0)}k`
+                  metric === "margin_pct"
+                    ? `${v.toFixed(0)}%`
+                    : metric === "pcs" || metric === "kg"
+                      ? `${(v / 1000).toFixed(0)}k`
+                      : `$${(v / 1000).toFixed(0)}k`
                 }
               />
               <Tooltip
