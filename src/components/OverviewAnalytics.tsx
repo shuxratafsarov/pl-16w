@@ -209,7 +209,111 @@ export function OverviewAnalytics({
       .sort((a, b) => b.pcs - a.pcs);
   }, [sortedWeeks, typeFilter]);
 
-  /** Топ-партий по прибыли за весь период (с учётом фильтра). */
+  /** Подробные данные по выбранной стране для модалки. */
+  const countryDetailData = useMemo<CountryDetailData | null>(() => {
+    if (!countryDrill) return null;
+    const cc = countryDrill;
+    const totalAllPcs = countryBreakdown.reduce((s, r) => s + r.pcs, 0);
+
+    // Trend по неделям
+    const trend = sortedWeeks.map((w) => {
+      let pcs = 0;
+      let kg = 0;
+      let revenue = 0;
+      let expense = 0;
+      let totalWeekPcs = 0;
+      w.parties.forEach((p) => {
+        if (typeFilter !== "ALL" && p.type !== typeFilter) return;
+        const partyTotalMixPcs = (p.mix ?? []).reduce((s, m) => s + (m.pcs ?? 0), 0);
+        const countryMix = (p.mix ?? []).filter((m) => m.country === cc);
+        const partyCountryPcs = countryMix.reduce((s, m) => s + (m.pcs ?? 0), 0);
+        const partyCountryKg = countryMix.reduce((s, m) => s + (m.kg ?? 0), 0);
+        pcs += partyCountryPcs;
+        kg += partyCountryKg;
+        // Аллокация revenue/expense пропорционально доле штук этой страны в партии
+        if (partyTotalMixPcs > 0 && partyCountryPcs > 0) {
+          const share = partyCountryPcs / partyTotalMixPcs;
+          revenue += (p.revenue ?? 0) * share;
+          expense += (p.expense ?? 0) * share;
+        }
+        totalWeekPcs += partyTotalMixPcs;
+      });
+      return {
+        label: `W${w.week}`,
+        period: w.period,
+        pcs,
+        kg: Math.round(kg * 10) / 10,
+        revenue: Math.round(revenue),
+        expense: Math.round(expense),
+        gross_profit: Math.round(revenue - expense),
+      };
+    }).filter((p) => p.pcs > 0);
+
+    // Subtypes по стране (агрегат)
+    const subMap = new Map<string, { pcs: number; kg: number }>();
+    sortedWeeks.forEach((w) => {
+      w.parties.forEach((p) => {
+        if (typeFilter !== "ALL" && p.type !== typeFilter) return;
+        (p.mix ?? []).forEach((m) => {
+          if (m.country !== cc) return;
+          const prev = subMap.get(m.subtype) ?? { pcs: 0, kg: 0 };
+          prev.pcs += m.pcs ?? 0;
+          prev.kg += m.kg ?? 0;
+          subMap.set(m.subtype, prev);
+        });
+      });
+    });
+    const subtypes = Array.from(subMap.entries())
+      .map(([name, v]) => ({ name, pcs: v.pcs, kg: Math.round(v.kg * 10) / 10 }))
+      .sort((a, b) => b.pcs - a.pcs);
+
+    // Top parties (по доле страны в партии × прибыль)
+    const partyContribs: { label: string; week: number; revenue: number; gross_profit: number; margin_pct: number | null }[] = [];
+    sortedWeeks.forEach((w) => {
+      w.parties.forEach((p) => {
+        if (typeFilter !== "ALL" && p.type !== typeFilter) return;
+        const partyTotalMixPcs = (p.mix ?? []).reduce((s, m) => s + (m.pcs ?? 0), 0);
+        const partyCountryPcs = (p.mix ?? []).filter((m) => m.country === cc).reduce((s, m) => s + (m.pcs ?? 0), 0);
+        if (partyCountryPcs === 0 || partyTotalMixPcs === 0) return;
+        const share = partyCountryPcs / partyTotalMixPcs;
+        const rev = (p.revenue ?? 0) * share;
+        const exp = (p.expense ?? 0) * share;
+        const gp = rev - exp;
+        partyContribs.push({
+          label: `${p.type} #${p.num}`,
+          week: w.week,
+          revenue: Math.round(rev),
+          gross_profit: Math.round(gp),
+          margin_pct: rev > 0 ? (gp / rev) * 100 : null,
+        });
+      });
+    });
+    const topParties = partyContribs.sort((a, b) => b.gross_profit - a.gross_profit).slice(0, 8);
+
+    const totalPcs = trend.reduce((s, t) => s + t.pcs, 0);
+    const totalKg = trend.reduce((s, t) => s + t.kg, 0);
+    const totalRev = trend.reduce((s, t) => s + (t.revenue ?? 0), 0);
+    const totalExp = trend.reduce((s, t) => s + (t.expense ?? 0), 0);
+    const totalGp = totalRev - totalExp;
+
+    return {
+      country: cc,
+      totals: {
+        pcs: totalPcs,
+        kg: Math.round(totalKg * 10) / 10,
+        revenue: totalRev,
+        expense: totalExp,
+        gross_profit: totalGp,
+        margin_pct: totalRev > 0 ? (totalGp / totalRev) * 100 : 0,
+      },
+      share_pct: totalAllPcs > 0 ? (totalPcs / totalAllPcs) * 100 : 0,
+      trend,
+      subtypes,
+      topParties,
+      trendKind: "week",
+    };
+  }, [countryDrill, sortedWeeks, typeFilter, countryBreakdown]);
+
   const topParties = useMemo(() => {
     const list = sortedWeeks.flatMap((w) =>
       w.parties.filter((p) => typeFilter === "ALL" || p.type === typeFilter).map((p) => ({ ...p, _week: w.week }))
