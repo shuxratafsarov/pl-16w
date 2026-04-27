@@ -105,9 +105,20 @@ export function OverviewAnalytics({
   const [periodDrill, setPeriodDrill] = useState<number | null>(null); // week number
   const [matrixDrill, setMatrixDrill] = useState<{ country: string; type: PartyType } | null>(null);
 
-  const sortedWeeks = useMemo(
+  const allWeeks = useMemo(
     () => Object.keys(weeksMap).map(Number).sort((a, b) => a - b).map((n) => weeksMap[n]),
     [weeksMap]
+  );
+  const minWeek = allWeeks.length ? allWeeks[0].week : 1;
+  const maxWeek = allWeeks.length ? allWeeks[allWeeks.length - 1].week : 1;
+  const [weekFrom, setWeekFrom] = useState<number>(minWeek);
+  const [weekTo, setWeekTo] = useState<number>(maxWeek);
+  // Если данные перезагрузились с другим диапазоном — подстраховка
+  const safeFrom = Math.max(minWeek, Math.min(weekFrom, maxWeek));
+  const safeTo = Math.max(safeFrom, Math.min(weekTo, maxWeek));
+  const sortedWeeks = useMemo(
+    () => allWeeks.filter((w) => w.week >= safeFrom && w.week <= safeTo),
+    [allWeeks, safeFrom, safeTo]
   );
 
   /** Агрегаты по неделям с учётом фильтра по типу. */
