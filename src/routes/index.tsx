@@ -643,7 +643,7 @@ function Dashboard() {
         {isOverview ? (
           <OverviewAnalytics weeksMap={ALL_WEEKS} />
         ) : (
-        <>
+          <div className="space-y-8">
         {/* === Уровень 1: Общие итоги === */}
         <section className="space-y-4">
           <div className="flex items-end justify-between gap-3">
