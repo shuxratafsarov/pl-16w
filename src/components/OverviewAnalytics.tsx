@@ -115,6 +115,14 @@ export function OverviewAnalytics({
       const expense = parties.reduce((s, p) => s + (p.expense ?? 0), 0);
       const gross_profit = parties.reduce((s, p) => s + (p.gross_profit ?? 0), 0);
       const margin_pct = revenue > 0 ? (gross_profit / revenue) * 100 : 0;
+      const pcs = parties.reduce((s, p) => {
+        const totalMix = (p.mix ?? []).reduce((ss, m) => ss + (m.pcs ?? 0), 0);
+        return s + (typeof p.total_pcs === "number" ? p.total_pcs : totalMix);
+      }, 0);
+      const kg = parties.reduce(
+        (s, p) => s + ((p.mix ?? []).reduce((ss, m) => ss + (m.kg ?? 0), 0)),
+        0
+      );
       // Доли по типам (для stacked даже когда фильтр ALL)
       const byType = (["CAINIAO", "MPO", "MKO"] as PartyType[]).reduce((acc, t) => {
         const ps = w.parties.filter((p) => p.type === t);
@@ -134,6 +142,8 @@ export function OverviewAnalytics({
         expense,
         gross_profit,
         margin_pct,
+        pcs,
+        kg,
         parties: parties.length,
         ...byType,
       };
