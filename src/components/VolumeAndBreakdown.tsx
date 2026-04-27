@@ -406,9 +406,29 @@ export function VolumeAndBreakdown({ periodKind, data, countries, types, title, 
                     {types.map((t) => {
                       const cell = matrix.grid[c.key][t.key];
                       const m = cell.revenue > 0 ? ((cell.revenue - cell.expense) / cell.revenue) * 100 : 0;
+                      const clickable = !!onMatrixCellClick;
                       return (
                         <td key={t.key} className="px-2 py-1.5 text-right">
-                          <div className={cn("rounded-md px-2 py-1.5 inline-block min-w-[100px] text-right", marginColor(m))}>
+                          <div
+                            role={clickable ? "button" : undefined}
+                            tabIndex={clickable ? 0 : undefined}
+                            onClick={clickable ? () => onMatrixCellClick!(c.key, t.key) : undefined}
+                            onKeyDown={
+                              clickable
+                                ? (e) => {
+                                    if (e.key === "Enter" || e.key === " ") {
+                                      e.preventDefault();
+                                      onMatrixCellClick!(c.key, t.key);
+                                    }
+                                  }
+                                : undefined
+                            }
+                            className={cn(
+                              "rounded-md px-2 py-1.5 inline-block min-w-[100px] text-right transition-all",
+                              marginColor(m),
+                              clickable && "cursor-pointer hover:ring-2 hover:ring-primary/50 hover:scale-[1.03] focus:outline-none focus:ring-2 focus:ring-primary/60"
+                            )}
+                          >
                             <div className="text-[11px] font-bold tabular-nums leading-tight">{fmtUSD(cell.revenue)}</div>
                             <div className="text-[9px] tabular-nums opacity-80 leading-tight">−{fmtUSD(cell.expense).replace("$", "$")}</div>
                             <div className="text-[10px] font-bold tabular-nums leading-tight mt-0.5">{m.toFixed(1)}%</div>
