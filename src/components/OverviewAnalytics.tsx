@@ -1763,6 +1763,12 @@ export function OverviewAnalytics({
         })()}
       </DialogContent>
     </Dialog>
+
+    <CountryDetailDialog
+      open={!!countryDrill}
+      onOpenChange={(o) => !o && setCountryDrill(null)}
+      data={countryDetailData}
+    />
     </>
   );
 }
