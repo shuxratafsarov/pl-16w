@@ -463,8 +463,26 @@ function Dashboard() {
                     Выбрать неделю (наведите для дат)
                   </DropdownMenuLabel>
                   <DropdownMenuSeparator />
+                  <DropdownMenuItem
+                    onSelect={() => setSelectedWeek(OVERVIEW_KEY)}
+                    className={cn(
+                      "flex items-center justify-between gap-2 text-xs cursor-pointer",
+                      isOverview && "bg-primary/10 text-primary font-semibold"
+                    )}
+                  >
+                    <span className="inline-flex items-center gap-1.5">
+                      <Boxes className="h-3.5 w-3.5" />
+                      Общий свод
+                    </span>
+                    {isOverview ? (
+                      <span className="text-[10px] uppercase">текущий</span>
+                    ) : (
+                      <span className="text-[10px] text-muted-foreground">все недели</span>
+                    )}
+                  </DropdownMenuItem>
+                  <DropdownMenuSeparator />
                   {WEEKS.map((w) => {
-                    const isCurrent = w.week === week.week;
+                    const isCurrent = !isOverview && w.week === week.week;
                     const hasData = AVAILABLE_WEEKS.includes(w.week);
                     return (
                       <UITooltip key={w.week}>
