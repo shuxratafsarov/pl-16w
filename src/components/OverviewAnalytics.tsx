@@ -105,9 +105,20 @@ export function OverviewAnalytics({
   const [periodDrill, setPeriodDrill] = useState<number | null>(null); // week number
   const [matrixDrill, setMatrixDrill] = useState<{ country: string; type: PartyType } | null>(null);
 
-  const sortedWeeks = useMemo(
+  const allWeeks = useMemo(
     () => Object.keys(weeksMap).map(Number).sort((a, b) => a - b).map((n) => weeksMap[n]),
     [weeksMap]
+  );
+  const minWeek = allWeeks.length ? allWeeks[0].week : 1;
+  const maxWeek = allWeeks.length ? allWeeks[allWeeks.length - 1].week : 1;
+  const [weekFrom, setWeekFrom] = useState<number>(minWeek);
+  const [weekTo, setWeekTo] = useState<number>(maxWeek);
+  // Если данные перезагрузились с другим диапазоном — подстраховка
+  const safeFrom = Math.max(minWeek, Math.min(weekFrom, maxWeek));
+  const safeTo = Math.max(safeFrom, Math.min(weekTo, maxWeek));
+  const sortedWeeks = useMemo(
+    () => allWeeks.filter((w) => w.week >= safeFrom && w.week <= safeTo),
+    [allWeeks, safeFrom, safeTo]
   );
 
   /** Агрегаты по неделям с учётом фильтра по типу. */
@@ -579,7 +590,59 @@ export function OverviewAnalytics({
           Фильтры аналитики
         </div>
         <div className="flex flex-wrap items-center gap-2">
-          <span className="text-xs text-muted-foreground uppercase tracking-wider font-semibold">Тип</span>
+          <span className="text-xs text-muted-foreground uppercase tracking-wider font-semibold">Период</span>
+          <div className="inline-flex items-center gap-1 rounded-xl border border-border bg-card/60 p-1">
+            <select
+              value={safeFrom}
+              onChange={(e) => {
+                const v = Number(e.target.value);
+                setWeekFrom(v);
+                if (v > safeTo) setWeekTo(v);
+              }}
+              className="bg-transparent text-xs font-semibold px-2 py-1.5 rounded-lg outline-none cursor-pointer hover:bg-muted/40"
+            >
+              {allWeeks.map((w) => (
+                <option key={w.week} value={w.week}>W{w.week}</option>
+              ))}
+            </select>
+            <span className="text-xs text-muted-foreground">→</span>
+            <select
+              value={safeTo}
+              onChange={(e) => {
+                const v = Number(e.target.value);
+                setWeekTo(v);
+                if (v < safeFrom) setWeekFrom(v);
+              }}
+              className="bg-transparent text-xs font-semibold px-2 py-1.5 rounded-lg outline-none cursor-pointer hover:bg-muted/40"
+            >
+              {allWeeks.map((w) => (
+                <option key={w.week} value={w.week}>W{w.week}</option>
+              ))}
+            </select>
+          </div>
+          <div className="inline-flex rounded-xl border border-border bg-card/60 p-1 gap-0.5">
+            {([
+              { key: "all", label: "Все", from: minWeek, to: maxWeek },
+              { key: "l4", label: "Последние 4", from: Math.max(minWeek, maxWeek - 3), to: maxWeek },
+              { key: "l8", label: "Последние 8", from: Math.max(minWeek, maxWeek - 7), to: maxWeek },
+              { key: "f4", label: "Первые 4", from: minWeek, to: Math.min(maxWeek, minWeek + 3) },
+            ] as const).map((preset) => {
+              const active = safeFrom === preset.from && safeTo === preset.to;
+              return (
+                <button
+                  key={preset.key}
+                  onClick={() => { setWeekFrom(preset.from); setWeekTo(preset.to); }}
+                  className={cn(
+                    "px-2.5 py-1.5 text-[11px] font-semibold rounded-lg transition-all",
+                    active ? "gradient-primary text-white shadow-glow" : "text-muted-foreground hover:text-foreground"
+                  )}
+                >
+                  {preset.label}
+                </button>
+              );
+            })}
+          </div>
+          <span className="text-xs text-muted-foreground uppercase tracking-wider font-semibold ml-2">Тип</span>
           <div className="inline-flex rounded-xl border border-border bg-card/60 p-1 gap-0.5">
             {(["ALL", "CAINIAO", "MPO", "MKO"] as TypeFilter[]).map((f) => (
               <button
