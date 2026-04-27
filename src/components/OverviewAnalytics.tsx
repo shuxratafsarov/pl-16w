@@ -1496,6 +1496,36 @@ export function OverviewAnalytics({
       )}
 
 
+      {/* === Объём + матрица Страна×Тип === */}
+      <section className="space-y-3">
+        <div className="flex items-center justify-between gap-2 flex-wrap">
+          <h3 className="text-base font-semibold tracking-tight inline-flex items-center gap-2">
+            <Boxes className="h-4 w-4 text-primary" /> Объём, география и продукт · детальная разбивка
+          </h3>
+          <p className="text-xs text-muted-foreground">
+            Динамика по штукам и кг + матрица Страна × Тип по выручке/расходам/марже
+          </p>
+        </div>
+        <VolumeAndBreakdown
+          periodKind="week"
+          data={volumeWeeklyData}
+          countries={(() => {
+            const set = new Set<string>();
+            volumeWeeklyData.forEach((d) => Object.keys(d.byCountry).forEach((k) => set.add(k)));
+            return Array.from(set).sort().map((cc) => ({
+              key: cc,
+              label: cc,
+              color: COUNTRY_COLORS[cc] ?? "var(--primary)",
+            }));
+          })()}
+          types={(["CAINIAO", "MPO", "MKO"] as PartyType[]).map((t) => ({
+            key: t,
+            label: TYPE_META[t].label,
+            color: TYPE_META[t].color,
+          }))}
+        />
+      </section>
+
       {/* Топ-10 партий */}
       <SectionCard
         title="Топ‑10 партий по прибыли"
