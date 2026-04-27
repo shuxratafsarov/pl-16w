@@ -16,6 +16,7 @@ export type Party = {
   marker2_volnet: number | null;
   marker3_grossnet: number | null;
   total_kg: number | null;
+  total_pcs?: number;
   mix?: MixRow[];
 };
 
