@@ -33,6 +33,12 @@ import {
   ArrowDownRight,
   Layers,
   Globe2,
+  Gauge,
+  AlertTriangle,
+  CheckCircle2,
+  Sparkles,
+  Target,
+  Scale,
   type LucideIcon,
 } from "lucide-react";
 import type { Party, PartyType, WeekData } from "@/lib/types";
