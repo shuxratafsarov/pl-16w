@@ -34,6 +34,30 @@ import {
   type LucideIcon,
 } from "lucide-react";
 import type { Party, PartyType, WeekData } from "@/lib/types";
+import { fmtUSD, fmtNum, fmtPct } from "@/lib/format";
+import { ThemeToggle } from "@/components/ThemeToggle";
+import { SectionCard } from "@/components/SectionCard";
+import { StatCard } from "@/components/StatCard";
+import { StatusBadge } from "@/components/StatusBadge";
+import { MarkerChart } from "@/components/MarkerChart";
+import { ProductMix } from "@/components/ProductMix";
+import { DetailDialog, type DetailTarget } from "@/components/DetailDialog";
+import { OverviewAnalytics } from "@/components/OverviewAnalytics";
+import {
+  Tooltip as UITooltip,
+  TooltipContent,
+  TooltipProvider,
+  TooltipTrigger,
+} from "@/components/ui/tooltip";
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuLabel,
+  DropdownMenuSeparator,
+  DropdownMenuTrigger,
+} from "@/components/ui/dropdown-menu";
+import { cn } from "@/lib/utils";
 
 // Загружаем все недели из src/data/week*.json (eager — запекаются в бандл).
 const WEEK_MODULES = import.meta.glob("@/data/week*.json", { eager: true, import: "default" }) as Record<string, WeekData>;
