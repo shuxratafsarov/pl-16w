@@ -80,7 +80,7 @@ const METRIC: Record<MetricKey, { label: string; format: (v: number) => string; 
 
 type SliceMode = "country" | "type";
 
-export function VolumeAndBreakdown({ periodKind, data, countries, types, title }: Props) {
+export function VolumeAndBreakdown({ periodKind, data, countries, types, title, onKpiClick, onPeriodClick, onMatrixCellClick }: Props) {
   const [metric, setMetric] = useState<MetricKey>("pcs");
   const [sliceMode, setSliceMode] = useState<SliceMode>("country");
 
