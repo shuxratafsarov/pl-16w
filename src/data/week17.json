@@ -127,7 +127,8 @@
           "pcs": 548,
           "kg": 21.77
         }
-      ]
+      ],
+      "total_pcs": 10956
     },
     {
       "col": "IE",
@@ -218,7 +219,8 @@
           "pcs": 748,
           "kg": 30.67
         }
-      ]
+      ],
+      "total_pcs": 11869
     },
     {
       "col": "IF",
@@ -309,7 +311,8 @@
           "pcs": 509,
           "kg": 23.01
         }
-      ]
+      ],
+      "total_pcs": 8029
     },
     {
       "col": "IG",
@@ -400,7 +403,8 @@
           "pcs": 588,
           "kg": 22.96
         }
-      ]
+      ],
+      "total_pcs": 12312
     },
     {
       "col": "IH",
@@ -491,7 +495,8 @@
           "pcs": 173,
           "kg": 6.46
         }
-      ]
+      ],
+      "total_pcs": 4468
     },
     {
       "col": "II",
@@ -582,7 +587,8 @@
           "pcs": 895,
           "kg": 35.7
         }
-      ]
+      ],
+      "total_pcs": 13090
     },
     {
       "col": "IJ",
@@ -673,7 +679,8 @@
           "pcs": 136,
           "kg": 5.86
         }
-      ]
+      ],
+      "total_pcs": 3539
     },
     {
       "col": "IK",
@@ -691,7 +698,8 @@
       "marker2_volnet": null,
       "marker3_grossnet": null,
       "total_kg": 795.0,
-      "mix": []
+      "mix": [],
+      "total_pcs": 86
     },
     {
       "col": "IL",
@@ -709,7 +717,8 @@
       "marker2_volnet": null,
       "marker3_grossnet": null,
       "total_kg": 1027.0,
-      "mix": []
+      "mix": [],
+      "total_pcs": 28
     },
     {
       "col": "IM",
@@ -727,7 +736,8 @@
       "marker2_volnet": null,
       "marker3_grossnet": null,
       "total_kg": 1090.0,
-      "mix": []
+      "mix": [],
+      "total_pcs": 101
     },
     {
       "col": "IN",
@@ -745,7 +755,8 @@
       "marker2_volnet": null,
       "marker3_grossnet": null,
       "total_kg": 1116.0,
-      "mix": []
+      "mix": [],
+      "total_pcs": 81
     },
     {
       "col": "IO",
@@ -763,7 +774,8 @@
       "marker2_volnet": null,
       "marker3_grossnet": null,
       "total_kg": 265.0,
-      "mix": []
+      "mix": [],
+      "total_pcs": 55
     },
     {
       "col": "IP",
@@ -781,7 +793,8 @@
       "marker2_volnet": 1.2527,
       "marker3_grossnet": 1.01,
       "total_kg": 258.0,
-      "mix": []
+      "mix": [],
+      "total_pcs": 720
     },
     {
       "col": "IQ",
@@ -799,7 +812,8 @@
       "marker2_volnet": 1.1814,
       "marker3_grossnet": 1.0,
       "total_kg": 204.0,
-      "mix": []
+      "mix": [],
+      "total_pcs": 581
     },
     {
       "col": "IR",
@@ -817,7 +831,8 @@
       "marker2_volnet": 1.2029,
       "marker3_grossnet": 1.0105,
       "total_kg": 420.0,
-      "mix": []
+      "mix": [],
+      "total_pcs": 1096
     },
     {
       "col": "IS",
@@ -835,7 +850,8 @@
       "marker2_volnet": 1.2333,
       "marker3_grossnet": 0.9975,
       "total_kg": 220.0,
-      "mix": []
+      "mix": [],
+      "total_pcs": 710
     },
     {
       "col": "IT",
@@ -853,7 +869,8 @@
       "marker2_volnet": 1.2643,
       "marker3_grossnet": 1.0154,
       "total_kg": 261.0,
-      "mix": []
+      "mix": [],
+      "total_pcs": 685
     },
     {
       "col": "IU",
@@ -871,7 +888,8 @@
       "marker2_volnet": 1.2332,
       "marker3_grossnet": 1.0181,
       "total_kg": 265.0,
-      "mix": []
+      "mix": [],
+      "total_pcs": 681
     }
   ]
 }

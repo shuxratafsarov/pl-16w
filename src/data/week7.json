@@ -127,7 +127,8 @@
           "pcs": 492,
           "kg": 19.5
         }
-      ]
+      ],
+      "total_pcs": 8021
     },
     {
       "col": "BX",
@@ -218,7 +219,8 @@
           "pcs": 513,
           "kg": 22.37
         }
-      ]
+      ],
+      "total_pcs": 7981
     },
     {
       "col": "BY",
@@ -309,7 +311,8 @@
           "pcs": 649,
           "kg": 28.43
         }
-      ]
+      ],
+      "total_pcs": 9597
     },
     {
       "col": "BZ",
@@ -400,7 +403,8 @@
           "pcs": 506,
           "kg": 20.41
         }
-      ]
+      ],
+      "total_pcs": 9073
     },
     {
       "col": "CA",
@@ -491,7 +495,8 @@
           "pcs": 445,
           "kg": 17.53
         }
-      ]
+      ],
+      "total_pcs": 6868
     },
     {
       "col": "CB",
@@ -582,7 +587,8 @@
           "pcs": 493,
           "kg": 20.44
         }
-      ]
+      ],
+      "total_pcs": 8361
     },
     {
       "col": "CC",
@@ -673,7 +679,8 @@
           "pcs": 603,
           "kg": 24.47
         }
-      ]
+      ],
+      "total_pcs": 9372
     },
     {
       "col": "CD",
@@ -691,7 +698,8 @@
       "marker2_volnet": null,
       "marker3_grossnet": null,
       "total_kg": 842.0,
-      "mix": []
+      "mix": [],
+      "total_pcs": 260
     },
     {
       "col": "CE",
@@ -709,7 +717,8 @@
       "marker2_volnet": null,
       "marker3_grossnet": null,
       "total_kg": 342.0,
-      "mix": []
+      "mix": [],
+      "total_pcs": 547
     },
     {
       "col": "CF",
@@ -727,7 +736,8 @@
       "marker2_volnet": null,
       "marker3_grossnet": null,
       "total_kg": 206.0,
-      "mix": []
+      "mix": [],
+      "total_pcs": 318
     },
     {
       "col": "CG",
@@ -745,7 +755,8 @@
       "marker2_volnet": null,
       "marker3_grossnet": null,
       "total_kg": 307.0,
-      "mix": []
+      "mix": [],
+      "total_pcs": 546
     },
     {
       "col": "CH",
@@ -763,7 +774,8 @@
       "marker2_volnet": null,
       "marker3_grossnet": null,
       "total_kg": 464.0,
-      "mix": []
+      "mix": [],
+      "total_pcs": 940
     },
     {
       "col": "CI",
@@ -781,7 +793,8 @@
       "marker2_volnet": null,
       "marker3_grossnet": null,
       "total_kg": 275.0,
-      "mix": []
+      "mix": [],
+      "total_pcs": 586
     }
   ]
 }
