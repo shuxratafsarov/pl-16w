@@ -247,7 +247,9 @@ export function OverviewAnalytics({
     ];
     const getVal = (p: Party, k: MK): number | null => {
       if (k === "marker4_pcs") {
-        const total = (p.mix ?? []).reduce((s, m) => s + (m.pcs ?? 0), 0);
+        const total = typeof p.total_pcs === "number"
+          ? p.total_pcs
+          : (p.mix ?? []).reduce((s, m) => s + (m.pcs ?? 0), 0);
         return total > 0 ? total : null;
       }
       const v = p[k as keyof Party] as number | null;
