@@ -333,6 +333,7 @@ export function OverviewAnalytics({
 
 
   return (
+    <>
     <div className="space-y-8">
       {/* Фильтры */}
       <div className="flex flex-wrap items-center justify-between gap-3 rounded-2xl glass-card p-4 shadow-elegant">
