@@ -352,7 +352,7 @@ function Dashboard() {
 
   const parties = useMemo<Party[]>(
     () => (filter === "ALL" ? week.parties : week.parties.filter((p) => p.type === filter)),
-    [filter]
+    [filter, week]
   );
 
   const typeBreakdown = useMemo(
