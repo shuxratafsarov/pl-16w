@@ -13,6 +13,7 @@ import monthlyData from "@/data/monthly.json";
 import { SectionCard } from "@/components/SectionCard";
 import { StatCard } from "@/components/StatCard";
 import { CountryDetailDialog, type CountryDetailData } from "@/components/CountryDetailDialog";
+import { VolumeAndBreakdown, type VBPeriodPoint } from "@/components/VolumeAndBreakdown";
 import {
   Bar,
   BarChart,
