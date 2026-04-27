@@ -43,6 +43,8 @@ import { MarkerChart } from "@/components/MarkerChart";
 import { ProductMix } from "@/components/ProductMix";
 import { DetailDialog, type DetailTarget } from "@/components/DetailDialog";
 import { OverviewAnalytics } from "@/components/OverviewAnalytics";
+import { MonthlyView } from "@/components/MonthlyView";
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import {
   Tooltip as UITooltip,
   TooltipContent,
@@ -258,6 +260,7 @@ const WEEKS: Array<{ week: number; period: string }> = [
   { week: 14, period: "2026-03-30 — 2026-04-05" },
   { week: 15, period: "2026-04-06 — 2026-04-12" },
   { week: 16, period: "2026-04-13 — 2026-04-19" },
+  { week: 17, period: "2026-04-20 — 2026-04-26" },
 ];
 
 function scrollToMarker(id: string) {
@@ -640,7 +643,18 @@ function Dashboard() {
 
       <main className="mx-auto max-w-[1440px] px-6 py-8 space-y-8">
         {isOverview ? (
-          <OverviewAnalytics weeksMap={ALL_WEEKS} />
+          <Tabs defaultValue="weekly" className="space-y-4">
+            <TabsList>
+              <TabsTrigger value="weekly">Понедельная аналитика</TabsTrigger>
+              <TabsTrigger value="monthly">3PL Monthly</TabsTrigger>
+            </TabsList>
+            <TabsContent value="weekly" className="space-y-4">
+              <OverviewAnalytics weeksMap={ALL_WEEKS} />
+            </TabsContent>
+            <TabsContent value="monthly" className="space-y-4">
+              <MonthlyView />
+            </TabsContent>
+          </Tabs>
         ) : (
           <div className="space-y-8">
         {/* === Уровень 1: Общие итоги === */}

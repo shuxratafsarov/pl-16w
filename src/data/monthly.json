@@ -1,0 +1,70 @@
+[
+  {
+    "month": 1,
+    "month_name": "Январь",
+    "revenue": 464802.05,
+    "gross_profit": 38715.22,
+    "expense": 426086.83,
+    "margin_pct": 8.33,
+    "revenue_cainiao": 382189.5,
+    "revenue_uzum_cb": 82612.56,
+    "by_country": {
+      "UZ_C2M": 102225.19,
+      "BY_C2M": 221451.42,
+      "AZ_C2M": 51807.12,
+      "KG_C2M": 6705.77,
+      "UZ_UZUM_MPO": 5727.77
+    }
+  },
+  {
+    "month": 2,
+    "month_name": "Февраль",
+    "revenue": 386217.72,
+    "gross_profit": 42236.21,
+    "expense": 343981.51,
+    "margin_pct": 10.94,
+    "revenue_cainiao": 311006.33,
+    "revenue_uzum_cb": 75211.39,
+    "by_country": {
+      "UZ_C2M": 77745.37,
+      "BY_C2M": 188010.22,
+      "AZ_C2M": 40066.59,
+      "KG_C2M": 5184.15,
+      "UZ_UZUM_MPO": 4011.3
+    }
+  },
+  {
+    "month": 3,
+    "month_name": "Март",
+    "revenue": 597789.66,
+    "gross_profit": 110190.27,
+    "expense": 487599.39,
+    "margin_pct": 18.43,
+    "revenue_cainiao": 452939.2,
+    "revenue_uzum_cb": 144850.46,
+    "by_country": {
+      "UZ_C2M": 111266.86,
+      "BY_C2M": 276409.14,
+      "AZ_C2M": 57759.83,
+      "KG_C2M": 7503.37,
+      "UZ_UZUM_MPO": 6130.56
+    }
+  },
+  {
+    "month": 4,
+    "month_name": "Апрель",
+    "revenue": 398481.4,
+    "gross_profit": 85160.96,
+    "expense": 313320.44,
+    "margin_pct": 21.37,
+    "revenue_cainiao": 289048.98,
+    "revenue_uzum_cb": 109432.42,
+    "by_country": {
+      "UZ_C2M": 71311.21,
+      "BY_C2M": 174552.94,
+      "AZ_C2M": 38060.08,
+      "KG_C2M": 5124.76,
+      "UZ_UZUM_MPO": 4774.62
+    }
+  }
+]
