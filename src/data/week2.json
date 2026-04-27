@@ -128,7 +128,7 @@
           "kg": 18.77
         }
       ],
-      "total_pcs": 5456
+      "total_pcs": 20117
     },
     {
       "col": "K",
@@ -220,7 +220,7 @@
           "kg": 9.91
         }
       ],
-      "total_pcs": 3352
+      "total_pcs": 20117
     },
     {
       "col": "L",
@@ -312,7 +312,7 @@
           "kg": 19.71
         }
       ],
-      "total_pcs": 5634
+      "total_pcs": 20117
     },
     {
       "col": "M",
@@ -404,7 +404,7 @@
           "kg": 17.26
         }
       ],
-      "total_pcs": 5759
+      "total_pcs": 20117
     },
     {
       "col": "N",
@@ -496,7 +496,7 @@
           "kg": 18.69
         }
       ],
-      "total_pcs": 5530
+      "total_pcs": 20117
     },
     {
       "col": "O",
@@ -588,7 +588,7 @@
           "kg": 19.89
         }
       ],
-      "total_pcs": 7076
+      "total_pcs": 20117
     },
     {
       "col": "P",
@@ -680,7 +680,7 @@
           "kg": 18.43
         }
       ],
-      "total_pcs": 6595
+      "total_pcs": 20117
     },
     {
       "col": "Q",
@@ -772,7 +772,7 @@
           "kg": 21.7
         }
       ],
-      "total_pcs": 8377
+      "total_pcs": 20117
     },
     {
       "col": "R",
@@ -864,7 +864,7 @@
           "kg": 25.65
         }
       ],
-      "total_pcs": 8863
+      "total_pcs": 20117
     },
     {
       "col": "S",
@@ -902,7 +902,7 @@
       "marker3_grossnet": null,
       "total_kg": 218.0,
       "mix": [],
-      "total_pcs": 347
+      "total_pcs": 1995
     },
     {
       "col": "U",
@@ -921,7 +921,7 @@
       "marker3_grossnet": null,
       "total_kg": 312.0,
       "mix": [],
-      "total_pcs": 519
+      "total_pcs": 1995
     },
     {
       "col": "V",
@@ -940,7 +940,7 @@
       "marker3_grossnet": null,
       "total_kg": 382.0,
       "mix": [],
-      "total_pcs": 600
+      "total_pcs": 1995
     },
     {
       "col": "W",
@@ -959,7 +959,7 @@
       "marker3_grossnet": null,
       "total_kg": 282.0,
       "mix": [],
-      "total_pcs": 529
+      "total_pcs": 1995
     }
   ]
 }
