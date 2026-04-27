@@ -13,6 +13,7 @@ import monthlyData from "@/data/monthly.json";
 import { SectionCard } from "@/components/SectionCard";
 import { StatCard } from "@/components/StatCard";
 import { CountryDetailDialog, type CountryDetailData } from "@/components/CountryDetailDialog";
+import { VolumeAndBreakdown, type VBPeriodPoint } from "@/components/VolumeAndBreakdown";
 import {
   Bar,
   BarChart,
@@ -173,6 +174,50 @@ export function MonthlyView() {
       revenue: DATA.reduce((s, m) => s + m.by_type[t].revenue, 0),
       pcs: DATA.reduce((s, m) => s + m.by_type[t].pcs, 0),
     }));
+  }, []);
+
+  /** Данные для VolumeAndBreakdown — по месяцам. */
+  const volumeMonthlyData = useMemo<VBPeriodPoint[]>(() => {
+    return DATA.map((m) => {
+      const byCountry: VBPeriodPoint["byCountry"] = {};
+      (Object.keys(m.by_country) as CountryKey[]).forEach((cc) => {
+        const v = m.by_country[cc];
+        byCountry[cc] = {
+          pcs: v.pcs,
+          kg: v.kg,
+          revenue: v.revenue,
+          expense: v.expense,
+          gross_profit: v.gross_profit,
+        };
+      });
+      const byType: VBPeriodPoint["byType"] = {};
+      (["CAINIAO", "MPO", "MKO"] as const).forEach((t) => {
+        const tv = m.by_type[t];
+        // Расходы по типам в monthly не выделены — оценим пропорционально доле выручки типа.
+        const typeShare = m.revenue > 0 ? tv.revenue / m.revenue : 0;
+        const expense = m.expense * typeShare;
+        byType[t] = {
+          pcs: tv.pcs,
+          kg: 0, // в monthly нет кг по типу — оставим 0 (страновой агрегат kg показан в KPI)
+          revenue: tv.revenue,
+          expense,
+          gross_profit: tv.revenue - expense,
+        };
+      });
+      const totalPcs = Object.values(byCountry).reduce((s, v) => s + v.pcs, 0);
+      const totalKg = Object.values(byCountry).reduce((s, v) => s + v.kg, 0);
+      return {
+        label: m.month_name,
+        period: m.period,
+        pcs: totalPcs,
+        kg: totalKg,
+        revenue: m.revenue,
+        expense: m.expense,
+        gross_profit: m.gross_profit,
+        byCountry,
+        byType,
+      };
+    });
   }, []);
 
   /** MoM deltas. */
@@ -397,6 +442,32 @@ export function MonthlyView() {
           })}
         </div>
       </SectionCard>
+
+      {/* === Объём + матрица Страна×Тип === */}
+      <section className="space-y-3">
+        <div className="flex items-center justify-between gap-2 flex-wrap">
+          <h3 className="text-base font-semibold tracking-tight inline-flex items-center gap-2">
+            <Boxes className="h-4 w-4 text-primary" /> Объём, география и продукт · детальная разбивка
+          </h3>
+          <p className="text-xs text-muted-foreground">
+            Динамика по штукам и кг + матрица Страна × Тип по выручке/расходам/марже
+          </p>
+        </div>
+        <VolumeAndBreakdown
+          periodKind="month"
+          data={volumeMonthlyData}
+          countries={(["BY", "UZ", "AZ", "KG"] as CountryKey[]).map((cc) => ({
+            key: cc,
+            label: COUNTRY_NAMES[cc],
+            color: COUNTRY_COLORS[cc],
+          }))}
+          types={(["CAINIAO", "MPO", "MKO"] as const).map((t) => ({
+            key: t,
+            label: t,
+            color: TYPE_COLORS[t],
+          }))}
+        />
+      </section>
 
       {/* === MoM таблица === */}
       <SectionCard

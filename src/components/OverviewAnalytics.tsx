@@ -47,6 +47,7 @@ import { fmtUSD, fmtNum, fmtPct } from "@/lib/format";
 import { SectionCard } from "@/components/SectionCard";
 import { StatCard } from "@/components/StatCard";
 import { CountryDetailDialog, type CountryDetailData } from "@/components/CountryDetailDialog";
+import { VolumeAndBreakdown, type VBPeriodPoint } from "@/components/VolumeAndBreakdown";
 import {
   Dialog,
   DialogContent,
@@ -71,13 +72,15 @@ const TYPE_META: Record<PartyType, { label: string; full: string; color: string;
 };
 
 type TypeFilter = "ALL" | PartyType;
-type MetricKey = "revenue" | "expense" | "gross_profit" | "margin_pct";
+type MetricKey = "revenue" | "expense" | "gross_profit" | "margin_pct" | "pcs" | "kg";
 
 const METRIC_META: Record<MetricKey, { label: string; color: string; format: (v: number) => string }> = {
   revenue: { label: "Выручка", color: "var(--primary)", format: (v) => fmtUSD(v) },
   expense: { label: "Расходы", color: "var(--destructive)", format: (v) => fmtUSD(v) },
   gross_profit: { label: "Прибыль", color: "var(--success)", format: (v) => fmtUSD(v) },
   margin_pct: { label: "Маржа %", color: "var(--warning)", format: (v) => `${v.toFixed(2)}%` },
+  pcs: { label: "Штуки", color: "var(--cainiao)", format: (v) => `${fmtNum(v, 0)} шт` },
+  kg: { label: "Кг", color: "var(--mpo)", format: (v) => `${fmtNum(v, 0)} кг` },
 };
 
 const COUNTRY_COLORS: Record<string, string> = {
@@ -112,6 +115,14 @@ export function OverviewAnalytics({
       const expense = parties.reduce((s, p) => s + (p.expense ?? 0), 0);
       const gross_profit = parties.reduce((s, p) => s + (p.gross_profit ?? 0), 0);
       const margin_pct = revenue > 0 ? (gross_profit / revenue) * 100 : 0;
+      const pcs = parties.reduce((s, p) => {
+        const totalMix = (p.mix ?? []).reduce((ss, m) => ss + (m.pcs ?? 0), 0);
+        return s + (typeof p.total_pcs === "number" ? p.total_pcs : totalMix);
+      }, 0);
+      const kg = parties.reduce(
+        (s, p) => s + ((p.mix ?? []).reduce((ss, m) => ss + (m.kg ?? 0), 0)),
+        0
+      );
       // Доли по типам (для stacked даже когда фильтр ALL)
       const byType = (["CAINIAO", "MPO", "MKO"] as PartyType[]).reduce((acc, t) => {
         const ps = w.parties.filter((p) => p.type === t);
@@ -131,6 +142,8 @@ export function OverviewAnalytics({
         expense,
         gross_profit,
         margin_pct,
+        pcs,
+        kg,
         parties: parties.length,
         ...byType,
       };
@@ -341,6 +354,61 @@ export function OverviewAnalytics({
       return { label: w.label, period: w.period, cumRevenue: r, cumProfit: g };
     });
   }, [weeklySeries]);
+
+  /** Данные для VolumeAndBreakdown — по неделям с byCountry/byType. */
+  const volumeWeeklyData = useMemo<VBPeriodPoint[]>(() => {
+    return sortedWeeks.map((w) => {
+      const parties = typeFilter === "ALL" ? w.parties : w.parties.filter((p) => p.type === typeFilter);
+      // byType (нативно)
+      const byType: VBPeriodPoint["byType"] = {};
+      (["CAINIAO", "MPO", "MKO"] as PartyType[]).forEach((t) => {
+        const ps = parties.filter((p) => p.type === t);
+        const pcs = ps.reduce((s, p) => {
+          const totalMix = (p.mix ?? []).reduce((ss, m) => ss + (m.pcs ?? 0), 0);
+          return s + (typeof p.total_pcs === "number" ? p.total_pcs : totalMix);
+        }, 0);
+        const kg = ps.reduce((s, p) => s + ((p.mix ?? []).reduce((ss, m) => ss + (m.kg ?? 0), 0)), 0);
+        byType[t] = {
+          pcs,
+          kg,
+          revenue: ps.reduce((s, p) => s + (p.revenue ?? 0), 0),
+          expense: ps.reduce((s, p) => s + (p.expense ?? 0), 0),
+          gross_profit: ps.reduce((s, p) => s + (p.gross_profit ?? 0), 0),
+        };
+      });
+      // byCountry — аллокация по mix
+      const byCountry: VBPeriodPoint["byCountry"] = {};
+      parties.forEach((p) => {
+        const mix = p.mix ?? [];
+        const totalMixPcs = mix.reduce((s, m) => s + (m.pcs ?? 0), 0);
+        if (totalMixPcs <= 0) return;
+        mix.forEach((m) => {
+          const cc = m.country;
+          const share = (m.pcs ?? 0) / totalMixPcs;
+          const cur = byCountry[cc] ?? { pcs: 0, kg: 0, revenue: 0, expense: 0, gross_profit: 0 };
+          cur.pcs += m.pcs ?? 0;
+          cur.kg += m.kg ?? 0;
+          cur.revenue += (p.revenue ?? 0) * share;
+          cur.expense += (p.expense ?? 0) * share;
+          cur.gross_profit += (p.gross_profit ?? 0) * share;
+          byCountry[cc] = cur;
+        });
+      });
+      const totalPcs = Object.values(byCountry).reduce((s, v) => s + v.pcs, 0);
+      const totalKg = Object.values(byCountry).reduce((s, v) => s + v.kg, 0);
+      return {
+        label: `W${w.week}`,
+        period: w.period,
+        pcs: totalPcs,
+        kg: totalKg,
+        revenue: parties.reduce((s, p) => s + (p.revenue ?? 0), 0),
+        expense: parties.reduce((s, p) => s + (p.expense ?? 0), 0),
+        gross_profit: parties.reduce((s, p) => s + (p.gross_profit ?? 0), 0),
+        byCountry,
+        byType,
+      };
+    });
+  }, [sortedWeeks, typeFilter]);
 
   /** Аналитика по маркерам M1..M4 — динамика по неделям + распределение по типам + статусы. */
   const markersAnalytics = useMemo(() => {
@@ -654,7 +722,11 @@ export function OverviewAnalytics({
                 stroke="var(--muted-foreground)"
                 fontSize={11}
                 tickFormatter={(v) =>
-                  metric === "margin_pct" ? `${v.toFixed(0)}%` : `$${(v / 1000).toFixed(0)}k`
+                  metric === "margin_pct"
+                    ? `${v.toFixed(0)}%`
+                    : metric === "pcs" || metric === "kg"
+                      ? `${(v / 1000).toFixed(0)}k`
+                      : `$${(v / 1000).toFixed(0)}k`
                 }
               />
               <Tooltip
@@ -1439,6 +1511,36 @@ export function OverviewAnalytics({
         </SectionCard>
       )}
 
+
+      {/* === Объём + матрица Страна×Тип === */}
+      <section className="space-y-3">
+        <div className="flex items-center justify-between gap-2 flex-wrap">
+          <h3 className="text-base font-semibold tracking-tight inline-flex items-center gap-2">
+            <Boxes className="h-4 w-4 text-primary" /> Объём, география и продукт · детальная разбивка
+          </h3>
+          <p className="text-xs text-muted-foreground">
+            Динамика по штукам и кг + матрица Страна × Тип по выручке/расходам/марже
+          </p>
+        </div>
+        <VolumeAndBreakdown
+          periodKind="week"
+          data={volumeWeeklyData}
+          countries={(() => {
+            const set = new Set<string>();
+            volumeWeeklyData.forEach((d) => Object.keys(d.byCountry).forEach((k) => set.add(k)));
+            return Array.from(set).sort().map((cc) => ({
+              key: cc,
+              label: cc,
+              color: COUNTRY_COLORS[cc] ?? "var(--primary)",
+            }));
+          })()}
+          types={(["CAINIAO", "MPO", "MKO"] as PartyType[]).map((t) => ({
+            key: t,
+            label: TYPE_META[t].label,
+            color: TYPE_META[t].color,
+          }))}
+        />
+      </section>
 
       {/* Топ-10 партий */}
       <SectionCard
