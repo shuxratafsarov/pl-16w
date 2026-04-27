@@ -47,6 +47,7 @@ import { fmtUSD, fmtNum, fmtPct } from "@/lib/format";
 import { SectionCard } from "@/components/SectionCard";
 import { StatCard } from "@/components/StatCard";
 import { CountryDetailDialog, type CountryDetailData } from "@/components/CountryDetailDialog";
+import { VolumeAndBreakdown, type VBPeriodPoint } from "@/components/VolumeAndBreakdown";
 import {
   Dialog,
   DialogContent,
