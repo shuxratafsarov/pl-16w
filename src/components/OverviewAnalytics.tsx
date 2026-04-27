@@ -401,6 +401,7 @@ export function OverviewAnalytics({
           }
           accent="primary"
           icon={<Wallet className="h-5 w-5" />}
+          onClick={() => setKpiDrill("revenue")}
         />
         <StatCard
           label="Σ Расходы"
