@@ -3,7 +3,7 @@
   "period": "2026-01-05 — 2026-01-11",
   "totals": {
     "revenue": 103561.93,
-    "expense": 96574.17,
+    "expense": 96574.16,
     "gross_profit": 6987.76,
     "margin_pct": 6.75
   },
@@ -11,10 +11,10 @@
     "CAINIAO": {
       "count": 9,
       "revenue": 86050.2,
-      "expense": 84627.73,
+      "expense": 84627.72,
       "gross_profit": 1422.47,
       "margin_pct": 1.65,
-      "note": "Включает накладные расходы (ФОТ, E-Transit и пр.) — итог из TOTAL колонки PNL"
+      "note": "Итог по партиям; Marker 4 берётся из строк 353–398 листа 3PL_weekly"
     },
     "MPO": {
       "count": 1,
@@ -50,11 +50,84 @@
       "weight_net": 474.53,
       "weight_gross": 604.0,
       "weight_vol": 795.0,
-      "marker1_tariff": null,
+      "marker1_tariff": 3.69,
       "marker2_volnet": 1.6753,
       "marker3_grossnet": 1.2728,
       "total_kg": 604.0,
-      "mix": []
+      "mix": [
+        {
+          "country": "UZ",
+          "subtype": "RM",
+          "pcs": 329,
+          "kg": 72.23
+        },
+        {
+          "country": "UZ",
+          "subtype": "SRM",
+          "pcs": 55,
+          "kg": 9.54
+        },
+        {
+          "country": "UZ",
+          "subtype": "SRMA",
+          "pcs": 461,
+          "kg": 7.65
+        },
+        {
+          "country": "UZ",
+          "subtype": "SRMB",
+          "pcs": 576,
+          "kg": 23.18
+        },
+        {
+          "country": "UZ",
+          "subtype": "SRMC",
+          "pcs": 121,
+          "kg": 9.62
+        },
+        {
+          "country": "BY",
+          "subtype": "RRM",
+          "pcs": 699,
+          "kg": 178.95
+        },
+        {
+          "country": "BY",
+          "subtype": "SRM",
+          "pcs": 717,
+          "kg": 32.42
+        },
+        {
+          "country": "BY",
+          "subtype": "NRM",
+          "pcs": 1737,
+          "kg": 46.53
+        },
+        {
+          "country": "KG",
+          "subtype": "RM",
+          "pcs": 21,
+          "kg": 3.78
+        },
+        {
+          "country": "KG",
+          "subtype": "NRM",
+          "pcs": 80,
+          "kg": 3.05
+        },
+        {
+          "country": "AZ",
+          "subtype": "RM",
+          "pcs": 242,
+          "kg": 68.81
+        },
+        {
+          "country": "AZ",
+          "subtype": "NRM",
+          "pcs": 418,
+          "kg": 18.77
+        }
+      ]
     },
     {
       "col": "K",
@@ -68,7 +141,7 @@
       "weight_net": 273.03,
       "weight_gross": 277.0,
       "weight_vol": 318.0,
-      "marker1_tariff": null,
+      "marker1_tariff": 4.01,
       "marker2_volnet": 1.1647,
       "marker3_grossnet": 1.0145,
       "total_kg": 277.0,
@@ -159,7 +232,7 @@
       "weight_net": 498.45,
       "weight_gross": 521.0,
       "weight_vol": 745.0,
-      "marker1_tariff": null,
+      "marker1_tariff": 3.69,
       "marker2_volnet": 1.4946,
       "marker3_grossnet": 1.0452,
       "total_kg": 521.0,
@@ -250,7 +323,7 @@
       "weight_net": 406.49,
       "weight_gross": 426.0,
       "weight_vol": 603.0,
-      "marker1_tariff": null,
+      "marker1_tariff": 4.66,
       "marker2_volnet": 1.4834,
       "marker3_grossnet": 1.048,
       "total_kg": 426.0,
@@ -341,7 +414,7 @@
       "weight_net": 450.37,
       "weight_gross": 500.0,
       "weight_vol": 645.0,
-      "marker1_tariff": null,
+      "marker1_tariff": 4.34,
       "marker2_volnet": null,
       "marker3_grossnet": null,
       "total_kg": 500.0,
@@ -432,7 +505,7 @@
       "weight_net": 553.61,
       "weight_gross": 579.0,
       "weight_vol": 766.0,
-      "marker1_tariff": null,
+      "marker1_tariff": 4.34,
       "marker2_volnet": null,
       "marker3_grossnet": null,
       "total_kg": 579.0,
@@ -517,13 +590,13 @@
       "num": "975",
       "date": "2026-01-09",
       "revenue": 9138.99,
-      "expense": 8899.58,
+      "expense": 8899.57,
       "gross_profit": 239.41,
       "margin_pct": 2.62,
       "weight_net": 465.12,
       "weight_gross": 479.0,
       "weight_vol": 650.0,
-      "marker1_tariff": null,
+      "marker1_tariff": 4.22,
       "marker2_volnet": null,
       "marker3_grossnet": null,
       "total_kg": 479.0,
@@ -608,13 +681,13 @@
       "num": "976",
       "date": "2026-01-09",
       "revenue": 12242.46,
-      "expense": 11538.65,
+      "expense": 11538.66,
       "gross_profit": 703.81,
       "margin_pct": 5.75,
       "weight_net": 646.91,
       "weight_gross": 670.0,
       "weight_vol": 792.0,
-      "marker1_tariff": null,
+      "marker1_tariff": 4.34,
       "marker2_volnet": null,
       "marker3_grossnet": null,
       "total_kg": 670.0,
@@ -699,13 +772,13 @@
       "num": "977",
       "date": "2026-01-10",
       "revenue": 14327.43,
-      "expense": 14261.01,
+      "expense": 14261.0,
       "gross_profit": 66.42,
       "margin_pct": 0.46,
       "weight_net": 759.65,
       "weight_gross": 824.0,
       "weight_vol": 1016.5,
-      "marker1_tariff": null,
+      "marker1_tariff": 4.34,
       "marker2_volnet": null,
       "marker3_grossnet": null,
       "total_kg": 824.0,
@@ -826,7 +899,7 @@
       "num": "37",
       "date": "2026-01-06",
       "revenue": 4323.16,
-      "expense": 3581.36,
+      "expense": 3581.37,
       "gross_profit": 741.8,
       "margin_pct": 17.16,
       "weight_net": 301.85,
@@ -844,7 +917,7 @@
       "num": "38",
       "date": "2026-01-11",
       "revenue": 5019.73,
-      "expense": 2785.86,
+      "expense": 2785.85,
       "gross_profit": 2233.87,
       "margin_pct": 44.5,
       "weight_net": 368.75,

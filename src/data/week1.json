@@ -14,7 +14,7 @@
       "expense": 17446.4,
       "gross_profit": -1131.44,
       "margin_pct": -6.93,
-      "note": "Включает накладные расходы (ФОТ, E-Transit и пр.) — итог из TOTAL колонки PNL"
+      "note": "Итог по партиям; Marker 4 берётся из строк 353–398 листа 3PL_weekly"
     },
     "MPO": {
       "count": 0,
@@ -50,7 +50,7 @@
       "weight_net": 505.78,
       "weight_gross": 537.0,
       "weight_vol": 770.5,
-      "marker1_tariff": null,
+      "marker1_tariff": 4.82,
       "marker2_volnet": 1.5234,
       "marker3_grossnet": 1.0617,
       "total_kg": 537.0,
@@ -59,73 +59,73 @@
           "country": "UZ",
           "subtype": "RM",
           "pcs": 418,
-          "kg": 36.489
+          "kg": 0.0
         },
         {
           "country": "UZ",
           "subtype": "SRM",
           "pcs": 35,
-          "kg": 3.055
+          "kg": 0.0
         },
         {
           "country": "UZ",
           "subtype": "SRMA",
           "pcs": 554,
-          "kg": 48.361
+          "kg": 0.0
         },
         {
           "country": "UZ",
           "subtype": "SRMB",
           "pcs": 547,
-          "kg": 47.75
+          "kg": 0.0
         },
         {
           "country": "UZ",
           "subtype": "SRMC",
           "pcs": 113,
-          "kg": 9.864
+          "kg": 0.0
         },
         {
           "country": "BY",
           "subtype": "RRM",
           "pcs": 862,
-          "kg": 75.247
+          "kg": 0.0
         },
         {
           "country": "BY",
           "subtype": "SRM",
           "pcs": 976,
-          "kg": 85.199
+          "kg": 0.0
         },
         {
           "country": "BY",
           "subtype": "NRM",
           "pcs": 1421,
-          "kg": 124.044
+          "kg": 0.0
         },
         {
           "country": "KG",
           "subtype": "RM",
           "pcs": 39,
-          "kg": 3.404
+          "kg": 0.0
         },
         {
           "country": "KG",
           "subtype": "NRM",
           "pcs": 77,
-          "kg": 6.722
+          "kg": 0.0
         },
         {
           "country": "AZ",
           "subtype": "RM",
           "pcs": 284,
-          "kg": 24.791
+          "kg": 0.0
         },
         {
           "country": "AZ",
           "subtype": "NRM",
           "pcs": 468,
-          "kg": 40.853
+          "kg": 0.0
         }
       ]
     },
@@ -141,7 +141,7 @@
       "weight_net": 344.1,
       "weight_gross": 367.0,
       "weight_vol": 508.5,
-      "marker1_tariff": null,
+      "marker1_tariff": 4.82,
       "marker2_volnet": 1.4778,
       "marker3_grossnet": 1.0666,
       "total_kg": 367.0,
@@ -150,73 +150,73 @@
           "country": "UZ",
           "subtype": "RM",
           "pcs": 312,
-          "kg": 26.887
+          "kg": 0.0
         },
         {
           "country": "UZ",
           "subtype": "SRM",
           "pcs": 26,
-          "kg": 2.241
+          "kg": 0.0
         },
         {
           "country": "UZ",
           "subtype": "SRMA",
           "pcs": 344,
-          "kg": 29.644
+          "kg": 0.0
         },
         {
           "country": "UZ",
           "subtype": "SRMB",
           "pcs": 433,
-          "kg": 37.314
+          "kg": 0.0
         },
         {
           "country": "UZ",
           "subtype": "SRMC",
           "pcs": 77,
-          "kg": 6.636
+          "kg": 0.0
         },
         {
           "country": "BY",
           "subtype": "RRM",
           "pcs": 566,
-          "kg": 48.776
+          "kg": 0.0
         },
         {
           "country": "BY",
           "subtype": "SRM",
           "pcs": 654,
-          "kg": 56.359
+          "kg": 0.0
         },
         {
           "country": "BY",
           "subtype": "NRM",
           "pcs": 798,
-          "kg": 68.768
+          "kg": 0.0
         },
         {
           "country": "KG",
           "subtype": "RM",
           "pcs": 44,
-          "kg": 3.792
+          "kg": 0.0
         },
         {
           "country": "KG",
           "subtype": "NRM",
           "pcs": 66,
-          "kg": 5.688
+          "kg": 0.0
         },
         {
           "country": "AZ",
           "subtype": "RM",
           "pcs": 263,
-          "kg": 22.664
+          "kg": 0.0
         },
         {
           "country": "AZ",
           "subtype": "NRM",
           "pcs": 410,
-          "kg": 35.332
+          "kg": 0.0
         }
       ]
     },

@@ -3,7 +3,7 @@
   "period": "2026-02-23 — 2026-02-28",
   "totals": {
     "revenue": 75570.47,
-    "expense": 70245.72,
+    "expense": 70245.71,
     "gross_profit": 5324.75,
     "margin_pct": 7.05
   },
@@ -11,10 +11,10 @@
     "CAINIAO": {
       "count": 7,
       "revenue": 71078.1,
-      "expense": 67839.15,
+      "expense": 67839.14,
       "gross_profit": 3238.95,
       "margin_pct": 4.56,
-      "note": "Включает накладные расходы (ФОТ, E-Transit и пр.) — итог из TOTAL колонки PNL"
+      "note": "Итог по партиям; Marker 4 берётся из строк 353–398 листа 3PL_weekly"
     },
     "MPO": {
       "count": 1,
@@ -226,7 +226,7 @@
       "num": "1022",
       "date": "2026-02-24",
       "revenue": 2875.18,
-      "expense": 2836.6,
+      "expense": 2836.59,
       "gross_profit": 38.58,
       "margin_pct": 1.34,
       "weight_net": 149.49,
@@ -327,7 +327,80 @@
       "marker2_volnet": 1.6134,
       "marker3_grossnet": 1.1839,
       "total_kg": 656.0,
-      "mix": []
+      "mix": [
+        {
+          "country": "UZ",
+          "subtype": "RM",
+          "pcs": 390,
+          "kg": 80.12
+        },
+        {
+          "country": "UZ",
+          "subtype": "SRM",
+          "pcs": 37,
+          "kg": 5.21
+        },
+        {
+          "country": "UZ",
+          "subtype": "SRMA",
+          "pcs": 724,
+          "kg": 11.82
+        },
+        {
+          "country": "UZ",
+          "subtype": "SRMB",
+          "pcs": 639,
+          "kg": 25.27
+        },
+        {
+          "country": "UZ",
+          "subtype": "SRMC",
+          "pcs": 174,
+          "kg": 14.0
+        },
+        {
+          "country": "BY",
+          "subtype": "RRM",
+          "pcs": 960,
+          "kg": 198.52
+        },
+        {
+          "country": "BY",
+          "subtype": "SRM",
+          "pcs": 1354,
+          "kg": 57.39
+        },
+        {
+          "country": "BY",
+          "subtype": "NRM",
+          "pcs": 3457,
+          "kg": 83.47
+        },
+        {
+          "country": "KG",
+          "subtype": "RM",
+          "pcs": 32,
+          "kg": 6.34
+        },
+        {
+          "country": "KG",
+          "subtype": "NRM",
+          "pcs": 63,
+          "kg": 2.08
+        },
+        {
+          "country": "AZ",
+          "subtype": "RM",
+          "pcs": 232,
+          "kg": 52.95
+        },
+        {
+          "country": "AZ",
+          "subtype": "NRM",
+          "pcs": 454,
+          "kg": 16.95
+        }
+      ]
     },
     {
       "col": "CY",

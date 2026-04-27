@@ -238,15 +238,18 @@ export function OverviewAnalytics({
 
   /** Аналитика по маркерам M1..M4 — динамика по неделям + распределение по типам + статусы. */
   const markersAnalytics = useMemo(() => {
-    type MK = "marker1_tariff" | "marker2_volnet" | "marker3_grossnet" | "marker4_margin";
+    type MK = "marker1_tariff" | "marker2_volnet" | "marker3_grossnet" | "marker4_pcs";
     const MARKERS: { key: MK; short: string; title: string; unit: string; decimals: number; direction: "above" | "below"; color: string }[] = [
       { key: "marker1_tariff", short: "M1 · Тариф", title: "Тариф Лайнхолла", unit: " $/кг", decimals: 2, direction: "above", color: "var(--chart-1)" },
       { key: "marker2_volnet", short: "M2 · Vol/Net", title: "Объёмный / Нетто", unit: "x", decimals: 3, direction: "above", color: "var(--chart-2)" },
       { key: "marker3_grossnet", short: "M3 · Gross/Net", title: "Брутто / Нетто", unit: "x", decimals: 3, direction: "above", color: "var(--chart-4)" },
-      { key: "marker4_margin", short: "M4 · Маржа", title: "Маржа партии", unit: "%", decimals: 2, direction: "below", color: "var(--chart-5)" },
+      { key: "marker4_pcs", short: "M4 · Mix", title: "Соотношение продуктов", unit: " шт", decimals: 0, direction: "above", color: "var(--chart-5)" },
     ];
     const getVal = (p: Party, k: MK): number | null => {
-      if (k === "marker4_margin") return p.margin_pct;
+      if (k === "marker4_pcs") {
+        const total = (p.mix ?? []).reduce((s, m) => s + (m.pcs ?? 0), 0);
+        return total > 0 ? total : null;
+      }
       const v = p[k as keyof Party] as number | null;
       return typeof v === "number" && Number.isFinite(v) ? v : null;
     };

@@ -3,7 +3,7 @@
   "period": "2026-02-17 — 2026-02-22",
   "totals": {
     "revenue": 76106.82,
-    "expense": 69314.8,
+    "expense": 69314.81,
     "gross_profit": 6792.02,
     "margin_pct": 8.92
   },
@@ -11,10 +11,10 @@
     "CAINIAO": {
       "count": 6,
       "revenue": 62451.79,
-      "expense": 60810.01,
+      "expense": 60810.02,
       "gross_profit": 1641.78,
       "margin_pct": 2.63,
-      "note": "Включает накладные расходы (ФОТ, E-Transit и пр.) — итог из TOTAL колонки PNL"
+      "note": "Итог по партиям; Marker 4 берётся из строк 353–398 листа 3PL_weekly"
     },
     "MPO": {
       "count": 0,
@@ -317,7 +317,7 @@
       "num": "1017",
       "date": "2026-02-18",
       "revenue": 17032.77,
-      "expense": 16257.42,
+      "expense": 16257.43,
       "gross_profit": 775.35,
       "margin_pct": 4.55,
       "weight_net": 885.17,
