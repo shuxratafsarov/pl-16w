@@ -2238,7 +2238,7 @@ export function OverviewAnalytics({
                         <YAxis yAxisId="right" orientation="right" tick={{ fontSize: 11 }} stroke="var(--warning)" tickFormatter={(v) => `${v.toFixed(0)}%`} />
                         <Tooltip contentStyle={{ background: "var(--popover)", border: "1px solid var(--border)", borderRadius: 12, fontSize: 12 }} formatter={(v: number, n: string) => n === "Маржа %" ? [`${v.toFixed(2)}%`, n] : [fmtUSD(v), n]} />
                         <Legend wrapperStyle={{ fontSize: 11 }} />
-                        <Bar yAxisId="left" dataKey="revenue" name="Выручка" fill={tMeta.color} radius={[4, 4, 0, 0]} />
+                        <Bar yAxisId="left" dataKey="revenue" name="Выручка" fill="var(--primary)" radius={[4, 4, 0, 0]} />
                         <Bar yAxisId="left" dataKey="expense" name="Расходы" fill="var(--destructive)" radius={[4, 4, 0, 0]} opacity={0.6} />
                         <Line yAxisId="right" type="monotone" dataKey="margin_pct" name="Маржа %" stroke="var(--warning)" strokeWidth={2.5} dot={{ r: 3 }} />
                       </ComposedChart>
