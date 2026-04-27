@@ -16,8 +16,8 @@ const COUNTRY_META: Record<string, { label: string; flag: string; color: string 
   AZ: { label: "Азербайджан", flag: "🇦🇿", color: "hsl(265 80% 60%)" },
   KG: { label: "Киргизия", flag: "🇰🇬", color: "hsl(160 70% 45%)" },
   KZ: { label: "Казахстан", flag: "🇰🇿", color: "hsl(0 70% 55%)" },
-  MPO: { label: "UZUM MPO", flag: "", color: "hsl(45 90% 55%)" },
-  MKO: { label: "UZUM MKO", flag: "", color: "hsl(255 85% 65%)" },
+  MPO: { label: "UZUM MPO", flag: "", color: "var(--mpo)" },
+  MKO: { label: "UZUM MKO", flag: "", color: "var(--mko)" },
 };
 
 // Палитра подтипов внутри каждой страны (оттенки от базового цвета)
