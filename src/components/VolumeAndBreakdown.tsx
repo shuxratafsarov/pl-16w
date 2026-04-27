@@ -61,6 +61,12 @@ type Props = {
   types: VBSlice[];
   /** Заголовок секции "Объём" */
   title?: string;
+  /** Клик по KPI карточкам объёма */
+  onKpiClick?: (kpi: "pcs" | "kg" | "avgw" | "rev_per_pcs") => void;
+  /** Клик по столбику в stacked-чарте — передаёт label периода */
+  onPeriodClick?: (label: string) => void;
+  /** Клик по ячейке матрицы Страна × Тип */
+  onMatrixCellClick?: (country: string, type: string) => void;
 };
 
 type MetricKey = "revenue" | "expense" | "gross_profit" | "pcs" | "kg";
@@ -74,7 +80,7 @@ const METRIC: Record<MetricKey, { label: string; format: (v: number) => string; 
 
 type SliceMode = "country" | "type";
 
-export function VolumeAndBreakdown({ periodKind, data, countries, types, title }: Props) {
+export function VolumeAndBreakdown({ periodKind, data, countries, types, title, onKpiClick, onPeriodClick, onMatrixCellClick }: Props) {
   const [metric, setMetric] = useState<MetricKey>("pcs");
   const [sliceMode, setSliceMode] = useState<SliceMode>("country");
 
@@ -203,6 +209,7 @@ export function VolumeAndBreakdown({ periodKind, data, countries, types, title }
           icon={<Boxes className="h-5 w-5" />}
           accent="primary"
           hint={`за ${data.length} ${periodLabel}`}
+          onClick={onKpiClick ? () => onKpiClick("pcs") : undefined}
         />
         <StatCard
           label="Σ Килограмм"
@@ -210,6 +217,7 @@ export function VolumeAndBreakdown({ periodKind, data, countries, types, title }
           icon={<Scale className="h-5 w-5" />}
           accent="default"
           hint={`${fmtNum(totals.kg / 1000, 2)} тонн`}
+          onClick={onKpiClick ? () => onKpiClick("kg") : undefined}
         />
         <StatCard
           label="Средний вес посылки"
@@ -217,6 +225,7 @@ export function VolumeAndBreakdown({ periodKind, data, countries, types, title }
           icon={<Package className="h-5 w-5" />}
           accent="default"
           hint="кг × 1000 / шт"
+          onClick={onKpiClick ? () => onKpiClick("avgw") : undefined}
         />
         <StatCard
           label="Выручка / шт"
@@ -224,6 +233,7 @@ export function VolumeAndBreakdown({ periodKind, data, countries, types, title }
           icon={<BarChart3 className="h-5 w-5" />}
           accent="success"
           hint="ср. чек на посылку"
+          onClick={onKpiClick ? () => onKpiClick("rev_per_pcs") : undefined}
         />
       </div>
 
@@ -346,6 +356,12 @@ export function VolumeAndBreakdown({ periodKind, data, countries, types, title }
                   stackId="stk"
                   fill={s.color}
                   radius={i === slices.length - 1 ? [6, 6, 0, 0] : [0, 0, 0, 0]}
+                  cursor={onPeriodClick ? "pointer" : undefined}
+                  onClick={
+                    onPeriodClick
+                      ? (d: { label?: string }) => d?.label && onPeriodClick(d.label)
+                      : undefined
+                  }
                 />
               ))}
             </BarChart>
@@ -390,9 +406,29 @@ export function VolumeAndBreakdown({ periodKind, data, countries, types, title }
                     {types.map((t) => {
                       const cell = matrix.grid[c.key][t.key];
                       const m = cell.revenue > 0 ? ((cell.revenue - cell.expense) / cell.revenue) * 100 : 0;
+                      const clickable = !!onMatrixCellClick;
                       return (
                         <td key={t.key} className="px-2 py-1.5 text-right">
-                          <div className={cn("rounded-md px-2 py-1.5 inline-block min-w-[100px] text-right", marginColor(m))}>
+                          <div
+                            role={clickable ? "button" : undefined}
+                            tabIndex={clickable ? 0 : undefined}
+                            onClick={clickable ? () => onMatrixCellClick!(c.key, t.key) : undefined}
+                            onKeyDown={
+                              clickable
+                                ? (e) => {
+                                    if (e.key === "Enter" || e.key === " ") {
+                                      e.preventDefault();
+                                      onMatrixCellClick!(c.key, t.key);
+                                    }
+                                  }
+                                : undefined
+                            }
+                            className={cn(
+                              "rounded-md px-2 py-1.5 inline-block min-w-[100px] text-right transition-all",
+                              marginColor(m),
+                              clickable && "cursor-pointer hover:ring-2 hover:ring-primary/50 hover:scale-[1.03] focus:outline-none focus:ring-2 focus:ring-primary/60"
+                            )}
+                          >
                             <div className="text-[11px] font-bold tabular-nums leading-tight">{fmtUSD(cell.revenue)}</div>
                             <div className="text-[9px] tabular-nums opacity-80 leading-tight">−{fmtUSD(cell.expense).replace("$", "$")}</div>
                             <div className="text-[10px] font-bold tabular-nums leading-tight mt-0.5">{m.toFixed(1)}%</div>

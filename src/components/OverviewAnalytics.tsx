@@ -100,6 +100,10 @@ export function OverviewAnalytics({
   const [metric, setMetric] = useState<MetricKey>("revenue");
   const [kpiDrill, setKpiDrill] = useState<KpiDrillKey | null>(null);
   const [countryDrill, setCountryDrill] = useState<string | null>(null);
+  const [typeDrill, setTypeDrill] = useState<PartyType | null>(null);
+  const [volumeKpiDrill, setVolumeKpiDrill] = useState<"pcs" | "kg" | "avgw" | "rev_per_pcs" | null>(null);
+  const [periodDrill, setPeriodDrill] = useState<number | null>(null); // week number
+  const [matrixDrill, setMatrixDrill] = useState<{ country: string; type: PartyType } | null>(null);
 
   const sortedWeeks = useMemo(
     () => Object.keys(weeksMap).map(Number).sort((a, b) => a - b).map((n) => weeksMap[n]),
@@ -334,26 +338,6 @@ export function OverviewAnalytics({
     return list.sort((a, b) => b.gross_profit - a.gross_profit).slice(0, 10);
   }, [sortedWeeks, typeFilter]);
 
-  /** Week-over-Week изменение выручки и GP. */
-  const wowSeries = useMemo(() => {
-    return weeklySeries.map((w, i) => {
-      const prev = weeklySeries[i - 1];
-      const wowRev = prev && prev.revenue > 0 ? ((w.revenue - prev.revenue) / prev.revenue) * 100 : 0;
-      const wowGp = prev && prev.gross_profit !== 0 ? ((w.gross_profit - prev.gross_profit) / Math.abs(prev.gross_profit)) * 100 : 0;
-      return { label: w.label, period: w.period, wowRev, wowGp };
-    });
-  }, [weeklySeries]);
-
-  /** Накопительная выручка и прибыль по неделям. */
-  const cumulativeSeries = useMemo(() => {
-    let r = 0;
-    let g = 0;
-    return weeklySeries.map((w) => {
-      r += w.revenue;
-      g += w.gross_profit;
-      return { label: w.label, period: w.period, cumRevenue: r, cumProfit: g };
-    });
-  }, [weeklySeries]);
 
   /** Данные для VolumeAndBreakdown — по неделям с byCountry/byType. */
   const volumeWeeklyData = useMemo<VBPeriodPoint[]>(() => {
@@ -955,102 +939,6 @@ export function OverviewAnalytics({
         </div>
       </SectionCard>
 
-      {/* Накопительные показатели */}
-      <SectionCard
-        title="Накопительная выручка и прибыль"
-        description="Как нарастает оборот и валовая прибыль с начала периода"
-      >
-        <div className="h-72">
-          <ResponsiveContainer>
-            <AreaChart data={cumulativeSeries} margin={{ top: 8, right: 16, left: 0, bottom: 0 }}>
-              <defs>
-                <linearGradient id="grad-cum-rev" x1="0" y1="0" x2="0" y2="1">
-                  <stop offset="0%" stopColor="var(--primary)" stopOpacity={0.4} />
-                  <stop offset="100%" stopColor="var(--primary)" stopOpacity={0.02} />
-                </linearGradient>
-                <linearGradient id="grad-cum-gp" x1="0" y1="0" x2="0" y2="1">
-                  <stop offset="0%" stopColor="var(--success)" stopOpacity={0.4} />
-                  <stop offset="100%" stopColor="var(--success)" stopOpacity={0.02} />
-                </linearGradient>
-              </defs>
-              <CartesianGrid stroke="var(--border)" strokeDasharray="3 3" vertical={false} />
-              <XAxis dataKey="label" stroke="var(--muted-foreground)" fontSize={11} />
-              <YAxis
-                stroke="var(--muted-foreground)"
-                fontSize={11}
-                tickFormatter={(v) => `$${(v / 1000).toFixed(0)}k`}
-              />
-              <Tooltip
-                contentStyle={{
-                  background: "var(--popover)",
-                  border: "1px solid var(--border)",
-                  borderRadius: 12,
-                  fontSize: 12,
-                }}
-                formatter={(v: number, n) => [fmtUSD(v), n as string]}
-              />
-              <Legend iconType="circle" wrapperStyle={{ fontSize: 12 }} />
-              <Area
-                type="monotone"
-                dataKey="cumRevenue"
-                name="Σ Выручка"
-                stroke="var(--primary)"
-                strokeWidth={2.5}
-                fill="url(#grad-cum-rev)"
-              />
-              <Area
-                type="monotone"
-                dataKey="cumProfit"
-                name="Σ Прибыль"
-                stroke="var(--success)"
-                strokeWidth={2.5}
-                fill="url(#grad-cum-gp)"
-              />
-            </AreaChart>
-          </ResponsiveContainer>
-        </div>
-      </SectionCard>
-
-      {/* WoW динамика */}
-      <SectionCard
-        title="Темп роста week‑over‑week"
-        description="Прирост выручки и прибыли неделя к неделе, %"
-      >
-        <div className="h-64">
-          <ResponsiveContainer>
-            <BarChart data={wowSeries} margin={{ top: 8, right: 16, left: 0, bottom: 0 }}>
-              <CartesianGrid stroke="var(--border)" strokeDasharray="3 3" vertical={false} />
-              <XAxis dataKey="label" stroke="var(--muted-foreground)" fontSize={11} />
-              <YAxis
-                stroke="var(--muted-foreground)"
-                fontSize={11}
-                tickFormatter={(v) => `${v.toFixed(0)}%`}
-              />
-              <Tooltip
-                contentStyle={{
-                  background: "var(--popover)",
-                  border: "1px solid var(--border)",
-                  borderRadius: 12,
-                  fontSize: 12,
-                }}
-                formatter={(v: number, n) => [`${v.toFixed(1)}%`, n as string]}
-              />
-              <Legend iconType="circle" wrapperStyle={{ fontSize: 12 }} />
-              <ReferenceLine y={0} stroke="var(--muted-foreground)" strokeOpacity={0.5} />
-              <Bar dataKey="wowRev" name="Δ Выручка" radius={[4, 4, 0, 0]}>
-                {wowSeries.map((d, i) => (
-                  <Cell key={`r-${i}`} fill={d.wowRev >= 0 ? "var(--primary)" : "var(--destructive)"} />
-                ))}
-              </Bar>
-              <Bar dataKey="wowGp" name="Δ Прибыль" radius={[4, 4, 0, 0]}>
-                {wowSeries.map((d, i) => (
-                  <Cell key={`g-${i}`} fill={d.wowGp >= 0 ? "var(--success)" : "var(--destructive)"} />
-                ))}
-              </Bar>
-            </BarChart>
-          </ResponsiveContainer>
-        </div>
-      </SectionCard>
 
       {/* Аналитика по маркерам M1..M4 */}
       <section className="space-y-3">
@@ -1266,9 +1154,11 @@ export function OverviewAnalytics({
             const share = totals.revenue > 0 ? (t.revenue / totals.revenue) * 100 : 0;
             const score = share * 0.4 + Math.max(0, t.margin) * 0.6;
             return (
-              <div
+              <button
                 key={t.type}
-                className="rounded-xl border border-border bg-card/40 p-4 space-y-3"
+                type="button"
+                onClick={() => setTypeDrill(t.type)}
+                className="text-left rounded-xl border border-border bg-card/40 p-4 space-y-3 transition-all hover:border-primary/60 hover:bg-card/80 hover:shadow-md focus:outline-none focus:ring-2 focus:ring-primary/40 cursor-pointer"
               >
                 <div className="flex items-center justify-between">
                   <span className="text-xs font-bold uppercase tracking-wider" style={{ color: t.color }}>
@@ -1324,7 +1214,8 @@ export function OverviewAnalytics({
                     {fmtUSD(t.profit)}
                   </span>
                 </div>
-              </div>
+                <p className="text-[10px] text-muted-foreground/70 italic">нажмите для деталей</p>
+              </button>
             );
           })}
         </div>
@@ -1340,9 +1231,11 @@ export function OverviewAnalytics({
             const Icon = TYPE_META[t.type].icon;
             const share = totals.revenue > 0 ? (t.revenue / totals.revenue) * 100 : 0;
             return (
-              <div
+              <button
                 key={t.type}
-                className="relative overflow-hidden rounded-2xl glass-card p-5 shadow-elegant"
+                type="button"
+                onClick={() => setTypeDrill(t.type)}
+                className="text-left relative overflow-hidden rounded-2xl glass-card p-5 shadow-elegant transition-all hover:shadow-elevated hover:-translate-y-0.5 focus:outline-none focus:ring-2 focus:ring-primary/40 cursor-pointer"
               >
                 <div
                   className="absolute -top-16 -right-16 h-32 w-32 rounded-full opacity-25 blur-3xl"
@@ -1411,7 +1304,7 @@ export function OverviewAnalytics({
                     style={{ width: `${share}%`, backgroundColor: t.color }}
                   />
                 </div>
-              </div>
+              </button>
             );
           })}
         </div>
@@ -1539,6 +1432,12 @@ export function OverviewAnalytics({
             label: TYPE_META[t].label,
             color: TYPE_META[t].color,
           }))}
+          onKpiClick={(k) => setVolumeKpiDrill(k)}
+          onPeriodClick={(label) => {
+            const m = label.match(/W(\d+)/);
+            if (m) setPeriodDrill(Number(m[1]));
+          }}
+          onMatrixCellClick={(country, type) => setMatrixDrill({ country, type: type as PartyType })}
         />
       </section>
 
@@ -1871,6 +1770,499 @@ export function OverviewAnalytics({
       onOpenChange={(o) => !o && setCountryDrill(null)}
       data={countryDetailData}
     />
+
+    {/* ===== Drill: Тип бизнеса ===== */}
+    <Dialog open={typeDrill !== null} onOpenChange={(o) => !o && setTypeDrill(null)}>
+      <DialogContent className="max-w-4xl max-h-[90vh] overflow-y-auto">
+        {typeDrill && (() => {
+          const t = typeBreakdown.find((x) => x.type === typeDrill)!;
+          const meta = TYPE_META[typeDrill];
+          const Icon = meta.icon;
+          // динамика по неделям для этого типа
+          const series = sortedWeeks.map((w) => {
+            const ps = w.parties.filter((p) => p.type === typeDrill);
+            const r = ps.reduce((s, p) => s + (p.revenue ?? 0), 0);
+            const e = ps.reduce((s, p) => s + (p.expense ?? 0), 0);
+            const gp = r - e;
+            const pcs = ps.reduce((s, p) => {
+              const mixPcs = (p.mix ?? []).reduce((ss, m) => ss + (m.pcs ?? 0), 0);
+              return s + (typeof p.total_pcs === "number" ? p.total_pcs : mixPcs);
+            }, 0);
+            return {
+              label: `W${w.week}`,
+              period: w.period,
+              revenue: r,
+              expense: e,
+              gross_profit: gp,
+              margin_pct: r > 0 ? (gp / r) * 100 : 0,
+              pcs,
+              parties: ps.length,
+            };
+          });
+          // топ-партий
+          const partiesAll = sortedWeeks.flatMap((w) =>
+            w.parties.filter((p) => p.type === typeDrill).map((p) => ({ ...p, _week: w.week }))
+          );
+          const top = [...partiesAll].sort((a, b) => b.gross_profit - a.gross_profit).slice(0, 8);
+          // география
+          const cMap = new Map<string, { pcs: number; kg: number }>();
+          partiesAll.forEach((p) =>
+            (p.mix ?? []).forEach((m) => {
+              const cur = cMap.get(m.country) ?? { pcs: 0, kg: 0 };
+              cur.pcs += m.pcs ?? 0;
+              cur.kg += m.kg ?? 0;
+              cMap.set(m.country, cur);
+            })
+          );
+          const geo = Array.from(cMap.entries())
+            .map(([k, v]) => ({ country: k, ...v }))
+            .sort((a, b) => b.pcs - a.pcs);
+          const totalPcs = geo.reduce((s, r) => s + r.pcs, 0);
+          return (
+            <>
+              <DialogHeader>
+                <div className="flex items-start gap-3">
+                  <div className="h-11 w-11 shrink-0 rounded-xl flex items-center justify-center text-white" style={{ background: t.color }}>
+                    <Icon className="h-5 w-5" />
+                  </div>
+                  <div className="flex-1 min-w-0">
+                    <DialogTitle className="text-xl">{meta.full}</DialogTitle>
+                    <DialogDescription>
+                      {t.count} партий · доля выручки {((t.revenue / totals.revenue) * 100).toFixed(1)}% · {sortedWeeks.length} нед.
+                    </DialogDescription>
+                  </div>
+                </div>
+              </DialogHeader>
+              <div className="space-y-6 mt-2">
+                <div className="grid grid-cols-2 sm:grid-cols-4 gap-3">
+                  <div className="rounded-xl bg-muted/40 border border-border/60 p-3">
+                    <p className="text-[10px] uppercase tracking-wider text-muted-foreground font-semibold">Выручка</p>
+                    <p className="text-lg font-bold tabular-nums mt-1">{fmtUSD(t.revenue)}</p>
+                  </div>
+                  <div className="rounded-xl bg-muted/40 border border-border/60 p-3">
+                    <p className="text-[10px] uppercase tracking-wider text-muted-foreground font-semibold">Расходы</p>
+                    <p className="text-lg font-bold tabular-nums mt-1">{fmtUSD(t.expense)}</p>
+                  </div>
+                  <div className={cn("rounded-xl border p-3", t.profit >= 0 ? "bg-success/10 border-success/30" : "bg-destructive/10 border-destructive/30")}>
+                    <p className="text-[10px] uppercase tracking-wider font-semibold" style={{ color: t.profit >= 0 ? "var(--success)" : "var(--destructive)" }}>Прибыль</p>
+                    <p className={cn("text-lg font-bold tabular-nums mt-1", t.profit >= 0 ? "text-success" : "text-destructive")}>{fmtUSD(t.profit)}</p>
+                  </div>
+                  <div className="rounded-xl bg-muted/40 border border-border/60 p-3">
+                    <p className="text-[10px] uppercase tracking-wider text-muted-foreground font-semibold">Маржа</p>
+                    <p className={cn("text-lg font-bold tabular-nums mt-1", t.margin >= 15 ? "text-success" : t.margin >= 5 ? "text-warning" : "text-destructive")}>{t.margin.toFixed(2)}%</p>
+                  </div>
+                </div>
+
+                <div>
+                  <p className="text-xs uppercase tracking-wider text-muted-foreground font-semibold mb-2">Динамика по неделям · выручка vs расходы</p>
+                  <div className="h-64">
+                    <ResponsiveContainer>
+                      <ComposedChart data={series} margin={{ top: 8, right: 16, left: 0, bottom: 0 }}>
+                        <CartesianGrid strokeDasharray="3 3" stroke="var(--border)" opacity={0.3} />
+                        <XAxis dataKey="label" tick={{ fontSize: 11 }} stroke="var(--muted-foreground)" />
+                        <YAxis yAxisId="left" tick={{ fontSize: 11 }} stroke="var(--muted-foreground)" tickFormatter={(v) => `$${(v / 1000).toFixed(0)}k`} />
+                        <YAxis yAxisId="right" orientation="right" tick={{ fontSize: 11 }} stroke="var(--warning)" tickFormatter={(v) => `${v.toFixed(0)}%`} />
+                        <Tooltip contentStyle={{ background: "var(--popover)", border: "1px solid var(--border)", borderRadius: 12, fontSize: 12 }} formatter={(v: number, n: string) => n === "Маржа %" ? [`${v.toFixed(2)}%`, n] : [fmtUSD(v), n]} />
+                        <Legend wrapperStyle={{ fontSize: 11 }} />
+                        <Bar yAxisId="left" dataKey="revenue" name="Выручка" fill={t.color} radius={[4, 4, 0, 0]} />
+                        <Bar yAxisId="left" dataKey="expense" name="Расходы" fill="var(--destructive)" radius={[4, 4, 0, 0]} opacity={0.6} />
+                        <Line yAxisId="right" type="monotone" dataKey="margin_pct" name="Маржа %" stroke="var(--warning)" strokeWidth={2.5} dot={{ r: 3 }} />
+                      </ComposedChart>
+                    </ResponsiveContainer>
+                  </div>
+                </div>
+
+                {geo.length > 0 && (
+                  <div>
+                    <p className="text-xs uppercase tracking-wider text-muted-foreground font-semibold mb-2">География · {meta.label}</p>
+                    <div className="grid grid-cols-2 md:grid-cols-4 gap-2">
+                      {geo.map((g) => {
+                        const share = totalPcs > 0 ? (g.pcs / totalPcs) * 100 : 0;
+                        const color = COUNTRY_COLORS[g.country] ?? "var(--primary)";
+                        return (
+                          <div key={g.country} className="rounded-lg border border-border/60 bg-card/40 p-3">
+                            <div className="flex items-center justify-between text-xs">
+                              <span className="font-semibold inline-flex items-center gap-1.5">
+                                <span className="h-2 w-2 rounded-full" style={{ backgroundColor: color }} />{g.country}
+                              </span>
+                              <span className="text-muted-foreground tabular-nums">{share.toFixed(1)}%</span>
+                            </div>
+                            <p className="text-sm font-bold tabular-nums mt-1">{fmtNum(g.pcs, 0)} шт</p>
+                            <p className="text-[10px] text-muted-foreground tabular-nums">{fmtNum(g.kg, 1)} кг</p>
+                            <div className="mt-1 h-1 rounded-full bg-muted overflow-hidden">
+                              <div className="h-full rounded-full" style={{ width: `${share}%`, backgroundColor: color }} />
+                            </div>
+                          </div>
+                        );
+                      })}
+                    </div>
+                  </div>
+                )}
+
+                <div>
+                  <p className="text-xs uppercase tracking-wider text-muted-foreground font-semibold mb-2">Топ-8 партий по прибыли · {meta.label}</p>
+                  <div className="rounded-xl border border-border overflow-hidden">
+                    <table className="w-full text-xs">
+                      <thead className="bg-muted/50 text-[10px] uppercase tracking-wider text-muted-foreground">
+                        <tr>
+                          <th className="px-3 py-2 text-left">#</th>
+                          <th className="px-3 py-2 text-left">Партия</th>
+                          <th className="px-3 py-2 text-left">Неделя</th>
+                          <th className="px-3 py-2 text-right">Выручка</th>
+                          <th className="px-3 py-2 text-right">Прибыль</th>
+                          <th className="px-3 py-2 text-right">Маржа</th>
+                        </tr>
+                      </thead>
+                      <tbody>
+                        {top.map((p, i) => (
+                          <tr key={`${p.col}-${p._week}`} className="border-t border-border/50 hover:bg-muted/30">
+                            <td className="px-3 py-2 text-muted-foreground tabular-nums">{i + 1}</td>
+                            <td className="px-3 py-2 font-mono">{p.num}</td>
+                            <td className="px-3 py-2 text-muted-foreground">W{p._week}</td>
+                            <td className="px-3 py-2 text-right tabular-nums">{fmtUSD(p.revenue)}</td>
+                            <td className={cn("px-3 py-2 text-right tabular-nums font-semibold", p.gross_profit >= 0 ? "text-success" : "text-destructive")}>{fmtUSD(p.gross_profit)}</td>
+                            <td className="px-3 py-2 text-right tabular-nums">{p.margin_pct != null ? `${p.margin_pct.toFixed(1)}%` : "—"}</td>
+                          </tr>
+                        ))}
+                      </tbody>
+                    </table>
+                  </div>
+                </div>
+              </div>
+            </>
+          );
+        })()}
+      </DialogContent>
+    </Dialog>
+
+    {/* ===== Drill: Volume KPI ===== */}
+    <Dialog open={volumeKpiDrill !== null} onOpenChange={(o) => !o && setVolumeKpiDrill(null)}>
+      <DialogContent className="max-w-4xl max-h-[90vh] overflow-y-auto">
+        {volumeKpiDrill && (() => {
+          const labels: Record<typeof volumeKpiDrill, { title: string; desc: string; color: string }> = {
+            pcs: { title: "Σ Штук · детально", desc: "Общий объём отправлений за период с разбивкой по неделям и странам.", color: "var(--primary)" },
+            kg: { title: "Σ Килограмм · детально", desc: "Общий вес посылок за период с разбивкой по неделям и странам.", color: "var(--mpo)" },
+            avgw: { title: "Средний вес посылки · детально", desc: "Средний вес одной посылки (граммов) по неделям.", color: "var(--mko)" },
+            rev_per_pcs: { title: "Выручка / штука · детально", desc: "Средний чек выручки на одну посылку по неделям.", color: "var(--success)" },
+          } as const;
+          const lab = labels[volumeKpiDrill];
+          const series = volumeWeeklyData.map((d) => {
+            const pcs = d.pcs;
+            const kg = d.kg;
+            const value =
+              volumeKpiDrill === "pcs" ? pcs :
+              volumeKpiDrill === "kg" ? kg :
+              volumeKpiDrill === "avgw" ? (pcs > 0 ? (kg * 1000) / pcs : 0) :
+              (pcs > 0 ? d.revenue / pcs : 0);
+            return { label: d.label, period: d.period, value, pcs, kg, revenue: d.revenue };
+          });
+          const fmt = (v: number) =>
+            volumeKpiDrill === "pcs" ? `${fmtNum(v, 0)} шт` :
+            volumeKpiDrill === "kg" ? `${fmtNum(v, 1)} кг` :
+            volumeKpiDrill === "avgw" ? `${fmtNum(v, 0)} г` :
+            fmtUSD(v);
+          const total = series.reduce((s, r) => s + r.value, 0);
+          const avg = series.length > 0 ? total / series.length : 0;
+          const sorted = [...series].sort((a, b) => b.value - a.value);
+          const best = sorted[0];
+          const worst = sorted[sorted.length - 1];
+          // По странам — агрегат
+          const byC = new Map<string, { pcs: number; kg: number; revenue: number }>();
+          volumeWeeklyData.forEach((d) =>
+            Object.entries(d.byCountry).forEach(([k, v]) => {
+              const cur = byC.get(k) ?? { pcs: 0, kg: 0, revenue: 0 };
+              cur.pcs += v.pcs; cur.kg += v.kg; cur.revenue += v.revenue;
+              byC.set(k, cur);
+            })
+          );
+          const geo = Array.from(byC.entries()).map(([k, v]) => {
+            const value =
+              volumeKpiDrill === "pcs" ? v.pcs :
+              volumeKpiDrill === "kg" ? v.kg :
+              volumeKpiDrill === "avgw" ? (v.pcs > 0 ? (v.kg * 1000) / v.pcs : 0) :
+              (v.pcs > 0 ? v.revenue / v.pcs : 0);
+            return { country: k, value, ...v };
+          }).sort((a, b) => b.value - a.value);
+          const isAggregate = volumeKpiDrill === "pcs" || volumeKpiDrill === "kg";
+          return (
+            <>
+              <DialogHeader>
+                <DialogTitle className="text-xl">{lab.title}</DialogTitle>
+                <DialogDescription>{lab.desc}</DialogDescription>
+              </DialogHeader>
+              <div className="space-y-6 mt-2">
+                <div className="grid grid-cols-2 sm:grid-cols-4 gap-3">
+                  <div className="rounded-xl bg-muted/40 border border-border/60 p-3">
+                    <p className="text-[10px] uppercase tracking-wider text-muted-foreground font-semibold">{isAggregate ? "Итого" : "Среднее"}</p>
+                    <p className="text-lg font-bold tabular-nums mt-1">{isAggregate ? fmt(total) : fmt(avg)}</p>
+                  </div>
+                  <div className="rounded-xl bg-muted/40 border border-border/60 p-3">
+                    <p className="text-[10px] uppercase tracking-wider text-muted-foreground font-semibold">Среднее/нед</p>
+                    <p className="text-lg font-bold tabular-nums mt-1">{fmt(avg)}</p>
+                  </div>
+                  {best && (
+                    <div className="rounded-xl bg-success/10 border border-success/30 p-3">
+                      <p className="text-[10px] uppercase tracking-wider text-success font-semibold">Лучшая · {best.label}</p>
+                      <p className="text-lg font-bold tabular-nums mt-1 text-success">{fmt(best.value)}</p>
+                    </div>
+                  )}
+                  {worst && (
+                    <div className="rounded-xl bg-destructive/10 border border-destructive/30 p-3">
+                      <p className="text-[10px] uppercase tracking-wider text-destructive font-semibold">Худшая · {worst.label}</p>
+                      <p className="text-lg font-bold tabular-nums mt-1 text-destructive">{fmt(worst.value)}</p>
+                    </div>
+                  )}
+                </div>
+                <div>
+                  <p className="text-xs uppercase tracking-wider text-muted-foreground font-semibold mb-2">Динамика по неделям</p>
+                  <div className="h-64">
+                    <ResponsiveContainer>
+                      <BarChart data={series} margin={{ top: 8, right: 16, left: 0, bottom: 0 }}>
+                        <CartesianGrid strokeDasharray="3 3" stroke="var(--border)" opacity={0.3} />
+                        <XAxis dataKey="label" tick={{ fontSize: 11 }} stroke="var(--muted-foreground)" />
+                        <YAxis tick={{ fontSize: 11 }} stroke="var(--muted-foreground)" />
+                        <Tooltip contentStyle={{ background: "var(--popover)", border: "1px solid var(--border)", borderRadius: 12, fontSize: 12 }} formatter={(v: number) => [fmt(v), lab.title]} />
+                        <ReferenceLine y={avg} stroke={lab.color} strokeDasharray="4 4" strokeOpacity={0.6} label={{ value: "среднее", fill: "var(--muted-foreground)", fontSize: 10, position: "right" }} />
+                        <Bar dataKey="value" fill={lab.color} radius={[4, 4, 0, 0]} />
+                      </BarChart>
+                    </ResponsiveContainer>
+                  </div>
+                </div>
+                <div>
+                  <p className="text-xs uppercase tracking-wider text-muted-foreground font-semibold mb-2">Разбивка по странам</p>
+                  <div className="grid grid-cols-2 md:grid-cols-4 gap-2">
+                    {geo.map((g) => {
+                      const share = isAggregate && total > 0 ? (g.value / total) * 100 : 0;
+                      const color = COUNTRY_COLORS[g.country] ?? "var(--primary)";
+                      return (
+                        <div key={g.country} className="rounded-lg border border-border/60 bg-card/40 p-3">
+                          <div className="flex items-center justify-between text-xs">
+                            <span className="font-semibold inline-flex items-center gap-1.5">
+                              <span className="h-2 w-2 rounded-full" style={{ backgroundColor: color }} />{g.country}
+                            </span>
+                            {isAggregate && <span className="text-muted-foreground tabular-nums">{share.toFixed(1)}%</span>}
+                          </div>
+                          <p className="text-sm font-bold tabular-nums mt-1">{fmt(g.value)}</p>
+                          {isAggregate && (
+                            <div className="mt-1 h-1 rounded-full bg-muted overflow-hidden">
+                              <div className="h-full rounded-full" style={{ width: `${share}%`, backgroundColor: color }} />
+                            </div>
+                          )}
+                        </div>
+                      );
+                    })}
+                  </div>
+                </div>
+              </div>
+            </>
+          );
+        })()}
+      </DialogContent>
+    </Dialog>
+
+    {/* ===== Drill: Период (неделя из stacked) ===== */}
+    <Dialog open={periodDrill !== null} onOpenChange={(o) => !o && setPeriodDrill(null)}>
+      <DialogContent className="max-w-4xl max-h-[90vh] overflow-y-auto">
+        {periodDrill !== null && weeksMap[periodDrill] && (() => {
+          const w = weeksMap[periodDrill];
+          const filtered = typeFilter === "ALL" ? w.parties : w.parties.filter((p) => p.type === typeFilter);
+          const rev = filtered.reduce((s, p) => s + (p.revenue ?? 0), 0);
+          const exp = filtered.reduce((s, p) => s + (p.expense ?? 0), 0);
+          const gp = rev - exp;
+          const pcs = filtered.reduce((s, p) => {
+            const mp = (p.mix ?? []).reduce((ss, m) => ss + (m.pcs ?? 0), 0);
+            return s + (typeof p.total_pcs === "number" ? p.total_pcs : mp);
+          }, 0);
+          const kg = filtered.reduce((s, p) => s + (p.mix ?? []).reduce((ss, m) => ss + (m.kg ?? 0), 0), 0);
+          // Страны
+          const cMap = new Map<string, { pcs: number; kg: number }>();
+          filtered.forEach((p) => (p.mix ?? []).forEach((m) => {
+            const cur = cMap.get(m.country) ?? { pcs: 0, kg: 0 };
+            cur.pcs += m.pcs ?? 0; cur.kg += m.kg ?? 0;
+            cMap.set(m.country, cur);
+          }));
+          const geo = Array.from(cMap.entries()).map(([k, v]) => ({ country: k, ...v })).sort((a, b) => b.pcs - a.pcs);
+          // Типы
+          const typesAgg = (["CAINIAO", "MPO", "MKO"] as PartyType[]).map((t) => {
+            const ps = w.parties.filter((p) => p.type === t);
+            const r = ps.reduce((s, p) => s + (p.revenue ?? 0), 0);
+            const e = ps.reduce((s, p) => s + (p.expense ?? 0), 0);
+            return { type: t, count: ps.length, revenue: r, expense: e, profit: r - e, margin: r > 0 ? ((r - e) / r) * 100 : 0 };
+          });
+          return (
+            <>
+              <DialogHeader>
+                <DialogTitle className="text-xl">Неделя W{w.week}</DialogTitle>
+                <DialogDescription>{w.period} · {filtered.length} партий{typeFilter !== "ALL" ? ` · ${TYPE_META[typeFilter as PartyType].label}` : ""}</DialogDescription>
+              </DialogHeader>
+              <div className="space-y-6 mt-2">
+                <div className="grid grid-cols-2 sm:grid-cols-4 gap-3">
+                  <div className="rounded-xl bg-muted/40 border border-border/60 p-3"><p className="text-[10px] uppercase tracking-wider text-muted-foreground font-semibold">Выручка</p><p className="text-lg font-bold tabular-nums mt-1">{fmtUSD(rev)}</p></div>
+                  <div className="rounded-xl bg-muted/40 border border-border/60 p-3"><p className="text-[10px] uppercase tracking-wider text-muted-foreground font-semibold">Расходы</p><p className="text-lg font-bold tabular-nums mt-1">{fmtUSD(exp)}</p></div>
+                  <div className={cn("rounded-xl border p-3", gp >= 0 ? "bg-success/10 border-success/30" : "bg-destructive/10 border-destructive/30")}><p className="text-[10px] uppercase tracking-wider font-semibold" style={{ color: gp >= 0 ? "var(--success)" : "var(--destructive)" }}>Прибыль</p><p className={cn("text-lg font-bold tabular-nums mt-1", gp >= 0 ? "text-success" : "text-destructive")}>{fmtUSD(gp)}</p></div>
+                  <div className="rounded-xl bg-muted/40 border border-border/60 p-3"><p className="text-[10px] uppercase tracking-wider text-muted-foreground font-semibold">Объём</p><p className="text-lg font-bold tabular-nums mt-1">{fmtNum(pcs, 0)} шт</p><p className="text-[10px] text-muted-foreground tabular-nums">{fmtNum(kg, 1)} кг</p></div>
+                </div>
+                <div>
+                  <p className="text-xs uppercase tracking-wider text-muted-foreground font-semibold mb-2">По типам бизнеса</p>
+                  <div className="grid grid-cols-1 md:grid-cols-3 gap-3">
+                    {typesAgg.map((tt) => {
+                      const TIcon = TYPE_META[tt.type].icon;
+                      return (
+                        <div key={tt.type} className="rounded-xl border border-border bg-card/60 p-3">
+                          <div className="flex items-center gap-2 mb-2">
+                            <div className="h-8 w-8 rounded-lg flex items-center justify-center text-white" style={{ background: TYPE_META[tt.type].color }}><TIcon className="h-4 w-4" /></div>
+                            <div><p className="text-sm font-semibold">{TYPE_META[tt.type].label}</p><p className="text-[10px] text-muted-foreground">{tt.count} партий</p></div>
+                          </div>
+                          <div className="grid grid-cols-2 gap-1 text-[11px]">
+                            <span className="text-muted-foreground">Выручка</span><span className="text-right tabular-nums font-semibold">{fmtUSD(tt.revenue)}</span>
+                            <span className="text-muted-foreground">Прибыль</span><span className={cn("text-right tabular-nums font-semibold", tt.profit >= 0 ? "text-success" : "text-destructive")}>{fmtUSD(tt.profit)}</span>
+                            <span className="text-muted-foreground">Маржа</span><span className={cn("text-right tabular-nums font-semibold", tt.margin >= 15 ? "text-success" : tt.margin >= 5 ? "text-warning" : "text-destructive")}>{tt.margin.toFixed(1)}%</span>
+                          </div>
+                        </div>
+                      );
+                    })}
+                  </div>
+                </div>
+                {geo.length > 0 && (
+                  <div>
+                    <p className="text-xs uppercase tracking-wider text-muted-foreground font-semibold mb-2">По странам</p>
+                    <div className="grid grid-cols-2 md:grid-cols-4 gap-2">
+                      {geo.map((g) => {
+                        const share = pcs > 0 ? (g.pcs / pcs) * 100 : 0;
+                        const color = COUNTRY_COLORS[g.country] ?? "var(--primary)";
+                        return (
+                          <div key={g.country} className="rounded-lg border border-border/60 bg-card/40 p-3">
+                            <div className="flex items-center justify-between text-xs"><span className="font-semibold inline-flex items-center gap-1.5"><span className="h-2 w-2 rounded-full" style={{ backgroundColor: color }} />{g.country}</span><span className="text-muted-foreground tabular-nums">{share.toFixed(1)}%</span></div>
+                            <p className="text-sm font-bold tabular-nums mt-1">{fmtNum(g.pcs, 0)} шт</p>
+                            <p className="text-[10px] text-muted-foreground tabular-nums">{fmtNum(g.kg, 1)} кг</p>
+                            <div className="mt-1 h-1 rounded-full bg-muted overflow-hidden"><div className="h-full rounded-full" style={{ width: `${share}%`, backgroundColor: color }} /></div>
+                          </div>
+                        );
+                      })}
+                    </div>
+                  </div>
+                )}
+                <div>
+                  <p className="text-xs uppercase tracking-wider text-muted-foreground font-semibold mb-2">Все партии недели</p>
+                  <div className="rounded-xl border border-border overflow-hidden">
+                    <table className="w-full text-xs">
+                      <thead className="bg-muted/50 text-[10px] uppercase tracking-wider text-muted-foreground">
+                        <tr><th className="px-3 py-2 text-left">Партия</th><th className="px-3 py-2 text-left">Тип</th><th className="px-3 py-2 text-right">Выручка</th><th className="px-3 py-2 text-right">Прибыль</th><th className="px-3 py-2 text-right">Маржа</th></tr>
+                      </thead>
+                      <tbody>
+                        {filtered.map((p) => (
+                          <tr key={p.col} className="border-t border-border/50 hover:bg-muted/30">
+                            <td className="px-3 py-2 font-mono">{p.num}</td>
+                            <td className="px-3 py-2"><span className="px-1.5 py-0.5 rounded text-[10px] font-semibold text-white" style={{ background: TYPE_META[p.type].color }}>{TYPE_META[p.type].label}</span></td>
+                            <td className="px-3 py-2 text-right tabular-nums">{fmtUSD(p.revenue)}</td>
+                            <td className={cn("px-3 py-2 text-right tabular-nums font-semibold", p.gross_profit >= 0 ? "text-success" : "text-destructive")}>{fmtUSD(p.gross_profit)}</td>
+                            <td className="px-3 py-2 text-right tabular-nums">{p.margin_pct != null ? `${p.margin_pct.toFixed(1)}%` : "—"}</td>
+                          </tr>
+                        ))}
+                      </tbody>
+                    </table>
+                  </div>
+                </div>
+              </div>
+            </>
+          );
+        })()}
+      </DialogContent>
+    </Dialog>
+
+    {/* ===== Drill: Ячейка матрицы Страна × Тип ===== */}
+    <Dialog open={matrixDrill !== null} onOpenChange={(o) => !o && setMatrixDrill(null)}>
+      <DialogContent className="max-w-3xl max-h-[90vh] overflow-y-auto">
+        {matrixDrill && (() => {
+          const { country, type } = matrixDrill;
+          const tMeta = TYPE_META[type];
+          const cColor = COUNTRY_COLORS[country] ?? "var(--primary)";
+          // По неделям: для каждой партии этого типа — доля страны в её mix → выручка/расход/штуки
+          const series = sortedWeeks.map((w) => {
+            let pcs = 0, kg = 0, rev = 0, exp = 0;
+            w.parties.filter((p) => p.type === type).forEach((p) => {
+              const totalMix = (p.mix ?? []).reduce((s, m) => s + (m.pcs ?? 0), 0);
+              const cMix = (p.mix ?? []).filter((m) => m.country === country);
+              const cPcs = cMix.reduce((s, m) => s + (m.pcs ?? 0), 0);
+              const cKg = cMix.reduce((s, m) => s + (m.kg ?? 0), 0);
+              pcs += cPcs; kg += cKg;
+              if (totalMix > 0 && cPcs > 0) {
+                const share = cPcs / totalMix;
+                rev += (p.revenue ?? 0) * share;
+                exp += (p.expense ?? 0) * share;
+              }
+            });
+            return { label: `W${w.week}`, period: w.period, pcs, kg, revenue: Math.round(rev), expense: Math.round(exp), gross_profit: Math.round(rev - exp), margin_pct: rev > 0 ? ((rev - exp) / rev) * 100 : 0 };
+          }).filter((r) => r.pcs > 0 || r.revenue > 0);
+          const totalRev = series.reduce((s, r) => s + r.revenue, 0);
+          const totalExp = series.reduce((s, r) => s + r.expense, 0);
+          const totalGp = totalRev - totalExp;
+          const totalPcs = series.reduce((s, r) => s + r.pcs, 0);
+          const totalKg = series.reduce((s, r) => s + r.kg, 0);
+          const margin = totalRev > 0 ? (totalGp / totalRev) * 100 : 0;
+          return (
+            <>
+              <DialogHeader>
+                <DialogTitle className="text-xl flex items-center gap-2">
+                  <span className="h-3 w-3 rounded-full" style={{ backgroundColor: cColor }} />{country}
+                  <span className="text-muted-foreground">×</span>
+                  <span className="px-2 py-0.5 rounded text-sm font-bold text-white" style={{ background: tMeta.color }}>{tMeta.label}</span>
+                </DialogTitle>
+                <DialogDescription>Расчётная аллокация типа {tMeta.label} на страну {country} пропорционально доле штук страны в каждой партии.</DialogDescription>
+              </DialogHeader>
+              <div className="space-y-6 mt-2">
+                <div className="grid grid-cols-2 sm:grid-cols-4 gap-3">
+                  <div className="rounded-xl bg-muted/40 border border-border/60 p-3"><p className="text-[10px] uppercase tracking-wider text-muted-foreground font-semibold">Выручка</p><p className="text-lg font-bold tabular-nums mt-1">{fmtUSD(totalRev)}</p></div>
+                  <div className="rounded-xl bg-muted/40 border border-border/60 p-3"><p className="text-[10px] uppercase tracking-wider text-muted-foreground font-semibold">Расходы</p><p className="text-lg font-bold tabular-nums mt-1">{fmtUSD(totalExp)}</p></div>
+                  <div className={cn("rounded-xl border p-3", totalGp >= 0 ? "bg-success/10 border-success/30" : "bg-destructive/10 border-destructive/30")}><p className="text-[10px] uppercase tracking-wider font-semibold" style={{ color: totalGp >= 0 ? "var(--success)" : "var(--destructive)" }}>Прибыль</p><p className={cn("text-lg font-bold tabular-nums mt-1", totalGp >= 0 ? "text-success" : "text-destructive")}>{fmtUSD(totalGp)}</p><p className="text-[10px] text-muted-foreground tabular-nums">маржа {margin.toFixed(2)}%</p></div>
+                  <div className="rounded-xl bg-muted/40 border border-border/60 p-3"><p className="text-[10px] uppercase tracking-wider text-muted-foreground font-semibold">Объём</p><p className="text-lg font-bold tabular-nums mt-1">{fmtNum(totalPcs, 0)} шт</p><p className="text-[10px] text-muted-foreground tabular-nums">{fmtNum(totalKg, 1)} кг</p></div>
+                </div>
+                <div>
+                  <p className="text-xs uppercase tracking-wider text-muted-foreground font-semibold mb-2">Динамика по неделям</p>
+                  <div className="h-64">
+                    <ResponsiveContainer>
+                      <ComposedChart data={series} margin={{ top: 8, right: 16, left: 0, bottom: 0 }}>
+                        <CartesianGrid strokeDasharray="3 3" stroke="var(--border)" opacity={0.3} />
+                        <XAxis dataKey="label" tick={{ fontSize: 11 }} stroke="var(--muted-foreground)" />
+                        <YAxis yAxisId="left" tick={{ fontSize: 11 }} stroke="var(--muted-foreground)" tickFormatter={(v) => `$${(v / 1000).toFixed(0)}k`} />
+                        <YAxis yAxisId="right" orientation="right" tick={{ fontSize: 11 }} stroke="var(--warning)" tickFormatter={(v) => `${v.toFixed(0)}%`} />
+                        <Tooltip contentStyle={{ background: "var(--popover)", border: "1px solid var(--border)", borderRadius: 12, fontSize: 12 }} formatter={(v: number, n: string) => n === "Маржа %" ? [`${v.toFixed(2)}%`, n] : [fmtUSD(v), n]} />
+                        <Legend wrapperStyle={{ fontSize: 11 }} />
+                        <Bar yAxisId="left" dataKey="revenue" name="Выручка" fill={tMeta.color} radius={[4, 4, 0, 0]} />
+                        <Bar yAxisId="left" dataKey="expense" name="Расходы" fill="var(--destructive)" radius={[4, 4, 0, 0]} opacity={0.6} />
+                        <Line yAxisId="right" type="monotone" dataKey="margin_pct" name="Маржа %" stroke="var(--warning)" strokeWidth={2.5} dot={{ r: 3 }} />
+                      </ComposedChart>
+                    </ResponsiveContainer>
+                  </div>
+                </div>
+                <div>
+                  <p className="text-xs uppercase tracking-wider text-muted-foreground font-semibold mb-2">Понедельная разбивка</p>
+                  <div className="rounded-xl border border-border overflow-hidden">
+                    <table className="w-full text-xs">
+                      <thead className="bg-muted/50 text-[10px] uppercase tracking-wider text-muted-foreground">
+                        <tr><th className="px-3 py-2 text-left">Неделя</th><th className="px-3 py-2 text-right">Шт</th><th className="px-3 py-2 text-right">Кг</th><th className="px-3 py-2 text-right">Выручка</th><th className="px-3 py-2 text-right">Прибыль</th><th className="px-3 py-2 text-right">Маржа</th></tr>
+                      </thead>
+                      <tbody>
+                        {series.map((r) => (
+                          <tr key={r.label} className="border-t border-border/50 hover:bg-muted/30">
+                            <td className="px-3 py-2 font-semibold">{r.label}<span className="ml-1 text-[10px] text-muted-foreground">{r.period}</span></td>
+                            <td className="px-3 py-2 text-right tabular-nums">{fmtNum(r.pcs, 0)}</td>
+                            <td className="px-3 py-2 text-right tabular-nums">{fmtNum(r.kg, 1)}</td>
+                            <td className="px-3 py-2 text-right tabular-nums">{fmtUSD(r.revenue)}</td>
+                            <td className={cn("px-3 py-2 text-right tabular-nums font-semibold", r.gross_profit >= 0 ? "text-success" : "text-destructive")}>{fmtUSD(r.gross_profit)}</td>
+                            <td className="px-3 py-2 text-right tabular-nums">{r.margin_pct.toFixed(1)}%</td>
+                          </tr>
+                        ))}
+                      </tbody>
+                    </table>
+                  </div>
+                </div>
+              </div>
+            </>
+          );
+        })()}
+      </DialogContent>
+    </Dialog>
     </>
   );
 }
