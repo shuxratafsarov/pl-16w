@@ -54,80 +54,7 @@
       "marker2_volnet": 1.3046,
       "marker3_grossnet": 1.0627,
       "total_kg": 896.0,
-      "mix": [
-        {
-          "country": "UZ",
-          "subtype": "RM",
-          "pcs": 267,
-          "kg": 56.28
-        },
-        {
-          "country": "UZ",
-          "subtype": "SRM",
-          "pcs": 28,
-          "kg": 5.902
-        },
-        {
-          "country": "UZ",
-          "subtype": "SRMA",
-          "pcs": 285,
-          "kg": 60.074
-        },
-        {
-          "country": "UZ",
-          "subtype": "SRMB",
-          "pcs": 351,
-          "kg": 73.986
-        },
-        {
-          "country": "UZ",
-          "subtype": "SRMC",
-          "pcs": 69,
-          "kg": 14.544
-        },
-        {
-          "country": "BY",
-          "subtype": "RRM",
-          "pcs": 234,
-          "kg": 49.324
-        },
-        {
-          "country": "BY",
-          "subtype": "SRM",
-          "pcs": 249,
-          "kg": 52.486
-        },
-        {
-          "country": "BY",
-          "subtype": "NRM",
-          "pcs": 517,
-          "kg": 108.977
-        },
-        {
-          "country": "KG",
-          "subtype": "RM",
-          "pcs": 384,
-          "kg": 80.942
-        },
-        {
-          "country": "KG",
-          "subtype": "NRM",
-          "pcs": 616,
-          "kg": 129.845
-        },
-        {
-          "country": "AZ",
-          "subtype": "RM",
-          "pcs": 386,
-          "kg": 81.364
-        },
-        {
-          "country": "AZ",
-          "subtype": "NRM",
-          "pcs": 614,
-          "kg": 129.424
-        }
-      ]
+      "mix": []
     },
     {
       "col": "GB",
@@ -149,74 +76,74 @@
         {
           "country": "UZ",
           "subtype": "RM",
-          "pcs": 222,
-          "kg": 44.453
+          "pcs": 503,
+          "kg": 116.84
         },
         {
           "country": "UZ",
           "subtype": "SRM",
-          "pcs": 22,
-          "kg": 4.405
+          "pcs": 51,
+          "kg": 8.5
         },
         {
           "country": "UZ",
           "subtype": "SRMA",
-          "pcs": 316,
-          "kg": 63.275
+          "pcs": 717,
+          "kg": 11.89
         },
         {
           "country": "UZ",
           "subtype": "SRMB",
-          "pcs": 373,
-          "kg": 74.689
+          "pcs": 845,
+          "kg": 33.45
         },
         {
           "country": "UZ",
           "subtype": "SRMC",
-          "pcs": 67,
-          "kg": 13.416
+          "pcs": 151,
+          "kg": 12.01
         },
         {
           "country": "BY",
           "subtype": "RRM",
-          "pcs": 222,
-          "kg": 44.453
+          "pcs": 1410,
+          "kg": 348.14
         },
         {
           "country": "BY",
           "subtype": "SRM",
-          "pcs": 248,
-          "kg": 49.659
+          "pcs": 1574,
+          "kg": 71.6
         },
         {
           "country": "BY",
           "subtype": "NRM",
-          "pcs": 530,
-          "kg": 106.126
+          "pcs": 3371,
+          "kg": 86.89
         },
         {
           "country": "KG",
           "subtype": "RM",
-          "pcs": 298,
-          "kg": 59.671
+          "pcs": 37,
+          "kg": 8.5
         },
         {
           "country": "KG",
           "subtype": "NRM",
-          "pcs": 702,
-          "kg": 140.567
+          "pcs": 87,
+          "kg": 3.04
         },
         {
           "country": "AZ",
           "subtype": "RM",
-          "pcs": 406,
-          "kg": 81.296
+          "pcs": 350,
+          "kg": 78.4
         },
         {
           "country": "AZ",
           "subtype": "NRM",
-          "pcs": 594,
-          "kg": 118.941
+          "pcs": 512,
+          "kg": 21.69
         }
       ]
     },
@@ -236,80 +163,7 @@
       "marker2_volnet": 1.5171,
       "marker3_grossnet": 1.0858,
       "total_kg": 725.0,
-      "mix": [
-        {
-          "country": "UZ",
-          "subtype": "RM",
-          "pcs": 290,
-          "kg": 48.432
-        },
-        {
-          "country": "UZ",
-          "subtype": "SRM",
-          "pcs": 30,
-          "kg": 5.01
-        },
-        {
-          "country": "UZ",
-          "subtype": "SRMA",
-          "pcs": 254,
-          "kg": 42.42
-        },
-        {
-          "country": "UZ",
-          "subtype": "SRMB",
-          "pcs": 345,
-          "kg": 57.618
-        },
-        {
-          "country": "UZ",
-          "subtype": "SRMC",
-          "pcs": 80,
-          "kg": 13.361
-        },
-        {
-          "country": "BY",
-          "subtype": "RRM",
-          "pcs": 268,
-          "kg": 44.758
-        },
-        {
-          "country": "BY",
-          "subtype": "SRM",
-          "pcs": 305,
-          "kg": 50.938
-        },
-        {
-          "country": "BY",
-          "subtype": "NRM",
-          "pcs": 426,
-          "kg": 71.146
-        },
-        {
-          "country": "KG",
-          "subtype": "RM",
-          "pcs": 416,
-          "kg": 69.476
-        },
-        {
-          "country": "KG",
-          "subtype": "NRM",
-          "pcs": 584,
-          "kg": 97.533
-        },
-        {
-          "country": "AZ",
-          "subtype": "RM",
-          "pcs": 422,
-          "kg": 70.478
-        },
-        {
-          "country": "AZ",
-          "subtype": "NRM",
-          "pcs": 578,
-          "kg": 96.531
-        }
-      ]
+      "mix": []
     },
     {
       "col": "GD",
@@ -331,74 +185,74 @@
         {
           "country": "UZ",
           "subtype": "RM",
-          "pcs": 293,
-          "kg": 32.843
+          "pcs": 391,
+          "kg": 73.1
         },
         {
           "country": "UZ",
           "subtype": "SRM",
-          "pcs": 27,
-          "kg": 3.026
+          "pcs": 36,
+          "kg": 5.89
         },
         {
           "country": "UZ",
           "subtype": "SRMA",
-          "pcs": 300,
-          "kg": 33.627
+          "pcs": 400,
+          "kg": 6.56
         },
         {
           "country": "UZ",
           "subtype": "SRMB",
-          "pcs": 315,
-          "kg": 35.309
+          "pcs": 420,
+          "kg": 16.83
         },
         {
           "country": "UZ",
           "subtype": "SRMC",
-          "pcs": 65,
-          "kg": 7.286
+          "pcs": 87,
+          "kg": 7.2
         },
         {
           "country": "BY",
           "subtype": "RRM",
-          "pcs": 250,
-          "kg": 28.023
+          "pcs": 870,
+          "kg": 181.2
         },
         {
           "country": "BY",
           "subtype": "SRM",
-          "pcs": 273,
-          "kg": 30.601
+          "pcs": 950,
+          "kg": 40.95
         },
         {
           "country": "BY",
           "subtype": "NRM",
-          "pcs": 476,
-          "kg": 53.355
+          "pcs": 1655,
+          "kg": 42.42
         },
         {
           "country": "KG",
           "subtype": "RM",
-          "pcs": 480,
-          "kg": 53.803
+          "pcs": 36,
+          "kg": 7.67
         },
         {
           "country": "KG",
           "subtype": "NRM",
-          "pcs": 520,
-          "kg": 58.287
+          "pcs": 39,
+          "kg": 1.53
         },
         {
           "country": "AZ",
           "subtype": "RM",
-          "pcs": 384,
-          "kg": 43.043
+          "pcs": 218,
+          "kg": 50.52
         },
         {
           "country": "AZ",
           "subtype": "NRM",
-          "pcs": 616,
-          "kg": 69.048
+          "pcs": 350,
+          "kg": 14.38
         }
       ]
     },
@@ -418,80 +272,7 @@
       "marker2_volnet": 1.3813,
       "marker3_grossnet": 1.0651,
       "total_kg": 465.0,
-      "mix": [
-        {
-          "country": "UZ",
-          "subtype": "RM",
-          "pcs": 213,
-          "kg": 23.247
-        },
-        {
-          "country": "UZ",
-          "subtype": "SRM",
-          "pcs": 26,
-          "kg": 2.838
-        },
-        {
-          "country": "UZ",
-          "subtype": "SRMA",
-          "pcs": 336,
-          "kg": 36.671
-        },
-        {
-          "country": "UZ",
-          "subtype": "SRMB",
-          "pcs": 358,
-          "kg": 39.072
-        },
-        {
-          "country": "UZ",
-          "subtype": "SRMC",
-          "pcs": 68,
-          "kg": 7.422
-        },
-        {
-          "country": "BY",
-          "subtype": "RRM",
-          "pcs": 196,
-          "kg": 21.391
-        },
-        {
-          "country": "BY",
-          "subtype": "SRM",
-          "pcs": 165,
-          "kg": 18.008
-        },
-        {
-          "country": "BY",
-          "subtype": "NRM",
-          "pcs": 638,
-          "kg": 69.631
-        },
-        {
-          "country": "KG",
-          "subtype": "RM",
-          "pcs": 297,
-          "kg": 32.415
-        },
-        {
-          "country": "KG",
-          "subtype": "NRM",
-          "pcs": 703,
-          "kg": 76.725
-        },
-        {
-          "country": "AZ",
-          "subtype": "RM",
-          "pcs": 304,
-          "kg": 33.179
-        },
-        {
-          "country": "AZ",
-          "subtype": "NRM",
-          "pcs": 696,
-          "kg": 75.961
-        }
-      ]
+      "mix": []
     },
     {
       "col": "GF",
@@ -509,80 +290,7 @@
       "marker2_volnet": 1.404,
       "marker3_grossnet": 1.0716,
       "total_kg": 677.0,
-      "mix": [
-        {
-          "country": "UZ",
-          "subtype": "RM",
-          "pcs": 224,
-          "kg": 35.387
-        },
-        {
-          "country": "UZ",
-          "subtype": "SRM",
-          "pcs": 21,
-          "kg": 3.318
-        },
-        {
-          "country": "UZ",
-          "subtype": "SRMA",
-          "pcs": 336,
-          "kg": 53.081
-        },
-        {
-          "country": "UZ",
-          "subtype": "SRMB",
-          "pcs": 354,
-          "kg": 55.925
-        },
-        {
-          "country": "UZ",
-          "subtype": "SRMC",
-          "pcs": 64,
-          "kg": 10.111
-        },
-        {
-          "country": "BY",
-          "subtype": "RRM",
-          "pcs": 203,
-          "kg": 32.07
-        },
-        {
-          "country": "BY",
-          "subtype": "SRM",
-          "pcs": 231,
-          "kg": 36.493
-        },
-        {
-          "country": "BY",
-          "subtype": "NRM",
-          "pcs": 566,
-          "kg": 89.416
-        },
-        {
-          "country": "KG",
-          "subtype": "RM",
-          "pcs": 342,
-          "kg": 54.029
-        },
-        {
-          "country": "KG",
-          "subtype": "NRM",
-          "pcs": 658,
-          "kg": 103.951
-        },
-        {
-          "country": "AZ",
-          "subtype": "RM",
-          "pcs": 363,
-          "kg": 57.347
-        },
-        {
-          "country": "AZ",
-          "subtype": "NRM",
-          "pcs": 637,
-          "kg": 100.633
-        }
-      ]
+      "mix": []
     },
     {
       "col": "GG",
@@ -600,80 +308,7 @@
       "marker2_volnet": 1.4256,
       "marker3_grossnet": 1.0646,
       "total_kg": 525.0,
-      "mix": [
-        {
-          "country": "UZ",
-          "subtype": "RM",
-          "pcs": 257,
-          "kg": 31.692
-        },
-        {
-          "country": "UZ",
-          "subtype": "SRM",
-          "pcs": 21,
-          "kg": 2.59
-        },
-        {
-          "country": "UZ",
-          "subtype": "SRMA",
-          "pcs": 315,
-          "kg": 38.844
-        },
-        {
-          "country": "UZ",
-          "subtype": "SRMB",
-          "pcs": 337,
-          "kg": 41.557
-        },
-        {
-          "country": "UZ",
-          "subtype": "SRMC",
-          "pcs": 69,
-          "kg": 8.509
-        },
-        {
-          "country": "BY",
-          "subtype": "RRM",
-          "pcs": 229,
-          "kg": 28.239
-        },
-        {
-          "country": "BY",
-          "subtype": "SRM",
-          "pcs": 259,
-          "kg": 31.939
-        },
-        {
-          "country": "BY",
-          "subtype": "NRM",
-          "pcs": 512,
-          "kg": 63.138
-        },
-        {
-          "country": "KG",
-          "subtype": "RM",
-          "pcs": 464,
-          "kg": 57.219
-        },
-        {
-          "country": "KG",
-          "subtype": "NRM",
-          "pcs": 536,
-          "kg": 66.097
-        },
-        {
-          "country": "AZ",
-          "subtype": "RM",
-          "pcs": 346,
-          "kg": 42.667
-        },
-        {
-          "country": "AZ",
-          "subtype": "NRM",
-          "pcs": 654,
-          "kg": 80.649
-        }
-      ]
+      "mix": []
     },
     {
       "col": "GH",
