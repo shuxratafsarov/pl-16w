@@ -409,6 +409,7 @@ export function OverviewAnalytics({
           hint={`${fmtPct(totals.expense / totals.revenue)} от выручки`}
           accent="destructive"
           icon={<Receipt className="h-5 w-5" />}
+          onClick={() => setKpiDrill("expense")}
         />
         <StatCard
           label="Σ Валовая прибыль"
