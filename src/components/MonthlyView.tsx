@@ -193,39 +193,39 @@ export function MonthlyView() {
       {/* === KPI === */}
       <div className="grid grid-cols-2 lg:grid-cols-5 gap-3">
         <StatCard
-          title="Σ Выручка"
+          label="Σ Выручка"
           value={fmtUSD(totals.revenue)}
-          icon={Wallet}
-          accent="var(--primary)"
-          subtitle={`${DATA.length} мес. · ${fmtNum(totals.pcs, 0)} шт`}
+          icon={<Wallet className="h-5 w-5" />}
+          accent="primary"
+          hint={`${DATA.length} мес. · ${fmtNum(totals.pcs, 0)} шт`}
         />
         <StatCard
-          title="Σ Расходы"
+          label="Σ Расходы"
           value={fmtUSD(totals.expense)}
-          icon={Receipt}
-          accent="var(--destructive)"
-          subtitle={`${((totals.expense / totals.revenue) * 100).toFixed(1)}% от выручки`}
+          icon={<Receipt className="h-5 w-5" />}
+          accent="destructive"
+          hint={`${((totals.expense / totals.revenue) * 100).toFixed(1)}% от выручки`}
         />
         <StatCard
-          title="Σ Валовая прибыль"
+          label="Σ Валовая прибыль"
           value={fmtUSD(totals.gross_profit)}
-          icon={TrendingUp}
-          accent="var(--success)"
-          subtitle="Выручка − Расходы"
+          icon={<TrendingUp className="h-5 w-5" />}
+          accent="success"
+          hint="Выручка − Расходы"
         />
         <StatCard
-          title="Маржа"
+          label="Маржа"
           value={`${totals.margin_pct.toFixed(2)}%`}
-          icon={Percent}
-          accent={totals.margin_pct >= 15 ? "var(--success)" : totals.margin_pct >= 5 ? "var(--warning)" : "var(--destructive)"}
-          subtitle="GP / Выручка"
+          icon={<Percent className="h-5 w-5" />}
+          accent={totals.margin_pct >= 15 ? "success" : totals.margin_pct >= 5 ? "warning" : "destructive"}
+          hint="GP / Выручка"
         />
         <StatCard
-          title="Всего посылок"
+          label="Всего посылок"
           value={fmtNum(totals.pcs, 0)}
-          icon={Boxes}
-          accent="var(--accent-foreground)"
-          subtitle="По 4 странам + MPO/MKO"
+          icon={<Boxes className="h-5 w-5" />}
+          accent="default"
+          hint="По 4 странам + MPO/MKO"
         />
       </div>
 
