@@ -348,7 +348,7 @@ function Dashboard() {
       else if (w === "warning") counts[p.type].warning += 1;
     });
     return counts;
-  }, [worstStatusByParty]);
+  }, [worstStatusByParty, week]);
 
   const parties = useMemo<Party[]>(
     () => (filter === "ALL" ? week.parties : week.parties.filter((p) => p.type === filter)),
