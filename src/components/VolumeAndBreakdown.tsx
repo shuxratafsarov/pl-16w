@@ -61,6 +61,12 @@ type Props = {
   types: VBSlice[];
   /** Заголовок секции "Объём" */
   title?: string;
+  /** Клик по KPI карточкам объёма */
+  onKpiClick?: (kpi: "pcs" | "kg" | "avgw" | "rev_per_pcs") => void;
+  /** Клик по столбику в stacked-чарте — передаёт label периода */
+  onPeriodClick?: (label: string) => void;
+  /** Клик по ячейке матрицы Страна × Тип */
+  onMatrixCellClick?: (country: string, type: string) => void;
 };
 
 type MetricKey = "revenue" | "expense" | "gross_profit" | "pcs" | "kg";
