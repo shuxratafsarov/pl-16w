@@ -220,7 +220,7 @@
           "kg": 36.95
         }
       ],
-      "total_pcs": 18693
+      "total_pcs": 0
     },
     {
       "col": "DG",
@@ -312,7 +312,7 @@
           "kg": 28.26
         }
       ],
-      "total_pcs": 18693
+      "total_pcs": 0
     },
     {
       "col": "DH",
@@ -404,7 +404,7 @@
           "kg": 24.65
         }
       ],
-      "total_pcs": 18693
+      "total_pcs": 0
     },
     {
       "col": "DI",
@@ -496,7 +496,7 @@
           "kg": 6.19
         }
       ],
-      "total_pcs": 18693
+      "total_pcs": 0
     },
     {
       "col": "DJ",
@@ -588,7 +588,7 @@
           "kg": 10.48
         }
       ],
-      "total_pcs": 18693
+      "total_pcs": 0
     },
     {
       "col": "DK",
@@ -680,7 +680,7 @@
           "kg": 19.96
         }
       ],
-      "total_pcs": 18693
+      "total_pcs": 0
     },
     {
       "col": "DL",
@@ -737,7 +737,7 @@
       "marker3_grossnet": null,
       "total_kg": 232.0,
       "mix": [],
-      "total_pcs": 2100
+      "total_pcs": 0
     },
     {
       "col": "DO",
@@ -756,7 +756,7 @@
       "marker3_grossnet": null,
       "total_kg": 330.0,
       "mix": [],
-      "total_pcs": 2100
+      "total_pcs": 0
     }
   ]
 }

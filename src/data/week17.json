@@ -220,7 +220,7 @@
           "kg": 30.67
         }
       ],
-      "total_pcs": 64263
+      "total_pcs": 0
     },
     {
       "col": "IF",
@@ -312,7 +312,7 @@
           "kg": 23.01
         }
       ],
-      "total_pcs": 64263
+      "total_pcs": 0
     },
     {
       "col": "IG",
@@ -404,7 +404,7 @@
           "kg": 22.96
         }
       ],
-      "total_pcs": 64263
+      "total_pcs": 0
     },
     {
       "col": "IH",
@@ -496,7 +496,7 @@
           "kg": 6.46
         }
       ],
-      "total_pcs": 64263
+      "total_pcs": 0
     },
     {
       "col": "II",
@@ -588,7 +588,7 @@
           "kg": 35.7
         }
       ],
-      "total_pcs": 64263
+      "total_pcs": 0
     },
     {
       "col": "IJ",
@@ -680,7 +680,7 @@
           "kg": 5.86
         }
       ],
-      "total_pcs": 64263
+      "total_pcs": 0
     },
     {
       "col": "IK",
@@ -718,7 +718,7 @@
       "marker3_grossnet": null,
       "total_kg": 1027.0,
       "mix": [],
-      "total_pcs": 351
+      "total_pcs": 0
     },
     {
       "col": "IM",
@@ -737,7 +737,7 @@
       "marker3_grossnet": null,
       "total_kg": 1090.0,
       "mix": [],
-      "total_pcs": 351
+      "total_pcs": 0
     },
     {
       "col": "IN",
@@ -756,7 +756,7 @@
       "marker3_grossnet": null,
       "total_kg": 1116.0,
       "mix": [],
-      "total_pcs": 351
+      "total_pcs": 0
     },
     {
       "col": "IO",
@@ -775,7 +775,7 @@
       "marker3_grossnet": null,
       "total_kg": 265.0,
       "mix": [],
-      "total_pcs": 351
+      "total_pcs": 0
     },
     {
       "col": "IP",
@@ -813,7 +813,7 @@
       "marker3_grossnet": 1.0,
       "total_kg": 204.0,
       "mix": [],
-      "total_pcs": 4473
+      "total_pcs": 0
     },
     {
       "col": "IR",
@@ -832,7 +832,7 @@
       "marker3_grossnet": 1.0105,
       "total_kg": 420.0,
       "mix": [],
-      "total_pcs": 4473
+      "total_pcs": 0
     },
     {
       "col": "IS",
@@ -851,7 +851,7 @@
       "marker3_grossnet": 0.9975,
       "total_kg": 220.0,
       "mix": [],
-      "total_pcs": 4473
+      "total_pcs": 0
     },
     {
       "col": "IT",
@@ -870,7 +870,7 @@
       "marker3_grossnet": 1.0154,
       "total_kg": 261.0,
       "mix": [],
-      "total_pcs": 4473
+      "total_pcs": 0
     },
     {
       "col": "IU",
@@ -889,7 +889,7 @@
       "marker3_grossnet": 1.0181,
       "total_kg": 265.0,
       "mix": [],
-      "total_pcs": 4473
+      "total_pcs": 0
     }
   ]
 }
