@@ -643,7 +643,7 @@ function Dashboard() {
         {isOverview ? (
           <OverviewAnalytics weeksMap={ALL_WEEKS} />
         ) : (
-        <>
+          <div className="space-y-8">
         {/* === Уровень 1: Общие итоги === */}
         <section className="space-y-4">
           <div className="flex items-end justify-between gap-3">
@@ -1074,7 +1074,7 @@ function Dashboard() {
         <footer className="text-center text-xs text-muted-foreground py-4">
           Источник: 3PL_PL_2026 · лист 3PL_weekly (TOTAL колонка) · Маркеры 2-3 · Expenses
         </footer>
-        </>
+        </div>
         )}
       </main>
 
