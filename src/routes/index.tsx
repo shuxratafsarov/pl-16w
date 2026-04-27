@@ -305,10 +305,11 @@ function Dashboard() {
   const [filter, setFilter] = useState<"ALL" | PartyType>("ALL");
   const [detail, setDetail] = useState<DetailTarget | null>(null);
 
+  const isOverview = selectedWeek === OVERVIEW_KEY;
   const { week, discrepancies: SOURCE_DISCREPANCIES } = useMemo(() => {
-    const raw = ALL_WEEKS[selectedWeek];
+    const raw = isOverview ? OVERVIEW_WEEK : ALL_WEEKS[selectedWeek];
     return reconcileWeek(raw);
-  }, [selectedWeek]);
+  }, [selectedWeek, isOverview]);
 
   const typeAverages = useMemo(() => computeTypeAverages(week.parties), [week]);
 
