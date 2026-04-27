@@ -296,7 +296,7 @@ function Dashboard() {
       else map.set(p.col, "ok");
     });
     return map;
-  }, [partyStatuses]);
+  }, [partyStatuses, week]);
 
   /** Топ-блок «Требует внимания»: все партии с critical или warning, отсортированы по тяжести. */
   const alerts = useMemo(() => {
