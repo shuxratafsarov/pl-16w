@@ -1386,7 +1386,13 @@ export function OverviewAnalytics({
                     }}
                     formatter={(v: number) => [`${fmtNum(v, 0)} шт`, "Штук"]}
                   />
-                  <Bar dataKey="pcs" name="Штук" radius={[0, 6, 6, 0]}>
+                  <Bar
+                    dataKey="pcs"
+                    name="Штук"
+                    radius={[0, 6, 6, 0]}
+                    cursor="pointer"
+                    onClick={(d: { country?: string }) => d?.country && setCountryDrill(d.country)}
+                  >
                     {countryBreakdown.map((c, i) => (
                       <Cell key={i} fill={COUNTRY_COLORS[c.country] ?? "var(--primary)"} />
                     ))}
@@ -1397,13 +1403,21 @@ export function OverviewAnalytics({
             <div className="space-y-2">
               <div className="flex items-center gap-2 text-xs font-semibold text-muted-foreground uppercase tracking-wider mb-1">
                 <Globe2 className="h-3.5 w-3.5" /> Распределение
+                <span className="ml-auto text-[10px] font-medium normal-case tracking-normal text-muted-foreground/70">
+                  кликабельно
+                </span>
               </div>
               {countryBreakdown.map((c) => {
                 const totalPcs = countryBreakdown.reduce((s, r) => s + r.pcs, 0);
                 const share = totalPcs > 0 ? (c.pcs / totalPcs) * 100 : 0;
                 const color = COUNTRY_COLORS[c.country] ?? "var(--primary)";
                 return (
-                  <div key={c.country} className="rounded-lg border border-border/60 bg-card/40 p-3">
+                  <button
+                    type="button"
+                    key={c.country}
+                    onClick={() => setCountryDrill(c.country)}
+                    className="block w-full text-left rounded-lg border border-border/60 bg-card/40 p-3 transition-all hover:border-primary/60 hover:bg-card/80 hover:shadow-md focus:outline-none focus:ring-2 focus:ring-primary/40"
+                  >
                     <div className="flex items-center justify-between text-sm">
                       <span className="font-semibold inline-flex items-center gap-2">
                         <span className="h-2.5 w-2.5 rounded-full" style={{ backgroundColor: color }} />
@@ -1414,16 +1428,17 @@ export function OverviewAnalytics({
                       </span>
                     </div>
                     <div className="mt-2 h-1.5 w-full rounded-full bg-muted/40 overflow-hidden">
-                      <div className="h-full rounded-full" style={{ width: `${share}%`, backgroundColor: color }} />
+                      <div className="h-full rounded-full transition-all" style={{ width: `${share}%`, backgroundColor: color }} />
                     </div>
-                    <p className="mt-1 text-[10px] text-muted-foreground">{share.toFixed(1)}% от объёма</p>
-                  </div>
+                    <p className="mt-1 text-[10px] text-muted-foreground">{share.toFixed(1)}% от объёма · нажмите для деталей</p>
+                  </button>
                 );
               })}
             </div>
           </div>
         </SectionCard>
       )}
+
 
       {/* Топ-10 партий */}
       <SectionCard
