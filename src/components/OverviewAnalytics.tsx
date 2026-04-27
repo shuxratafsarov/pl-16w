@@ -758,7 +758,7 @@ export function OverviewAnalytics({
                 formatter={(v: number, n) => [`${v.toFixed(1)}%`, n as string]}
               />
               <Legend iconType="circle" wrapperStyle={{ fontSize: 12 }} />
-              <ReferenceArea />
+              <ReferenceLine y={0} stroke="var(--muted-foreground)" strokeOpacity={0.5} />
               <Bar dataKey="wowRev" name="Δ Выручка" radius={[4, 4, 0, 0]}>
                 {wowSeries.map((d, i) => (
                   <Cell key={`r-${i}`} fill={d.wowRev >= 0 ? "var(--primary)" : "var(--destructive)"} />
