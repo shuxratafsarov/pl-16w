@@ -282,7 +282,7 @@ function Dashboard() {
       map.set(p.col, rec);
     });
     return map;
-  }, [typeAverages]);
+  }, [typeAverages, week]);
 
   /** Worst-status по партии — для подсветки строк и подсчёта алертов на карточках типов. */
   const worstStatusByParty = useMemo(() => {
