@@ -33,8 +33,17 @@ import {
   Info,
   type LucideIcon,
 } from "lucide-react";
-import data from "@/data/week16.json";
 import type { Party, PartyType, WeekData } from "@/lib/types";
+
+// Загружаем все недели из src/data/week*.json (eager — запекаются в бандл).
+const WEEK_MODULES = import.meta.glob("@/data/week*.json", { eager: true, import: "default" }) as Record<string, WeekData>;
+const ALL_WEEKS: Record<number, WeekData> = {};
+for (const path in WEEK_MODULES) {
+  const m = path.match(/week(\d+)\.json$/);
+  if (m) ALL_WEEKS[Number(m[1])] = WEEK_MODULES[path];
+}
+const AVAILABLE_WEEKS = Object.keys(ALL_WEEKS).map(Number).sort((a, b) => a - b);
+const DEFAULT_WEEK = AVAILABLE_WEEKS[AVAILABLE_WEEKS.length - 1] ?? 16;
 import { fmtUSD, fmtNum, fmtPct } from "@/lib/format";
 import { ThemeToggle } from "@/components/ThemeToggle";
 import { SectionCard } from "@/components/SectionCard";
@@ -59,7 +68,7 @@ import {
 } from "@/components/ui/dropdown-menu";
 import { cn } from "@/lib/utils";
 
-const rawWeek = data as WeekData;
+// rawWeek removed — данные теперь выбираются по выбранной неделе в компоненте
 
 /** Расхождение по одной строке (до пересчёта). */
 type Discrepancy = {
@@ -134,7 +143,7 @@ function reconcileWeek(src: WeekData): { week: WeekData; discrepancies: Discrepa
   return { week: reconciled, discrepancies };
 }
 
-const { week, discrepancies: SOURCE_DISCREPANCIES } = reconcileWeek(rawWeek);
+// week + SOURCE_DISCREPANCIES теперь вычисляются внутри Dashboard через useMemo по выбранной неделе
 
 
 export const Route = createFileRoute("/")({
@@ -243,10 +252,16 @@ function computeTypeAverages(parties: Party[]) {
 }
 
 function Dashboard() {
+  const [selectedWeek, setSelectedWeek] = useState<number>(DEFAULT_WEEK);
   const [filter, setFilter] = useState<"ALL" | PartyType>("ALL");
   const [detail, setDetail] = useState<DetailTarget | null>(null);
 
-  const typeAverages = useMemo(() => computeTypeAverages(week.parties), []);
+  const { week, discrepancies: SOURCE_DISCREPANCIES } = useMemo(() => {
+    const raw = ALL_WEEKS[selectedWeek];
+    return reconcileWeek(raw);
+  }, [selectedWeek]);
+
+  const typeAverages = useMemo(() => computeTypeAverages(week.parties), [week]);
 
   /** Вычисляем статус каждой партии по каждому маркеру относительно среднего по её типу. */
   const partyStatuses = useMemo(() => {
@@ -267,7 +282,7 @@ function Dashboard() {
       map.set(p.col, rec);
     });
     return map;
-  }, [typeAverages]);
+  }, [typeAverages, week]);
 
   /** Worst-status по партии — для подсветки строк и подсчёта алертов на карточках типов. */
   const worstStatusByParty = useMemo(() => {
@@ -281,7 +296,7 @@ function Dashboard() {
       else map.set(p.col, "ok");
     });
     return map;
-  }, [partyStatuses]);
+  }, [partyStatuses, week]);
 
   /** Топ-блок «Требует внимания»: все партии с critical или warning, отсортированы по тяжести. */
   const alerts = useMemo(() => {
@@ -316,7 +331,7 @@ function Dashboard() {
       if (a.status !== b.status) return a.status === "critical" ? -1 : 1;
       return b.deviation - a.deviation;
     });
-  }, [partyStatuses, typeAverages]);
+  }, [partyStatuses, typeAverages, week]);
 
   const criticalCount = alerts.filter((a) => a.status === "critical").length;
   const warningCount = alerts.filter((a) => a.status === "warning").length;
@@ -333,11 +348,11 @@ function Dashboard() {
       else if (w === "warning") counts[p.type].warning += 1;
     });
     return counts;
-  }, [worstStatusByParty]);
+  }, [worstStatusByParty, week]);
 
   const parties = useMemo<Party[]>(
     () => (filter === "ALL" ? week.parties : week.parties.filter((p) => p.type === filter)),
-    [filter]
+    [filter, week]
   );
 
   const typeBreakdown = useMemo(
@@ -348,7 +363,7 @@ function Dashboard() {
           type: t,
           ...week.byType[t],
         })),
-    []
+    [week]
   );
 
   const revenuePie = typeBreakdown.map((t) => ({ name: TYPE_META[t.type].label, value: t.revenue, fill: TYPE_META[t.type].color }));
@@ -359,7 +374,7 @@ function Dashboard() {
    *  которые были обнаружены в исходном листе (и автоматически исправлены). */
   const sourceMatch = useMemo(() => {
     return { ok: SOURCE_DISCREPANCIES.length === 0, issues: SOURCE_DISCREPANCIES };
-  }, []);
+  }, [SOURCE_DISCREPANCIES]);
 
   return (
     <TooltipProvider delayDuration={150}>
@@ -398,11 +413,13 @@ function Dashboard() {
                   <DropdownMenuSeparator />
                   {WEEKS.map((w) => {
                     const isCurrent = w.week === week.week;
+                    const hasData = AVAILABLE_WEEKS.includes(w.week);
                     return (
                       <UITooltip key={w.week}>
                         <TooltipTrigger asChild>
                           <DropdownMenuItem
-                            disabled={!isCurrent}
+                            disabled={!hasData}
+                            onSelect={() => hasData && setSelectedWeek(w.week)}
                             className={cn(
                               "flex items-center justify-between gap-2 text-xs cursor-pointer",
                               isCurrent && "bg-primary/10 text-primary font-semibold"
@@ -411,6 +428,8 @@ function Dashboard() {
                             <span>Неделя {w.week}</span>
                             {isCurrent ? (
                               <span className="text-[10px] uppercase">текущая</span>
+                            ) : hasData ? (
+                              <span className="text-[10px] text-muted-foreground">открыть</span>
                             ) : (
                               <span className="text-[10px] text-muted-foreground">нет данных</span>
                             )}
