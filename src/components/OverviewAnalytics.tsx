@@ -190,13 +190,122 @@ export function OverviewAnalytics({
     return list.sort((a, b) => b.gross_profit - a.gross_profit).slice(0, 10);
   }, [sortedWeeks, typeFilter]);
 
-  const COUNTRY_COLORS: Record<string, string> = {
-    UZ: "var(--cainiao)",
-    BY: "var(--mpo)",
-    KG: "var(--mko)",
-    AZ: "var(--warning)",
-    KZ: "var(--success)",
-  };
+  /** Week-over-Week изменение выручки и GP. */
+  const wowSeries = useMemo(() => {
+    return weeklySeries.map((w, i) => {
+      const prev = weeklySeries[i - 1];
+      const wowRev = prev && prev.revenue > 0 ? ((w.revenue - prev.revenue) / prev.revenue) * 100 : 0;
+      const wowGp = prev && prev.gross_profit !== 0 ? ((w.gross_profit - prev.gross_profit) / Math.abs(prev.gross_profit)) * 100 : 0;
+      return { label: w.label, period: w.period, wowRev, wowGp };
+    });
+  }, [weeklySeries]);
+
+  /** Накопительная выручка и прибыль по неделям. */
+  const cumulativeSeries = useMemo(() => {
+    let r = 0;
+    let g = 0;
+    return weeklySeries.map((w) => {
+      r += w.revenue;
+      g += w.gross_profit;
+      return { label: w.label, period: w.period, cumRevenue: r, cumProfit: g };
+    });
+  }, [weeklySeries]);
+
+  /** Аналитика по маркерам M1..M4 — динамика по неделям + распределение по типам + статусы. */
+  const markersAnalytics = useMemo(() => {
+    type MK = "marker1_tariff" | "marker2_volnet" | "marker3_grossnet" | "marker4_margin";
+    const MARKERS: { key: MK; short: string; title: string; unit: string; decimals: number; direction: "above" | "below"; color: string }[] = [
+      { key: "marker1_tariff", short: "M1 · Тариф", title: "Тариф Лайнхолла", unit: " $/кг", decimals: 2, direction: "above", color: "var(--chart-1)" },
+      { key: "marker2_volnet", short: "M2 · Vol/Net", title: "Объёмный / Нетто", unit: "x", decimals: 3, direction: "above", color: "var(--chart-2)" },
+      { key: "marker3_grossnet", short: "M3 · Gross/Net", title: "Брутто / Нетто", unit: "x", decimals: 3, direction: "above", color: "var(--chart-4)" },
+      { key: "marker4_margin", short: "M4 · Маржа", title: "Маржа партии", unit: "%", decimals: 2, direction: "below", color: "var(--chart-5)" },
+    ];
+    const getVal = (p: Party, k: MK): number | null => {
+      if (k === "marker4_margin") return p.margin_pct;
+      const v = p[k as keyof Party] as number | null;
+      return typeof v === "number" && Number.isFinite(v) ? v : null;
+    };
+    const filteredParties = (w: WeekData) =>
+      typeFilter === "ALL" ? w.parties : w.parties.filter((p) => p.type === typeFilter);
+    return MARKERS.map((m) => {
+      // Тренд по неделям (среднее)
+      const series = sortedWeeks.map((w) => {
+        const ps = filteredParties(w);
+        const vals = ps.map((p) => getVal(p, m.key)).filter((v): v is number => v != null);
+        const avg = vals.length ? vals.reduce((s, v) => s + v, 0) / vals.length : null;
+        return { label: `W${w.week}`, period: w.period, value: avg };
+      });
+      // Среднее по типу за весь период
+      const byTypeAvg = (["CAINIAO", "MPO", "MKO"] as PartyType[]).map((t) => {
+        const ps = sortedWeeks.flatMap((w) => w.parties.filter((p) => p.type === t));
+        const vals = ps.map((p) => getVal(p, m.key)).filter((v): v is number => v != null);
+        const avg = vals.length ? vals.reduce((s, v) => s + v, 0) / vals.length : null;
+        return { type: t, label: TYPE_META[t].label, color: TYPE_META[t].color, value: avg, count: vals.length };
+      }).filter((d) => d.value != null);
+      // Глобальная статистика
+      const allVals = sortedWeeks.flatMap((w) => filteredParties(w).map((p) => getVal(p, m.key))).filter((v): v is number => v != null);
+      const globalAvg = allVals.length ? allVals.reduce((s, v) => s + v, 0) / allVals.length : null;
+      const min = allVals.length ? Math.min(...allVals) : null;
+      const max = allVals.length ? Math.max(...allVals) : null;
+      // Тренд: первые 4 vs последние 4 непустые недели
+      const valid = series.filter((s) => s.value != null) as { label: string; period: string; value: number }[];
+      const first = valid.slice(0, 4);
+      const last = valid.slice(-4);
+      const avgArr = (a: typeof valid) => (a.length ? a.reduce((s, x) => s + x.value, 0) / a.length : 0);
+      const firstAvg = avgArr(first);
+      const lastAvg = avgArr(last);
+      const trendPct = firstAvg !== 0 ? ((lastAvg - firstAvg) / Math.abs(firstAvg)) * 100 : 0;
+      // Доля партий в зоне риска относительно глобального среднего
+      let warnCount = 0;
+      let critCount = 0;
+      if (globalAvg != null && globalAvg !== 0) {
+        allVals.forEach((v) => {
+          const ratio = v / globalAvg;
+          if (m.direction === "above") {
+            if (ratio >= 1.2) critCount++;
+            else if (ratio >= 1.1) warnCount++;
+          } else {
+            if (ratio <= 0.8) critCount++;
+            else if (ratio <= 0.9) warnCount++;
+          }
+        });
+      }
+      const total = allVals.length;
+      return { meta: m, series, byTypeAvg, globalAvg, min, max, trendPct, warnCount, critCount, total };
+    });
+  }, [sortedWeeks, typeFilter]);
+
+  /** Insights — автоматические выводы. */
+  const insights = useMemo(() => {
+    const items: { tone: "good" | "warn" | "bad" | "info"; title: string; text: string }[] = [];
+    if (totals.revTrend >= 5) {
+      items.push({ tone: "good", title: "Растущая выручка", text: `Средняя выручка последних 4 недель выше первых 4 на ${totals.revTrend.toFixed(1)}%.` });
+    } else if (totals.revTrend <= -5) {
+      items.push({ tone: "bad", title: "Падение выручки", text: `Выручка снизилась на ${Math.abs(totals.revTrend).toFixed(1)}% относительно начала периода.` });
+    }
+    if (totals.margin < 5) {
+      items.push({ tone: "bad", title: "Низкая маржа", text: `Средняя маржа ${totals.margin.toFixed(2)}% — ниже целевого порога 5%.` });
+    } else if (totals.margin >= 15) {
+      items.push({ tone: "good", title: "Высокая маржа", text: `Средняя маржа ${totals.margin.toFixed(2)}% — выше отраслевого ориентира.` });
+    }
+    // Лидер по прибыли
+    const leader = [...typeBreakdown].sort((a, b) => b.profit - a.profit)[0];
+    if (leader && leader.profit > 0) {
+      items.push({ tone: "info", title: `Лидер по прибыли — ${leader.label}`, text: `Принёс ${fmtUSD(leader.profit)} (${leader.margin.toFixed(2)}% маржи) за ${leader.count} партий.` });
+    }
+    // Убыточный тип
+    const loser = typeBreakdown.find((t) => t.profit < 0);
+    if (loser) {
+      items.push({ tone: "warn", title: `${loser.label} убыточен`, text: `Совокупный убыток ${fmtUSD(loser.profit)} при выручке ${fmtUSD(loser.revenue)}.` });
+    }
+    // Худшая неделя по марже
+    const worstMargin = [...weeklySeries].filter((w) => w.revenue > 0).sort((a, b) => a.margin_pct - b.margin_pct)[0];
+    if (worstMargin && worstMargin.margin_pct < 0) {
+      items.push({ tone: "bad", title: `Убыточная неделя ${worstMargin.label}`, text: `Маржа ${worstMargin.margin_pct.toFixed(2)}% · ${worstMargin.period}.` });
+    }
+    return items;
+  }, [totals, typeBreakdown, weeklySeries]);
+
 
   return (
     <div className="space-y-8">
