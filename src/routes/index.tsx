@@ -252,10 +252,16 @@ function computeTypeAverages(parties: Party[]) {
 }
 
 function Dashboard() {
+  const [selectedWeek, setSelectedWeek] = useState<number>(DEFAULT_WEEK);
   const [filter, setFilter] = useState<"ALL" | PartyType>("ALL");
   const [detail, setDetail] = useState<DetailTarget | null>(null);
 
-  const typeAverages = useMemo(() => computeTypeAverages(week.parties), []);
+  const { week, discrepancies: SOURCE_DISCREPANCIES } = useMemo(() => {
+    const raw = ALL_WEEKS[selectedWeek];
+    return reconcileWeek(raw);
+  }, [selectedWeek]);
+
+  const typeAverages = useMemo(() => computeTypeAverages(week.parties), [week]);
 
   /** Вычисляем статус каждой партии по каждому маркеру относительно среднего по её типу. */
   const partyStatuses = useMemo(() => {
