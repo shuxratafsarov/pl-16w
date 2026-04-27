@@ -14,7 +14,7 @@
       "expense": 94532.28,
       "gross_profit": 7623.84,
       "margin_pct": 7.46,
-      "note": "Включает накладные расходы (ФОТ, E-Transit и пр.) — итог из TOTAL колонки PNL"
+      "note": "Итог по партиям; Marker 4 берётся из строк 353–398 листа 3PL_weekly"
     },
     "MPO": {
       "count": 1,
@@ -145,7 +145,80 @@
       "marker2_volnet": 1.2476,
       "marker3_grossnet": 1.052,
       "total_kg": 1345.0,
-      "mix": []
+      "mix": [
+        {
+          "country": "UZ",
+          "subtype": "RM",
+          "pcs": 968,
+          "kg": 205.72
+        },
+        {
+          "country": "UZ",
+          "subtype": "SRM",
+          "pcs": 95,
+          "kg": 14.85
+        },
+        {
+          "country": "UZ",
+          "subtype": "SRMA",
+          "pcs": 1029,
+          "kg": 17.2
+        },
+        {
+          "country": "UZ",
+          "subtype": "SRMB",
+          "pcs": 1156,
+          "kg": 46.12
+        },
+        {
+          "country": "UZ",
+          "subtype": "SRMC",
+          "pcs": 227,
+          "kg": 18.49
+        },
+        {
+          "country": "BY",
+          "subtype": "RRM",
+          "pcs": 2364,
+          "kg": 554.68
+        },
+        {
+          "country": "BY",
+          "subtype": "SRM",
+          "pcs": 2311,
+          "kg": 103.34
+        },
+        {
+          "country": "BY",
+          "subtype": "NRM",
+          "pcs": 4982,
+          "kg": 126.14
+        },
+        {
+          "country": "KG",
+          "subtype": "RM",
+          "pcs": 79,
+          "kg": 17.02
+        },
+        {
+          "country": "KG",
+          "subtype": "NRM",
+          "pcs": 118,
+          "kg": 4.21
+        },
+        {
+          "country": "AZ",
+          "subtype": "RM",
+          "pcs": 632,
+          "kg": 133.78
+        },
+        {
+          "country": "AZ",
+          "subtype": "NRM",
+          "pcs": 921,
+          "kg": 36.95
+        }
+      ]
     },
     {
       "col": "DG",
