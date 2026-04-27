@@ -63,6 +63,14 @@ const METRIC_META: Record<MetricKey, { label: string; color: string; format: (v:
   margin_pct: { label: "Маржа %", color: "var(--warning)", format: (v) => `${v.toFixed(2)}%` },
 };
 
+const COUNTRY_COLORS: Record<string, string> = {
+  UZ: "var(--cainiao)",
+  BY: "var(--mpo)",
+  KG: "var(--mko)",
+  AZ: "var(--warning)",
+  KZ: "var(--success)",
+};
+
 export function OverviewAnalytics({
   weeksMap,
 }: {
