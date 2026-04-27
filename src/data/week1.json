@@ -1,6 +1,6 @@
 {
   "week": 1,
-  "period": "2025-12-29 — 2026-01-04",
+  "period": "2026-01-01 — 2026-01-04",
   "totals": {
     "revenue": 24187.04,
     "expense": 21979.92,
@@ -21,7 +21,7 @@
       "revenue": 0,
       "expense": 0,
       "gross_profit": 0,
-      "margin_pct": 0
+      "margin_pct": 0.0
     },
     "MKO": {
       "count": 1,
@@ -58,73 +58,73 @@
         {
           "country": "UZ",
           "subtype": "RM",
-          "pcs": 418,
+          "pcs": 251,
           "kg": 0.0
         },
         {
           "country": "UZ",
           "subtype": "SRM",
-          "pcs": 35,
+          "pcs": 21,
           "kg": 0.0
         },
         {
           "country": "UZ",
           "subtype": "SRMA",
-          "pcs": 554,
+          "pcs": 332,
           "kg": 0.0
         },
         {
           "country": "UZ",
           "subtype": "SRMB",
-          "pcs": 547,
+          "pcs": 328,
           "kg": 0.0
         },
         {
           "country": "UZ",
           "subtype": "SRMC",
-          "pcs": 113,
+          "pcs": 68,
           "kg": 0.0
         },
         {
           "country": "BY",
           "subtype": "RRM",
-          "pcs": 862,
+          "pcs": 264,
           "kg": 0.0
         },
         {
           "country": "BY",
           "subtype": "SRM",
-          "pcs": 976,
+          "pcs": 299,
           "kg": 0.0
         },
         {
           "country": "BY",
           "subtype": "NRM",
-          "pcs": 1421,
+          "pcs": 436,
           "kg": 0.0
         },
         {
           "country": "KG",
           "subtype": "RM",
-          "pcs": 39,
+          "pcs": 336,
           "kg": 0.0
         },
         {
           "country": "KG",
           "subtype": "NRM",
-          "pcs": 77,
+          "pcs": 664,
           "kg": 0.0
         },
         {
           "country": "AZ",
           "subtype": "RM",
-          "pcs": 284,
+          "pcs": 378,
           "kg": 0.0
         },
         {
           "country": "AZ",
           "subtype": "NRM",
-          "pcs": 468,
+          "pcs": 622,
           "kg": 0.0
         }
       ]
@@ -149,73 +149,73 @@
         {
           "country": "UZ",
           "subtype": "RM",
-          "pcs": 312,
+          "pcs": 262,
           "kg": 0.0
         },
         {
           "country": "UZ",
           "subtype": "SRM",
-          "pcs": 26,
+          "pcs": 22,
           "kg": 0.0
         },
         {
           "country": "UZ",
           "subtype": "SRMA",
-          "pcs": 344,
+          "pcs": 289,
           "kg": 0.0
         },
         {
           "country": "UZ",
           "subtype": "SRMB",
-          "pcs": 433,
+          "pcs": 363,
           "kg": 0.0
         },
         {
           "country": "UZ",
           "subtype": "SRMC",
-          "pcs": 77,
+          "pcs": 65,
           "kg": 0.0
         },
         {
           "country": "BY",
           "subtype": "RRM",
-          "pcs": 566,
+          "pcs": 280,
           "kg": 0.0
         },
         {
           "country": "BY",
           "subtype": "SRM",
-          "pcs": 654,
+          "pcs": 324,
           "kg": 0.0
         },
         {
           "country": "BY",
           "subtype": "NRM",
-          "pcs": 798,
+          "pcs": 395,
           "kg": 0.0
         },
         {
           "country": "KG",
           "subtype": "RM",
-          "pcs": 44,
+          "pcs": 400,
           "kg": 0.0
         },
         {
           "country": "KG",
           "subtype": "NRM",
-          "pcs": 66,
+          "pcs": 600,
           "kg": 0.0
         },
         {
           "country": "AZ",
           "subtype": "RM",
-          "pcs": 263,
+          "pcs": 391,
           "kg": 0.0
         },
         {
           "country": "AZ",
           "subtype": "NRM",
-          "pcs": 410,
+          "pcs": 609,
           "kg": 0.0
         }
       ]
