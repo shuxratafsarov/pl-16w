@@ -46,6 +46,7 @@ import type { Party, PartyType, WeekData } from "@/lib/types";
 import { fmtUSD, fmtNum, fmtPct } from "@/lib/format";
 import { SectionCard } from "@/components/SectionCard";
 import { StatCard } from "@/components/StatCard";
+import { CountryDetailDialog, type CountryDetailData } from "@/components/CountryDetailDialog";
 import {
   Dialog,
   DialogContent,
