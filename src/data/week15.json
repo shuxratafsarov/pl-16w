@@ -589,8 +589,8 @@
       "weight_gross": 417.5,
       "weight_vol": null,
       "marker1_tariff": 3.07,
-      "marker2_volnet": null,
-      "marker3_grossnet": null,
+      "marker2_volnet": 1.224,
+      "marker3_grossnet": 1.0084,
       "total_kg": 417.5,
       "mix": [
         {
@@ -615,8 +615,8 @@
       "weight_gross": 556.05,
       "weight_vol": null,
       "marker1_tariff": 3.07,
-      "marker2_volnet": null,
-      "marker3_grossnet": null,
+      "marker2_volnet": 1.2355,
+      "marker3_grossnet": 1.0107,
       "total_kg": 556.05,
       "mix": [
         {
@@ -641,8 +641,8 @@
       "weight_gross": 204.15,
       "weight_vol": null,
       "marker1_tariff": 4.24,
-      "marker2_volnet": null,
-      "marker3_grossnet": null,
+      "marker2_volnet": 1.0385,
+      "marker3_grossnet": 1.0042,
       "total_kg": 204.15,
       "mix": [
         {
