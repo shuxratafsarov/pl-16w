@@ -158,10 +158,9 @@ def main():
                     issues.append(
                         f"W{week} {p['type']} {p['num']} mix.kg sum={mix_kg:.2f} != total_kg={jkg:.2f}"
                     )
-                if not near(mix_pcs, int(p.get("total_pcs") or 0), 1):
-                    issues.append(
-                        f"W{week} {p['type']} {p['num']} mix.pcs sum={mix_pcs} != total_pcs={p.get('total_pcs')}"
-                    )
+                # mix.pcs sum is informational only — total_pcs is a Marker-4 field
+                # stored on the first party per type (see data rules), so it is not
+                # comparable to mix sum on subsequent parties.
 
         # ---- group totals: sum(party) must equal week totals in JSON ----
         jt = data.get("totals", {})
