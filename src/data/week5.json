@@ -599,14 +599,21 @@
       "expense": 918.05,
       "gross_profit": 396.35,
       "margin_pct": 30.15,
-      "weight_net": null,
-      "weight_gross": 808.0,
-      "weight_vol": 1034.0,
+      "weight_net": 98.75,
+      "weight_gross": 98.75,
+      "weight_vol": null,
       "marker1_tariff": 4.01,
       "marker2_volnet": null,
       "marker3_grossnet": null,
-      "total_kg": 808.0,
-      "mix": [],
+      "total_kg": 98.75,
+      "mix": [
+        {
+          "country": "UZ",
+          "subtype": "MPO",
+          "pcs": 211,
+          "kg": 98.75
+        }
+      ],
       "total_pcs": 211
     },
     {
@@ -619,13 +626,20 @@
       "gross_profit": 2279.51,
       "margin_pct": 39.88,
       "weight_net": 418.45,
-      "weight_gross": 436.0,
-      "weight_vol": 580.0,
+      "weight_gross": 418.45,
+      "weight_vol": null,
       "marker1_tariff": 4.22,
       "marker2_volnet": null,
       "marker3_grossnet": null,
-      "total_kg": 436.0,
-      "mix": [],
+      "total_kg": 418.45,
+      "mix": [
+        {
+          "country": "UZ",
+          "subtype": "MKO",
+          "pcs": 694,
+          "kg": 418.45
+        }
+      ],
       "total_pcs": 1960
     },
     {
@@ -638,13 +652,20 @@
       "gross_profit": 1524.11,
       "margin_pct": 28.93,
       "weight_net": 370.5,
-      "weight_gross": 384.0,
-      "weight_vol": 487.0,
+      "weight_gross": 370.5,
+      "weight_vol": null,
       "marker1_tariff": 4.01,
       "marker2_volnet": null,
       "marker3_grossnet": null,
-      "total_kg": 384.0,
-      "mix": [],
+      "total_kg": 370.5,
+      "mix": [
+        {
+          "country": "UZ",
+          "subtype": "MKO",
+          "pcs": 642,
+          "kg": 370.5
+        }
+      ],
       "total_pcs": 0
     },
     {
@@ -657,13 +678,20 @@
       "gross_profit": 1711.74,
       "margin_pct": 28.67,
       "weight_net": 432.05,
-      "weight_gross": 449.0,
-      "weight_vol": 533.0,
+      "weight_gross": 432.05,
+      "weight_vol": null,
       "marker1_tariff": 3.89,
       "marker2_volnet": null,
       "marker3_grossnet": null,
-      "total_kg": 449.0,
-      "mix": [],
+      "total_kg": 432.05,
+      "mix": [
+        {
+          "country": "UZ",
+          "subtype": "MKO",
+          "pcs": 624,
+          "kg": 432.05
+        }
+      ],
       "total_pcs": 0
     }
   ]

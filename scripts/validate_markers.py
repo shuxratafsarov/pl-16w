@@ -141,6 +141,27 @@ def main():
             type_pcs_excel[p["type"]] += xp
             type_pcs_json[p["type"]]  += int(p.get("total_pcs") or 0)
 
+            # M4 — kg for MPO/MKO (CAINIAO kg is checked at country level elsewhere)
+            if p["type"] in ("MPO", "MKO"):
+                kg_row = 67 if p["type"] == "MKO" else 56
+                xkg = num(ws.cell(kg_row, c).value) or 0.0
+                jkg = p.get("total_kg") or 0.0
+                if not near(xkg, jkg, 0.05):
+                    issues.append(
+                        f"W{week} {p['type']} {p['num']} KG excel={xkg:.2f} json={jkg:.2f}"
+                    )
+                # mix sum must equal total
+                mix = p.get("mix") or []
+                mix_kg = sum(float(m.get("kg") or 0) for m in mix)
+                mix_pcs = sum(int(m.get("pcs") or 0) for m in mix)
+                if not near(mix_kg, jkg, 0.05):
+                    issues.append(
+                        f"W{week} {p['type']} {p['num']} mix.kg sum={mix_kg:.2f} != total_kg={jkg:.2f}"
+                    )
+                # mix.pcs sum is informational only — total_pcs is a Marker-4 field
+                # stored on the first party per type (see data rules), so it is not
+                # comparable to mix sum on subsequent parties.
+
         # ---- group totals: sum(party) must equal week totals in JSON ----
         jt = data.get("totals", {})
         if not near(party_rev_sum, jt.get("revenue"), TOL_MONEY * 5):

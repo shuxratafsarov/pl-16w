@@ -875,14 +875,21 @@
       "expense": 941.83,
       "gross_profit": 430.39,
       "margin_pct": 31.36,
-      "weight_net": null,
-      "weight_gross": 604.0,
-      "weight_vol": 795.0,
+      "weight_net": 106.2,
+      "weight_gross": 106.2,
+      "weight_vol": null,
       "marker1_tariff": 3.69,
       "marker2_volnet": null,
       "marker3_grossnet": null,
-      "total_kg": 604.0,
-      "mix": [],
+      "total_kg": 106.2,
+      "mix": [
+        {
+          "country": "UZ",
+          "subtype": "MPO",
+          "pcs": 201,
+          "kg": 106.2
+        }
+      ],
       "total_pcs": 201
     },
     {
@@ -895,13 +902,20 @@
       "gross_profit": 597.12,
       "margin_pct": 20.33,
       "weight_net": 207.7,
-      "weight_gross": 218.0,
-      "weight_vol": 305.0,
+      "weight_gross": 207.7,
+      "weight_vol": null,
       "marker1_tariff": 4.01,
       "marker2_volnet": null,
       "marker3_grossnet": null,
-      "total_kg": 218.0,
-      "mix": [],
+      "total_kg": 207.7,
+      "mix": [
+        {
+          "country": "UZ",
+          "subtype": "MKO",
+          "pcs": 347,
+          "kg": 207.7
+        }
+      ],
       "total_pcs": 1995
     },
     {
@@ -914,13 +928,20 @@
       "gross_profit": 741.8,
       "margin_pct": 17.16,
       "weight_net": 301.85,
-      "weight_gross": 312.0,
-      "weight_vol": 417.0,
+      "weight_gross": 301.85,
+      "weight_vol": null,
       "marker1_tariff": 4.9,
       "marker2_volnet": null,
       "marker3_grossnet": null,
-      "total_kg": 312.0,
-      "mix": [],
+      "total_kg": 301.85,
+      "mix": [
+        {
+          "country": "UZ",
+          "subtype": "MKO",
+          "pcs": 519,
+          "kg": 301.85
+        }
+      ],
       "total_pcs": 0
     },
     {
@@ -933,13 +954,20 @@
       "gross_profit": 2233.87,
       "margin_pct": 44.5,
       "weight_net": 368.75,
-      "weight_gross": 382.0,
-      "weight_vol": 518.0,
+      "weight_gross": 368.75,
+      "weight_vol": null,
       "marker1_tariff": 3.69,
       "marker2_volnet": null,
       "marker3_grossnet": null,
-      "total_kg": 382.0,
-      "mix": [],
+      "total_kg": 368.75,
+      "mix": [
+        {
+          "country": "UZ",
+          "subtype": "MKO",
+          "pcs": 600,
+          "kg": 368.75
+        }
+      ],
       "total_pcs": 0
     },
     {
@@ -952,13 +980,20 @@
       "gross_profit": 1562.11,
       "margin_pct": 40.47,
       "weight_net": 273.1,
-      "weight_gross": 282.0,
-      "weight_vol": 374.0,
+      "weight_gross": 273.1,
+      "weight_vol": null,
       "marker1_tariff": 4.06,
       "marker2_volnet": null,
       "marker3_grossnet": null,
-      "total_kg": 282.0,
-      "mix": [],
+      "total_kg": 273.1,
+      "mix": [
+        {
+          "country": "UZ",
+          "subtype": "MKO",
+          "pcs": 529,
+          "kg": 273.1
+        }
+      ],
       "total_pcs": 0
     }
   ]

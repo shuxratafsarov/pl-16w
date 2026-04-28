@@ -232,13 +232,20 @@
       "gross_profit": 3338.56,
       "margin_pct": 42.41,
       "weight_net": 555.2,
-      "weight_gross": 560.0,
-      "weight_vol": 795.0,
+      "weight_gross": 555.2,
+      "weight_vol": null,
       "marker1_tariff": 4.21,
       "marker2_volnet": 1.4319,
       "marker3_grossnet": 1.0086,
-      "total_kg": 560.0,
-      "mix": [],
+      "total_kg": 555.2,
+      "mix": [
+        {
+          "country": "UZ",
+          "subtype": "MKO",
+          "pcs": 1097,
+          "kg": 555.2
+        }
+      ],
       "total_pcs": 1097
     }
   ]
