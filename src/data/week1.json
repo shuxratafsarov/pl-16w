@@ -235,8 +235,8 @@
       "weight_gross": 555.2,
       "weight_vol": null,
       "marker1_tariff": 4.21,
-      "marker2_volnet": null,
-      "marker3_grossnet": null,
+      "marker2_volnet": 1.4319,
+      "marker3_grossnet": 1.0086,
       "total_kg": 555.2,
       "mix": [
         {
