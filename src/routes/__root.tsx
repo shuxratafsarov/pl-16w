@@ -74,7 +74,9 @@ function RootShell({ children }: { children: React.ReactNode }) {
 function RootComponent() {
   return (
     <ThemeProvider>
-      <Outlet />
+      <AuthGuard>
+        <Outlet />
+      </AuthGuard>
       <Toaster richColors position="bottom-right" />
     </ThemeProvider>
   );
