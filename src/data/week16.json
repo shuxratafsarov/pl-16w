@@ -3,8 +3,8 @@
   "period": "2026-04-13 — 2026-04-19",
   "totals": {
     "revenue": 125519.4,
-    "expense": 95828.26,
-    "gross_profit": 29691.12,
+    "expense": 95833.01,
+    "gross_profit": 29686.39,
     "margin_pct": 23.65
   },
   "byType": {
@@ -26,9 +26,9 @@
     "MKO": {
       "count": 9,
       "revenue": 42783.01,
-      "expense": 20084.67,
-      "gross_profit": 22698.34,
-      "margin_pct": 53.05
+      "expense": 20089.42,
+      "gross_profit": 22693.59,
+      "margin_pct": 53.04
     }
   },
   "umbrella_uzum_cb": {
@@ -767,9 +767,9 @@
       "num": "101",
       "date": "2026-04-16",
       "revenue": 6001.61,
-      "expense": 4323.1,
-      "gross_profit": 1678.51,
-      "margin_pct": 27.97,
+      "expense": 4327.85,
+      "gross_profit": 1673.76,
+      "margin_pct": 27.89,
       "weight_net": 237.4,
       "weight_gross": 234.0,
       "weight_vol": 348.5,
