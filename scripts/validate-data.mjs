@@ -52,13 +52,12 @@ for (const f of files) {
   if (!near(expectedMargin, data.totals?.margin_pct, TOL_PP))
     issues.push(`W${w} totals.margin_pct=${data.totals?.margin_pct} but computed=${expectedMargin.toFixed(2)}`);
 
-  // total_pcs convention: exactly one non-zero per type (UI sums parties)
-  for (const type of ["CAINIAO", "MPO", "MKO"]) {
-    const ofType = parties.filter((p) => p.type === type);
-    if (ofType.length === 0) continue;
-    const nonZero = ofType.filter((p) => (p.total_pcs ?? 0) > 0).length;
-    if (nonZero > 1)
-      issues.push(`W${w} ${type}: total_pcs must live on FIRST party only, found ${nonZero} non-zero`);
+  // total_pcs is now stored per-party for ALL types (M4 by party).
+  // Sanity check only — must be a non-negative number when present.
+  for (const p of parties) {
+    if (p.total_pcs != null && (typeof p.total_pcs !== "number" || p.total_pcs < 0)) {
+      issues.push(`W${w} ${p.type} ${p.num}: total_pcs must be a non-negative number`);
+    }
   }
 }
 
