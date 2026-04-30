@@ -128,18 +128,27 @@ def main():
             if v3 is not None and not near(v3, p.get("marker3_grossnet"), TOL_RATIO):
                 issues.append(f"W{week} {p['type']} {p['num']} M3 excel={v3} json={p.get('marker3_grossnet')}")
 
-            # M4 — pieces
+            # M4 — pieces (now stored per-party for ALL types)
             if p["type"] == "CAINIAO":
-                xp = 0
-                for ct, rows in RATIO_PCS.items():
-                    ctot = num(ws.cell(COUNTRY_PCS_ROWS[ct], c).value) or 0
-                    for rr in rows:
-                        xp += round(ctot * (num(ws.cell(rr, c).value) or 0))
+                xp = sum(int(num(ws.cell(r, c).value) or 0) for r in COUNTRY_PCS_ROWS.values())
+                # also verify CAINIAO mix kg sums to country kg totals
+                xkg_country = {cc: float(num(ws.cell(COUNTRY_KG_ROWS[cc], c).value) or 0)
+                               for cc in ("UZ","BY","AZ","KG")}
+                jkg_country = {}
+                for m in (p.get("mix") or []):
+                    jkg_country[m["country"]] = jkg_country.get(m["country"], 0.0) + float(m.get("kg") or 0)
+                for cc, xk in xkg_country.items():
+                    jk = jkg_country.get(cc, 0.0)
+                    if not near(xk, jk, 0.05):
+                        issues.append(f"W{week} CAINIAO {p['num']} {cc} mix.kg sum={jk:.2f} excel={xk:.2f}")
             else:
                 row = MKO_PCS_ROW if p["type"] == "MKO" else MPO_PCS_ROW
                 xp = int(num(ws.cell(row, c).value) or 0)
+            jp = int(p.get("total_pcs") or 0)
+            if not near(xp, jp, TOL_PCS):
+                issues.append(f"W{week} {p['type']} {p['num']} M4 pcs excel={xp} json={jp}")
             type_pcs_excel[p["type"]] += xp
-            type_pcs_json[p["type"]]  += int(p.get("total_pcs") or 0)
+            type_pcs_json[p["type"]]  += jp
 
             # M4 — kg for MPO/MKO (CAINIAO kg is checked at country level elsewhere)
             if p["type"] in ("MPO", "MKO"):
