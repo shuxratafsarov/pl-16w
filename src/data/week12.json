@@ -1166,7 +1166,7 @@
           "kg": 31.75
         }
       ],
-      "total_pcs": 636
+      "total_pcs": 60
     },
     {
       "col": "EP",
@@ -1192,7 +1192,7 @@
           "kg": 19.1
         }
       ],
-      "total_pcs": 0
+      "total_pcs": 54
     },
     {
       "col": "EQ",
@@ -1218,7 +1218,7 @@
           "kg": 23.35
         }
       ],
-      "total_pcs": 0
+      "total_pcs": 56
     },
     {
       "col": "ER",
@@ -1244,7 +1244,7 @@
           "kg": 36.75
         }
       ],
-      "total_pcs": 0
+      "total_pcs": 115
     },
     {
       "col": "ES",
@@ -1270,7 +1270,7 @@
           "kg": 18.2
         }
       ],
-      "total_pcs": 0
+      "total_pcs": 58
     },
     {
       "col": "ET",
@@ -1296,7 +1296,7 @@
           "kg": 19.1
         }
       ],
-      "total_pcs": 0
+      "total_pcs": 54
     },
     {
       "col": "EU",
@@ -1322,7 +1322,7 @@
           "kg": 36.7
         }
       ],
-      "total_pcs": 0
+      "total_pcs": 108
     },
     {
       "col": "EV",
@@ -1348,7 +1348,7 @@
           "kg": 22.55
         }
       ],
-      "total_pcs": 0
+      "total_pcs": 77
     },
     {
       "col": "EW",
@@ -1374,7 +1374,7 @@
           "kg": 15.75
         }
       ],
-      "total_pcs": 0
+      "total_pcs": 54
     },
     {
       "col": "EX",
@@ -1400,7 +1400,7 @@
           "kg": 602.7
         }
       ],
-      "total_pcs": 7178
+      "total_pcs": 886
     },
     {
       "col": "EY",
@@ -1426,7 +1426,7 @@
           "kg": 578.85
         }
       ],
-      "total_pcs": 0
+      "total_pcs": 1406
     },
     {
       "col": "EZ",
@@ -1452,7 +1452,7 @@
           "kg": 301.5
         }
       ],
-      "total_pcs": 0
+      "total_pcs": 797
     },
     {
       "col": "FA",
@@ -1478,7 +1478,7 @@
           "kg": 309.9
         }
       ],
-      "total_pcs": 0
+      "total_pcs": 1280
     },
     {
       "col": "FB",
@@ -1504,7 +1504,7 @@
           "kg": 325.15
         }
       ],
-      "total_pcs": 0
+      "total_pcs": 899
     },
     {
       "col": "FC",
@@ -1530,7 +1530,7 @@
           "kg": 368.4
         }
       ],
-      "total_pcs": 0
+      "total_pcs": 1152
     },
     {
       "col": "FD",
@@ -1556,7 +1556,7 @@
           "kg": 242.4
         }
       ],
-      "total_pcs": 0
+      "total_pcs": 758
     }
   ]
 }

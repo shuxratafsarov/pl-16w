@@ -732,7 +732,7 @@
           "kg": 232.9
         }
       ],
-      "total_pcs": 3403
+      "total_pcs": 962
     },
     {
       "col": "AU",
@@ -758,7 +758,7 @@
           "kg": 438.2
         }
       ],
-      "total_pcs": 0
+      "total_pcs": 635
     },
     {
       "col": "AV",
@@ -784,7 +784,7 @@
           "kg": 495.55
         }
       ],
-      "total_pcs": 0
+      "total_pcs": 763
     },
     {
       "col": "AW",
@@ -810,7 +810,7 @@
           "kg": 609.2
         }
       ],
-      "total_pcs": 0
+      "total_pcs": 1043
     }
   ]
 }

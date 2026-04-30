@@ -522,7 +522,7 @@
           "kg": 19.9
         }
       ],
-      "total_pcs": 168
+      "total_pcs": 50
     },
     {
       "col": "HB",
@@ -548,7 +548,7 @@
           "kg": 15.0
         }
       ],
-      "total_pcs": 0
+      "total_pcs": 44
     },
     {
       "col": "HC",
@@ -574,7 +574,7 @@
           "kg": 20.1
         }
       ],
-      "total_pcs": 0
+      "total_pcs": 74
     },
     {
       "col": "HD",
@@ -600,7 +600,7 @@
           "kg": 417.5
         }
       ],
-      "total_pcs": 3260
+      "total_pcs": 1151
     },
     {
       "col": "HE",
@@ -626,7 +626,7 @@
           "kg": 556.05
         }
       ],
-      "total_pcs": 0
+      "total_pcs": 1511
     },
     {
       "col": "HF",
@@ -652,7 +652,7 @@
           "kg": 204.15
         }
       ],
-      "total_pcs": 0
+      "total_pcs": 598
     }
   ]
 }

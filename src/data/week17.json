@@ -706,7 +706,7 @@
           "kg": 18.1
         }
       ],
-      "total_pcs": 351
+      "total_pcs": 86
     },
     {
       "col": "IL",
@@ -732,7 +732,7 @@
           "kg": 7.85
         }
       ],
-      "total_pcs": 0
+      "total_pcs": 28
     },
     {
       "col": "IM",
@@ -758,7 +758,7 @@
           "kg": 34.35
         }
       ],
-      "total_pcs": 0
+      "total_pcs": 101
     },
     {
       "col": "IN",
@@ -784,7 +784,7 @@
           "kg": 18.9
         }
       ],
-      "total_pcs": 0
+      "total_pcs": 81
     },
     {
       "col": "IO",
@@ -810,7 +810,7 @@
           "kg": 14.4
         }
       ],
-      "total_pcs": 0
+      "total_pcs": 55
     },
     {
       "col": "IP",
@@ -836,7 +836,7 @@
           "kg": 255.45
         }
       ],
-      "total_pcs": 4473
+      "total_pcs": 720
     },
     {
       "col": "IQ",
@@ -862,7 +862,7 @@
           "kg": 204.0
         }
       ],
-      "total_pcs": 0
+      "total_pcs": 581
     },
     {
       "col": "IR",
@@ -888,7 +888,7 @@
           "kg": 415.65
         }
       ],
-      "total_pcs": 0
+      "total_pcs": 1096
     },
     {
       "col": "IS",
@@ -914,7 +914,7 @@
           "kg": 220.55
         }
       ],
-      "total_pcs": 0
+      "total_pcs": 710
     },
     {
       "col": "IT",
@@ -940,7 +940,7 @@
           "kg": 257.05
         }
       ],
-      "total_pcs": 0
+      "total_pcs": 685
     },
     {
       "col": "IU",
@@ -966,7 +966,7 @@
           "kg": 260.3
         }
       ],
-      "total_pcs": 0
+      "total_pcs": 681
     }
   ]
 }

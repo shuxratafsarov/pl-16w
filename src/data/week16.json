@@ -614,7 +614,7 @@
           "kg": 12.05
         }
       ],
-      "total_pcs": 322
+      "total_pcs": 39
     },
     {
       "col": "HO",
@@ -640,7 +640,7 @@
           "kg": 20.75
         }
       ],
-      "total_pcs": 0
+      "total_pcs": 77
     },
     {
       "col": "HP",
@@ -666,7 +666,7 @@
           "kg": 21.85
         }
       ],
-      "total_pcs": 0
+      "total_pcs": 65
     },
     {
       "col": "HQ",
@@ -692,7 +692,7 @@
           "kg": 17.2
         }
       ],
-      "total_pcs": 0
+      "total_pcs": 44
     },
     {
       "col": "HR",
@@ -718,7 +718,7 @@
           "kg": 16.25
         }
       ],
-      "total_pcs": 0
+      "total_pcs": 36
     },
     {
       "col": "HS",
@@ -744,7 +744,7 @@
           "kg": 17.2
         }
       ],
-      "total_pcs": 0
+      "total_pcs": 61
     },
     {
       "col": "HT",
@@ -770,7 +770,7 @@
           "kg": 306.9
         }
       ],
-      "total_pcs": 7379
+      "total_pcs": 933
     },
     {
       "col": "HU",
@@ -796,7 +796,7 @@
           "kg": 250.3
         }
       ],
-      "total_pcs": 0
+      "total_pcs": 823
     },
     {
       "col": "HV",
@@ -822,7 +822,7 @@
           "kg": 282.45
         }
       ],
-      "total_pcs": 0
+      "total_pcs": 789
     },
     {
       "col": "HW",
@@ -848,7 +848,7 @@
           "kg": 237.4
         }
       ],
-      "total_pcs": 0
+      "total_pcs": 969
     },
     {
       "col": "HX",
@@ -874,7 +874,7 @@
           "kg": 294.65
         }
       ],
-      "total_pcs": 0
+      "total_pcs": 801
     },
     {
       "col": "HY",
@@ -900,7 +900,7 @@
           "kg": 249.8
         }
       ],
-      "total_pcs": 0
+      "total_pcs": 711
     },
     {
       "col": "HZ",
@@ -926,7 +926,7 @@
           "kg": 296.45
         }
       ],
-      "total_pcs": 0
+      "total_pcs": 854
     },
     {
       "col": "IA",
@@ -952,7 +952,7 @@
           "kg": 304.35
         }
       ],
-      "total_pcs": 0
+      "total_pcs": 748
     },
     {
       "col": "IB",
@@ -978,7 +978,7 @@
           "kg": 260.35
         }
       ],
-      "total_pcs": 0
+      "total_pcs": 751
     }
   ]
 }

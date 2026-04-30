@@ -706,7 +706,7 @@
           "kg": 26.3
         }
       ],
-      "total_pcs": 294
+      "total_pcs": 89
     },
     {
       "col": "GI",
@@ -732,7 +732,7 @@
           "kg": 17.6
         }
       ],
-      "total_pcs": 0
+      "total_pcs": 70
     },
     {
       "col": "GJ",
@@ -758,7 +758,7 @@
           "kg": 12.85
         }
       ],
-      "total_pcs": 0
+      "total_pcs": 38
     },
     {
       "col": "GK",
@@ -784,7 +784,7 @@
           "kg": 19.15
         }
       ],
-      "total_pcs": 0
+      "total_pcs": 60
     },
     {
       "col": "GL",
@@ -810,7 +810,7 @@
           "kg": 11.45
         }
       ],
-      "total_pcs": 0
+      "total_pcs": 37
     },
     {
       "col": "GM",
@@ -836,7 +836,7 @@
           "kg": 212.65
         }
       ],
-      "total_pcs": 6276
+      "total_pcs": 587
     },
     {
       "col": "GN",
@@ -862,7 +862,7 @@
           "kg": 452.1
         }
       ],
-      "total_pcs": 0
+      "total_pcs": 1242
     },
     {
       "col": "GO",
@@ -888,7 +888,7 @@
           "kg": 255.85
         }
       ],
-      "total_pcs": 0
+      "total_pcs": 1131
     },
     {
       "col": "GP",
@@ -914,7 +914,7 @@
           "kg": 256.45
         }
       ],
-      "total_pcs": 0
+      "total_pcs": 662
     },
     {
       "col": "GQ",
@@ -940,7 +940,7 @@
           "kg": 219.8
         }
       ],
-      "total_pcs": 0
+      "total_pcs": 592
     },
     {
       "col": "GR",
@@ -966,7 +966,7 @@
           "kg": 382.65
         }
       ],
-      "total_pcs": 0
+      "total_pcs": 1057
     },
     {
       "col": "GS",
@@ -992,7 +992,7 @@
           "kg": 210.25
         }
       ],
-      "total_pcs": 0
+      "total_pcs": 478
     },
     {
       "col": "GT",
@@ -1018,7 +1018,7 @@
           "kg": 198.0
         }
       ],
-      "total_pcs": 0
+      "total_pcs": 527
     }
   ]
 }
