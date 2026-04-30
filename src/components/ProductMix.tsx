@@ -57,30 +57,17 @@ function colorFor(country: string, subtype: string, idx: number): string {
 
 function aggregate(parties: Party[]): MixRow[] {
   const map = new Map<string, MixRow>();
-  const addRow = (r: MixRow, factor = 1) => {
+  const addRow = (r: MixRow) => {
     const key = `${r.country}|${r.subtype}`;
     const prev = map.get(key) ?? { country: r.country, subtype: r.subtype, pcs: 0, kg: 0 };
-    prev.pcs += r.pcs * factor;
+    prev.pcs += r.pcs;
     prev.kg += r.kg;
     map.set(key, prev);
   };
 
-  (["CAINIAO", "MPO", "MKO"] as PartyType[]).forEach((type) => {
-    const typed = parties.filter((p) => p.type === type);
-    const exactPcs = typed.reduce((s, p) => s + (typeof p.total_pcs === "number" ? p.total_pcs : 0), 0);
-    const typedRows = typed.flatMap((p) => p.mix ?? []);
-    const mixPcs = typedRows.reduce((s, r) => s + (r.pcs ?? 0), 0);
-
-    if (exactPcs > 0 && mixPcs > exactPcs) {
-      const factor = exactPcs / mixPcs;
-      typedRows.forEach((r) => addRow(r, factor));
-    } else {
-      typedRows.forEach((r) => addRow(r));
-      if (exactPcs > mixPcs) {
-        addRow({ country: type, subtype: "TOTAL", pcs: exactPcs - mixPcs, kg: 0 });
-      }
-    }
-  });
+  // M4 per party: just sum mix rows across selected parties.
+  // Source of truth is the per-party mix that already matches Excel 100%.
+  parties.forEach((p) => (p.mix ?? []).forEach((r) => addRow(r)));
 
   // Sort by country (UZ, BY, AZ, KG, KZ), then by pcs desc
   const order = ["UZ", "BY", "AZ", "KG", "KZ", "MPO", "MKO"];

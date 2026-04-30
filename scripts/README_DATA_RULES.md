@@ -37,12 +37,15 @@ Party type detection on row 8: string contains `MPO` → MPO, contains `MKO`
 2. **`totals.revenue` / `expense`**: must equal `sum(parties[].field)`
    within $5 tolerance.
 3. **`totals.margin_pct`** = `(revenue - expense) / revenue * 100`.
-4. **Marker 4 (`total_pcs`)**: Stored ONLY on the FIRST party of each type
-   (`CAINIAO`, `MPO`, `MKO`); all subsequent parties of the same type get
-   `total_pcs: 0`. The UI **sums** across parties, so this layout produces
-   the correct group total exactly once.
-   - Why: there is no per-party piece count in the source for MPO/MKO; the
-     row holds the group total. Storing it on every party would double-count.
+4. **Marker 4 (`total_pcs`)**: Stored on **EVERY party** (per-party value).
+   - For CAINIAO: `total_pcs` = sum of country pcs (rows 23/32/41/50) of that
+     column. `mix[]` is fully populated by subtype (rows 354–374) with kg
+     distributed proportionally to pcs within each country (excel only gives
+     kg per country at rows 20/29/38/47).
+   - For MPO: `total_pcs` = row 59 of that column.
+   - For MKO: `total_pcs` = row 70 of that column.
+   - The UI **sums** `total_pcs` across selected parties and **sums** `mix[]`
+     across parties — both produce correct group/week totals.
 5. **M1/M2/M3** copied verbatim per-party from rows 348/349/350. M1 falls
    back to row 127 if 348 is empty.
 
@@ -50,8 +53,8 @@ Party type detection on row 8: string contains `MPO` → MPO, contains `MKO`
 
 - Markers 1–3: **average** across selected parties.
 - Marker 4 (pieces): **sum** across selected parties.
-- ProductMix donut: when a party has `total_pcs > sum(party.mix.pcs)`, add
-  a synthetic `TOTAL` slice for the diff so the chart total matches M4.
+- ProductMix donut: simple sum of `mix[]` rows across parties — no
+  synthetic slices needed (per-party mix matches Excel 100%).
 
 ## Validation gate
 
