@@ -100,7 +100,11 @@ function buildOverview(weeks: Record<number, WeekData>): WeekData {
 
   // Склеиваем партии. col делаем уникальным: w{N}-{col}, чтобы карты по col не конфликтовали.
   const parties: Party[] = list.flatMap((w) =>
-    w.parties.map((p) => ({ ...p, col: `w${w.week}-${p.col}`, num: `W${w.week} · ${p.num}` }))
+    w.parties.map((p) => ({
+      ...p,
+      col: `w${w.week}-${p.col}`,
+      num: `W${w.week} · ${p.num}${p.type === "MKO" && p.is_auto ? " (А)" : ""}`,
+    }))
   );
 
   // Пустые агрегаты (reconcileWeek пересчитает из parties).
