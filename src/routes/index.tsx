@@ -34,7 +34,7 @@ import {
   type LucideIcon,
 } from "lucide-react";
 import type { Party, PartyType, WeekData } from "@/lib/types";
-import { fmtUSD, fmtNum, fmtPct } from "@/lib/format";
+import { fmtUSD, fmtNum, fmtPct, partyLabel } from "@/lib/format";
 import { ThemeToggle } from "@/components/ThemeToggle";
 import { SectionCard } from "@/components/SectionCard";
 import { StatCard } from "@/components/StatCard";
@@ -100,7 +100,11 @@ function buildOverview(weeks: Record<number, WeekData>): WeekData {
 
   // Склеиваем партии. col делаем уникальным: w{N}-{col}, чтобы карты по col не конфликтовали.
   const parties: Party[] = list.flatMap((w) =>
-    w.parties.map((p) => ({ ...p, col: `w${w.week}-${p.col}`, num: `W${w.week} · ${p.num}` }))
+    w.parties.map((p) => ({
+      ...p,
+      col: `w${w.week}-${p.col}`,
+      num: `W${w.week} · ${p.num}${p.type === "MKO" && p.is_auto ? " (А)" : ""}`,
+    }))
   );
 
   // Пустые агрегаты (reconcileWeek пересчитает из parties).
@@ -1037,7 +1041,7 @@ function Dashboard() {
                         <div className="flex items-center gap-2">
                           {worst === "critical" && <Flame className="h-3.5 w-3.5 text-destructive shrink-0" />}
                           {worst === "warning" && <AlertTriangle className="h-3.5 w-3.5 text-warning shrink-0" />}
-                          {p.num}
+                          {partyLabel(p)}
                         </div>
                       </td>
                       <td className="px-3 py-3">
@@ -1157,7 +1161,7 @@ function AlertsPanel({
               >
                 {meta.label}
               </span>
-              <span className="text-sm font-bold tabular-nums">№{a.party.num}</span>
+              <span className="text-sm font-bold tabular-nums">№{partyLabel(a.party)}</span>
               <span className="text-xs text-muted-foreground">·</span>
               <span className="text-xs font-medium text-muted-foreground">{m.short}</span>
             </div>

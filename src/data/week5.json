@@ -640,7 +640,8 @@
           "kg": 418.45
         }
       ],
-      "total_pcs": 694
+      "total_pcs": 694,
+      "is_auto": false
     },
     {
       "col": "BG",
@@ -666,7 +667,8 @@
           "kg": 370.5
         }
       ],
-      "total_pcs": 642
+      "total_pcs": 642,
+      "is_auto": false
     },
     {
       "col": "BH",
@@ -692,7 +694,8 @@
           "kg": 432.05
         }
       ],
-      "total_pcs": 624
+      "total_pcs": 624,
+      "is_auto": false
     }
   ]
 }

@@ -732,7 +732,8 @@
           "kg": 264.3
         }
       ],
-      "total_pcs": 950
+      "total_pcs": 950,
+      "is_auto": false
     },
     {
       "col": "DN",
@@ -758,7 +759,8 @@
           "kg": 229.35
         }
       ],
-      "total_pcs": 572
+      "total_pcs": 572,
+      "is_auto": true
     },
     {
       "col": "DO",
@@ -784,7 +786,8 @@
           "kg": 309.4
         }
       ],
-      "total_pcs": 578
+      "total_pcs": 578,
+      "is_auto": true
     }
   ]
 }

@@ -600,7 +600,8 @@
           "kg": 417.5
         }
       ],
-      "total_pcs": 1151
+      "total_pcs": 1151,
+      "is_auto": true
     },
     {
       "col": "HE",
@@ -626,7 +627,8 @@
           "kg": 556.05
         }
       ],
-      "total_pcs": 1511
+      "total_pcs": 1511,
+      "is_auto": true
     },
     {
       "col": "HF",
@@ -652,7 +654,8 @@
           "kg": 204.15
         }
       ],
-      "total_pcs": 598
+      "total_pcs": 598,
+      "is_auto": true
     }
   ]
 }

@@ -732,7 +732,8 @@
           "kg": 219.15
         }
       ],
-      "total_pcs": 556
+      "total_pcs": 556,
+      "is_auto": true
     }
   ]
 }

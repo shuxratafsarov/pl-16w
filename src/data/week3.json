@@ -916,7 +916,8 @@
           "kg": 388.0
         }
       ],
-      "total_pcs": 662
+      "total_pcs": 662,
+      "is_auto": false
     },
     {
       "col": "AJ",
@@ -942,7 +943,8 @@
           "kg": 663.3
         }
       ],
-      "total_pcs": 1043
+      "total_pcs": 1043,
+      "is_auto": false
     }
   ]
 }
