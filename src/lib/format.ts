@@ -20,3 +20,8 @@ export const TYPE_COLOR: Record<string, string> = {
   MPO: "var(--mpo)",
   MKO: "var(--mko)",
 };
+
+import type { Party } from "./types";
+/** Returns party number with "(А)" suffix when MKO is automatic. */
+export const partyLabel = (p: Pick<Party, "num" | "type" | "is_auto">) =>
+  p.type === "MKO" && p.is_auto ? `${p.num} (А)` : p.num;
