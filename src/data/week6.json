@@ -732,7 +732,8 @@
           "kg": 600.4
         }
       ],
-      "total_pcs": 939
+      "total_pcs": 939,
+      "is_auto": false
     },
     {
       "col": "BS",
@@ -758,7 +759,8 @@
           "kg": 224.7
         }
       ],
-      "total_pcs": 821
+      "total_pcs": 821,
+      "is_auto": false
     },
     {
       "col": "BT",
@@ -784,7 +786,8 @@
           "kg": 317.45
         }
       ],
-      "total_pcs": 540
+      "total_pcs": 540,
+      "is_auto": false
     },
     {
       "col": "BU",
@@ -810,7 +813,8 @@
           "kg": 467.3
         }
       ],
-      "total_pcs": 736
+      "total_pcs": 736,
+      "is_auto": false
     }
   ]
 }

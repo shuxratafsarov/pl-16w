@@ -836,7 +836,8 @@
           "kg": 212.65
         }
       ],
-      "total_pcs": 587
+      "total_pcs": 587,
+      "is_auto": true
     },
     {
       "col": "GN",
@@ -862,7 +863,8 @@
           "kg": 452.1
         }
       ],
-      "total_pcs": 1242
+      "total_pcs": 1242,
+      "is_auto": true
     },
     {
       "col": "GO",
@@ -888,7 +890,8 @@
           "kg": 255.85
         }
       ],
-      "total_pcs": 1131
+      "total_pcs": 1131,
+      "is_auto": false
     },
     {
       "col": "GP",
@@ -914,7 +917,8 @@
           "kg": 256.45
         }
       ],
-      "total_pcs": 662
+      "total_pcs": 662,
+      "is_auto": true
     },
     {
       "col": "GQ",
@@ -940,7 +944,8 @@
           "kg": 219.8
         }
       ],
-      "total_pcs": 592
+      "total_pcs": 592,
+      "is_auto": true
     },
     {
       "col": "GR",
@@ -966,7 +971,8 @@
           "kg": 382.65
         }
       ],
-      "total_pcs": 1057
+      "total_pcs": 1057,
+      "is_auto": true
     },
     {
       "col": "GS",
@@ -992,7 +998,8 @@
           "kg": 210.25
         }
       ],
-      "total_pcs": 478
+      "total_pcs": 478,
+      "is_auto": true
     },
     {
       "col": "GT",
@@ -1018,7 +1025,8 @@
           "kg": 198.0
         }
       ],
-      "total_pcs": 527
+      "total_pcs": 527,
+      "is_auto": true
     }
   ]
 }

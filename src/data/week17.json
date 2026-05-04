@@ -836,7 +836,8 @@
           "kg": 255.45
         }
       ],
-      "total_pcs": 720
+      "total_pcs": 720,
+      "is_auto": true
     },
     {
       "col": "IQ",
@@ -862,7 +863,8 @@
           "kg": 204.0
         }
       ],
-      "total_pcs": 581
+      "total_pcs": 581,
+      "is_auto": true
     },
     {
       "col": "IR",
@@ -888,7 +890,8 @@
           "kg": 415.65
         }
       ],
-      "total_pcs": 1096
+      "total_pcs": 1096,
+      "is_auto": true
     },
     {
       "col": "IS",
@@ -914,7 +917,8 @@
           "kg": 220.55
         }
       ],
-      "total_pcs": 710
+      "total_pcs": 710,
+      "is_auto": true
     },
     {
       "col": "IT",
@@ -940,7 +944,8 @@
           "kg": 257.05
         }
       ],
-      "total_pcs": 685
+      "total_pcs": 685,
+      "is_auto": true
     },
     {
       "col": "IU",
@@ -966,7 +971,8 @@
           "kg": 260.3
         }
       ],
-      "total_pcs": 681
+      "total_pcs": 681,
+      "is_auto": true
     }
   ]
 }

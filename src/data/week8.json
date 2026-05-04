@@ -614,7 +614,8 @@
           "kg": 224.15
         }
       ],
-      "total_pcs": 529
+      "total_pcs": 529,
+      "is_auto": false
     },
     {
       "col": "CR",
@@ -640,7 +641,8 @@
           "kg": 239.0
         }
       ],
-      "total_pcs": 646
+      "total_pcs": 646,
+      "is_auto": true
     },
     {
       "col": "CS",
@@ -666,7 +668,8 @@
           "kg": 245.95
         }
       ],
-      "total_pcs": 888
+      "total_pcs": 888,
+      "is_auto": false
     }
   ]
 }

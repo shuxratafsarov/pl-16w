@@ -916,7 +916,8 @@
           "kg": 207.7
         }
       ],
-      "total_pcs": 347
+      "total_pcs": 347,
+      "is_auto": false
     },
     {
       "col": "U",
@@ -942,7 +943,8 @@
           "kg": 301.85
         }
       ],
-      "total_pcs": 519
+      "total_pcs": 519,
+      "is_auto": false
     },
     {
       "col": "V",
@@ -968,7 +970,8 @@
           "kg": 368.75
         }
       ],
-      "total_pcs": 600
+      "total_pcs": 600,
+      "is_auto": false
     },
     {
       "col": "W",
@@ -994,7 +997,8 @@
           "kg": 273.1
         }
       ],
-      "total_pcs": 529
+      "total_pcs": 529,
+      "is_auto": false
     }
   ]
 }

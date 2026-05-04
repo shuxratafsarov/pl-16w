@@ -732,7 +732,8 @@
           "kg": 326.6
         }
       ],
-      "total_pcs": 547
+      "total_pcs": 547,
+      "is_auto": true
     },
     {
       "col": "CF",
@@ -758,7 +759,8 @@
           "kg": 194.0
         }
       ],
-      "total_pcs": 318
+      "total_pcs": 318,
+      "is_auto": true
     },
     {
       "col": "CG",
@@ -784,7 +786,8 @@
           "kg": 300.2
         }
       ],
-      "total_pcs": 546
+      "total_pcs": 546,
+      "is_auto": false
     },
     {
       "col": "CH",
@@ -810,7 +813,8 @@
           "kg": 454.85
         }
       ],
-      "total_pcs": 940
+      "total_pcs": 940,
+      "is_auto": true
     },
     {
       "col": "CI",
@@ -836,7 +840,8 @@
           "kg": 268.25
         }
       ],
-      "total_pcs": 586
+      "total_pcs": 586,
+      "is_auto": true
     }
   ]
 }
