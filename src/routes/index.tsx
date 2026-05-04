@@ -34,7 +34,7 @@ import {
   type LucideIcon,
 } from "lucide-react";
 import type { Party, PartyType, WeekData } from "@/lib/types";
-import { fmtUSD, fmtNum, fmtPct } from "@/lib/format";
+import { fmtUSD, fmtNum, fmtPct, partyLabel } from "@/lib/format";
 import { ThemeToggle } from "@/components/ThemeToggle";
 import { SectionCard } from "@/components/SectionCard";
 import { StatCard } from "@/components/StatCard";
