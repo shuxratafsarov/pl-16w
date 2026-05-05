@@ -457,10 +457,17 @@ export function OverviewAnalytics({
       const firstAvg = avgArr(first);
       const lastAvg = avgArr(last);
       const trendPct = firstAvg !== 0 ? ((lastAvg - firstAvg) / Math.abs(firstAvg)) * 100 : 0;
-      // Доля партий в зоне риска относительно глобального среднего
+      // Доля партий в зоне риска
       let warnCount = 0;
       let critCount = 0;
-      if (globalAvg != null && globalAvg !== 0) {
+      const baseline = MARKER_BASELINE[m.key as keyof typeof MARKER_BASELINE];
+      const criticalBase = MARKER_CRITICAL[m.key as keyof typeof MARKER_CRITICAL];
+      if (typeof baseline === "number") {
+        allVals.forEach((v) => {
+          if (typeof criticalBase === "number" && v > criticalBase) critCount++;
+          else if (v > baseline) warnCount++;
+        });
+      } else if (globalAvg != null && globalAvg !== 0) {
         allVals.forEach((v) => {
           const ratio = v / globalAvg;
           if (m.direction === "above") {
@@ -473,7 +480,8 @@ export function OverviewAnalytics({
         });
       }
       const total = allVals.length;
-      return { meta: m, series, byTypeAvg, globalAvg, min, max, trendPct, warnCount, critCount, total };
+      const displayAvg = typeof baseline === "number" ? baseline : globalAvg;
+      return { meta: m, series, byTypeAvg, globalAvg: displayAvg, min, max, trendPct, warnCount, critCount, total };
     });
   }, [sortedWeeks, typeFilter]);
 
