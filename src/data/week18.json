@@ -827,7 +827,8 @@
         }
       ],
       "total_pcs": 1135,
-      "is_auto": false
+      "is_auto": false,
+      "is_hk_danger": true
     },
     {
       "col": "JL",

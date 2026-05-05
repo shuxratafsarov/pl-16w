@@ -19,6 +19,7 @@ export type Party = {
   total_pcs?: number;
   mix?: MixRow[];
   is_auto?: boolean;
+  is_hk_danger?: boolean;
 };
 
 export type CountryCode = "UZ" | "BY" | "AZ" | "KG" | "KZ";

@@ -1050,10 +1050,18 @@ function Dashboard() {
                       )}
                     >
                       <td className="px-3 py-3 font-semibold tabular-nums">
-                        <div className="flex items-center gap-2">
+                        <div className="flex items-center gap-2 flex-wrap">
                           {worst === "critical" && <Flame className="h-3.5 w-3.5 text-destructive shrink-0" />}
                           {worst === "warning" && <AlertTriangle className="h-3.5 w-3.5 text-warning shrink-0" />}
                           {partyLabel(p)}
+                          {p.is_hk_danger && (
+                            <span
+                              title="ОПАСНИК (JM HK) — груз HONG KONG"
+                              className="inline-flex items-center gap-1 rounded-md border border-destructive/40 bg-destructive/10 px-1.5 py-0.5 text-[10px] font-bold uppercase tracking-wider text-destructive"
+                            >
+                              ⚠ ОПАСНИК (JM HK)
+                            </span>
+                          )}
                         </div>
                       </td>
                       <td className="px-3 py-3">

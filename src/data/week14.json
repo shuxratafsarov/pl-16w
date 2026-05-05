@@ -891,7 +891,8 @@
         }
       ],
       "total_pcs": 1131,
-      "is_auto": false
+      "is_auto": false,
+      "is_hk_danger": true
     },
     {
       "col": "GP",
