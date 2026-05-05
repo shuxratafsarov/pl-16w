@@ -733,7 +733,8 @@
         }
       ],
       "total_pcs": 962,
-      "is_auto": false
+      "is_auto": false,
+      "is_hk_danger": true
     },
     {
       "col": "AU",

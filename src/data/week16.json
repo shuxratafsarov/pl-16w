@@ -852,7 +852,8 @@
         }
       ],
       "total_pcs": 969,
-      "is_auto": false
+      "is_auto": false,
+      "is_hk_danger": true
     },
     {
       "col": "HX",
