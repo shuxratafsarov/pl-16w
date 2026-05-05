@@ -40,6 +40,7 @@ import { SectionCard } from "@/components/SectionCard";
 import { StatCard } from "@/components/StatCard";
 import { StatusBadge } from "@/components/StatusBadge";
 import { MarkerChart } from "@/components/MarkerChart";
+import { MARKER_BASELINE, MARKER_CRITICAL } from "@/lib/markerBaselines";
 import { ProductMix } from "@/components/ProductMix";
 import { DetailDialog, type DetailTarget } from "@/components/DetailDialog";
 import { OverviewAnalytics } from "@/components/OverviewAnalytics";
