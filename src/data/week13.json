@@ -3,24 +3,24 @@
   "period": "2026-03-23 — 2026-03-29",
   "totals": {
     "revenue": 170902.41,
-    "expense": 140917.34,
-    "gross_profit": 29985.06,
-    "margin_pct": 17.55
+    "expense": 140759.36,
+    "gross_profit": 30143.05,
+    "margin_pct": 17.64
   },
   "byType": {
     "CAINIAO": {
       "count": 10,
       "revenue": 136161.24,
-      "expense": 126847.88,
-      "gross_profit": 9313.34,
-      "margin_pct": 6.84,
+      "expense": 126689.9,
+      "gross_profit": 9471.34,
+      "margin_pct": 6.96,
       "note": "Marker 4 теперь хранится по партии: total_pcs = sum по странам (rows 23/32/41/50). UI суммирует партии."
     },
     "MPO": {
       "count": 4,
       "revenue": 1509.51,
       "expense": 906.87,
-      "gross_profit": 602.65,
+      "gross_profit": 602.64,
       "margin_pct": 39.92
     },
     "MKO": {
@@ -34,7 +34,7 @@
   "umbrella_uzum_cb": {
     "revenue": 34741.17,
     "expense": 14069.46,
-    "gross_profit": 20671.72,
+    "gross_profit": 20671.71,
     "margin_pct": 59.5
   },
   "parties": [
@@ -44,9 +44,9 @@
       "num": "1050",
       "date": "2026-03-25",
       "revenue": 16120.81,
-      "expense": 14609.32,
-      "gross_profit": 1511.48,
-      "margin_pct": 9.38,
+      "expense": 14593.52,
+      "gross_profit": 1527.28,
+      "margin_pct": 9.47,
       "weight_net": 849.05,
       "weight_gross": 912.0,
       "weight_vol": 1113.0,
@@ -54,80 +54,7 @@
       "marker2_volnet": 1.3109,
       "marker3_grossnet": 1.0741,
       "total_kg": 912.0,
-      "mix": [
-        {
-          "country": "UZ",
-          "subtype": "RM",
-          "pcs": 675,
-          "kg": 56.05
-        },
-        {
-          "country": "UZ",
-          "subtype": "SRM",
-          "pcs": 78,
-          "kg": 6.48
-        },
-        {
-          "country": "UZ",
-          "subtype": "SRMA",
-          "pcs": 907,
-          "kg": 75.32
-        },
-        {
-          "country": "UZ",
-          "subtype": "SRMB",
-          "pcs": 933,
-          "kg": 77.48
-        },
-        {
-          "country": "UZ",
-          "subtype": "SRMC",
-          "pcs": 164,
-          "kg": 13.61
-        },
-        {
-          "country": "BY",
-          "subtype": "RRM",
-          "pcs": 1312,
-          "kg": 93.09
-        },
-        {
-          "country": "BY",
-          "subtype": "SRM",
-          "pcs": 2080,
-          "kg": 147.58
-        },
-        {
-          "country": "BY",
-          "subtype": "NRM",
-          "pcs": 3687,
-          "kg": 261.6
-        },
-        {
-          "country": "KG",
-          "subtype": "RM",
-          "pcs": 48,
-          "kg": 4.67
-        },
-        {
-          "country": "KG",
-          "subtype": "NRM",
-          "pcs": 110,
-          "kg": 10.7
-        },
-        {
-          "country": "AZ",
-          "subtype": "RM",
-          "pcs": 381,
-          "kg": 38.62
-        },
-        {
-          "country": "AZ",
-          "subtype": "NRM",
-          "pcs": 630,
-          "kg": 63.85
-        }
-      ],
+      "mix": [],
       "total_pcs": 11005
     },
     {
@@ -136,9 +63,9 @@
       "num": "1051",
       "date": "2026-03-27",
       "revenue": 16458.88,
-      "expense": 15063.83,
-      "gross_profit": 1395.05,
-      "margin_pct": 8.48,
+      "expense": 15048.03,
+      "gross_profit": 1410.85,
+      "margin_pct": 8.57,
       "weight_net": 876.76,
       "weight_gross": 904.0,
       "weight_vol": 1150.0,
@@ -146,80 +73,7 @@
       "marker2_volnet": 1.3116,
       "marker3_grossnet": 1.0311,
       "total_kg": 904.0,
-      "mix": [
-        {
-          "country": "UZ",
-          "subtype": "RM",
-          "pcs": 729,
-          "kg": 60.19
-        },
-        {
-          "country": "UZ",
-          "subtype": "SRM",
-          "pcs": 59,
-          "kg": 4.87
-        },
-        {
-          "country": "UZ",
-          "subtype": "SRMA",
-          "pcs": 884,
-          "kg": 72.99
-        },
-        {
-          "country": "UZ",
-          "subtype": "SRMB",
-          "pcs": 1017,
-          "kg": 83.97
-        },
-        {
-          "country": "UZ",
-          "subtype": "SRMC",
-          "pcs": 205,
-          "kg": 16.93
-        },
-        {
-          "country": "BY",
-          "subtype": "RRM",
-          "pcs": 1475,
-          "kg": 113.26
-        },
-        {
-          "country": "BY",
-          "subtype": "SRM",
-          "pcs": 1502,
-          "kg": 115.34
-        },
-        {
-          "country": "BY",
-          "subtype": "NRM",
-          "pcs": 3731,
-          "kg": 286.5
-        },
-        {
-          "country": "KG",
-          "subtype": "RM",
-          "pcs": 55,
-          "kg": 5.63
-        },
-        {
-          "country": "KG",
-          "subtype": "NRM",
-          "pcs": 93,
-          "kg": 9.53
-        },
-        {
-          "country": "AZ",
-          "subtype": "RM",
-          "pcs": 379,
-          "kg": 41.72
-        },
-        {
-          "country": "AZ",
-          "subtype": "NRM",
-          "pcs": 598,
-          "kg": 65.83
-        }
-      ],
+      "mix": [],
       "total_pcs": 10727
     },
     {
@@ -228,9 +82,9 @@
       "num": "1052",
       "date": "2026-03-23",
       "revenue": 7024.45,
-      "expense": 6533.35,
-      "gross_profit": 491.1,
-      "margin_pct": 6.99,
+      "expense": 6517.55,
+      "gross_profit": 506.9,
+      "margin_pct": 7.22,
       "weight_net": 371.16,
       "weight_gross": 390.0,
       "weight_vol": 447.5,
@@ -238,80 +92,7 @@
       "marker2_volnet": 1.2057,
       "marker3_grossnet": 1.0508,
       "total_kg": 390.0,
-      "mix": [
-        {
-          "country": "UZ",
-          "subtype": "RM",
-          "pcs": 216,
-          "kg": 15.46
-        },
-        {
-          "country": "UZ",
-          "subtype": "SRM",
-          "pcs": 34,
-          "kg": 2.43
-        },
-        {
-          "country": "UZ",
-          "subtype": "SRMA",
-          "pcs": 401,
-          "kg": 28.69
-        },
-        {
-          "country": "UZ",
-          "subtype": "SRMB",
-          "pcs": 419,
-          "kg": 29.98
-        },
-        {
-          "country": "UZ",
-          "subtype": "SRMC",
-          "pcs": 81,
-          "kg": 5.8
-        },
-        {
-          "country": "BY",
-          "subtype": "RRM",
-          "pcs": 548,
-          "kg": 33.68
-        },
-        {
-          "country": "BY",
-          "subtype": "SRM",
-          "pcs": 961,
-          "kg": 59.06
-        },
-        {
-          "country": "BY",
-          "subtype": "NRM",
-          "pcs": 2463,
-          "kg": 151.36
-        },
-        {
-          "country": "KG",
-          "subtype": "RM",
-          "pcs": 9,
-          "kg": 0.63
-        },
-        {
-          "country": "KG",
-          "subtype": "NRM",
-          "pcs": 38,
-          "kg": 2.68
-        },
-        {
-          "country": "AZ",
-          "subtype": "RM",
-          "pcs": 144,
-          "kg": 16.46
-        },
-        {
-          "country": "AZ",
-          "subtype": "NRM",
-          "pcs": 218,
-          "kg": 24.93
-        }
-      ],
+      "mix": [],
       "total_pcs": 5532
     },
     {
@@ -320,9 +101,9 @@
       "num": "1053",
       "date": "2026-03-26",
       "revenue": 9603.29,
-      "expense": 8874.61,
-      "gross_profit": 728.68,
-      "margin_pct": 7.59,
+      "expense": 8858.81,
+      "gross_profit": 744.48,
+      "margin_pct": 7.75,
       "weight_net": 502.19,
       "weight_gross": 525.0,
       "weight_vol": 679.0,
@@ -330,80 +111,7 @@
       "marker2_volnet": 1.3521,
       "marker3_grossnet": 1.0454,
       "total_kg": 525.0,
-      "mix": [
-        {
-          "country": "UZ",
-          "subtype": "RM",
-          "pcs": 491,
-          "kg": 41.83
-        },
-        {
-          "country": "UZ",
-          "subtype": "SRM",
-          "pcs": 41,
-          "kg": 3.49
-        },
-        {
-          "country": "UZ",
-          "subtype": "SRMA",
-          "pcs": 406,
-          "kg": 34.59
-        },
-        {
-          "country": "UZ",
-          "subtype": "SRMB",
-          "pcs": 622,
-          "kg": 52.99
-        },
-        {
-          "country": "UZ",
-          "subtype": "SRMC",
-          "pcs": 116,
-          "kg": 9.87
-        },
-        {
-          "country": "BY",
-          "subtype": "RRM",
-          "pcs": 931,
-          "kg": 90.72
-        },
-        {
-          "country": "BY",
-          "subtype": "SRM",
-          "pcs": 815,
-          "kg": 79.42
-        },
-        {
-          "country": "BY",
-          "subtype": "NRM",
-          "pcs": 1192,
-          "kg": 116.15
-        },
-        {
-          "country": "KG",
-          "subtype": "RM",
-          "pcs": 36,
-          "kg": 2.77
-        },
-        {
-          "country": "KG",
-          "subtype": "NRM",
-          "pcs": 65,
-          "kg": 5.01
-        },
-        {
-          "country": "AZ",
-          "subtype": "RM",
-          "pcs": 278,
-          "kg": 28.34
-        },
-        {
-          "country": "AZ",
-          "subtype": "NRM",
-          "pcs": 363,
-          "kg": 37.01
-        }
-      ],
+      "mix": [],
       "total_pcs": 5356
     },
     {
@@ -412,9 +120,9 @@
       "num": "1054",
       "date": "2026-03-24",
       "revenue": 15613.08,
-      "expense": 14550.22,
-      "gross_profit": 1062.86,
-      "margin_pct": 6.81,
+      "expense": 14534.42,
+      "gross_profit": 1078.66,
+      "margin_pct": 6.91,
       "weight_net": 824.59,
       "weight_gross": 896.0,
       "weight_vol": 1055.0,
@@ -422,80 +130,7 @@
       "marker2_volnet": 1.2794,
       "marker3_grossnet": 1.0866,
       "total_kg": 896.0,
-      "mix": [
-        {
-          "country": "UZ",
-          "subtype": "RM",
-          "pcs": 624,
-          "kg": 50.91
-        },
-        {
-          "country": "UZ",
-          "subtype": "SRM",
-          "pcs": 68,
-          "kg": 5.55
-        },
-        {
-          "country": "UZ",
-          "subtype": "SRMA",
-          "pcs": 724,
-          "kg": 59.07
-        },
-        {
-          "country": "UZ",
-          "subtype": "SRMB",
-          "pcs": 850,
-          "kg": 69.35
-        },
-        {
-          "country": "UZ",
-          "subtype": "SRMC",
-          "pcs": 170,
-          "kg": 13.88
-        },
-        {
-          "country": "BY",
-          "subtype": "RRM",
-          "pcs": 1443,
-          "kg": 114.38
-        },
-        {
-          "country": "BY",
-          "subtype": "SRM",
-          "pcs": 1670,
-          "kg": 132.38
-        },
-        {
-          "country": "BY",
-          "subtype": "NRM",
-          "pcs": 3190,
-          "kg": 252.86
-        },
-        {
-          "country": "KG",
-          "subtype": "RM",
-          "pcs": 56,
-          "kg": 5.59
-        },
-        {
-          "country": "KG",
-          "subtype": "NRM",
-          "pcs": 99,
-          "kg": 9.89
-        },
-        {
-          "country": "AZ",
-          "subtype": "RM",
-          "pcs": 403,
-          "kg": 47.68
-        },
-        {
-          "country": "AZ",
-          "subtype": "NRM",
-          "pcs": 533,
-          "kg": 63.05
-        }
-      ],
+      "mix": [],
       "total_pcs": 9830
     },
     {
@@ -504,9 +139,9 @@
       "num": "1055",
       "date": "2026-03-27",
       "revenue": 14476.18,
-      "expense": 13628.56,
-      "gross_profit": 847.62,
-      "margin_pct": 5.86,
+      "expense": 13612.76,
+      "gross_profit": 863.42,
+      "margin_pct": 5.96,
       "weight_net": 774.09,
       "weight_gross": 814.0,
       "weight_vol": 1000.0,
@@ -514,80 +149,7 @@
       "marker2_volnet": 1.2918,
       "marker3_grossnet": 1.0516,
       "total_kg": 814.0,
-      "mix": [
-        {
-          "country": "UZ",
-          "subtype": "RM",
-          "pcs": 631,
-          "kg": 53.55
-        },
-        {
-          "country": "UZ",
-          "subtype": "SRM",
-          "pcs": 52,
-          "kg": 4.41
-        },
-        {
-          "country": "UZ",
-          "subtype": "SRMA",
-          "pcs": 629,
-          "kg": 53.38
-        },
-        {
-          "country": "UZ",
-          "subtype": "SRMB",
-          "pcs": 817,
-          "kg": 69.33
-        },
-        {
-          "country": "UZ",
-          "subtype": "SRMC",
-          "pcs": 142,
-          "kg": 12.05
-        },
-        {
-          "country": "BY",
-          "subtype": "RRM",
-          "pcs": 1305,
-          "kg": 109.65
-        },
-        {
-          "country": "BY",
-          "subtype": "SRM",
-          "pcs": 1504,
-          "kg": 126.37
-        },
-        {
-          "country": "BY",
-          "subtype": "NRM",
-          "pcs": 2816,
-          "kg": 236.6
-        },
-        {
-          "country": "KG",
-          "subtype": "RM",
-          "pcs": 48,
-          "kg": 4.82
-        },
-        {
-          "country": "KG",
-          "subtype": "NRM",
-          "pcs": 88,
-          "kg": 8.85
-        },
-        {
-          "country": "AZ",
-          "subtype": "RM",
-          "pcs": 322,
-          "kg": 37.34
-        },
-        {
-          "country": "AZ",
-          "subtype": "NRM",
-          "pcs": 498,
-          "kg": 57.74
-        }
-      ],
+      "mix": [],
       "total_pcs": 8852
     },
     {
@@ -596,9 +158,9 @@
       "num": "1056",
       "date": "2026-03-27",
       "revenue": 12541.63,
-      "expense": 12270.05,
-      "gross_profit": 271.58,
-      "margin_pct": 2.17,
+      "expense": 12254.26,
+      "gross_profit": 287.38,
+      "margin_pct": 2.29,
       "weight_net": 662.03,
       "weight_gross": 704.0,
       "weight_vol": 1000.0,
@@ -606,80 +168,7 @@
       "marker2_volnet": 1.5105,
       "marker3_grossnet": 1.0634,
       "total_kg": 704.0,
-      "mix": [
-        {
-          "country": "UZ",
-          "subtype": "RM",
-          "pcs": 513,
-          "kg": 39.64
-        },
-        {
-          "country": "UZ",
-          "subtype": "SRM",
-          "pcs": 56,
-          "kg": 4.33
-        },
-        {
-          "country": "UZ",
-          "subtype": "SRMA",
-          "pcs": 663,
-          "kg": 51.23
-        },
-        {
-          "country": "UZ",
-          "subtype": "SRMB",
-          "pcs": 755,
-          "kg": 58.34
-        },
-        {
-          "country": "UZ",
-          "subtype": "SRMC",
-          "pcs": 142,
-          "kg": 10.97
-        },
-        {
-          "country": "BY",
-          "subtype": "RRM",
-          "pcs": 1174,
-          "kg": 86.75
-        },
-        {
-          "country": "BY",
-          "subtype": "SRM",
-          "pcs": 1187,
-          "kg": 87.71
-        },
-        {
-          "country": "BY",
-          "subtype": "NRM",
-          "pcs": 3079,
-          "kg": 227.51
-        },
-        {
-          "country": "KG",
-          "subtype": "RM",
-          "pcs": 43,
-          "kg": 5.83
-        },
-        {
-          "country": "KG",
-          "subtype": "NRM",
-          "pcs": 69,
-          "kg": 9.35
-        },
-        {
-          "country": "AZ",
-          "subtype": "RM",
-          "pcs": 279,
-          "kg": 29.58
-        },
-        {
-          "country": "AZ",
-          "subtype": "NRM",
-          "pcs": 479,
-          "kg": 50.79
-        }
-      ],
+      "mix": [],
       "total_pcs": 8439
     },
     {
@@ -688,9 +177,9 @@
       "num": "1057",
       "date": "2026-03-27",
       "revenue": 10250.65,
-      "expense": 9595.86,
-      "gross_profit": 654.79,
-      "margin_pct": 6.39,
+      "expense": 9580.06,
+      "gross_profit": 670.59,
+      "margin_pct": 6.54,
       "weight_net": 539.65,
       "weight_gross": 575.0,
       "weight_vol": 740.0,
@@ -698,80 +187,7 @@
       "marker2_volnet": 1.3713,
       "marker3_grossnet": 1.0655,
       "total_kg": 575.0,
-      "mix": [
-        {
-          "country": "UZ",
-          "subtype": "RM",
-          "pcs": 338,
-          "kg": 23.86
-        },
-        {
-          "country": "UZ",
-          "subtype": "SRM",
-          "pcs": 46,
-          "kg": 3.25
-        },
-        {
-          "country": "UZ",
-          "subtype": "SRMA",
-          "pcs": 635,
-          "kg": 44.82
-        },
-        {
-          "country": "UZ",
-          "subtype": "SRMB",
-          "pcs": 693,
-          "kg": 48.91
-        },
-        {
-          "country": "UZ",
-          "subtype": "SRMC",
-          "pcs": 120,
-          "kg": 8.47
-        },
-        {
-          "country": "BY",
-          "subtype": "RRM",
-          "pcs": 825,
-          "kg": 53.06
-        },
-        {
-          "country": "BY",
-          "subtype": "SRM",
-          "pcs": 1345,
-          "kg": 86.51
-        },
-        {
-          "country": "BY",
-          "subtype": "NRM",
-          "pcs": 3159,
-          "kg": 203.17
-        },
-        {
-          "country": "KG",
-          "subtype": "RM",
-          "pcs": 24,
-          "kg": 1.94
-        },
-        {
-          "country": "KG",
-          "subtype": "NRM",
-          "pcs": 52,
-          "kg": 4.2
-        },
-        {
-          "country": "AZ",
-          "subtype": "RM",
-          "pcs": 178,
-          "kg": 18.17
-        },
-        {
-          "country": "AZ",
-          "subtype": "NRM",
-          "pcs": 424,
-          "kg": 43.29
-        }
-      ],
+      "mix": [],
       "total_pcs": 7839
     },
     {
@@ -780,9 +196,9 @@
       "num": "1058",
       "date": "2026-03-28",
       "revenue": 14304.97,
-      "expense": 12393.78,
-      "gross_profit": 1911.19,
-      "margin_pct": 13.36,
+      "expense": 12377.98,
+      "gross_profit": 1926.99,
+      "margin_pct": 13.47,
       "weight_net": 778.44,
       "weight_gross": 764.0,
       "weight_vol": 1003.0,
@@ -790,80 +206,7 @@
       "marker2_volnet": 1.2885,
       "marker3_grossnet": 0.9815,
       "total_kg": 764.0,
-      "mix": [
-        {
-          "country": "UZ",
-          "subtype": "RM",
-          "pcs": 646,
-          "kg": 68.04
-        },
-        {
-          "country": "UZ",
-          "subtype": "SRM",
-          "pcs": 35,
-          "kg": 3.69
-        },
-        {
-          "country": "UZ",
-          "subtype": "SRMA",
-          "pcs": 382,
-          "kg": 40.23
-        },
-        {
-          "country": "UZ",
-          "subtype": "SRMB",
-          "pcs": 536,
-          "kg": 56.45
-        },
-        {
-          "country": "UZ",
-          "subtype": "SRMC",
-          "pcs": 118,
-          "kg": 12.42
-        },
-        {
-          "country": "BY",
-          "subtype": "RRM",
-          "pcs": 1587,
-          "kg": 170.6
-        },
-        {
-          "country": "BY",
-          "subtype": "SRM",
-          "pcs": 856,
-          "kg": 92.02
-        },
-        {
-          "country": "BY",
-          "subtype": "NRM",
-          "pcs": 1902,
-          "kg": 204.46
-        },
-        {
-          "country": "KG",
-          "subtype": "RM",
-          "pcs": 59,
-          "kg": 9.86
-        },
-        {
-          "country": "KG",
-          "subtype": "NRM",
-          "pcs": 48,
-          "kg": 8.03
-        },
-        {
-          "country": "AZ",
-          "subtype": "RM",
-          "pcs": 400,
-          "kg": 56.46
-        },
-        {
-          "country": "AZ",
-          "subtype": "NRM",
-          "pcs": 398,
-          "kg": 56.18
-        }
-      ],
+      "mix": [],
       "total_pcs": 6967
     },
     {
@@ -872,9 +215,9 @@
       "num": "1059",
       "date": "2026-03-29",
       "revenue": 19767.3,
-      "expense": 19328.3,
-      "gross_profit": 438.99,
-      "margin_pct": 2.22,
+      "expense": 19312.51,
+      "gross_profit": 454.79,
+      "margin_pct": 2.3,
       "weight_net": 1040.12,
       "weight_gross": 1145.0,
       "weight_vol": 1433.5,
@@ -882,80 +225,7 @@
       "marker2_volnet": 1.3782,
       "marker3_grossnet": 1.1008,
       "total_kg": 1145.0,
-      "mix": [
-        {
-          "country": "UZ",
-          "subtype": "RM",
-          "pcs": 660,
-          "kg": 49.15
-        },
-        {
-          "country": "UZ",
-          "subtype": "SRM",
-          "pcs": 95,
-          "kg": 7.08
-        },
-        {
-          "country": "UZ",
-          "subtype": "SRMA",
-          "pcs": 974,
-          "kg": 72.54
-        },
-        {
-          "country": "UZ",
-          "subtype": "SRMB",
-          "pcs": 1163,
-          "kg": 86.61
-        },
-        {
-          "country": "UZ",
-          "subtype": "SRMC",
-          "pcs": 192,
-          "kg": 14.3
-        },
-        {
-          "country": "BY",
-          "subtype": "RRM",
-          "pcs": 1741,
-          "kg": 124.21
-        },
-        {
-          "country": "BY",
-          "subtype": "SRM",
-          "pcs": 2637,
-          "kg": 188.14
-        },
-        {
-          "country": "BY",
-          "subtype": "NRM",
-          "pcs": 5188,
-          "kg": 370.15
-        },
-        {
-          "country": "KG",
-          "subtype": "RM",
-          "pcs": 58,
-          "kg": 4.97
-        },
-        {
-          "country": "KG",
-          "subtype": "NRM",
-          "pcs": 108,
-          "kg": 9.25
-        },
-        {
-          "country": "AZ",
-          "subtype": "RM",
-          "pcs": 358,
-          "kg": 37.7
-        },
-        {
-          "country": "AZ",
-          "subtype": "NRM",
-          "pcs": 722,
-          "kg": 76.02
-        }
-      ],
+      "mix": [],
       "total_pcs": 13896
     },
     {

@@ -117,56 +117,56 @@
     "month": 3,
     "month_name": "Март",
     "period": "2026-03",
-    "revenue": 597789.66,
-    "expense": 487599.39,
-    "gross_profit": 110190.27,
-    "margin_pct": 18.43,
+    "revenue": 665600.34,
+    "expense": 541681.48,
+    "gross_profit": 123918.86,
+    "margin_pct": 18.62,
     "by_country": {
       "UZ": {
-        "revenue": 111266.86,
-        "expense": 71902.32,
-        "gross_profit": 39364.54,
-        "margin_pct": 35.38,
-        "pcs": 72830,
-        "kg": 5952.9
+        "revenue": 123912.47,
+        "expense": 80089.41,
+        "gross_profit": 43823.06,
+        "margin_pct": 35.37,
+        "pcs": 81046,
+        "kg": 6636.01
       },
       "BY": {
-        "revenue": 276409.14,
-        "expense": 282423.78,
-        "gross_profit": -6014.63,
-        "margin_pct": -2.18,
-        "pcs": 185755,
-        "kg": 14572.32
+        "revenue": 307407.79,
+        "expense": 314671.74,
+        "gross_profit": -7263.95,
+        "margin_pct": -2.36,
+        "pcs": 206560,
+        "kg": 16192.3
       },
       "AZ": {
-        "revenue": 57759.83,
-        "expense": 51559.61,
-        "gross_profit": 6200.22,
-        "margin_pct": 10.73,
-        "pcs": 27706,
-        "kg": 3145.36
+        "revenue": 63746.36,
+        "expense": 56816.35,
+        "gross_profit": 6930.02,
+        "margin_pct": 10.87,
+        "pcs": 30854,
+        "kg": 3464.29
       },
       "KG": {
-        "revenue": 7503.37,
-        "expense": 4231.34,
-        "gross_profit": 3272.03,
-        "margin_pct": 43.61,
-        "pcs": 4192,
-        "kg": 411.59
+        "revenue": 8490.82,
+        "expense": 4791.48,
+        "gross_profit": 3699.34,
+        "margin_pct": 43.57,
+        "pcs": 4686,
+        "kg": 466.98
       }
     },
     "by_type": {
       "CAINIAO": {
-        "revenue": 452939.2,
-        "pcs": 290483
+        "revenue": 503557.44,
+        "pcs": 323146
       },
       "MPO": {
-        "revenue": 6130.56,
-        "pcs": 1282
+        "revenue": 7059.78,
+        "pcs": 1487
       },
       "MKO": {
-        "revenue": 138719.9,
-        "pcs": 22474
+        "revenue": 154983.12,
+        "pcs": 25128
       }
     }
   },
@@ -174,56 +174,512 @@
     "month": 4,
     "month_name": "Апрель",
     "period": "2026-04",
-    "revenue": 398481.4,
-    "expense": 313325.18,
-    "gross_profit": 85156.22,
-    "margin_pct": 21.37,
+    "revenue": 413193.13,
+    "expense": 313059.76,
+    "gross_profit": 100133.37,
+    "margin_pct": 24.23,
     "by_country": {
       "UZ": {
-        "revenue": 71311.21,
-        "expense": 44599.73,
-        "gross_profit": 26711.48,
-        "margin_pct": 37.46,
-        "pcs": 46264,
-        "kg": 3784.81
+        "revenue": 70017.57,
+        "expense": 43177.82,
+        "gross_profit": 26839.75,
+        "margin_pct": 38.33,
+        "pcs": 45455,
+        "kg": 3705.56
       },
       "BY": {
-        "revenue": 174552.94,
-        "expense": 178230.98,
-        "gross_profit": -3678.04,
-        "margin_pct": -2.11,
-        "pcs": 118357,
-        "kg": 9075.69
+        "revenue": 184342.9,
+        "expense": 175135.36,
+        "gross_profit": 9207.54,
+        "margin_pct": 4.99,
+        "pcs": 117791,
+        "kg": 8986.4
       },
       "AZ": {
-        "revenue": 38060.08,
-        "expense": 33186.82,
-        "gross_profit": 4873.25,
-        "margin_pct": 12.8,
-        "pcs": 18675,
-        "kg": 2056.29
+        "revenue": 38027.57,
+        "expense": 32967.43,
+        "gross_profit": 5060.15,
+        "margin_pct": 13.31,
+        "pcs": 18417,
+        "kg": 2060.12
       },
       "KG": {
-        "revenue": 5124.76,
-        "expense": 2809.55,
-        "gross_profit": 2315.21,
-        "margin_pct": 45.18,
-        "pcs": 2598,
-        "kg": 284.78
+        "revenue": 4893.79,
+        "expense": 2640.6,
+        "gross_profit": 2253.19,
+        "margin_pct": 46.04,
+        "pcs": 2510,
+        "kg": 270.52
       }
     },
     "by_type": {
       "CAINIAO": {
-        "revenue": 289048.98,
-        "pcs": 185894
+        "revenue": 297281.83,
+        "pcs": 184173
       },
       "MPO": {
-        "revenue": 4774.62,
-        "pcs": 1046
+        "revenue": 4659.75,
+        "pcs": 1011
       },
       "MKO": {
-        "revenue": 104657.8,
-        "pcs": 17766
+        "revenue": 111251.55,
+        "pcs": 18923
+      }
+    }
+  },
+  {
+    "month": 5,
+    "month_name": "Май",
+    "period": "2026-05",
+    "revenue": 46267.99,
+    "expense": 34619.63,
+    "gross_profit": 11648.37,
+    "margin_pct": 25.18,
+    "by_country": {
+      "UZ": {
+        "revenue": 6485.61,
+        "expense": 3982.69,
+        "gross_profit": 2502.92,
+        "margin_pct": 38.59,
+        "pcs": 4175,
+        "kg": 349.71
+      },
+      "BY": {
+        "revenue": 21116.63,
+        "expense": 19789.87,
+        "gross_profit": 1326.76,
+        "margin_pct": 6.28,
+        "pcs": 14129,
+        "kg": 1014.96
+      },
+      "AZ": {
+        "revenue": 3981.06,
+        "expense": 3414.29,
+        "gross_profit": 566.77,
+        "margin_pct": 14.24,
+        "pcs": 1920,
+        "kg": 218.11
+      },
+      "KG": {
+        "revenue": 365.31,
+        "expense": 192.42,
+        "gross_profit": 172.89,
+        "margin_pct": 47.33,
+        "pcs": 234,
+        "kg": 18.96
+      }
+    },
+    "by_type": {
+      "CAINIAO": {
+        "revenue": 31948.61,
+        "pcs": 20458
+      },
+      "MPO": {
+        "revenue": 450.67,
+        "pcs": 81
+      },
+      "MKO": {
+        "revenue": 13868.71,
+        "pcs": 2181
+      }
+    }
+  },
+  {
+    "month": 6,
+    "month_name": "Июнь",
+    "period": "2026-06",
+    "revenue": 0.0,
+    "expense": 0.0,
+    "gross_profit": 0.0,
+    "margin_pct": 0.0,
+    "by_country": {
+      "UZ": {
+        "revenue": 0.0,
+        "expense": 0.0,
+        "gross_profit": 0.0,
+        "margin_pct": 0.0,
+        "pcs": 0,
+        "kg": 0.0
+      },
+      "BY": {
+        "revenue": 0.0,
+        "expense": 0.0,
+        "gross_profit": 0.0,
+        "margin_pct": 0.0,
+        "pcs": 0,
+        "kg": 0.0
+      },
+      "AZ": {
+        "revenue": 0.0,
+        "expense": 0.0,
+        "gross_profit": 0.0,
+        "margin_pct": 0.0,
+        "pcs": 0,
+        "kg": 0.0
+      },
+      "KG": {
+        "revenue": 0.0,
+        "expense": 0.0,
+        "gross_profit": 0.0,
+        "margin_pct": 0.0,
+        "pcs": 0,
+        "kg": 0.0
+      }
+    },
+    "by_type": {
+      "CAINIAO": {
+        "revenue": 0.0,
+        "pcs": 0
+      },
+      "MPO": {
+        "revenue": 0.0,
+        "pcs": 0
+      },
+      "MKO": {
+        "revenue": 0.0,
+        "pcs": 0
+      }
+    }
+  },
+  {
+    "month": 7,
+    "month_name": "Июль",
+    "period": "2026-07",
+    "revenue": 0.0,
+    "expense": 0.0,
+    "gross_profit": 0.0,
+    "margin_pct": 0.0,
+    "by_country": {
+      "UZ": {
+        "revenue": 0.0,
+        "expense": 0.0,
+        "gross_profit": 0.0,
+        "margin_pct": 0.0,
+        "pcs": 0,
+        "kg": 0.0
+      },
+      "BY": {
+        "revenue": 0.0,
+        "expense": 0.0,
+        "gross_profit": 0.0,
+        "margin_pct": 0.0,
+        "pcs": 0,
+        "kg": 0.0
+      },
+      "AZ": {
+        "revenue": 0.0,
+        "expense": 0.0,
+        "gross_profit": 0.0,
+        "margin_pct": 0.0,
+        "pcs": 0,
+        "kg": 0.0
+      },
+      "KG": {
+        "revenue": 0.0,
+        "expense": 0.0,
+        "gross_profit": 0.0,
+        "margin_pct": 0.0,
+        "pcs": 0,
+        "kg": 0.0
+      }
+    },
+    "by_type": {
+      "CAINIAO": {
+        "revenue": 0.0,
+        "pcs": 0
+      },
+      "MPO": {
+        "revenue": 0.0,
+        "pcs": 0
+      },
+      "MKO": {
+        "revenue": 0.0,
+        "pcs": 0
+      }
+    }
+  },
+  {
+    "month": 8,
+    "month_name": "Август",
+    "period": "2026-08",
+    "revenue": 0.0,
+    "expense": 0.0,
+    "gross_profit": 0.0,
+    "margin_pct": 0.0,
+    "by_country": {
+      "UZ": {
+        "revenue": 0.0,
+        "expense": 0.0,
+        "gross_profit": 0.0,
+        "margin_pct": 0.0,
+        "pcs": 0,
+        "kg": 0.0
+      },
+      "BY": {
+        "revenue": 0.0,
+        "expense": 0.0,
+        "gross_profit": 0.0,
+        "margin_pct": 0.0,
+        "pcs": 0,
+        "kg": 0.0
+      },
+      "AZ": {
+        "revenue": 0.0,
+        "expense": 0.0,
+        "gross_profit": 0.0,
+        "margin_pct": 0.0,
+        "pcs": 0,
+        "kg": 0.0
+      },
+      "KG": {
+        "revenue": 0.0,
+        "expense": 0.0,
+        "gross_profit": 0.0,
+        "margin_pct": 0.0,
+        "pcs": 0,
+        "kg": 0.0
+      }
+    },
+    "by_type": {
+      "CAINIAO": {
+        "revenue": 0.0,
+        "pcs": 0
+      },
+      "MPO": {
+        "revenue": 0.0,
+        "pcs": 0
+      },
+      "MKO": {
+        "revenue": 0.0,
+        "pcs": 0
+      }
+    }
+  },
+  {
+    "month": 9,
+    "month_name": "Сентябрь",
+    "period": "2026-09",
+    "revenue": 0.0,
+    "expense": 0.0,
+    "gross_profit": 0.0,
+    "margin_pct": 0.0,
+    "by_country": {
+      "UZ": {
+        "revenue": 0.0,
+        "expense": 0.0,
+        "gross_profit": 0.0,
+        "margin_pct": 0.0,
+        "pcs": 0,
+        "kg": 0.0
+      },
+      "BY": {
+        "revenue": 0.0,
+        "expense": 0.0,
+        "gross_profit": 0.0,
+        "margin_pct": 0.0,
+        "pcs": 0,
+        "kg": 0.0
+      },
+      "AZ": {
+        "revenue": 0.0,
+        "expense": 0.0,
+        "gross_profit": 0.0,
+        "margin_pct": 0.0,
+        "pcs": 0,
+        "kg": 0.0
+      },
+      "KG": {
+        "revenue": 0.0,
+        "expense": 0.0,
+        "gross_profit": 0.0,
+        "margin_pct": 0.0,
+        "pcs": 0,
+        "kg": 0.0
+      }
+    },
+    "by_type": {
+      "CAINIAO": {
+        "revenue": 0.0,
+        "pcs": 0
+      },
+      "MPO": {
+        "revenue": 0.0,
+        "pcs": 0
+      },
+      "MKO": {
+        "revenue": 0.0,
+        "pcs": 0
+      }
+    }
+  },
+  {
+    "month": 10,
+    "month_name": "Октябрь",
+    "period": "2026-10",
+    "revenue": 0.0,
+    "expense": 0.0,
+    "gross_profit": 0.0,
+    "margin_pct": 0.0,
+    "by_country": {
+      "UZ": {
+        "revenue": 0.0,
+        "expense": 0.0,
+        "gross_profit": 0.0,
+        "margin_pct": 0.0,
+        "pcs": 0,
+        "kg": 0.0
+      },
+      "BY": {
+        "revenue": 0.0,
+        "expense": 0.0,
+        "gross_profit": 0.0,
+        "margin_pct": 0.0,
+        "pcs": 0,
+        "kg": 0.0
+      },
+      "AZ": {
+        "revenue": 0.0,
+        "expense": 0.0,
+        "gross_profit": 0.0,
+        "margin_pct": 0.0,
+        "pcs": 0,
+        "kg": 0.0
+      },
+      "KG": {
+        "revenue": 0.0,
+        "expense": 0.0,
+        "gross_profit": 0.0,
+        "margin_pct": 0.0,
+        "pcs": 0,
+        "kg": 0.0
+      }
+    },
+    "by_type": {
+      "CAINIAO": {
+        "revenue": 0.0,
+        "pcs": 0
+      },
+      "MPO": {
+        "revenue": 0.0,
+        "pcs": 0
+      },
+      "MKO": {
+        "revenue": 0.0,
+        "pcs": 0
+      }
+    }
+  },
+  {
+    "month": 11,
+    "month_name": "Ноябрь",
+    "period": "2026-11",
+    "revenue": 0.0,
+    "expense": 0.0,
+    "gross_profit": 0.0,
+    "margin_pct": 0.0,
+    "by_country": {
+      "UZ": {
+        "revenue": 0.0,
+        "expense": 0.0,
+        "gross_profit": 0.0,
+        "margin_pct": 0.0,
+        "pcs": 0,
+        "kg": 0.0
+      },
+      "BY": {
+        "revenue": 0.0,
+        "expense": 0.0,
+        "gross_profit": 0.0,
+        "margin_pct": 0.0,
+        "pcs": 0,
+        "kg": 0.0
+      },
+      "AZ": {
+        "revenue": 0.0,
+        "expense": 0.0,
+        "gross_profit": 0.0,
+        "margin_pct": 0.0,
+        "pcs": 0,
+        "kg": 0.0
+      },
+      "KG": {
+        "revenue": 0.0,
+        "expense": 0.0,
+        "gross_profit": 0.0,
+        "margin_pct": 0.0,
+        "pcs": 0,
+        "kg": 0.0
+      }
+    },
+    "by_type": {
+      "CAINIAO": {
+        "revenue": 0.0,
+        "pcs": 0
+      },
+      "MPO": {
+        "revenue": 0.0,
+        "pcs": 0
+      },
+      "MKO": {
+        "revenue": 0.0,
+        "pcs": 0
+      }
+    }
+  },
+  {
+    "month": 12,
+    "month_name": "Декабрь",
+    "period": "2026-12",
+    "revenue": 0.0,
+    "expense": 0.0,
+    "gross_profit": 0.0,
+    "margin_pct": 0.0,
+    "by_country": {
+      "UZ": {
+        "revenue": 0.0,
+        "expense": 0.0,
+        "gross_profit": 0.0,
+        "margin_pct": 0.0,
+        "pcs": 0,
+        "kg": 0.0
+      },
+      "BY": {
+        "revenue": 0.0,
+        "expense": 0.0,
+        "gross_profit": 0.0,
+        "margin_pct": 0.0,
+        "pcs": 0,
+        "kg": 0.0
+      },
+      "AZ": {
+        "revenue": 0.0,
+        "expense": 0.0,
+        "gross_profit": 0.0,
+        "margin_pct": 0.0,
+        "pcs": 0,
+        "kg": 0.0
+      },
+      "KG": {
+        "revenue": 0.0,
+        "expense": 0.0,
+        "gross_profit": 0.0,
+        "margin_pct": 0.0,
+        "pcs": 0,
+        "kg": 0.0
+      }
+    },
+    "by_type": {
+      "CAINIAO": {
+        "revenue": 0.0,
+        "pcs": 0
+      },
+      "MPO": {
+        "revenue": 0.0,
+        "pcs": 0
+      },
+      "MKO": {
+        "revenue": 0.0,
+        "pcs": 0
       }
     }
   }
