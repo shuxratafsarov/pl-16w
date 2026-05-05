@@ -4,7 +4,7 @@
   "totals": {
     "revenue": 126331.31,
     "expense": 113411.01,
-    "gross_profit": 12920.31,
+    "gross_profit": 12920.3,
     "margin_pct": 10.23
   },
   "byType": {
@@ -12,7 +12,7 @@
       "count": 7,
       "revenue": 97481.76,
       "expense": 93183.45,
-      "gross_profit": 4298.33,
+      "gross_profit": 4298.31,
       "margin_pct": 4.41,
       "note": "Marker 4 теперь хранится по партии: total_pcs = sum по странам (rows 23/32/41/50). UI суммирует партии."
     },
@@ -27,14 +27,14 @@
       "count": 4,
       "revenue": 27339.57,
       "expense": 19123.75,
-      "gross_profit": 8215.81,
+      "gross_profit": 8215.82,
       "margin_pct": 30.05
     }
   },
   "umbrella_uzum_cb": {
     "revenue": 28849.55,
     "expense": 20227.56,
-    "gross_profit": 8621.98,
+    "gross_profit": 8621.99,
     "margin_pct": 29.89
   },
   "parties": [
@@ -229,7 +229,7 @@
       "date": "2026-01-23",
       "revenue": 14671.52,
       "expense": 14069.11,
-      "gross_profit": 602.42,
+      "gross_profit": 602.41,
       "margin_pct": 4.11,
       "weight_net": 779.17,
       "weight_gross": 803.0,
@@ -505,7 +505,7 @@
       "date": "2026-01-24",
       "revenue": 14605.13,
       "expense": 14311.18,
-      "gross_profit": 293.96,
+      "gross_profit": 293.95,
       "margin_pct": 2.01,
       "weight_net": 777.26,
       "weight_gross": 814.0,
@@ -770,7 +770,7 @@
       "date": "2026-01-22",
       "revenue": 6982.3,
       "expense": 5047.68,
-      "gross_profit": 1934.61,
+      "gross_profit": 1934.62,
       "margin_pct": 27.71,
       "weight_net": 495.55,
       "weight_gross": 495.55,

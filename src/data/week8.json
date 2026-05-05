@@ -4,7 +4,7 @@
   "totals": {
     "revenue": 76106.82,
     "expense": 69314.81,
-    "gross_profit": 6792.02,
+    "gross_profit": 6792.01,
     "margin_pct": 8.92
   },
   "byType": {
@@ -12,7 +12,7 @@
       "count": 6,
       "revenue": 62451.79,
       "expense": 60810.02,
-      "gross_profit": 1641.78,
+      "gross_profit": 1641.77,
       "margin_pct": 2.63,
       "note": "Marker 4 теперь хранится по партии: total_pcs = sum по странам (rows 23/32/41/50). UI суммирует партии."
     },
@@ -21,7 +21,7 @@
       "revenue": 0,
       "expense": 0,
       "gross_profit": 0,
-      "margin_pct": 0.0
+      "margin_pct": 0
     },
     "MKO": {
       "count": 3,
@@ -321,7 +321,7 @@
       "date": "2026-02-18",
       "revenue": 17032.77,
       "expense": 16257.43,
-      "gross_profit": 775.35,
+      "gross_profit": 775.34,
       "margin_pct": 4.55,
       "weight_net": 885.17,
       "weight_gross": 918.0,
