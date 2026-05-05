@@ -336,7 +336,7 @@ function Dashboard() {
         const v = p[m];
         const avg = typeAverages[p.type]?.[m];
         if (typeof v === "number" && Number.isFinite(v) && typeof avg === "number" && avg > 0) {
-          rec[m] = statusFromAvg(v, avg);
+          rec[m] = statusFromAvg(v, avg, m);
         }
       });
       map.set(p.col, rec);
