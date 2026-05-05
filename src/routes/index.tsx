@@ -274,7 +274,17 @@ function scrollToMarker(id: string) {
 
 type Status = "ok" | "warning" | "critical";
 
-function statusFromAvg(value: number, avg: number): Status {
+function statusFromAvg(value: number, avg: number, metric?: MarkerKey): Status {
+  // Если у маркера задан фиксированный baseline — используем его + критический порог
+  if (metric) {
+    const baseline = MARKER_BASELINE[metric];
+    const critical = MARKER_CRITICAL[metric];
+    if (typeof baseline === "number") {
+      if (typeof critical === "number" && value > critical) return "critical";
+      if (value > baseline) return typeof critical === "number" && value > critical ? "critical" : "warning";
+      return "ok";
+    }
+  }
   if (avg <= 0) return "ok";
   const ratio = value / avg;
   if (ratio >= 1 + CRIT_PCT) return "critical";
