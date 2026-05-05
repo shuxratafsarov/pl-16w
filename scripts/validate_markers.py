@@ -70,7 +70,7 @@ def main():
     ws = wb["3PL_weekly"]
     issues = []
 
-    for week in range(1, 18):
+    for week in range(1, 19):
         path = os.path.join(DATA_DIR, f"week{week}.json")
         if not os.path.exists(path):
             continue
