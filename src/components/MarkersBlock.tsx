@@ -174,7 +174,7 @@ function MarkerMiniChart({
     if (!stats) return data.map((d) => ({ ...d, barFill: d.fill }));
     return data.map((d) => {
       const v = d.value as number;
-      const s = statusFromAvg(v, stats.avg, marker.direction);
+      const s = statusFromAvg(v, stats.avg, marker.direction, marker.key);
       const dCol = "col" in d ? d.col : undefined;
       const isHighlight = dCol != null && dCol === highlightCol;
       return {
