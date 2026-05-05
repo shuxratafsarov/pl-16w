@@ -1357,9 +1357,12 @@ function MarkerSection({
   const max = total > 0 ? Math.max(...valid.map((p) => p[metric] as number)) : 0;
   const min = total > 0 ? Math.min(...valid.map((p) => p[metric] as number)) : 0;
 
-  // Для графика — пороги от среднего по выборке
-  const warnThr = avg * (1 + WARN_PCT);
-  const critThr = avg * (1 + CRIT_PCT);
+  // Для графика — пороги: фиксированные baseline для M2/M3, иначе от среднего по выборке
+  const baseline = MARKER_BASELINE[metric];
+  const criticalBase = MARKER_CRITICAL[metric];
+  const refAvg = typeof baseline === "number" ? baseline : avg;
+  const warnThr = typeof baseline === "number" ? baseline : avg * (1 + WARN_PCT);
+  const critThr = typeof criticalBase === "number" ? criticalBase : (typeof baseline === "number" ? baseline * (1 + CRIT_PCT) : avg * (1 + CRIT_PCT));
 
   // Парсим "Маркер N · ..." на номер и название
   const titleMatch = meta.title.match(/^Маркер\s+(\d+)\s*·\s*(.+)$/);
