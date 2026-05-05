@@ -770,7 +770,7 @@ export function OverviewAnalytics({
         description={
           typeFilter === "ALL"
             ? "Все типы суммарно"
-            : `Только ${TYPE_META[typeFilter as PartyType].full}`
+            : `Только ${typeFilterFull(typeFilter)}`
         }
       >
         <div className="h-72">
@@ -1399,7 +1399,7 @@ export function OverviewAnalytics({
           description={
             typeFilter === "ALL"
               ? "Объёмы по странам по всем типам"
-              : `Объёмы по странам · ${TYPE_META[typeFilter as PartyType].label}`
+              : `Объёмы по странам · ${typeFilterLabel(typeFilter)}`
           }
         >
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-4">
@@ -1526,7 +1526,7 @@ export function OverviewAnalytics({
       {/* Топ-10 партий */}
       <SectionCard
         title="Топ‑10 партий по прибыли"
-        description={typeFilter === "ALL" ? "За весь период" : `Только ${TYPE_META[typeFilter as PartyType].label}`}
+        description={typeFilter === "ALL" ? "За весь период" : `Только ${typeFilterLabel(typeFilter)}`}
       >
         <div className="overflow-x-auto -mx-2">
           <table className="w-full text-sm">
@@ -1669,7 +1669,7 @@ export function OverviewAnalytics({
       <div className="flex items-center justify-center gap-2 text-xs text-muted-foreground py-2">
         <Activity className="h-3.5 w-3.5" />
         <Boxes className="h-3.5 w-3.5" />
-        Аналитика построена по {sortedWeeks.length} неделям · фильтр: {typeFilter === "ALL" ? "Все типы" : TYPE_META[typeFilter as PartyType].label}
+        Аналитика построена по {sortedWeeks.length} неделям · фильтр: {typeFilter === "ALL" ? "Все типы" : typeFilterLabel(typeFilter)}
       </div>
     </div>
 
@@ -1791,7 +1791,7 @@ export function OverviewAnalytics({
                 <div>
                   <p className="text-xs uppercase tracking-wider text-muted-foreground font-semibold mb-2">
                     Топ-10 партий по {meta.label.toLowerCase()}
-                    {typeFilter !== "ALL" && <span className="ml-1 text-[10px] normal-case">· фильтр: {TYPE_META[typeFilter as PartyType].label}</span>}
+                    {typeFilter !== "ALL" && <span className="ml-1 text-[10px] normal-case">· фильтр: {typeFilterLabel(typeFilter)}</span>}
                   </p>
                   <div className="rounded-xl border border-border overflow-hidden">
                     <table className="w-full text-xs">
@@ -2175,7 +2175,7 @@ export function OverviewAnalytics({
             <>
               <DialogHeader>
                 <DialogTitle className="text-xl">Неделя W{w.week}</DialogTitle>
-                <DialogDescription>{w.period} · {filtered.length} партий{typeFilter !== "ALL" ? ` · ${TYPE_META[typeFilter as PartyType].label}` : ""}</DialogDescription>
+                <DialogDescription>{w.period} · {filtered.length} партий{typeFilter !== "ALL" ? ` · ${typeFilterLabel(typeFilter)}` : ""}</DialogDescription>
               </DialogHeader>
               <div className="space-y-6 mt-2">
                 <div className="grid grid-cols-2 sm:grid-cols-4 gap-3">
