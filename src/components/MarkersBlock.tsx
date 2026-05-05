@@ -38,7 +38,16 @@ const WARN_PCT = 0.1;
 const CRIT_PCT = 0.2;
 type Status = "ok" | "warning" | "critical";
 
-function statusFromAvg(value: number, avg: number, dir: "above" | "below"): Status {
+function statusFromAvg(value: number, avg: number, dir: "above" | "below", metric?: MarkerKey): Status {
+  if (metric) {
+    const baseline = MARKER_BASELINE[metric as keyof typeof MARKER_BASELINE];
+    const critical = MARKER_CRITICAL[metric as keyof typeof MARKER_CRITICAL];
+    if (typeof baseline === "number") {
+      if (typeof critical === "number" && value > critical) return "critical";
+      if (value > baseline) return "warning";
+      return "ok";
+    }
+  }
   if (avg <= 0 && dir === "above") return "ok";
   const ratio = value / avg;
   if (dir === "above") {
