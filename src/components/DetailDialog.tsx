@@ -362,7 +362,17 @@ function PartyDetails({ col, week }: { col: string; week: WeekData }) {
             <TIcon className="h-6 w-6" />
           </div>
           <div>
-            <DialogTitle className="text-xl">Партия №{party.num}</DialogTitle>
+            <DialogTitle className="text-xl flex items-center gap-2 flex-wrap">
+              Партия №{party.num}
+              {party.is_hk_danger && (
+                <span
+                  title="ОПАСНИК (JM HK) — груз HONG KONG"
+                  className="inline-flex items-center gap-1 rounded-md border border-destructive/40 bg-destructive/10 px-2 py-0.5 text-[10px] font-bold uppercase tracking-wider text-destructive"
+                >
+                  ⚠ ОПАСНИК (JM HK)
+                </span>
+              )}
+            </DialogTitle>
             <DialogDescription className="flex items-center gap-2">
               <span style={{ color: tMeta.color }} className="font-semibold">{tMeta.label}</span>
               {party.date && (
