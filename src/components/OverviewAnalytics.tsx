@@ -72,7 +72,13 @@ const TYPE_META: Record<PartyType, { label: string; full: string; color: string;
   MKO: { label: "UZUM MKO", full: "UZUM Crossborder · MKO", color: "var(--mko)", icon: Banknote },
 };
 
-type TypeFilter = "ALL" | PartyType;
+type TypeFilter = "ALL" | "UZUM" | PartyType;
+const matchesType = (p: { type: PartyType }, f: TypeFilter): boolean =>
+  f === "ALL" ? true : f === "UZUM" ? p.type === "MKO" || p.type === "MPO" : p.type === f;
+const typeFilterLabel = (f: TypeFilter): string =>
+  f === "ALL" ? "Все" : f === "UZUM" ? "UZUM MKO+MPO" : TYPE_META[f].label;
+const typeFilterFull = (f: TypeFilter): string =>
+  f === "ALL" ? "Все типы" : f === "UZUM" ? "UZUM MKO + MPO" : TYPE_META[f].full;
 type MetricKey = "revenue" | "expense" | "gross_profit" | "margin_pct" | "pcs" | "kg";
 
 const METRIC_META: Record<MetricKey, { label: string; color: string; format: (v: number) => string }> = {
