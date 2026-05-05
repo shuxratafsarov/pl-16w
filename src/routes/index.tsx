@@ -151,7 +151,9 @@ function reconcileWeek(src: WeekData): { week: WeekData; discrepancies: Discrepa
   (["CAINIAO", "MPO", "MKO"] as PartyType[]).forEach((t) => {
     const c = sumByType(t);
     const old = src.byType[t];
-    if (old) {
+    // Если в исходнике агрегаты по типу пустые (как в Общем своде) — сверять не с чем.
+    const oldHas = old && (old.revenue || old.expense || old.gross_profit);
+    if (old && oldHas) {
       if (Math.abs(c.revenue - old.revenue) > EPS)
         discrepancies.push({ scope: t, metric: "Выручка", source: old.revenue, computed: c.revenue, diff: c.revenue - old.revenue });
       if (Math.abs(c.expense - old.expense) > EPS)
