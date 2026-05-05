@@ -656,7 +656,7 @@ export function OverviewAnalytics({
           <div className="flex items-center gap-2">
             <span className="text-[11px] text-muted-foreground uppercase tracking-wider font-semibold">Тип</span>
             <div className="inline-flex rounded-xl border border-border bg-card/60 p-1 gap-0.5">
-              {(["ALL", "CAINIAO", "MPO", "MKO"] as TypeFilter[]).map((f) => (
+              {(["ALL", "CAINIAO", "MPO", "MKO", "UZUM"] as TypeFilter[]).map((f) => (
                 <button
                   key={f}
                   onClick={() => setTypeFilter(f)}
@@ -667,7 +667,7 @@ export function OverviewAnalytics({
                       : "text-muted-foreground hover:text-foreground"
                   )}
                 >
-                  {f === "ALL" ? "Все" : TYPE_META[f].label}
+                  {typeFilterLabel(f)}
                 </button>
               ))}
             </div>
