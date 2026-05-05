@@ -40,6 +40,7 @@ import { SectionCard } from "@/components/SectionCard";
 import { StatCard } from "@/components/StatCard";
 import { StatusBadge } from "@/components/StatusBadge";
 import { MarkerChart } from "@/components/MarkerChart";
+import { MARKER_BASELINE, MARKER_CRITICAL } from "@/lib/markerBaselines";
 import { ProductMix } from "@/components/ProductMix";
 import { DetailDialog, type DetailTarget } from "@/components/DetailDialog";
 import { OverviewAnalytics } from "@/components/OverviewAnalytics";
@@ -274,7 +275,17 @@ function scrollToMarker(id: string) {
 
 type Status = "ok" | "warning" | "critical";
 
-function statusFromAvg(value: number, avg: number): Status {
+function statusFromAvg(value: number, avg: number, metric?: MarkerKey): Status {
+  // Если у маркера задан фиксированный baseline — используем его + критический порог
+  if (metric) {
+    const baseline = MARKER_BASELINE[metric];
+    const critical = MARKER_CRITICAL[metric];
+    if (typeof baseline === "number") {
+      if (typeof critical === "number" && value > critical) return "critical";
+      if (value > baseline) return typeof critical === "number" && value > critical ? "critical" : "warning";
+      return "ok";
+    }
+  }
   if (avg <= 0) return "ok";
   const ratio = value / avg;
   if (ratio >= 1 + CRIT_PCT) return "critical";
@@ -325,7 +336,7 @@ function Dashboard() {
         const v = p[m];
         const avg = typeAverages[p.type]?.[m];
         if (typeof v === "number" && Number.isFinite(v) && typeof avg === "number" && avg > 0) {
-          rec[m] = statusFromAvg(v, avg);
+          rec[m] = statusFromAvg(v, avg, m);
         }
       });
       map.set(p.col, rec);
@@ -1346,9 +1357,12 @@ function MarkerSection({
   const max = total > 0 ? Math.max(...valid.map((p) => p[metric] as number)) : 0;
   const min = total > 0 ? Math.min(...valid.map((p) => p[metric] as number)) : 0;
 
-  // Для графика — пороги от среднего по выборке
-  const warnThr = avg * (1 + WARN_PCT);
-  const critThr = avg * (1 + CRIT_PCT);
+  // Для графика — пороги: фиксированные baseline для M2/M3, иначе от среднего по выборке
+  const baseline = MARKER_BASELINE[metric];
+  const criticalBase = MARKER_CRITICAL[metric];
+  const refAvg = typeof baseline === "number" ? baseline : avg;
+  const warnThr = typeof baseline === "number" ? baseline : avg * (1 + WARN_PCT);
+  const critThr = typeof criticalBase === "number" ? criticalBase : (typeof baseline === "number" ? baseline * (1 + CRIT_PCT) : avg * (1 + CRIT_PCT));
 
   // Парсим "Маркер N · ..." на номер и название
   const titleMatch = meta.title.match(/^Маркер\s+(\d+)\s*·\s*(.+)$/);
@@ -1387,7 +1401,11 @@ function MarkerSection({
     <SectionCard title={styledTitle}>
       <div className="grid grid-cols-2 lg:grid-cols-6 gap-3 mb-5">
         <MiniStat label="Партий с данными" value={fmtNum(total)} />
-        <MiniStat label="Среднее" value={`${fmtNum(avg, meta.decimals)}${meta.unit}`} accent="primary" />
+        <MiniStat
+          label={typeof baseline === "number" ? "Целевое (среднее)" : "Среднее"}
+          value={`${fmtNum(refAvg, meta.decimals)}${meta.unit}`}
+          accent="primary"
+        />
         <MiniStat label="Минимум" value={`${fmtNum(min, meta.decimals)}${meta.unit}`} />
         <MiniStat label="Максимум" value={`${fmtNum(max, meta.decimals)}${meta.unit}`} />
         <MiniStat label="Внимание" value={fmtNum(warning)} accent="warning" />
@@ -1402,6 +1420,7 @@ function MarkerSection({
           yLabel={meta.yLabel}
           decimals={meta.decimals}
           onBarClick={onSelectParty}
+          avgOverride={refAvg}
         />
       ) : (
         <div className="flex h-48 items-center justify-center rounded-lg border border-dashed text-sm text-muted-foreground">

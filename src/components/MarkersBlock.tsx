@@ -3,6 +3,7 @@ import { Bar, BarChart, Cell, ResponsiveContainer, Tooltip, XAxis, YAxis, Refere
 import { Gauge, TrendingUp, Layers, Percent } from "lucide-react";
 import type { Party, PartyType } from "@/lib/types";
 import { fmtNum } from "@/lib/format";
+import { MARKER_BASELINE, MARKER_CRITICAL } from "@/lib/markerBaselines";
 import { cn } from "@/lib/utils";
 
 type MarkerKey = "marker1_tariff" | "marker2_volnet" | "marker3_grossnet" | "marker4_margin";
@@ -37,7 +38,16 @@ const WARN_PCT = 0.1;
 const CRIT_PCT = 0.2;
 type Status = "ok" | "warning" | "critical";
 
-function statusFromAvg(value: number, avg: number, dir: "above" | "below"): Status {
+function statusFromAvg(value: number, avg: number, dir: "above" | "below", metric?: MarkerKey): Status {
+  if (metric) {
+    const baseline = MARKER_BASELINE[metric as keyof typeof MARKER_BASELINE];
+    const critical = MARKER_CRITICAL[metric as keyof typeof MARKER_CRITICAL];
+    if (typeof baseline === "number") {
+      if (typeof critical === "number" && value > critical) return "critical";
+      if (value > baseline) return "warning";
+      return "ok";
+    }
+  }
   if (avg <= 0 && dir === "above") return "ok";
   const ratio = value / avg;
   if (dir === "above") {
@@ -132,17 +142,24 @@ function MarkerMiniChart({
     return list;
   }, [marker.key, parties, scope]);
 
-  // среднее и пороги — считаем от выборки на графике
+  // среднее и пороги — фиксированный baseline (если задан) или среднее по выборке
   const stats = useMemo(() => {
     const vals = data.map((d) => d.value as number);
     if (vals.length === 0) return null;
-    const avg = vals.reduce((s, v) => s + v, 0) / vals.length;
+    const sampleAvg = vals.reduce((s, v) => s + v, 0) / vals.length;
+    const baseline = MARKER_BASELINE[marker.key as keyof typeof MARKER_BASELINE];
+    const critical = MARKER_CRITICAL[marker.key as keyof typeof MARKER_CRITICAL];
+    const avg = typeof baseline === "number" ? baseline : sampleAvg;
     const min = Math.min(...vals);
     const max = Math.max(...vals);
-    const warn = marker.direction === "above" ? avg * (1 + WARN_PCT) : avg * (1 - WARN_PCT);
-    const crit = marker.direction === "above" ? avg * (1 + CRIT_PCT) : avg * (1 - CRIT_PCT);
-    return { avg, min, max, warn, crit };
-  }, [data, marker.direction]);
+    const warn = typeof baseline === "number"
+      ? baseline
+      : (marker.direction === "above" ? sampleAvg * (1 + WARN_PCT) : sampleAvg * (1 - WARN_PCT));
+    const crit = typeof critical === "number"
+      ? critical
+      : (marker.direction === "above" ? sampleAvg * (1 + CRIT_PCT) : sampleAvg * (1 - CRIT_PCT));
+    return { avg, min, max, warn, crit, isFixed: typeof baseline === "number" };
+  }, [data, marker.direction, marker.key]);
 
   // раскраска баров
   type ColoredDatum = {
@@ -157,7 +174,7 @@ function MarkerMiniChart({
     if (!stats) return data.map((d) => ({ ...d, barFill: d.fill }));
     return data.map((d) => {
       const v = d.value as number;
-      const s = statusFromAvg(v, stats.avg, marker.direction);
+      const s = statusFromAvg(v, stats.avg, marker.direction, marker.key);
       const dCol = "col" in d ? d.col : undefined;
       const isHighlight = dCol != null && dCol === highlightCol;
       return {
@@ -260,10 +277,12 @@ function PartyMarkersGauges({ parties, col }: { parties: Party[]; col: string })
       {MARKERS.map((m) => {
         const v = getMarkerValue(party, m.key);
         const vals = sameType.map((p) => getMarkerValue(p, m.key)).filter((x): x is number => x != null);
-        const avg = vals.length > 0 ? vals.reduce((s, x) => s + x, 0) / vals.length : null;
+        const sampleAvg = vals.length > 0 ? vals.reduce((s, x) => s + x, 0) / vals.length : null;
+        const baseline = MARKER_BASELINE[m.key as keyof typeof MARKER_BASELINE];
+        const avg = typeof baseline === "number" ? baseline : sampleAvg;
         const min = vals.length > 0 ? Math.min(...vals) : null;
         const max = vals.length > 0 ? Math.max(...vals) : null;
-        const status: Status | null = v != null && avg != null && avg !== 0 ? statusFromAvg(v, avg, m.direction) : null;
+        const status: Status | null = v != null && avg != null && avg !== 0 ? statusFromAvg(v, avg, m.direction, m.key) : null;
         const dev = v != null && avg != null && avg !== 0 ? ((v - avg) / avg) * 100 : null;
 
         // позиция партии в диапазоне min..max

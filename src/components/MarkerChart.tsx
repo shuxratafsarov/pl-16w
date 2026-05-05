@@ -21,6 +21,7 @@ export function MarkerChart({
   yLabel,
   decimals = 2,
   onBarClick,
+  avgOverride,
 }: {
   parties: Party[];
   metric: MarkerKey;
@@ -28,6 +29,8 @@ export function MarkerChart({
   yLabel: string;
   decimals?: number;
   onBarClick?: (col: string) => void;
+  /** Если задан — используется как «среднее» (целевое) для подсветки и ReferenceLine. */
+  avgOverride?: number;
 }) {
   const dir = threshold.direction ?? "above";
   const data = parties
@@ -35,10 +38,10 @@ export function MarkerChart({
     .map((p) => {
       const val = p[metric] as number;
       const critical =
-        dir === "above" ? val >= threshold.critical : val <= threshold.critical;
+        dir === "above" ? val > threshold.critical : val < threshold.critical;
       const warning =
         !critical &&
-        (dir === "above" ? val >= threshold.warning : val <= threshold.warning);
+        (dir === "above" ? val > threshold.warning : val < threshold.warning);
       return {
         name: p.num,
         type: p.type,
@@ -56,7 +59,9 @@ export function MarkerChart({
     );
   }
 
-  const avg = data.reduce((s, d) => s + d.value, 0) / data.length;
+  const sampleAvg = data.reduce((s, d) => s + d.value, 0) / data.length;
+  const avg = typeof avgOverride === "number" ? avgOverride : sampleAvg;
+  const avgLabel = typeof avgOverride === "number" ? "целев" : "средн";
 
   return (
     <div className="h-80 w-full">
@@ -108,7 +113,7 @@ export function MarkerChart({
             stroke="var(--primary)"
             strokeDasharray="4 4"
             label={{
-              value: `средн ${fmtNum(avg, decimals)}`,
+              value: `${avgLabel} ${fmtNum(avg, decimals)}`,
               fill: "var(--primary)",
               fontSize: 10,
               position: "right",
