@@ -313,7 +313,7 @@ function computeTypeAverages(parties: Party[]) {
 
 function Dashboard() {
   const [selectedWeek, setSelectedWeek] = useState<number>(DEFAULT_WEEK);
-  const [filter, setFilter] = useState<"ALL" | PartyType>("ALL");
+  const [filter, setFilter] = useState<"ALL" | "UZUM" | PartyType>("ALL");
   const [detail, setDetail] = useState<DetailTarget | null>(null);
 
   const isOverview = selectedWeek === OVERVIEW_KEY;
@@ -412,7 +412,12 @@ function Dashboard() {
   }, [worstStatusByParty, week]);
 
   const parties = useMemo<Party[]>(
-    () => (filter === "ALL" ? week.parties : week.parties.filter((p) => p.type === filter)),
+    () =>
+      filter === "ALL"
+        ? week.parties
+        : filter === "UZUM"
+        ? week.parties.filter((p) => p.type === "MKO" || p.type === "MPO")
+        : week.parties.filter((p) => p.type === filter),
     [filter, week]
   );
 
@@ -940,7 +945,7 @@ function Dashboard() {
               </p>
             </div>
             <div className="inline-flex rounded-xl border border-border bg-card/60 backdrop-blur-sm p-1 shadow-sm">
-              {(["ALL", "CAINIAO", "MPO", "MKO"] as const).map((f) => (
+              {(["ALL", "CAINIAO", "MPO", "MKO", "UZUM"] as const).map((f) => (
                 <button
                   key={f}
                   onClick={() => setFilter(f)}
@@ -949,7 +954,7 @@ function Dashboard() {
                     filter === f ? "gradient-primary text-white shadow-glow" : "text-muted-foreground hover:text-foreground"
                   )}
                 >
-                  {f === "ALL" ? "Все" : TYPE_META[f].label}
+                  {f === "ALL" ? "Все" : f === "UZUM" ? "UZUM MKO+MPO" : TYPE_META[f].label}
                 </button>
               ))}
             </div>
@@ -1005,7 +1010,7 @@ function Dashboard() {
             >
               <ProductMix
                 parties={parties}
-                scope={filter === "ALL" ? { kind: "all" } : { kind: "type", type: filter }}
+                scope={filter === "ALL" || filter === "UZUM" ? { kind: "all" } : { kind: "type", type: filter }}
               />
             </SectionCard>
           </div>
