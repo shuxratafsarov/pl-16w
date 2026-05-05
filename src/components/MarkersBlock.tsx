@@ -3,6 +3,7 @@ import { Bar, BarChart, Cell, ResponsiveContainer, Tooltip, XAxis, YAxis, Refere
 import { Gauge, TrendingUp, Layers, Percent } from "lucide-react";
 import type { Party, PartyType } from "@/lib/types";
 import { fmtNum } from "@/lib/format";
+import { MARKER_BASELINE, MARKER_CRITICAL } from "@/lib/markerBaselines";
 import { cn } from "@/lib/utils";
 
 type MarkerKey = "marker1_tariff" | "marker2_volnet" | "marker3_grossnet" | "marker4_margin";
