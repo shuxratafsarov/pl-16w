@@ -72,7 +72,13 @@ const TYPE_META: Record<PartyType, { label: string; full: string; color: string;
   MKO: { label: "UZUM MKO", full: "UZUM Crossborder · MKO", color: "var(--mko)", icon: Banknote },
 };
 
-type TypeFilter = "ALL" | PartyType;
+type TypeFilter = "ALL" | "UZUM" | PartyType;
+const matchesType = (p: { type: PartyType }, f: TypeFilter): boolean =>
+  f === "ALL" ? true : f === "UZUM" ? p.type === "MKO" || p.type === "MPO" : p.type === f;
+const typeFilterLabel = (f: TypeFilter): string =>
+  f === "ALL" ? "Все" : f === "UZUM" ? "UZUM MKO+MPO" : TYPE_META[f].label;
+const typeFilterFull = (f: TypeFilter): string =>
+  f === "ALL" ? "Все типы" : f === "UZUM" ? "UZUM MKO + MPO" : TYPE_META[f].full;
 type MetricKey = "revenue" | "expense" | "gross_profit" | "margin_pct" | "pcs" | "kg";
 
 const METRIC_META: Record<MetricKey, { label: string; color: string; format: (v: number) => string }> = {
@@ -126,7 +132,7 @@ export function OverviewAnalytics({
   const weeklySeries = useMemo(() => {
     return sortedWeeks.map((w) => {
       const parties =
-        typeFilter === "ALL" ? w.parties : w.parties.filter((p) => p.type === typeFilter);
+        w.parties.filter((p) => matchesType(p, typeFilter));
       const revenue = parties.reduce((s, p) => s + (p.revenue ?? 0), 0);
       const expense = parties.reduce((s, p) => s + (p.expense ?? 0), 0);
       const gross_profit = parties.reduce((s, p) => s + (p.gross_profit ?? 0), 0);
@@ -223,7 +229,7 @@ export function OverviewAnalytics({
     const map = new Map<string, { pcs: number; kg: number }>();
     sortedWeeks.forEach((w) => {
       w.parties.forEach((p) => {
-        if (typeFilter !== "ALL" && p.type !== typeFilter) return;
+        if (!matchesType(p, typeFilter)) return;
         (p.mix ?? []).forEach((m) => {
           const cur = map.get(m.country) ?? { pcs: 0, kg: 0 };
           cur.pcs += m.pcs ?? 0;
@@ -252,7 +258,7 @@ export function OverviewAnalytics({
       let expense = 0;
       let totalWeekPcs = 0;
       w.parties.forEach((p) => {
-        if (typeFilter !== "ALL" && p.type !== typeFilter) return;
+        if (!matchesType(p, typeFilter)) return;
         const partyTotalMixPcs = (p.mix ?? []).reduce((s, m) => s + (m.pcs ?? 0), 0);
         const countryMix = (p.mix ?? []).filter((m) => m.country === cc);
         const partyCountryPcs = countryMix.reduce((s, m) => s + (m.pcs ?? 0), 0);
@@ -282,7 +288,7 @@ export function OverviewAnalytics({
     const subMap = new Map<string, { pcs: number; kg: number }>();
     sortedWeeks.forEach((w) => {
       w.parties.forEach((p) => {
-        if (typeFilter !== "ALL" && p.type !== typeFilter) return;
+        if (!matchesType(p, typeFilter)) return;
         (p.mix ?? []).forEach((m) => {
           if (m.country !== cc) return;
           const prev = subMap.get(m.subtype) ?? { pcs: 0, kg: 0 };
@@ -300,7 +306,7 @@ export function OverviewAnalytics({
     const partyContribs: { label: string; week: number; revenue: number; gross_profit: number; margin_pct: number | null }[] = [];
     sortedWeeks.forEach((w) => {
       w.parties.forEach((p) => {
-        if (typeFilter !== "ALL" && p.type !== typeFilter) return;
+        if (!matchesType(p, typeFilter)) return;
         const partyTotalMixPcs = (p.mix ?? []).reduce((s, m) => s + (m.pcs ?? 0), 0);
         const partyCountryPcs = (p.mix ?? []).filter((m) => m.country === cc).reduce((s, m) => s + (m.pcs ?? 0), 0);
         if (partyCountryPcs === 0 || partyTotalMixPcs === 0) return;
@@ -345,7 +351,7 @@ export function OverviewAnalytics({
 
   const topParties = useMemo(() => {
     const list = sortedWeeks.flatMap((w) =>
-      w.parties.filter((p) => typeFilter === "ALL" || p.type === typeFilter).map((p) => ({ ...p, _week: w.week }))
+      w.parties.filter((p) => matchesType(p, typeFilter)).map((p) => ({ ...p, _week: w.week }))
     );
     return list.sort((a, b) => b.gross_profit - a.gross_profit).slice(0, 10);
   }, [sortedWeeks, typeFilter]);
@@ -354,7 +360,7 @@ export function OverviewAnalytics({
   /** Данные для VolumeAndBreakdown — по неделям с byCountry/byType. */
   const volumeWeeklyData = useMemo<VBPeriodPoint[]>(() => {
     return sortedWeeks.map((w) => {
-      const parties = typeFilter === "ALL" ? w.parties : w.parties.filter((p) => p.type === typeFilter);
+      const parties = w.parties.filter((p) => matchesType(p, typeFilter));
       // byType (нативно)
       const byType: VBPeriodPoint["byType"] = {};
       (["CAINIAO", "MPO", "MKO"] as PartyType[]).forEach((t) => {
@@ -426,7 +432,7 @@ export function OverviewAnalytics({
       return typeof v === "number" && Number.isFinite(v) ? v : null;
     };
     const filteredParties = (w: WeekData) =>
-      typeFilter === "ALL" ? w.parties : w.parties.filter((p) => p.type === typeFilter);
+      w.parties.filter((p) => matchesType(p, typeFilter));
     return MARKERS.map((m) => {
       const isSum = m.key === "marker4_pcs";
       const reduce = (vals: number[]) =>
@@ -570,7 +576,7 @@ export function OverviewAnalytics({
     };
     const allParties = sortedWeeks.flatMap((w) =>
       w.parties
-        .filter((p) => typeFilter === "ALL" || p.type === typeFilter)
+        .filter((p) => matchesType(p, typeFilter))
         .map((p) => ({ p, week: w.week, period: w.period }))
     );
     const topParties = [...allParties]
@@ -650,7 +656,7 @@ export function OverviewAnalytics({
           <div className="flex items-center gap-2">
             <span className="text-[11px] text-muted-foreground uppercase tracking-wider font-semibold">Тип</span>
             <div className="inline-flex rounded-xl border border-border bg-card/60 p-1 gap-0.5">
-              {(["ALL", "CAINIAO", "MPO", "MKO"] as TypeFilter[]).map((f) => (
+              {(["ALL", "CAINIAO", "MPO", "MKO", "UZUM"] as TypeFilter[]).map((f) => (
                 <button
                   key={f}
                   onClick={() => setTypeFilter(f)}
@@ -661,7 +667,7 @@ export function OverviewAnalytics({
                       : "text-muted-foreground hover:text-foreground"
                   )}
                 >
-                  {f === "ALL" ? "Все" : TYPE_META[f].label}
+                  {typeFilterLabel(f)}
                 </button>
               ))}
             </div>
@@ -764,7 +770,7 @@ export function OverviewAnalytics({
         description={
           typeFilter === "ALL"
             ? "Все типы суммарно"
-            : `Только ${TYPE_META[typeFilter as PartyType].full}`
+            : `Только ${typeFilterFull(typeFilter)}`
         }
       >
         <div className="h-72">
@@ -1393,7 +1399,7 @@ export function OverviewAnalytics({
           description={
             typeFilter === "ALL"
               ? "Объёмы по странам по всем типам"
-              : `Объёмы по странам · ${TYPE_META[typeFilter as PartyType].label}`
+              : `Объёмы по странам · ${typeFilterLabel(typeFilter)}`
           }
         >
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-4">
@@ -1520,7 +1526,7 @@ export function OverviewAnalytics({
       {/* Топ-10 партий */}
       <SectionCard
         title="Топ‑10 партий по прибыли"
-        description={typeFilter === "ALL" ? "За весь период" : `Только ${TYPE_META[typeFilter as PartyType].label}`}
+        description={typeFilter === "ALL" ? "За весь период" : `Только ${typeFilterLabel(typeFilter)}`}
       >
         <div className="overflow-x-auto -mx-2">
           <table className="w-full text-sm">
@@ -1663,7 +1669,7 @@ export function OverviewAnalytics({
       <div className="flex items-center justify-center gap-2 text-xs text-muted-foreground py-2">
         <Activity className="h-3.5 w-3.5" />
         <Boxes className="h-3.5 w-3.5" />
-        Аналитика построена по {sortedWeeks.length} неделям · фильтр: {typeFilter === "ALL" ? "Все типы" : TYPE_META[typeFilter as PartyType].label}
+        Аналитика построена по {sortedWeeks.length} неделям · фильтр: {typeFilter === "ALL" ? "Все типы" : typeFilterLabel(typeFilter)}
       </div>
     </div>
 
@@ -1785,7 +1791,7 @@ export function OverviewAnalytics({
                 <div>
                   <p className="text-xs uppercase tracking-wider text-muted-foreground font-semibold mb-2">
                     Топ-10 партий по {meta.label.toLowerCase()}
-                    {typeFilter !== "ALL" && <span className="ml-1 text-[10px] normal-case">· фильтр: {TYPE_META[typeFilter as PartyType].label}</span>}
+                    {typeFilter !== "ALL" && <span className="ml-1 text-[10px] normal-case">· фильтр: {typeFilterLabel(typeFilter)}</span>}
                   </p>
                   <div className="rounded-xl border border-border overflow-hidden">
                     <table className="w-full text-xs">
@@ -2141,7 +2147,7 @@ export function OverviewAnalytics({
       <DialogContent className="max-w-4xl max-h-[90vh] overflow-y-auto">
         {periodDrill !== null && weeksMap[periodDrill] && (() => {
           const w = weeksMap[periodDrill];
-          const filtered = typeFilter === "ALL" ? w.parties : w.parties.filter((p) => p.type === typeFilter);
+          const filtered = w.parties.filter((p) => matchesType(p, typeFilter));
           const rev = filtered.reduce((s, p) => s + (p.revenue ?? 0), 0);
           const exp = filtered.reduce((s, p) => s + (p.expense ?? 0), 0);
           const gp = rev - exp;
@@ -2169,7 +2175,7 @@ export function OverviewAnalytics({
             <>
               <DialogHeader>
                 <DialogTitle className="text-xl">Неделя W{w.week}</DialogTitle>
-                <DialogDescription>{w.period} · {filtered.length} партий{typeFilter !== "ALL" ? ` · ${TYPE_META[typeFilter as PartyType].label}` : ""}</DialogDescription>
+                <DialogDescription>{w.period} · {filtered.length} партий{typeFilter !== "ALL" ? ` · ${typeFilterLabel(typeFilter)}` : ""}</DialogDescription>
               </DialogHeader>
               <div className="space-y-6 mt-2">
                 <div className="grid grid-cols-2 sm:grid-cols-4 gap-3">
