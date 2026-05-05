@@ -277,10 +277,12 @@ function PartyMarkersGauges({ parties, col }: { parties: Party[]; col: string })
       {MARKERS.map((m) => {
         const v = getMarkerValue(party, m.key);
         const vals = sameType.map((p) => getMarkerValue(p, m.key)).filter((x): x is number => x != null);
-        const avg = vals.length > 0 ? vals.reduce((s, x) => s + x, 0) / vals.length : null;
+        const sampleAvg = vals.length > 0 ? vals.reduce((s, x) => s + x, 0) / vals.length : null;
+        const baseline = MARKER_BASELINE[m.key as keyof typeof MARKER_BASELINE];
+        const avg = typeof baseline === "number" ? baseline : sampleAvg;
         const min = vals.length > 0 ? Math.min(...vals) : null;
         const max = vals.length > 0 ? Math.max(...vals) : null;
-        const status: Status | null = v != null && avg != null && avg !== 0 ? statusFromAvg(v, avg, m.direction) : null;
+        const status: Status | null = v != null && avg != null && avg !== 0 ? statusFromAvg(v, avg, m.direction, m.key) : null;
         const dev = v != null && avg != null && avg !== 0 ? ((v - avg) / avg) * 100 : null;
 
         // позиция партии в диапазоне min..max
