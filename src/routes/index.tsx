@@ -1401,7 +1401,11 @@ function MarkerSection({
     <SectionCard title={styledTitle}>
       <div className="grid grid-cols-2 lg:grid-cols-6 gap-3 mb-5">
         <MiniStat label="Партий с данными" value={fmtNum(total)} />
-        <MiniStat label="Среднее" value={`${fmtNum(avg, meta.decimals)}${meta.unit}`} accent="primary" />
+        <MiniStat
+          label={typeof baseline === "number" ? "Целевое (среднее)" : "Среднее"}
+          value={`${fmtNum(refAvg, meta.decimals)}${meta.unit}`}
+          accent="primary"
+        />
         <MiniStat label="Минимум" value={`${fmtNum(min, meta.decimals)}${meta.unit}`} />
         <MiniStat label="Максимум" value={`${fmtNum(max, meta.decimals)}${meta.unit}`} />
         <MiniStat label="Внимание" value={fmtNum(warning)} accent="warning" />
@@ -1416,6 +1420,7 @@ function MarkerSection({
           yLabel={meta.yLabel}
           decimals={meta.decimals}
           onBarClick={onSelectParty}
+          avgOverride={refAvg}
         />
       ) : (
         <div className="flex h-48 items-center justify-center rounded-lg border border-dashed text-sm text-muted-foreground">
