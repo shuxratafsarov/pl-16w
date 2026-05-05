@@ -142,17 +142,24 @@ function MarkerMiniChart({
     return list;
   }, [marker.key, parties, scope]);
 
-  // среднее и пороги — считаем от выборки на графике
+  // среднее и пороги — фиксированный baseline (если задан) или среднее по выборке
   const stats = useMemo(() => {
     const vals = data.map((d) => d.value as number);
     if (vals.length === 0) return null;
-    const avg = vals.reduce((s, v) => s + v, 0) / vals.length;
+    const sampleAvg = vals.reduce((s, v) => s + v, 0) / vals.length;
+    const baseline = MARKER_BASELINE[marker.key as keyof typeof MARKER_BASELINE];
+    const critical = MARKER_CRITICAL[marker.key as keyof typeof MARKER_CRITICAL];
+    const avg = typeof baseline === "number" ? baseline : sampleAvg;
     const min = Math.min(...vals);
     const max = Math.max(...vals);
-    const warn = marker.direction === "above" ? avg * (1 + WARN_PCT) : avg * (1 - WARN_PCT);
-    const crit = marker.direction === "above" ? avg * (1 + CRIT_PCT) : avg * (1 - CRIT_PCT);
-    return { avg, min, max, warn, crit };
-  }, [data, marker.direction]);
+    const warn = typeof baseline === "number"
+      ? baseline
+      : (marker.direction === "above" ? sampleAvg * (1 + WARN_PCT) : sampleAvg * (1 - WARN_PCT));
+    const crit = typeof critical === "number"
+      ? critical
+      : (marker.direction === "above" ? sampleAvg * (1 + CRIT_PCT) : sampleAvg * (1 - CRIT_PCT));
+    return { avg, min, max, warn, crit, isFixed: typeof baseline === "number" };
+  }, [data, marker.direction, marker.key]);
 
   // раскраска баров
   type ColoredDatum = {
