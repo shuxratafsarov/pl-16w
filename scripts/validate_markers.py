@@ -77,7 +77,7 @@ def main():
         data = json.load(open(path))
 
         # Build column map for this week
-        cols = [c for c in range(5, 257) if ws.cell(6, c).value == week]
+        cols = [c for c in range(5, ws.max_column + 1) if ws.cell(6, c).value == week]
         excel_map = {}
         for c in cols:
             num_cell = ws.cell(8, c).value
