@@ -21,6 +21,7 @@ export function MarkerChart({
   yLabel,
   decimals = 2,
   onBarClick,
+  avgOverride,
 }: {
   parties: Party[];
   metric: MarkerKey;
@@ -28,6 +29,8 @@ export function MarkerChart({
   yLabel: string;
   decimals?: number;
   onBarClick?: (col: string) => void;
+  /** Если задан — используется как «среднее» (целевое) для подсветки и ReferenceLine. */
+  avgOverride?: number;
 }) {
   const dir = threshold.direction ?? "above";
   const data = parties
