@@ -167,23 +167,29 @@ function reconcileWeek(src: WeekData): { week: WeekData; discrepancies: Discrepa
   const tRev = newByType.CAINIAO.revenue + newByType.MPO.revenue + newByType.MKO.revenue;
   const tExp = newByType.CAINIAO.expense + newByType.MPO.expense + newByType.MKO.expense;
   const tGp = newByType.CAINIAO.gross_profit + newByType.MPO.gross_profit + newByType.MKO.gross_profit;
-  if (Math.abs(tRev - src.totals.revenue) > EPS)
-    discrepancies.push({ scope: "TOTAL", metric: "Выручка", source: src.totals.revenue, computed: tRev, diff: tRev - src.totals.revenue });
-  if (Math.abs(tExp - src.totals.expense) > EPS)
-    discrepancies.push({ scope: "TOTAL", metric: "Расходы", source: src.totals.expense, computed: tExp, diff: tExp - src.totals.expense });
-  if (Math.abs(tGp - src.totals.gross_profit) > EPS)
-    discrepancies.push({ scope: "TOTAL", metric: "Прибыль", source: src.totals.gross_profit, computed: tGp, diff: tGp - src.totals.gross_profit });
+  const totHas = src.totals.revenue || src.totals.expense || src.totals.gross_profit;
+  if (totHas) {
+    if (Math.abs(tRev - src.totals.revenue) > EPS)
+      discrepancies.push({ scope: "TOTAL", metric: "Выручка", source: src.totals.revenue, computed: tRev, diff: tRev - src.totals.revenue });
+    if (Math.abs(tExp - src.totals.expense) > EPS)
+      discrepancies.push({ scope: "TOTAL", metric: "Расходы", source: src.totals.expense, computed: tExp, diff: tExp - src.totals.expense });
+    if (Math.abs(tGp - src.totals.gross_profit) > EPS)
+      discrepancies.push({ scope: "TOTAL", metric: "Прибыль", source: src.totals.gross_profit, computed: tGp, diff: tGp - src.totals.gross_profit });
+  }
 
   const uRev = newByType.MPO.revenue + newByType.MKO.revenue;
   const uExp = newByType.MPO.expense + newByType.MKO.expense;
   const uGp = newByType.MPO.gross_profit + newByType.MKO.gross_profit;
   const oldU = src.umbrella_uzum_cb;
-  if (Math.abs(uRev - oldU.revenue) > EPS)
-    discrepancies.push({ scope: "UZUM CB", metric: "Выручка", source: oldU.revenue, computed: uRev, diff: uRev - oldU.revenue });
-  if (Math.abs(uExp - oldU.expense) > EPS)
-    discrepancies.push({ scope: "UZUM CB", metric: "Расходы", source: oldU.expense, computed: uExp, diff: uExp - oldU.expense });
-  if (Math.abs(uGp - oldU.gross_profit) > EPS)
-    discrepancies.push({ scope: "UZUM CB", metric: "Прибыль", source: oldU.gross_profit, computed: uGp, diff: uGp - oldU.gross_profit });
+  const uHas = oldU && (oldU.revenue || oldU.expense || oldU.gross_profit);
+  if (uHas) {
+    if (Math.abs(uRev - oldU.revenue) > EPS)
+      discrepancies.push({ scope: "UZUM CB", metric: "Выручка", source: oldU.revenue, computed: uRev, diff: uRev - oldU.revenue });
+    if (Math.abs(uExp - oldU.expense) > EPS)
+      discrepancies.push({ scope: "UZUM CB", metric: "Расходы", source: oldU.expense, computed: uExp, diff: uExp - oldU.expense });
+    if (Math.abs(uGp - oldU.gross_profit) > EPS)
+      discrepancies.push({ scope: "UZUM CB", metric: "Прибыль", source: oldU.gross_profit, computed: uGp, diff: uGp - oldU.gross_profit });
+  }
 
   const reconciled: WeekData = {
     ...src,
