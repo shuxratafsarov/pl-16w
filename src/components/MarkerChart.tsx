@@ -113,7 +113,7 @@ export function MarkerChart({
             stroke="var(--primary)"
             strokeDasharray="4 4"
             label={{
-              value: `средн ${fmtNum(avg, decimals)}`,
+              value: `${avgLabel} ${fmtNum(avg, decimals)}`,
               fill: "var(--primary)",
               fontSize: 10,
               position: "right",
