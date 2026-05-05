@@ -70,14 +70,14 @@ def main():
     ws = wb["3PL_weekly"]
     issues = []
 
-    for week in range(1, 18):
+    for week in range(1, 19):
         path = os.path.join(DATA_DIR, f"week{week}.json")
         if not os.path.exists(path):
             continue
         data = json.load(open(path))
 
         # Build column map for this week
-        cols = [c for c in range(5, 257) if ws.cell(6, c).value == week]
+        cols = [c for c in range(5, ws.max_column + 1) if ws.cell(6, c).value == week]
         excel_map = {}
         for c in cols:
             num_cell = ws.cell(8, c).value
