@@ -132,7 +132,7 @@ export function OverviewAnalytics({
   const weeklySeries = useMemo(() => {
     return sortedWeeks.map((w) => {
       const parties =
-        typeFilter === "ALL" ? w.parties : w.parties.filter((p) => p.type === typeFilter);
+        w.parties.filter((p) => matchesType(p, typeFilter));
       const revenue = parties.reduce((s, p) => s + (p.revenue ?? 0), 0);
       const expense = parties.reduce((s, p) => s + (p.expense ?? 0), 0);
       const gross_profit = parties.reduce((s, p) => s + (p.gross_profit ?? 0), 0);
@@ -229,7 +229,7 @@ export function OverviewAnalytics({
     const map = new Map<string, { pcs: number; kg: number }>();
     sortedWeeks.forEach((w) => {
       w.parties.forEach((p) => {
-        if (typeFilter !== "ALL" && p.type !== typeFilter) return;
+        if (!matchesType(p, typeFilter)) return;
         (p.mix ?? []).forEach((m) => {
           const cur = map.get(m.country) ?? { pcs: 0, kg: 0 };
           cur.pcs += m.pcs ?? 0;
@@ -258,7 +258,7 @@ export function OverviewAnalytics({
       let expense = 0;
       let totalWeekPcs = 0;
       w.parties.forEach((p) => {
-        if (typeFilter !== "ALL" && p.type !== typeFilter) return;
+        if (!matchesType(p, typeFilter)) return;
         const partyTotalMixPcs = (p.mix ?? []).reduce((s, m) => s + (m.pcs ?? 0), 0);
         const countryMix = (p.mix ?? []).filter((m) => m.country === cc);
         const partyCountryPcs = countryMix.reduce((s, m) => s + (m.pcs ?? 0), 0);
@@ -288,7 +288,7 @@ export function OverviewAnalytics({
     const subMap = new Map<string, { pcs: number; kg: number }>();
     sortedWeeks.forEach((w) => {
       w.parties.forEach((p) => {
-        if (typeFilter !== "ALL" && p.type !== typeFilter) return;
+        if (!matchesType(p, typeFilter)) return;
         (p.mix ?? []).forEach((m) => {
           if (m.country !== cc) return;
           const prev = subMap.get(m.subtype) ?? { pcs: 0, kg: 0 };
@@ -306,7 +306,7 @@ export function OverviewAnalytics({
     const partyContribs: { label: string; week: number; revenue: number; gross_profit: number; margin_pct: number | null }[] = [];
     sortedWeeks.forEach((w) => {
       w.parties.forEach((p) => {
-        if (typeFilter !== "ALL" && p.type !== typeFilter) return;
+        if (!matchesType(p, typeFilter)) return;
         const partyTotalMixPcs = (p.mix ?? []).reduce((s, m) => s + (m.pcs ?? 0), 0);
         const partyCountryPcs = (p.mix ?? []).filter((m) => m.country === cc).reduce((s, m) => s + (m.pcs ?? 0), 0);
         if (partyCountryPcs === 0 || partyTotalMixPcs === 0) return;
@@ -351,7 +351,7 @@ export function OverviewAnalytics({
 
   const topParties = useMemo(() => {
     const list = sortedWeeks.flatMap((w) =>
-      w.parties.filter((p) => typeFilter === "ALL" || p.type === typeFilter).map((p) => ({ ...p, _week: w.week }))
+      w.parties.filter((p) => matchesType(p, typeFilter)).map((p) => ({ ...p, _week: w.week }))
     );
     return list.sort((a, b) => b.gross_profit - a.gross_profit).slice(0, 10);
   }, [sortedWeeks, typeFilter]);
@@ -360,7 +360,7 @@ export function OverviewAnalytics({
   /** Данные для VolumeAndBreakdown — по неделям с byCountry/byType. */
   const volumeWeeklyData = useMemo<VBPeriodPoint[]>(() => {
     return sortedWeeks.map((w) => {
-      const parties = typeFilter === "ALL" ? w.parties : w.parties.filter((p) => p.type === typeFilter);
+      const parties = w.parties.filter((p) => matchesType(p, typeFilter));
       // byType (нативно)
       const byType: VBPeriodPoint["byType"] = {};
       (["CAINIAO", "MPO", "MKO"] as PartyType[]).forEach((t) => {
@@ -432,7 +432,7 @@ export function OverviewAnalytics({
       return typeof v === "number" && Number.isFinite(v) ? v : null;
     };
     const filteredParties = (w: WeekData) =>
-      typeFilter === "ALL" ? w.parties : w.parties.filter((p) => p.type === typeFilter);
+      w.parties.filter((p) => matchesType(p, typeFilter));
     return MARKERS.map((m) => {
       const isSum = m.key === "marker4_pcs";
       const reduce = (vals: number[]) =>
@@ -576,7 +576,7 @@ export function OverviewAnalytics({
     };
     const allParties = sortedWeeks.flatMap((w) =>
       w.parties
-        .filter((p) => typeFilter === "ALL" || p.type === typeFilter)
+        .filter((p) => matchesType(p, typeFilter))
         .map((p) => ({ p, week: w.week, period: w.period }))
     );
     const topParties = [...allParties]
@@ -2147,7 +2147,7 @@ export function OverviewAnalytics({
       <DialogContent className="max-w-4xl max-h-[90vh] overflow-y-auto">
         {periodDrill !== null && weeksMap[periodDrill] && (() => {
           const w = weeksMap[periodDrill];
-          const filtered = typeFilter === "ALL" ? w.parties : w.parties.filter((p) => p.type === typeFilter);
+          const filtered = w.parties.filter((p) => matchesType(p, typeFilter));
           const rev = filtered.reduce((s, p) => s + (p.revenue ?? 0), 0);
           const exp = filtered.reduce((s, p) => s + (p.expense ?? 0), 0);
           const gp = rev - exp;
