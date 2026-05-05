@@ -38,10 +38,10 @@ export function MarkerChart({
     .map((p) => {
       const val = p[metric] as number;
       const critical =
-        dir === "above" ? val >= threshold.critical : val <= threshold.critical;
+        dir === "above" ? val > threshold.critical : val < threshold.critical;
       const warning =
         !critical &&
-        (dir === "above" ? val >= threshold.warning : val <= threshold.warning);
+        (dir === "above" ? val > threshold.warning : val < threshold.warning);
       return {
         name: p.num,
         type: p.type,
@@ -59,7 +59,9 @@ export function MarkerChart({
     );
   }
 
-  const avg = data.reduce((s, d) => s + d.value, 0) / data.length;
+  const sampleAvg = data.reduce((s, d) => s + d.value, 0) / data.length;
+  const avg = typeof avgOverride === "number" ? avgOverride : sampleAvg;
+  const avgLabel = typeof avgOverride === "number" ? "целев" : "средн";
 
   return (
     <div className="h-80 w-full">
