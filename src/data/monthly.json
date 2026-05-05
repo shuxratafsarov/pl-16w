@@ -84,7 +84,7 @@
       "AZ": {
         "revenue": 40066.59,
         "expense": 36678.14,
-        "gross_profit": 3388.44,
+        "gross_profit": 3388.45,
         "margin_pct": 8.46,
         "pcs": 20287,
         "kg": 2159.66
@@ -92,7 +92,7 @@
       "KG": {
         "revenue": 5184.15,
         "expense": 3084.96,
-        "gross_profit": 2099.2,
+        "gross_profit": 2099.19,
         "margin_pct": 40.49,
         "pcs": 3195,
         "kg": 274.93
@@ -117,42 +117,42 @@
     "month": 3,
     "month_name": "Март",
     "period": "2026-03",
-    "revenue": 665600.34,
-    "expense": 541681.48,
-    "gross_profit": 123918.86,
-    "margin_pct": 18.62,
+    "revenue": 597789.66,
+    "expense": 487599.39,
+    "gross_profit": 110190.27,
+    "margin_pct": 18.43,
     "by_country": {
       "UZ": {
-        "revenue": 123912.47,
-        "expense": 80089.41,
-        "gross_profit": 43823.06,
-        "margin_pct": 35.37,
-        "pcs": 81046,
-        "kg": 6636.01
+        "revenue": 111266.86,
+        "expense": 71902.32,
+        "gross_profit": 39364.54,
+        "margin_pct": 35.38,
+        "pcs": 72830,
+        "kg": 5952.9
       },
       "BY": {
-        "revenue": 307407.79,
-        "expense": 314671.74,
-        "gross_profit": -7263.95,
-        "margin_pct": -2.36,
-        "pcs": 206560,
-        "kg": 16192.3
+        "revenue": 276409.14,
+        "expense": 282423.78,
+        "gross_profit": -6014.64,
+        "margin_pct": -2.18,
+        "pcs": 185755,
+        "kg": 14572.32
       },
       "AZ": {
-        "revenue": 63746.36,
-        "expense": 56816.35,
-        "gross_profit": 6930.02,
-        "margin_pct": 10.87,
-        "pcs": 30854,
-        "kg": 3464.29
+        "revenue": 57759.83,
+        "expense": 51559.61,
+        "gross_profit": 6200.22,
+        "margin_pct": 10.73,
+        "pcs": 27706,
+        "kg": 3145.36
       },
       "KG": {
-        "revenue": 8490.82,
-        "expense": 4791.48,
-        "gross_profit": 3699.34,
-        "margin_pct": 43.57,
-        "pcs": 4686,
-        "kg": 466.98
+        "revenue": 7503.37,
+        "expense": 4231.34,
+        "gross_profit": 3272.03,
+        "margin_pct": 43.61,
+        "pcs": 4192,
+        "kg": 411.59
       }
     },
     "by_type": {
@@ -174,42 +174,42 @@
     "month": 4,
     "month_name": "Апрель",
     "period": "2026-04",
-    "revenue": 413193.13,
-    "expense": 313059.76,
-    "gross_profit": 100133.37,
-    "margin_pct": 24.23,
+    "revenue": 481003.81,
+    "expense": 368105.5,
+    "gross_profit": 112898.31,
+    "margin_pct": 23.47,
     "by_country": {
       "UZ": {
-        "revenue": 70017.57,
-        "expense": 43177.82,
-        "gross_profit": 26839.75,
-        "margin_pct": 38.33,
-        "pcs": 45455,
-        "kg": 3705.56
+        "revenue": 82663.18,
+        "expense": 51364.92,
+        "gross_profit": 31298.26,
+        "margin_pct": 37.86,
+        "pcs": 53671,
+        "kg": 4388.67
       },
       "BY": {
-        "revenue": 184342.9,
-        "expense": 175135.36,
-        "gross_profit": 9207.54,
-        "margin_pct": 4.99,
-        "pcs": 117791,
-        "kg": 8986.4
+        "revenue": 215341.54,
+        "expense": 207383.32,
+        "gross_profit": 7958.22,
+        "margin_pct": 3.7,
+        "pcs": 138596,
+        "kg": 10606.38
       },
       "AZ": {
-        "revenue": 38027.57,
-        "expense": 32967.43,
-        "gross_profit": 5060.15,
-        "margin_pct": 13.31,
-        "pcs": 18417,
-        "kg": 2060.12
+        "revenue": 44014.11,
+        "expense": 38224.17,
+        "gross_profit": 5789.94,
+        "margin_pct": 13.15,
+        "pcs": 21565,
+        "kg": 2379.05
       },
       "KG": {
-        "revenue": 4893.79,
-        "expense": 2640.6,
-        "gross_profit": 2253.19,
-        "margin_pct": 46.04,
-        "pcs": 2510,
-        "kg": 270.52
+        "revenue": 5881.24,
+        "expense": 3200.74,
+        "gross_profit": 2680.5,
+        "margin_pct": 45.58,
+        "pcs": 3004,
+        "kg": 325.91
       }
     },
     "by_type": {
@@ -232,9 +232,9 @@
     "month_name": "Май",
     "period": "2026-05",
     "revenue": 46267.99,
-    "expense": 34619.63,
-    "gross_profit": 11648.37,
-    "margin_pct": 25.18,
+    "expense": 34667.02,
+    "gross_profit": 11600.97,
+    "margin_pct": 25.07,
     "by_country": {
       "UZ": {
         "revenue": 6485.61,
@@ -288,42 +288,42 @@
     "month": 6,
     "month_name": "Июнь",
     "period": "2026-06",
-    "revenue": 0.0,
-    "expense": 0.0,
-    "gross_profit": 0.0,
-    "margin_pct": 0.0,
+    "revenue": 0,
+    "expense": 0,
+    "gross_profit": 0,
+    "margin_pct": 0,
     "by_country": {
       "UZ": {
-        "revenue": 0.0,
-        "expense": 0.0,
-        "gross_profit": 0.0,
-        "margin_pct": 0.0,
+        "revenue": 0,
+        "expense": 0,
+        "gross_profit": 0,
+        "margin_pct": 0,
         "pcs": 0,
-        "kg": 0.0
+        "kg": 0
       },
       "BY": {
-        "revenue": 0.0,
-        "expense": 0.0,
-        "gross_profit": 0.0,
-        "margin_pct": 0.0,
+        "revenue": 0,
+        "expense": 0,
+        "gross_profit": 0,
+        "margin_pct": 0,
         "pcs": 0,
-        "kg": 0.0
+        "kg": 0
       },
       "AZ": {
-        "revenue": 0.0,
-        "expense": 0.0,
-        "gross_profit": 0.0,
-        "margin_pct": 0.0,
+        "revenue": 0,
+        "expense": 0,
+        "gross_profit": 0,
+        "margin_pct": 0,
         "pcs": 0,
-        "kg": 0.0
+        "kg": 0
       },
       "KG": {
-        "revenue": 0.0,
-        "expense": 0.0,
-        "gross_profit": 0.0,
-        "margin_pct": 0.0,
+        "revenue": 0,
+        "expense": 0,
+        "gross_profit": 0,
+        "margin_pct": 0,
         "pcs": 0,
-        "kg": 0.0
+        "kg": 0
       }
     },
     "by_type": {
@@ -345,42 +345,42 @@
     "month": 7,
     "month_name": "Июль",
     "period": "2026-07",
-    "revenue": 0.0,
-    "expense": 0.0,
-    "gross_profit": 0.0,
-    "margin_pct": 0.0,
+    "revenue": 0,
+    "expense": 0,
+    "gross_profit": 0,
+    "margin_pct": 0,
     "by_country": {
       "UZ": {
-        "revenue": 0.0,
-        "expense": 0.0,
-        "gross_profit": 0.0,
-        "margin_pct": 0.0,
+        "revenue": 0,
+        "expense": 0,
+        "gross_profit": 0,
+        "margin_pct": 0,
         "pcs": 0,
-        "kg": 0.0
+        "kg": 0
       },
       "BY": {
-        "revenue": 0.0,
-        "expense": 0.0,
-        "gross_profit": 0.0,
-        "margin_pct": 0.0,
+        "revenue": 0,
+        "expense": 0,
+        "gross_profit": 0,
+        "margin_pct": 0,
         "pcs": 0,
-        "kg": 0.0
+        "kg": 0
       },
       "AZ": {
-        "revenue": 0.0,
-        "expense": 0.0,
-        "gross_profit": 0.0,
-        "margin_pct": 0.0,
+        "revenue": 0,
+        "expense": 0,
+        "gross_profit": 0,
+        "margin_pct": 0,
         "pcs": 0,
-        "kg": 0.0
+        "kg": 0
       },
       "KG": {
-        "revenue": 0.0,
-        "expense": 0.0,
-        "gross_profit": 0.0,
-        "margin_pct": 0.0,
+        "revenue": 0,
+        "expense": 0,
+        "gross_profit": 0,
+        "margin_pct": 0,
         "pcs": 0,
-        "kg": 0.0
+        "kg": 0
       }
     },
     "by_type": {
@@ -402,42 +402,42 @@
     "month": 8,
     "month_name": "Август",
     "period": "2026-08",
-    "revenue": 0.0,
-    "expense": 0.0,
-    "gross_profit": 0.0,
-    "margin_pct": 0.0,
+    "revenue": 0,
+    "expense": 0,
+    "gross_profit": 0,
+    "margin_pct": 0,
     "by_country": {
       "UZ": {
-        "revenue": 0.0,
-        "expense": 0.0,
-        "gross_profit": 0.0,
-        "margin_pct": 0.0,
+        "revenue": 0,
+        "expense": 0,
+        "gross_profit": 0,
+        "margin_pct": 0,
         "pcs": 0,
-        "kg": 0.0
+        "kg": 0
       },
       "BY": {
-        "revenue": 0.0,
-        "expense": 0.0,
-        "gross_profit": 0.0,
-        "margin_pct": 0.0,
+        "revenue": 0,
+        "expense": 0,
+        "gross_profit": 0,
+        "margin_pct": 0,
         "pcs": 0,
-        "kg": 0.0
+        "kg": 0
       },
       "AZ": {
-        "revenue": 0.0,
-        "expense": 0.0,
-        "gross_profit": 0.0,
-        "margin_pct": 0.0,
+        "revenue": 0,
+        "expense": 0,
+        "gross_profit": 0,
+        "margin_pct": 0,
         "pcs": 0,
-        "kg": 0.0
+        "kg": 0
       },
       "KG": {
-        "revenue": 0.0,
-        "expense": 0.0,
-        "gross_profit": 0.0,
-        "margin_pct": 0.0,
+        "revenue": 0,
+        "expense": 0,
+        "gross_profit": 0,
+        "margin_pct": 0,
         "pcs": 0,
-        "kg": 0.0
+        "kg": 0
       }
     },
     "by_type": {
@@ -459,42 +459,42 @@
     "month": 9,
     "month_name": "Сентябрь",
     "period": "2026-09",
-    "revenue": 0.0,
-    "expense": 0.0,
-    "gross_profit": 0.0,
-    "margin_pct": 0.0,
+    "revenue": 0,
+    "expense": 0,
+    "gross_profit": 0,
+    "margin_pct": 0,
     "by_country": {
       "UZ": {
-        "revenue": 0.0,
-        "expense": 0.0,
-        "gross_profit": 0.0,
-        "margin_pct": 0.0,
+        "revenue": 0,
+        "expense": 0,
+        "gross_profit": 0,
+        "margin_pct": 0,
         "pcs": 0,
-        "kg": 0.0
+        "kg": 0
       },
       "BY": {
-        "revenue": 0.0,
-        "expense": 0.0,
-        "gross_profit": 0.0,
-        "margin_pct": 0.0,
+        "revenue": 0,
+        "expense": 0,
+        "gross_profit": 0,
+        "margin_pct": 0,
         "pcs": 0,
-        "kg": 0.0
+        "kg": 0
       },
       "AZ": {
-        "revenue": 0.0,
-        "expense": 0.0,
-        "gross_profit": 0.0,
-        "margin_pct": 0.0,
+        "revenue": 0,
+        "expense": 0,
+        "gross_profit": 0,
+        "margin_pct": 0,
         "pcs": 0,
-        "kg": 0.0
+        "kg": 0
       },
       "KG": {
-        "revenue": 0.0,
-        "expense": 0.0,
-        "gross_profit": 0.0,
-        "margin_pct": 0.0,
+        "revenue": 0,
+        "expense": 0,
+        "gross_profit": 0,
+        "margin_pct": 0,
         "pcs": 0,
-        "kg": 0.0
+        "kg": 0
       }
     },
     "by_type": {
@@ -516,42 +516,42 @@
     "month": 10,
     "month_name": "Октябрь",
     "period": "2026-10",
-    "revenue": 0.0,
-    "expense": 0.0,
-    "gross_profit": 0.0,
-    "margin_pct": 0.0,
+    "revenue": 0,
+    "expense": 0,
+    "gross_profit": 0,
+    "margin_pct": 0,
     "by_country": {
       "UZ": {
-        "revenue": 0.0,
-        "expense": 0.0,
-        "gross_profit": 0.0,
-        "margin_pct": 0.0,
+        "revenue": 0,
+        "expense": 0,
+        "gross_profit": 0,
+        "margin_pct": 0,
         "pcs": 0,
-        "kg": 0.0
+        "kg": 0
       },
       "BY": {
-        "revenue": 0.0,
-        "expense": 0.0,
-        "gross_profit": 0.0,
-        "margin_pct": 0.0,
+        "revenue": 0,
+        "expense": 0,
+        "gross_profit": 0,
+        "margin_pct": 0,
         "pcs": 0,
-        "kg": 0.0
+        "kg": 0
       },
       "AZ": {
-        "revenue": 0.0,
-        "expense": 0.0,
-        "gross_profit": 0.0,
-        "margin_pct": 0.0,
+        "revenue": 0,
+        "expense": 0,
+        "gross_profit": 0,
+        "margin_pct": 0,
         "pcs": 0,
-        "kg": 0.0
+        "kg": 0
       },
       "KG": {
-        "revenue": 0.0,
-        "expense": 0.0,
-        "gross_profit": 0.0,
-        "margin_pct": 0.0,
+        "revenue": 0,
+        "expense": 0,
+        "gross_profit": 0,
+        "margin_pct": 0,
         "pcs": 0,
-        "kg": 0.0
+        "kg": 0
       }
     },
     "by_type": {
@@ -573,42 +573,42 @@
     "month": 11,
     "month_name": "Ноябрь",
     "period": "2026-11",
-    "revenue": 0.0,
-    "expense": 0.0,
-    "gross_profit": 0.0,
-    "margin_pct": 0.0,
+    "revenue": 0,
+    "expense": 0,
+    "gross_profit": 0,
+    "margin_pct": 0,
     "by_country": {
       "UZ": {
-        "revenue": 0.0,
-        "expense": 0.0,
-        "gross_profit": 0.0,
-        "margin_pct": 0.0,
+        "revenue": 0,
+        "expense": 0,
+        "gross_profit": 0,
+        "margin_pct": 0,
         "pcs": 0,
-        "kg": 0.0
+        "kg": 0
       },
       "BY": {
-        "revenue": 0.0,
-        "expense": 0.0,
-        "gross_profit": 0.0,
-        "margin_pct": 0.0,
+        "revenue": 0,
+        "expense": 0,
+        "gross_profit": 0,
+        "margin_pct": 0,
         "pcs": 0,
-        "kg": 0.0
+        "kg": 0
       },
       "AZ": {
-        "revenue": 0.0,
-        "expense": 0.0,
-        "gross_profit": 0.0,
-        "margin_pct": 0.0,
+        "revenue": 0,
+        "expense": 0,
+        "gross_profit": 0,
+        "margin_pct": 0,
         "pcs": 0,
-        "kg": 0.0
+        "kg": 0
       },
       "KG": {
-        "revenue": 0.0,
-        "expense": 0.0,
-        "gross_profit": 0.0,
-        "margin_pct": 0.0,
+        "revenue": 0,
+        "expense": 0,
+        "gross_profit": 0,
+        "margin_pct": 0,
         "pcs": 0,
-        "kg": 0.0
+        "kg": 0
       }
     },
     "by_type": {
@@ -630,42 +630,42 @@
     "month": 12,
     "month_name": "Декабрь",
     "period": "2026-12",
-    "revenue": 0.0,
-    "expense": 0.0,
-    "gross_profit": 0.0,
-    "margin_pct": 0.0,
+    "revenue": 0,
+    "expense": 0,
+    "gross_profit": 0,
+    "margin_pct": 0,
     "by_country": {
       "UZ": {
-        "revenue": 0.0,
-        "expense": 0.0,
-        "gross_profit": 0.0,
-        "margin_pct": 0.0,
+        "revenue": 0,
+        "expense": 0,
+        "gross_profit": 0,
+        "margin_pct": 0,
         "pcs": 0,
-        "kg": 0.0
+        "kg": 0
       },
       "BY": {
-        "revenue": 0.0,
-        "expense": 0.0,
-        "gross_profit": 0.0,
-        "margin_pct": 0.0,
+        "revenue": 0,
+        "expense": 0,
+        "gross_profit": 0,
+        "margin_pct": 0,
         "pcs": 0,
-        "kg": 0.0
+        "kg": 0
       },
       "AZ": {
-        "revenue": 0.0,
-        "expense": 0.0,
-        "gross_profit": 0.0,
-        "margin_pct": 0.0,
+        "revenue": 0,
+        "expense": 0,
+        "gross_profit": 0,
+        "margin_pct": 0,
         "pcs": 0,
-        "kg": 0.0
+        "kg": 0
       },
       "KG": {
-        "revenue": 0.0,
-        "expense": 0.0,
-        "gross_profit": 0.0,
-        "margin_pct": 0.0,
+        "revenue": 0,
+        "expense": 0,
+        "gross_profit": 0,
+        "margin_pct": 0,
         "pcs": 0,
-        "kg": 0.0
+        "kg": 0
       }
     },
     "by_type": {
