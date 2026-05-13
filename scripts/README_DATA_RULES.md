@@ -28,7 +28,8 @@ with `PNL_XLSX` env var). No other sheet, no manual numbers.
 | CAINIAO subtype ratios   | 354–374 (see validator) |
 
 Party type detection on row 8: string contains `MPO` → MPO, contains `MKO`
-→ MKO, otherwise numeric → CAINIAO.
+→ MKO, otherwise numeric → CAINIAO. If the MKO source header contains
+`(А)` / `(A)`, set `is_auto=true` for that party; otherwise `is_auto=false`.
 
 ## JSON conventions in `src/data/week*.json`
 
@@ -48,6 +49,8 @@ Party type detection on row 8: string contains `MPO` → MPO, contains `MKO`
      across parties — both produce correct group/week totals.
 5. **M1/M2/M3** copied verbatim per-party from rows 348/349/350. M1 falls
    back to row 127 if 348 is empty.
+6. **MKO (А) / Автомат**: for every MKO party, copy the automatic flag from
+   the row 8 header. `is_auto=true` is mandatory when the source says MKO `(А)`.
 
 ## UI aggregation rules (must mirror conventions above)
 
@@ -73,6 +76,7 @@ PNL_XLSX=/path/to/file.xlsx npm run validate:data
 
 1. Place workbook at `/tmp/pnl.xlsx` (or set `PNL_XLSX`).
 2. Generate / update `src/data/weekN.json` using the row map above.
-3. Run `npm run validate:data` — must print
+3. Confirm every MKO `(А)` from row 8 has `is_auto=true` in the week JSON.
+4. Run `npm run validate:data` — must print
    `✓ All values match 3PL_weekly 100%`.
-4. Only then commit. The build will refuse to start otherwise.
+5. Only then commit. The build will refuse to start otherwise.
