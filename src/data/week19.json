@@ -669,7 +669,7 @@
           "kg": 243.6
         }
       ],
-      "is_auto": false
+      "is_auto": true
     },
     {
       "col": "JY",
@@ -696,7 +696,7 @@
           "kg": 204.7
         }
       ],
-      "is_auto": false
+      "is_auto": true
     },
     {
       "col": "JZ",
@@ -723,7 +723,7 @@
           "kg": 400.25
         }
       ],
-      "is_auto": false
+      "is_auto": true
     },
     {
       "col": "KA",
