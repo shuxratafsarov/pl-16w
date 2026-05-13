@@ -14,6 +14,7 @@ import { SectionCard } from "@/components/SectionCard";
 import { StatCard } from "@/components/StatCard";
 import { CountryDetailDialog, type CountryDetailData } from "@/components/CountryDetailDialog";
 import { VolumeAndBreakdown, type VBPeriodPoint } from "@/components/VolumeAndBreakdown";
+import type { WeekData } from "@/lib/types";
 import {
   Bar,
   BarChart,
@@ -63,7 +64,34 @@ type MonthRow = {
   by_type: Record<"CAINIAO" | "MPO" | "MKO", { revenue: number; pcs: number }>;
 };
 
-const DATA = monthlyData as MonthRow[];
+type RawMonthRow = Omit<MonthRow, "month_name" | "period" | "by_type" | "by_country"> & {
+  name: string;
+  pcs: number;
+  kg: number;
+  by_country: Record<CountryKey, Omit<MonthRow["by_country"][CountryKey], "gross_profit" | "margin_pct">>;
+};
+
+const WEEK_MODULES = import.meta.glob("@/data/week*.json", { eager: true, import: "default" }) as Record<string, WeekData>;
+const WEEKS = Object.values(WEEK_MODULES);
+
+const DATA: MonthRow[] = (monthlyData as RawMonthRow[]).map((m) => {
+  const monthPrefix = `2026-${String(m.month).padStart(2, "0")}-`;
+  const by_country = Object.fromEntries(
+    (Object.entries(m.by_country) as [CountryKey, RawMonthRow["by_country"][CountryKey]][]).map(([cc, c]) => {
+      const gross_profit = c.revenue - c.expense;
+      return [cc, { ...c, gross_profit, margin_pct: c.revenue ? (gross_profit / c.revenue) * 100 : 0 }];
+    })
+  ) as MonthRow["by_country"];
+  const by_type: MonthRow["by_type"] = { CAINIAO: { revenue: 0, pcs: 0 }, MPO: { revenue: 0, pcs: 0 }, MKO: { revenue: 0, pcs: 0 } };
+  for (const week of WEEKS) {
+    for (const party of week.parties) {
+      if (!party.date?.startsWith(monthPrefix)) continue;
+      by_type[party.type].revenue += party.revenue;
+      by_type[party.type].pcs += party.total_pcs ?? 0;
+    }
+  }
+  return { ...m, month_name: m.name, period: m.name, by_country, by_type };
+});
 
 const COUNTRY_COLORS: Record<string, string> = {
   UZ: "var(--cainiao)",
