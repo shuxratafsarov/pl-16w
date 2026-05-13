@@ -71,7 +71,9 @@ def main():
     ws = wb["3PL_weekly"]
     issues = []
 
-    for week in range(1, 19):
+    week_files = [f for f in os.listdir(DATA_DIR) if f.startswith("week") and f.endswith(".json")]
+    weeks = sorted(int(f[4:-5]) for f in week_files if f[4:-5].isdigit())
+    for week in weeks:
         path = os.path.join(DATA_DIR, f"week{week}.json")
         if not os.path.exists(path):
             continue
