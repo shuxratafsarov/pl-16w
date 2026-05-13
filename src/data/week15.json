@@ -2,40 +2,40 @@
   "week": 15,
   "period": "2026-04-06 — 2026-04-12",
   "totals": {
-    "revenue": 82524.15,
-    "expense": 62379.0,
-    "gross_profit": 20145.15,
-    "margin_pct": 24.41
+    "revenue": 83221.32,
+    "expense": 62190.97,
+    "gross_profit": 21030.35,
+    "margin_pct": 25.27
   },
   "byType": {
     "CAINIAO": {
       "count": 5,
-      "revenue": 62194.23,
-      "expense": 54717.24,
-      "gross_profit": 7476.99,
-      "margin_pct": 12.02,
+      "revenue": 62879.4,
+      "expense": 54527.84,
+      "gross_profit": 8351.56,
+      "margin_pct": 13.28,
       "note": "Marker 4 теперь хранится по партии: total_pcs = sum по странам (rows 23/32/41/50). UI суммирует партии."
     },
     "MPO": {
       "count": 3,
       "revenue": 809.6,
-      "expense": 523.6,
-      "gross_profit": 286.0,
-      "margin_pct": 35.33
+      "expense": 468.04,
+      "gross_profit": 341.56,
+      "margin_pct": 42.19
     },
     "MKO": {
       "count": 3,
-      "revenue": 19520.32,
-      "expense": 7138.16,
-      "gross_profit": 12382.16,
-      "margin_pct": 63.43
+      "revenue": 19532.32,
+      "expense": 7195.09,
+      "gross_profit": 12337.23,
+      "margin_pct": 63.16
     }
   },
   "umbrella_uzum_cb": {
-    "revenue": 20329.92,
-    "expense": 7661.76,
-    "gross_profit": 12668.16,
-    "margin_pct": 62.31
+    "revenue": 20341.92,
+    "expense": 7663.13,
+    "gross_profit": 12678.79,
+    "margin_pct": 62.33
   },
   "parties": [
     {
@@ -43,10 +43,10 @@
       "type": "CAINIAO",
       "num": "1067",
       "date": "2026-04-06",
-      "revenue": 16557.56,
-      "expense": 14977.79,
-      "gross_profit": 1579.77,
-      "margin_pct": 9.54,
+      "revenue": 17063.39,
+      "expense": 14920.59,
+      "gross_profit": 2142.8,
+      "margin_pct": 12.56,
       "weight_net": 876.07,
       "weight_gross": 925.0,
       "weight_vol": 1293.0,
@@ -104,18 +104,6 @@
           "kg": 224.93
         },
         {
-          "country": "KG",
-          "subtype": "RM",
-          "pcs": 61,
-          "kg": 7.26
-        },
-        {
-          "country": "KG",
-          "subtype": "NRM",
-          "pcs": 79,
-          "kg": 9.41
-        },
-        {
           "country": "AZ",
           "subtype": "RM",
           "pcs": 522,
@@ -126,6 +114,18 @@
           "subtype": "NRM",
           "pcs": 668,
           "kg": 72.87
+        },
+        {
+          "country": "KG",
+          "subtype": "RM",
+          "pcs": 61,
+          "kg": 7.26
+        },
+        {
+          "country": "KG",
+          "subtype": "NRM",
+          "pcs": 79,
+          "kg": 9.41
         }
       ],
       "total_pcs": 9331
@@ -135,10 +135,10 @@
       "type": "CAINIAO",
       "num": "1068",
       "date": "2026-04-07",
-      "revenue": 13270.33,
-      "expense": 11535.66,
-      "gross_profit": 1734.67,
-      "margin_pct": 13.07,
+      "revenue": 13245.98,
+      "expense": 11494.37,
+      "gross_profit": 1751.61,
+      "margin_pct": 13.22,
       "weight_net": 666.4,
       "weight_gross": 712.0,
       "weight_vol": 969.0,
@@ -196,18 +196,6 @@
           "kg": 197.28
         },
         {
-          "country": "KG",
-          "subtype": "RM",
-          "pcs": 43,
-          "kg": 5.88
-        },
-        {
-          "country": "KG",
-          "subtype": "NRM",
-          "pcs": 63,
-          "kg": 8.61
-        },
-        {
           "country": "AZ",
           "subtype": "RM",
           "pcs": 361,
@@ -218,6 +206,18 @@
           "subtype": "NRM",
           "pcs": 411,
           "kg": 51.82
+        },
+        {
+          "country": "KG",
+          "subtype": "RM",
+          "pcs": 43,
+          "kg": 5.88
+        },
+        {
+          "country": "KG",
+          "subtype": "NRM",
+          "pcs": 63,
+          "kg": 8.61
         }
       ],
       "total_pcs": 8125
@@ -227,10 +227,10 @@
       "type": "CAINIAO",
       "num": "1069",
       "date": "2026-04-09",
-      "revenue": 14852.84,
-      "expense": 12636.8,
-      "gross_profit": 2216.04,
-      "margin_pct": 14.92,
+      "revenue": 14845.05,
+      "expense": 12593.72,
+      "gross_profit": 2251.33,
+      "margin_pct": 15.17,
       "weight_net": 758.02,
       "weight_gross": 804.0,
       "weight_vol": 1116.0,
@@ -288,18 +288,6 @@
           "kg": 227.63
         },
         {
-          "country": "KG",
-          "subtype": "RM",
-          "pcs": 65,
-          "kg": 9.82
-        },
-        {
-          "country": "KG",
-          "subtype": "NRM",
-          "pcs": 74,
-          "kg": 11.19
-        },
-        {
           "country": "AZ",
           "subtype": "RM",
           "pcs": 376,
@@ -310,6 +298,18 @@
           "subtype": "NRM",
           "pcs": 640,
           "kg": 69.52
+        },
+        {
+          "country": "KG",
+          "subtype": "RM",
+          "pcs": 65,
+          "kg": 9.82
+        },
+        {
+          "country": "KG",
+          "subtype": "NRM",
+          "pcs": 74,
+          "kg": 11.19
         }
       ],
       "total_pcs": 9323
@@ -319,10 +319,10 @@
       "type": "CAINIAO",
       "num": "1070",
       "date": "2026-04-10",
-      "revenue": 5153.95,
-      "expense": 4670.73,
-      "gross_profit": 483.22,
-      "margin_pct": 9.38,
+      "revenue": 5366.61,
+      "expense": 4659.18,
+      "gross_profit": 707.43,
+      "margin_pct": 13.18,
       "weight_net": 269.28,
       "weight_gross": 290.0,
       "weight_vol": 296.0,
@@ -380,18 +380,6 @@
           "kg": 105.49
         },
         {
-          "country": "KG",
-          "subtype": "RM",
-          "pcs": 6,
-          "kg": 0.44
-        },
-        {
-          "country": "KG",
-          "subtype": "NRM",
-          "pcs": 32,
-          "kg": 2.33
-        },
-        {
           "country": "AZ",
           "subtype": "RM",
           "pcs": 110,
@@ -402,6 +390,18 @@
           "subtype": "NRM",
           "pcs": 245,
           "kg": 26.01
+        },
+        {
+          "country": "KG",
+          "subtype": "RM",
+          "pcs": 6,
+          "kg": 0.44
+        },
+        {
+          "country": "KG",
+          "subtype": "NRM",
+          "pcs": 32,
+          "kg": 2.33
         }
       ],
       "total_pcs": 4091
@@ -411,10 +411,10 @@
       "type": "CAINIAO",
       "num": "1072",
       "date": "2026-04-12",
-      "revenue": 12359.55,
-      "expense": 10896.26,
-      "gross_profit": 1463.29,
-      "margin_pct": 11.84,
+      "revenue": 12358.37,
+      "expense": 10859.98,
+      "gross_profit": 1498.39,
+      "margin_pct": 12.12,
       "weight_net": 628.15,
       "weight_gross": 655.0,
       "weight_vol": 746.0,
@@ -472,18 +472,6 @@
           "kg": 183.46
         },
         {
-          "country": "KG",
-          "subtype": "RM",
-          "pcs": 37,
-          "kg": 4.67
-        },
-        {
-          "country": "KG",
-          "subtype": "NRM",
-          "pcs": 60,
-          "kg": 7.57
-        },
-        {
           "country": "AZ",
           "subtype": "RM",
           "pcs": 380,
@@ -494,6 +482,18 @@
           "subtype": "NRM",
           "pcs": 508,
           "kg": 56.57
+        },
+        {
+          "country": "KG",
+          "subtype": "RM",
+          "pcs": 37,
+          "kg": 4.67
+        },
+        {
+          "country": "KG",
+          "subtype": "NRM",
+          "pcs": 60,
+          "kg": 7.57
         }
       ],
       "total_pcs": 7616
@@ -504,16 +504,17 @@
       "num": "1068",
       "date": "2026-04-07",
       "revenue": 275.13,
-      "expense": 181.08,
-      "gross_profit": 94.05,
-      "margin_pct": 34.18,
-      "weight_net": 19.9,
-      "weight_gross": 19.9,
-      "weight_vol": null,
+      "expense": 162.91,
+      "gross_profit": 112.22,
+      "margin_pct": 40.79,
+      "weight_net": null,
+      "weight_gross": 712.0,
+      "weight_vol": 969.0,
       "marker1_tariff": 3.07,
       "marker2_volnet": null,
       "marker3_grossnet": null,
       "total_kg": 19.9,
+      "total_pcs": 50,
       "mix": [
         {
           "country": "UZ",
@@ -522,7 +523,7 @@
           "kg": 19.9
         }
       ],
-      "total_pcs": 50
+      "is_auto": false
     },
     {
       "col": "HB",
@@ -530,16 +531,17 @@
       "num": "1069",
       "date": "2026-04-09",
       "revenue": 217.8,
-      "expense": 143.64,
-      "gross_profit": 74.16,
-      "margin_pct": 34.05,
-      "weight_net": 15.0,
-      "weight_gross": 15.0,
-      "weight_vol": null,
+      "expense": 124.96,
+      "gross_profit": 92.84,
+      "margin_pct": 42.63,
+      "weight_net": null,
+      "weight_gross": 804.0,
+      "weight_vol": 1116.0,
       "marker1_tariff": 2.91,
       "marker2_volnet": null,
       "marker3_grossnet": null,
       "total_kg": 15.0,
+      "total_pcs": 44,
       "mix": [
         {
           "country": "UZ",
@@ -548,7 +550,7 @@
           "kg": 15.0
         }
       ],
-      "total_pcs": 44
+      "is_auto": false
     },
     {
       "col": "HC",
@@ -556,16 +558,17 @@
       "num": "1070",
       "date": "2026-04-10",
       "revenue": 316.67,
-      "expense": 198.88,
-      "gross_profit": 117.79,
-      "margin_pct": 37.2,
-      "weight_net": 20.1,
-      "weight_gross": 20.1,
-      "weight_vol": null,
+      "expense": 180.17,
+      "gross_profit": 136.5,
+      "margin_pct": 43.1,
+      "weight_net": null,
+      "weight_gross": 290.0,
+      "weight_vol": 296.0,
       "marker1_tariff": 4.24,
       "marker2_volnet": null,
       "marker3_grossnet": null,
       "total_kg": 20.1,
+      "total_pcs": 74,
       "mix": [
         {
           "country": "UZ",
@@ -574,24 +577,25 @@
           "kg": 20.1
         }
       ],
-      "total_pcs": 74
+      "is_auto": false
     },
     {
       "col": "HD",
       "type": "MKO",
       "num": "94",
       "date": "2026-04-07",
-      "revenue": 6902.15,
-      "expense": 2490.81,
-      "gross_profit": 4411.34,
-      "margin_pct": 63.91,
+      "revenue": 6906.15,
+      "expense": 2491.05,
+      "gross_profit": 4415.1,
+      "margin_pct": 63.93,
       "weight_net": 417.5,
-      "weight_gross": 417.5,
-      "weight_vol": null,
+      "weight_gross": 421.0,
+      "weight_vol": 511.0,
       "marker1_tariff": 3.07,
       "marker2_volnet": 1.224,
       "marker3_grossnet": 1.0084,
       "total_kg": 417.5,
+      "total_pcs": 1151,
       "mix": [
         {
           "country": "UZ",
@@ -600,25 +604,25 @@
           "kg": 417.5
         }
       ],
-      "total_pcs": 1151,
-      "is_auto": true
+      "is_auto": false
     },
     {
       "col": "HE",
       "type": "MKO",
       "num": "95;96",
       "date": "2026-04-09",
-      "revenue": 9263.33,
-      "expense": 3276.66,
-      "gross_profit": 5986.67,
-      "margin_pct": 64.63,
+      "revenue": 9267.33,
+      "expense": 3333.1,
+      "gross_profit": 5934.23,
+      "margin_pct": 64.03,
       "weight_net": 556.05,
-      "weight_gross": 556.05,
-      "weight_vol": null,
+      "weight_gross": 562.0,
+      "weight_vol": 687.0,
       "marker1_tariff": 3.07,
       "marker2_volnet": 1.2355,
       "marker3_grossnet": 1.0107,
       "total_kg": 556.05,
+      "total_pcs": 1511,
       "mix": [
         {
           "country": "UZ",
@@ -627,25 +631,25 @@
           "kg": 556.05
         }
       ],
-      "total_pcs": 1511,
-      "is_auto": true
+      "is_auto": false
     },
     {
       "col": "HF",
       "type": "MKO",
       "num": "97",
       "date": "2026-04-10",
-      "revenue": 3354.84,
-      "expense": 1370.69,
-      "gross_profit": 1984.15,
-      "margin_pct": 59.14,
+      "revenue": 3358.84,
+      "expense": 1370.94,
+      "gross_profit": 1987.9,
+      "margin_pct": 59.18,
       "weight_net": 204.15,
-      "weight_gross": 204.15,
-      "weight_vol": null,
+      "weight_gross": 205.0,
+      "weight_vol": 212.0,
       "marker1_tariff": 4.24,
       "marker2_volnet": 1.0385,
       "marker3_grossnet": 1.0042,
       "total_kg": 204.15,
+      "total_pcs": 598,
       "mix": [
         {
           "country": "UZ",
@@ -654,8 +658,7 @@
           "kg": 204.15
         }
       ],
-      "total_pcs": 598,
-      "is_auto": true
+      "is_auto": false
     }
   ]
 }
