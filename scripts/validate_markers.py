@@ -11,7 +11,8 @@ Usage:  python scripts/validate_markers.py [/path/to/pnl.xlsx]
 
 Source row map (3PL_weekly sheet, 1-indexed):
   Row 6   = week number (column header)
-  Row 8   = party number (column header). MPO/MKO are strings like "35 UZUM MKO".
+  Row 8   = party number (column header). MPO/MKO are strings like "35 UZUM MKO";
+            MKO headers with "(А)" / "(A)" are automatic and require is_auto=true.
   Row 10  = REVENUE  per party
   Row 94  = EXPENSE  per party
   Row 127 = Linehaul tariff (fallback for M1)
@@ -79,14 +80,18 @@ def main():
         # Build column map for this week
         cols = [c for c in range(5, ws.max_column + 1) if ws.cell(6, c).value == week]
         excel_map = {}
+        auto_map = {}
         for c in cols:
             num_cell = ws.cell(8, c).value
             if num_cell is None:
                 continue
+            num_text = str(num_cell)
             if isinstance(num_cell, str) and "MPO" in num_cell:
                 excel_map[("MPO", num_cell.split()[0])] = c
             elif isinstance(num_cell, str) and "MKO" in num_cell:
-                excel_map[("MKO", num_cell.split()[0])] = c
+                key = ("MKO", num_cell.split()[0])
+                excel_map[key] = c
+                auto_map[key] = "(А)" in num_text or "(A)" in num_text
             else:
                 excel_map[("CAINIAO", str(num_cell))] = c
 
@@ -103,6 +108,10 @@ def main():
             if c is None:
                 issues.append(f"W{week} {p['type']} {p['num']}: column not found in Excel")
                 continue
+            if p["type"] == "MKO" and bool(p.get("is_auto")) != auto_map.get(key, False):
+                issues.append(
+                    f"W{week} MKO {p['num']} is_auto excel={auto_map.get(key, False)} json={bool(p.get('is_auto'))}"
+                )
 
             # Revenue / Expense
             xr = num(ws.cell(REVENUE_ROW, c).value) or 0.0
