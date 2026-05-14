@@ -40,12 +40,14 @@ function AdminPage() {
   const [authed, setAuthed] = useState(false);
   const [loading, setLoading] = useState(false);
   const [dbWeeks, setDbWeeks] = useState<{ week: number; period: string }[]>([]);
+  const [syncResult, setSyncResult] = useState<any>(null);
 
   const verifyFn = useServerFn(verifyAdminPassword);
   const listFn = useServerFn(listWeeksFromDb);
   const seedFn = useServerFn(seedWeeksFromJson);
   const uploadFn = useServerFn(uploadExcel);
   const deleteFn = useServerFn(deleteWeek);
+  const syncFn = useServerFn(syncToAntria);
 
   async function refresh() {
     const r = await listFn();
