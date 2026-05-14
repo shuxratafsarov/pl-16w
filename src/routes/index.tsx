@@ -544,15 +544,16 @@ function Dashboard() {
                 </DropdownMenuContent>
               </DropdownMenu>
 
+
             {/* Marker quick-jump buttons */}
-            <div className="hidden md:inline-flex h-9 items-center rounded-lg border border-border/60 bg-card/60 px-1 gap-0.5 shrink-0">
+            <div className="hidden md:inline-flex h-10 items-center rounded-xl border border-border/60 bg-card/70 px-1 gap-0.5 shrink-0 shadow-sm">
               {MARKER_BUTTONS.map((b) => (
                 <UITooltip key={b.id}>
                   <TooltipTrigger asChild>
                     <button
                       type="button"
                       onClick={() => scrollToMarker(b.id)}
-                      className="px-2 h-7 rounded-md text-[11px] font-bold text-muted-foreground hover:text-foreground hover:bg-primary/15 transition-colors tabular-nums"
+                      className="px-2.5 h-8 rounded-lg text-xs font-bold text-muted-foreground hover:text-primary hover:bg-primary/10 transition-all tabular-nums"
                     >
                       {b.short}
                     </button>
@@ -573,23 +574,23 @@ function Dashboard() {
                   <button
                     type="button"
                     className={cn(
-                      "inline-flex items-center gap-1.5 h-9 rounded-lg border px-2.5 text-xs font-semibold transition-colors cursor-help",
+                      "inline-flex items-center gap-1.5 h-10 rounded-xl border px-3 text-sm font-semibold transition-all cursor-help shadow-sm",
                       sourceMatch.ok
-                        ? "border-success/40 bg-success/10 text-success hover:bg-success/15"
-                        : "border-warning/40 bg-warning/10 text-warning hover:bg-warning/15"
+                        ? "border-success/40 bg-gradient-to-b from-success/15 to-success/5 text-success hover:from-success/20 hover:to-success/10"
+                        : "border-warning/40 bg-gradient-to-b from-warning/15 to-warning/5 text-warning hover:from-warning/20 hover:to-warning/10"
                     )}
                   >
                     {sourceMatch.ok ? (
                       <>
-                        <CheckCircle2 className="h-3.5 w-3.5" />
+                        <CheckCircle2 className="h-4 w-4" />
                         <span className="hidden xl:inline">100% соответствие</span>
-                        <span className="xl:hidden">100%</span>
+                        <span className="xl:hidden font-bold">100%</span>
                       </>
                     ) : (
                       <>
-                        <ShieldCheck className="h-3.5 w-3.5" />
+                        <ShieldCheck className="h-4 w-4" />
                         <span className="hidden xl:inline">Авто-сверено · {sourceMatch.issues.length}</span>
-                        <span className="xl:hidden">{sourceMatch.issues.length}</span>
+                        <span className="xl:hidden font-bold">{sourceMatch.issues.length}</span>
                       </>
                     )}
                   </button>
@@ -650,15 +651,15 @@ function Dashboard() {
               </UITooltip>
 
               {(criticalCount > 0 || warningCount > 0) && (
-                <div className="hidden xl:flex h-9 items-center gap-2 rounded-lg border border-border/60 bg-card/60 px-2.5 text-xs">
+                <div className="hidden xl:flex h-10 items-center gap-2.5 rounded-xl border border-border/60 bg-card/70 px-3 text-sm shadow-sm">
                   {criticalCount > 0 && (
-                    <span className="inline-flex items-center gap-1 text-destructive font-semibold">
-                      <Flame className="h-3.5 w-3.5" /> {criticalCount}
+                    <span className="inline-flex items-center gap-1.5 text-destructive font-semibold">
+                      <Flame className="h-4 w-4" /> {criticalCount}
                     </span>
                   )}
                   {warningCount > 0 && (
-                    <span className="inline-flex items-center gap-1 text-warning font-semibold">
-                      <AlertTriangle className="h-3.5 w-3.5" /> {warningCount}
+                    <span className="inline-flex items-center gap-1.5 text-warning font-semibold">
+                      <AlertTriangle className="h-4 w-4" /> {warningCount}
                     </span>
                   )}
                 </div>
@@ -668,9 +669,9 @@ function Dashboard() {
                 <TooltipTrigger asChild>
                   <Link
                     to="/reconciliation"
-                    className="inline-flex items-center justify-center h-9 w-9 rounded-lg border border-border/60 bg-card/60 text-muted-foreground hover:text-foreground hover:bg-muted/60 transition-colors"
+                    className="inline-flex items-center justify-center h-10 w-10 rounded-xl border border-border/60 bg-card/70 text-muted-foreground hover:text-foreground hover:bg-muted/70 hover:border-border transition-all shadow-sm"
                   >
-                    <CheckCircle2 className="h-4 w-4 text-emerald-500" />
+                    <CheckCircle2 className="h-4.5 w-4.5 text-emerald-500" />
                   </Link>
                 </TooltipTrigger>
                 <TooltipContent side="bottom" className="text-xs">Построчная сверка Excel ↔ JSON</TooltipContent>
@@ -680,7 +681,7 @@ function Dashboard() {
                 <TooltipTrigger asChild>
                   <Link
                     to="/admin"
-                    className="inline-flex items-center justify-center h-9 w-9 rounded-lg border border-border/60 bg-card/60 text-muted-foreground hover:text-foreground hover:bg-muted/60 transition-colors"
+                    className="inline-flex items-center justify-center h-10 w-10 rounded-xl border border-border/60 bg-card/70 text-muted-foreground hover:text-foreground hover:bg-muted/70 hover:border-border transition-all shadow-sm"
                   >
                     <Lock className="h-4 w-4" />
                   </Link>
