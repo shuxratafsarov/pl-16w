@@ -441,11 +441,11 @@ export const uploadExcel = createServerFn({ method: "POST" })
     }
 
     if (parsed.weeks.length) {
-      const { error } = await supabaseAdmin.from("weeks").upsert(parsed.weeks, { onConflict: "week" });
+      const { error } = await supabaseAdmin.from("weeks").upsert(parsed.weeks as any, { onConflict: "week" });
       if (error) throw new Error(error.message);
     }
     if (parsed.monthly.length) {
-      const { error } = await supabaseAdmin.from("monthly").upsert(parsed.monthly, { onConflict: "month" });
+      const { error } = await supabaseAdmin.from("monthly").upsert(parsed.monthly as any, { onConflict: "month" });
       if (error) throw new Error(error.message);
     }
 
