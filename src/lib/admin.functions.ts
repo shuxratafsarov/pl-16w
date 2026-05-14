@@ -65,11 +65,11 @@ export const seedWeeksFromJson = createServerFn({ method: "POST" })
   .handler(async ({ data }) => {
     if (!checkPassword(data.password)) throw new Error("Неверный пароль");
     if (data.weeks.length) {
-      const { error } = await supabaseAdmin.from("weeks").upsert(data.weeks, { onConflict: "week" });
+      const { error } = await supabaseAdmin.from("weeks").upsert(data.weeks as any, { onConflict: "week" });
       if (error) throw new Error(error.message);
     }
     if (data.monthly.length) {
-      const { error } = await supabaseAdmin.from("monthly").upsert(data.monthly, { onConflict: "month" });
+      const { error } = await supabaseAdmin.from("monthly").upsert(data.monthly as any, { onConflict: "month" });
       if (error) throw new Error(error.message);
     }
     return { ok: true, weeks: data.weeks.length, months: data.monthly.length };
