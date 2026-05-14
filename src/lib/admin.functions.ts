@@ -449,10 +449,107 @@ export const uploadExcel = createServerFn({ method: "POST" })
       if (error) throw new Error(error.message);
     }
 
+    // Auto-sync to Antria finance API (best-effort)
+    const sync = await syncAllToAntria();
+
     return {
       ok: true,
       weeksParsed: parsed.weeks.length,
       monthsParsed: parsed.monthly.length,
       weekNumbers: parsed.weeks.map((w) => w.week),
+      sync,
     };
+  });
+
+// ===== Antria Finance API sync =====
+
+const ANTRIA_URL = "https://geqdzdujqpchrxsetgew.supabase.co/functions/v1/receive-financials";
+
+type SyncResult = {
+  attempted: number;
+  created: number;
+  updated: number;
+  failed: number;
+  notFound: number;
+  errors: { batch_number: string; project: string; status: number; message: string }[];
+};
+
+function projectFor(type: string): "Cainiao" | "UZUM" | null {
+  if (type === "CAINIAO") return "Cainiao";
+  if (type === "MKO" || type === "MPO") return "UZUM";
+  return null;
+}
+
+async function syncAllToAntria(): Promise<SyncResult> {
+  const result: SyncResult = { attempted: 0, created: 0, updated: 0, failed: 0, notFound: 0, errors: [] };
+  const token = process.env.ANTRIA_FINANCE_TOKEN;
+  if (!token) {
+    result.errors.push({ batch_number: "-", project: "-", status: 0, message: "ANTRIA_FINANCE_TOKEN не настроен" });
+    return result;
+  }
+
+  const { data: weeks, error } = await supabaseAdmin.from("weeks").select("data");
+  if (error) {
+    result.errors.push({ batch_number: "-", project: "-", status: 0, message: error.message });
+    return result;
+  }
+
+  // Deduplicate by (batch_number + project) — last write wins
+  const dedup = new Map<string, { batch_number: string; project: "Cainiao" | "UZUM"; revenue: number; cost: number; currency: string }>();
+  for (const row of weeks ?? []) {
+    const parties: any[] = (row as any)?.data?.parties ?? [];
+    for (const p of parties) {
+      const project = projectFor(p.type);
+      if (!project) continue;
+      const batch_number = String(p.num ?? "").trim();
+      if (!batch_number) continue;
+      dedup.set(`${batch_number}|${project}`, {
+        batch_number,
+        project,
+        revenue: Number(p.revenue) || 0,
+        cost: Number(p.expense) || 0,
+        currency: "USD",
+      });
+    }
+  }
+
+  // Send sequentially (small N, safer for rate limits)
+  for (const payload of dedup.values()) {
+    result.attempted++;
+    try {
+      const res = await fetch(ANTRIA_URL, {
+        method: "POST",
+        headers: {
+          "Authorization": `Bearer ${token}`,
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(payload),
+      });
+      if (res.ok) {
+        const j: any = await res.json().catch(() => ({}));
+        if (j?.action === "updated") result.updated++;
+        else result.created++;
+      } else {
+        const text = await res.text().catch(() => "");
+        if (res.status === 404) result.notFound++;
+        else result.failed++;
+        if (result.errors.length < 50) {
+          result.errors.push({ batch_number: payload.batch_number, project: payload.project, status: res.status, message: text.slice(0, 200) });
+        }
+      }
+    } catch (e: any) {
+      result.failed++;
+      if (result.errors.length < 50) {
+        result.errors.push({ batch_number: payload.batch_number, project: payload.project, status: 0, message: e?.message ?? String(e) });
+      }
+    }
+  }
+  return result;
+}
+
+export const syncToAntria = createServerFn({ method: "POST" })
+  .inputValidator((d: { password: string }) => z.object({ password: z.string().min(1) }).parse(d))
+  .handler(async ({ data }) => {
+    if (!checkPassword(data.password)) throw new Error("Неверный пароль");
+    return await syncAllToAntria();
   });
