@@ -604,7 +604,7 @@
           "kg": 417.5
         }
       ],
-      "is_auto": false
+      "is_auto": true
     },
     {
       "col": "HE",
@@ -631,7 +631,7 @@
           "kg": 556.05
         }
       ],
-      "is_auto": false
+      "is_auto": true
     },
     {
       "col": "HF",
@@ -658,7 +658,7 @@
           "kg": 204.15
         }
       ],
-      "is_auto": false
+      "is_auto": true
     }
   ]
 }

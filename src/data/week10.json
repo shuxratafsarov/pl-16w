@@ -761,7 +761,7 @@
           "kg": 229.35
         }
       ],
-      "is_auto": false
+      "is_auto": true
     },
     {
       "col": "DO",
@@ -788,7 +788,7 @@
           "kg": 309.4
         }
       ],
-      "is_auto": false
+      "is_auto": true
     }
   ]
 }

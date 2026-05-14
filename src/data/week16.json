@@ -777,7 +777,7 @@
           "kg": 306.9
         }
       ],
-      "is_auto": false
+      "is_auto": true
     },
     {
       "col": "HU",
@@ -804,7 +804,7 @@
           "kg": 250.3
         }
       ],
-      "is_auto": false
+      "is_auto": true
     },
     {
       "col": "HV",
@@ -831,7 +831,7 @@
           "kg": 282.45
         }
       ],
-      "is_auto": false
+      "is_auto": true
     },
     {
       "col": "HW",
@@ -886,7 +886,7 @@
           "kg": 294.65
         }
       ],
-      "is_auto": false
+      "is_auto": true
     },
     {
       "col": "HY",
@@ -913,7 +913,7 @@
           "kg": 249.8
         }
       ],
-      "is_auto": false
+      "is_auto": true
     },
     {
       "col": "HZ",
@@ -940,7 +940,7 @@
           "kg": 296.45
         }
       ],
-      "is_auto": false
+      "is_auto": true
     },
     {
       "col": "IA",
@@ -967,7 +967,7 @@
           "kg": 304.35
         }
       ],
-      "is_auto": false
+      "is_auto": true
     },
     {
       "col": "IB",
@@ -994,7 +994,7 @@
           "kg": 260.35
         }
       ],
-      "is_auto": false
+      "is_auto": true
     }
   ]
 }

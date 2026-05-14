@@ -842,7 +842,7 @@
           "kg": 255.45
         }
       ],
-      "is_auto": false
+      "is_auto": true
     },
     {
       "col": "IQ",
@@ -869,7 +869,7 @@
           "kg": 204.0
         }
       ],
-      "is_auto": false
+      "is_auto": true
     },
     {
       "col": "IR",
@@ -896,7 +896,7 @@
           "kg": 415.65
         }
       ],
-      "is_auto": false
+      "is_auto": true
     },
     {
       "col": "IS",
@@ -923,7 +923,7 @@
           "kg": 220.55
         }
       ],
-      "is_auto": false
+      "is_auto": true
     },
     {
       "col": "IT",
@@ -950,7 +950,7 @@
           "kg": 257.05
         }
       ],
-      "is_auto": false
+      "is_auto": true
     },
     {
       "col": "IU",
@@ -977,7 +977,7 @@
           "kg": 260.3
         }
       ],
-      "is_auto": false
+      "is_auto": true
     }
   ]
 }

@@ -734,7 +734,7 @@
           "kg": 326.6
         }
       ],
-      "is_auto": false
+      "is_auto": true
     },
     {
       "col": "CF",
@@ -761,7 +761,7 @@
           "kg": 194.0
         }
       ],
-      "is_auto": false
+      "is_auto": true
     },
     {
       "col": "CG",
@@ -815,7 +815,7 @@
           "kg": 454.85
         }
       ],
-      "is_auto": false
+      "is_auto": true
     },
     {
       "col": "CI",
@@ -842,7 +842,7 @@
           "kg": 268.25
         }
       ],
-      "is_auto": false
+      "is_auto": true
     }
   ]
 }
