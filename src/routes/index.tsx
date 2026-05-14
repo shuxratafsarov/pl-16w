@@ -461,14 +461,14 @@ function Dashboard() {
         <header className="border-b border-border/40 bg-gradient-to-b from-card/80 to-card/50 backdrop-blur-2xl sticky top-0 z-30 shadow-[0_1px_0_0_hsl(var(--border)/0.4),0_8px_24px_-12px_hsl(var(--primary)/0.12)]">
           <div className="mx-auto max-w-[1720px] px-8 h-16 flex items-center gap-3">
             {/* Brand */}
-            <div className="flex items-center gap-3 min-w-0 shrink-0">
-              <div className="relative h-10 w-10 rounded-2xl gradient-primary shadow-glow flex items-center justify-center ring-1 ring-white/20">
-                <LineChartIcon className="h-5 w-5 text-white" strokeWidth={2.5} />
+            <div className="flex items-center gap-3.5 min-w-0 shrink-0">
+              <div className="relative h-12 w-12 rounded-2xl gradient-primary shadow-glow flex items-center justify-center ring-1 ring-white/20">
+                <LineChartIcon className="h-6 w-6 text-white" strokeWidth={2.5} />
                 <span className="absolute inset-0 rounded-2xl bg-gradient-to-tr from-white/0 via-white/15 to-white/0 pointer-events-none" />
               </div>
               <div className="hidden lg:flex flex-col leading-none min-w-0">
-                <span className="text-[10px] font-bold uppercase tracking-[0.18em] text-muted-foreground/80">3PL · P&amp;L</span>
-                <span className="text-[15px] font-bold tracking-tight truncate mt-1 bg-gradient-to-r from-foreground to-foreground/70 bg-clip-text text-transparent">
+                <span className="text-[11px] font-bold uppercase tracking-[0.2em] text-muted-foreground/80">3PL · P&amp;L Аналитика</span>
+                <span className="text-[19px] font-bold tracking-tight truncate mt-1.5 bg-gradient-to-r from-foreground to-foreground/70 bg-clip-text text-transparent">
                   {isOverview ? `Общий свод` : `Неделя ${week.week}`}
                 </span>
               </div>
