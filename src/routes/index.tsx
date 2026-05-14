@@ -484,7 +484,10 @@ function Dashboard() {
                   className="group inline-flex items-center gap-2 h-10 rounded-xl border border-border/60 bg-card/70 px-3.5 text-sm font-semibold hover:bg-muted/70 hover:border-border transition-all shrink-0 shadow-sm"
                 >
                   <Calendar className="h-4 w-4 text-primary shrink-0" />
-                  <span className="truncate max-w-[160px]">{isOverview ? `Общий свод` : `Неделя ${week.week}`}</span>
+                  <span className="truncate">{isOverview ? `Общий свод` : `Неделя ${week.week}`}</span>
+                  {!isOverview && (
+                    <span className="hidden xl:inline text-muted-foreground font-normal text-xs">· {week.period}</span>
+                  )}
                   <span className="text-muted-foreground text-xs font-normal opacity-60 group-hover:opacity-100 transition-opacity">▾</span>
                 </button>
               </DropdownMenuTrigger>
