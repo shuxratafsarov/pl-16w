@@ -134,6 +134,29 @@ function AdminPage() {
     }
   }
 
+  function toastSync(s: any) {
+    if (!s) return;
+    const ok = (s.created ?? 0) + (s.updated ?? 0);
+    if (s.failed || s.notFound) {
+      toast.warning(`Финансовая API: ✓${ok} · 404:${s.notFound} · ошибок:${s.failed}`);
+    } else if (ok > 0) {
+      toast.success(`Финансовая API: создано ${s.created}, обновлено ${s.updated}`);
+    }
+  }
+
+  async function handleSync() {
+    setLoading(true);
+    try {
+      const r: any = await syncFn({ data: { password: pwd } });
+      setSyncResult(r);
+      toastSync(r);
+    } catch (e: any) {
+      toast.error(e?.message ?? "Ошибка синхронизации");
+    } finally {
+      setLoading(false);
+    }
+  }
+
   if (!authed) {
     return (
       <div className="min-h-screen flex items-center justify-center p-4 bg-background">
