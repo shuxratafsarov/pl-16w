@@ -83,8 +83,9 @@ function AdminPage() {
     try {
       const weeks = gatherJsonWeeks();
       const monthly = MONTHLY_JSON.map((m: any) => ({ month: m.month, data: m }));
-      const r = await seedFn({ data: { password: pwd, weeks, monthly } });
+      const r: any = await seedFn({ data: { password: pwd, weeks, monthly } });
       toast.success(`Засеяно ${r.weeks} недель и ${r.months} месяцев`);
+      if (r.sync) { setSyncResult(r.sync); toastSync(r.sync); }
       await refresh();
     } catch (e: any) {
       toast.error(e?.message ?? "Ошибка");
