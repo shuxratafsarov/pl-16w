@@ -459,7 +459,7 @@ function Dashboard() {
       <div className="min-h-screen">
         {/* Header */}
         <header className="border-b border-border/40 bg-gradient-to-b from-card/80 to-card/50 backdrop-blur-2xl sticky top-0 z-30 shadow-[0_1px_0_0_hsl(var(--border)/0.4),0_8px_24px_-12px_hsl(var(--primary)/0.12)]">
-          <div className="mx-auto max-w-[1720px] px-8 h-16 flex items-center gap-3">
+          <div className="w-full px-6 h-16 flex items-center gap-3">
             {/* Brand */}
             <div className="flex items-center gap-3.5 min-w-0 shrink-0">
               <div className="relative h-12 w-12 rounded-2xl gradient-primary shadow-glow flex items-center justify-center ring-1 ring-white/20">
@@ -484,7 +484,10 @@ function Dashboard() {
                   className="group inline-flex items-center gap-2 h-10 rounded-xl border border-border/60 bg-card/70 px-3.5 text-sm font-semibold hover:bg-muted/70 hover:border-border transition-all shrink-0 shadow-sm"
                 >
                   <Calendar className="h-4 w-4 text-primary shrink-0" />
-                  <span className="truncate max-w-[160px]">{isOverview ? `Общий свод` : `Неделя ${week.week}`}</span>
+                  <span className="truncate">{isOverview ? `Общий свод` : `Неделя ${week.week}`}</span>
+                  {!isOverview && (
+                    <span className="hidden xl:inline text-muted-foreground font-normal text-xs">· {week.period}</span>
+                  )}
                   <span className="text-muted-foreground text-xs font-normal opacity-60 group-hover:opacity-100 transition-opacity">▾</span>
                 </button>
               </DropdownMenuTrigger>
@@ -583,14 +586,12 @@ function Dashboard() {
                     {sourceMatch.ok ? (
                       <>
                         <CheckCircle2 className="h-4 w-4" />
-                        <span className="hidden xl:inline">100% соответствие</span>
-                        <span className="xl:hidden font-bold">100%</span>
+                        <span>100% соответствие источнику</span>
                       </>
                     ) : (
                       <>
                         <ShieldCheck className="h-4 w-4" />
-                        <span className="hidden xl:inline">Авто-сверено · {sourceMatch.issues.length}</span>
-                        <span className="xl:hidden font-bold">{sourceMatch.issues.length}</span>
+                        <span>Авто-сверено · {sourceMatch.issues.length}</span>
                       </>
                     )}
                   </button>
@@ -651,15 +652,15 @@ function Dashboard() {
               </UITooltip>
 
               {(criticalCount > 0 || warningCount > 0) && (
-                <div className="hidden xl:flex h-10 items-center gap-2.5 rounded-xl border border-border/60 bg-card/70 px-3 text-sm shadow-sm">
+                <div className="hidden md:flex h-10 items-center gap-3 rounded-xl border border-border/60 bg-card/70 px-3.5 text-sm shadow-sm">
                   {criticalCount > 0 && (
                     <span className="inline-flex items-center gap-1.5 text-destructive font-semibold">
-                      <Flame className="h-4 w-4" /> {criticalCount}
+                      <Flame className="h-4 w-4" /> {criticalCount} критич.
                     </span>
                   )}
                   {warningCount > 0 && (
                     <span className="inline-flex items-center gap-1.5 text-warning font-semibold">
-                      <AlertTriangle className="h-4 w-4" /> {warningCount}
+                      <AlertTriangle className="h-4 w-4" /> {warningCount} внимание
                     </span>
                   )}
                 </div>
@@ -669,9 +670,10 @@ function Dashboard() {
                 <TooltipTrigger asChild>
                   <Link
                     to="/reconciliation"
-                    className="inline-flex items-center justify-center h-10 w-10 rounded-xl border border-border/60 bg-card/70 text-muted-foreground hover:text-foreground hover:bg-muted/70 hover:border-border transition-all shadow-sm"
+                    className="inline-flex items-center gap-1.5 h-10 rounded-xl border border-border/60 bg-card/70 px-3 text-sm font-semibold text-muted-foreground hover:text-foreground hover:bg-muted/70 hover:border-border transition-all shadow-sm"
                   >
                     <CheckCircle2 className="h-4 w-4 text-emerald-500" />
+                    <span className="hidden lg:inline">Сверка 100%</span>
                   </Link>
                 </TooltipTrigger>
                 <TooltipContent side="bottom" className="text-xs">Построчная сверка Excel ↔ JSON</TooltipContent>
