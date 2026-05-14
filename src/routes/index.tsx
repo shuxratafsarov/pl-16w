@@ -457,34 +457,34 @@ function Dashboard() {
     <TooltipProvider delayDuration={150}>
       <div className="min-h-screen">
         {/* Header */}
-        <header className="border-b border-border/60 bg-card/40 backdrop-blur-xl sticky top-0 z-30">
-          <div className="mx-auto max-w-[1440px] px-6 py-4 flex items-center justify-between gap-4 flex-wrap">
-            <div className="flex items-center gap-4 min-w-0">
-              <div className="h-11 w-11 rounded-2xl gradient-primary shadow-glow flex items-center justify-center shrink-0">
-                <LineChartIcon className="h-5 w-5 text-white" />
+        <header className="border-b border-border/60 bg-card/60 backdrop-blur-xl sticky top-0 z-30">
+          <div className="mx-auto max-w-[1440px] px-5 h-14 flex items-center gap-3">
+            {/* Brand */}
+            <div className="flex items-center gap-2.5 min-w-0 shrink-0">
+              <div className="h-8 w-8 rounded-xl gradient-primary shadow-glow flex items-center justify-center">
+                <LineChartIcon className="h-4 w-4 text-white" />
               </div>
-              <div className="min-w-0">
-                <p className="text-[11px] font-semibold uppercase tracking-[0.12em] text-muted-foreground">3PL · P&amp;L Аналитика</p>
-                <h1 className="text-lg sm:text-xl font-bold tracking-tight truncate">
+              <div className="hidden lg:flex flex-col leading-none min-w-0">
+                <span className="text-[9px] font-semibold uppercase tracking-[0.14em] text-muted-foreground">3PL · P&amp;L</span>
+                <span className="text-sm font-bold tracking-tight truncate mt-0.5">
                   {isOverview ? `Общий свод` : `Неделя ${week.week}`}
-                </h1>
+                </span>
               </div>
             </div>
 
-            {/* Центр: селектор недели + кнопки маркеров */}
-            <div className="flex items-center gap-2 flex-wrap">
-              {/* Week selector */}
-              <DropdownMenu>
-                <DropdownMenuTrigger asChild>
-                  <button
-                    type="button"
-                    className="inline-flex items-center gap-2 rounded-xl border border-border/60 bg-card/60 px-3 py-2 text-xs font-semibold hover:bg-muted/60 transition-colors"
-                  >
-                    <Calendar className="h-3.5 w-3.5 text-primary" />
-                    {isOverview ? `Общий свод` : `Неделя ${week.week}`}
-                    <span className="text-muted-foreground font-normal hidden md:inline">· {week.period}</span>
-                  </button>
-                </DropdownMenuTrigger>
+            <div className="h-5 w-px bg-border/60 hidden lg:block" />
+
+            {/* Week selector */}
+            <DropdownMenu>
+              <DropdownMenuTrigger asChild>
+                <button
+                  type="button"
+                  className="inline-flex items-center gap-1.5 h-9 rounded-lg border border-border/60 bg-card/60 px-3 text-xs font-semibold hover:bg-muted/60 transition-colors shrink-0"
+                >
+                  <Calendar className="h-3.5 w-3.5 text-primary shrink-0" />
+                  <span className="truncate max-w-[140px]">{isOverview ? `Общий свод` : `Неделя ${week.week}`}</span>
+                </button>
+              </DropdownMenuTrigger>
                 <DropdownMenuContent align="center" className="max-h-[60vh] overflow-y-auto w-56">
                   <DropdownMenuLabel className="text-[10px] uppercase tracking-wider text-muted-foreground">
                     Выбрать неделю (наведите для дат)
