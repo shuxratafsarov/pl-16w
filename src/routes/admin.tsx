@@ -11,6 +11,7 @@ import {
   seedWeeksFromJson,
   uploadExcel,
   deleteWeek,
+  syncToAntria,
 } from "@/lib/admin.functions";
 import type { WeekData } from "@/lib/types";
 
