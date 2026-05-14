@@ -1410,7 +1410,7 @@
           "kg": 602.7
         }
       ],
-      "is_auto": false
+      "is_auto": true
     },
     {
       "col": "EY",
@@ -1437,7 +1437,7 @@
           "kg": 578.85
         }
       ],
-      "is_auto": false
+      "is_auto": true
     },
     {
       "col": "EZ",
@@ -1464,7 +1464,7 @@
           "kg": 301.5
         }
       ],
-      "is_auto": false
+      "is_auto": true
     },
     {
       "col": "FA",
@@ -1519,7 +1519,7 @@
           "kg": 325.15
         }
       ],
-      "is_auto": false
+      "is_auto": true
     },
     {
       "col": "FC",
@@ -1546,7 +1546,7 @@
           "kg": 368.4
         }
       ],
-      "is_auto": false
+      "is_auto": true
     },
     {
       "col": "FD",
@@ -1573,7 +1573,7 @@
           "kg": 242.4
         }
       ],
-      "is_auto": false
+      "is_auto": true
     }
   ]
 }

@@ -842,7 +842,7 @@
           "kg": 212.65
         }
       ],
-      "is_auto": false
+      "is_auto": true
     },
     {
       "col": "GN",
@@ -869,7 +869,7 @@
           "kg": 452.1
         }
       ],
-      "is_auto": false
+      "is_auto": true
     },
     {
       "col": "GO",
@@ -924,7 +924,7 @@
           "kg": 256.45
         }
       ],
-      "is_auto": false
+      "is_auto": true
     },
     {
       "col": "GQ",
@@ -951,7 +951,7 @@
           "kg": 219.8
         }
       ],
-      "is_auto": false
+      "is_auto": true
     },
     {
       "col": "GR",
@@ -978,7 +978,7 @@
           "kg": 382.65
         }
       ],
-      "is_auto": false
+      "is_auto": true
     },
     {
       "col": "GS",
@@ -1005,7 +1005,7 @@
           "kg": 210.25
         }
       ],
-      "is_auto": false
+      "is_auto": true
     },
     {
       "col": "GT",
@@ -1032,7 +1032,7 @@
           "kg": 198.0
         }
       ],
-      "is_auto": false
+      "is_auto": true
     }
   ]
 }

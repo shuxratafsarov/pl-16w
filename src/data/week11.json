@@ -485,7 +485,7 @@
           "kg": 211.55
         }
       ],
-      "is_auto": false
+      "is_auto": true
     },
     {
       "col": "DX",
@@ -512,7 +512,7 @@
           "kg": 259.2
         }
       ],
-      "is_auto": false
+      "is_auto": true
     },
     {
       "col": "DY",
@@ -539,7 +539,7 @@
           "kg": 390.55
         }
       ],
-      "is_auto": false
+      "is_auto": true
     },
     {
       "col": "DZ",
@@ -566,7 +566,7 @@
           "kg": 382.65
         }
       ],
-      "is_auto": false
+      "is_auto": true
     },
     {
       "col": "EA",
@@ -593,7 +593,7 @@
           "kg": 383.5
         }
       ],
-      "is_auto": false
+      "is_auto": true
     }
   ]
 }
