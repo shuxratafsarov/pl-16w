@@ -668,6 +668,9 @@ function Dashboard() {
                 <CheckCircle2 className="h-3.5 w-3.5 text-emerald-500" />
                 Сверка 100%
               </Link>
+              <Link to="/admin" className="text-xs text-muted-foreground hover:text-foreground transition-colors px-2 py-1 rounded-md hover:bg-muted/50" title="Админка">
+                🔒 Админ
+              </Link>
               <ThemeToggle />
             </div>
           </div>
