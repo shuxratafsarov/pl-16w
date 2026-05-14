@@ -14,7 +14,45 @@ export type Database = {
   }
   public: {
     Tables: {
-      [_ in never]: never
+      monthly: {
+        Row: {
+          data: Json
+          month: number
+          updated_at: string
+        }
+        Insert: {
+          data: Json
+          month: number
+          updated_at?: string
+        }
+        Update: {
+          data?: Json
+          month?: number
+          updated_at?: string
+        }
+        Relationships: []
+      }
+      weeks: {
+        Row: {
+          data: Json
+          period: string
+          updated_at: string
+          week: number
+        }
+        Insert: {
+          data: Json
+          period: string
+          updated_at?: string
+          week: number
+        }
+        Update: {
+          data?: Json
+          period?: string
+          updated_at?: string
+          week?: number
+        }
+        Relationships: []
+      }
     }
     Views: {
       [_ in never]: never
