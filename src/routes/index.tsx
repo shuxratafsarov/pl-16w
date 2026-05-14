@@ -459,7 +459,7 @@ function Dashboard() {
       <div className="min-h-screen">
         {/* Header */}
         <header className="border-b border-border/40 bg-gradient-to-b from-card/80 to-card/50 backdrop-blur-2xl sticky top-0 z-30 shadow-[0_1px_0_0_hsl(var(--border)/0.4),0_8px_24px_-12px_hsl(var(--primary)/0.12)]">
-          <div className="mx-auto max-w-[1720px] px-8 h-16 flex items-center gap-3">
+          <div className="w-full px-6 h-16 flex items-center gap-3">
             {/* Brand */}
             <div className="flex items-center gap-3.5 min-w-0 shrink-0">
               <div className="relative h-12 w-12 rounded-2xl gradient-primary shadow-glow flex items-center justify-center ring-1 ring-white/20">
