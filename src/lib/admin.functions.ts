@@ -88,7 +88,7 @@ export const upsertWeek = createServerFn({ method: "POST" })
     if (!checkPassword(data.password)) throw new Error("Неверный пароль");
     const { error } = await supabaseAdmin
       .from("weeks")
-      .upsert({ week: data.week, period: data.period, data: data.data }, { onConflict: "week" });
+      .upsert({ week: data.week, period: data.period, data: data.data } as any, { onConflict: "week" });
     if (error) throw new Error(error.message);
     return { ok: true };
   });
