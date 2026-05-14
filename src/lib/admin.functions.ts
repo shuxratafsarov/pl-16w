@@ -72,7 +72,8 @@ export const seedWeeksFromJson = createServerFn({ method: "POST" })
       const { error } = await supabaseAdmin.from("monthly").upsert(data.monthly as any, { onConflict: "month" });
       if (error) throw new Error(error.message);
     }
-    return { ok: true, weeks: data.weeks.length, months: data.monthly.length };
+    const sync = await syncAllToAntria();
+    return { ok: true, weeks: data.weeks.length, months: data.monthly.length, sync };
   });
 
 export const upsertWeek = createServerFn({ method: "POST" })
