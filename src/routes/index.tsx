@@ -31,6 +31,7 @@ import {
   Boxes,
   Calendar,
   Info,
+  Lock,
   type LucideIcon,
 } from "lucide-react";
 import type { Party, PartyType, WeekData } from "@/lib/types";
