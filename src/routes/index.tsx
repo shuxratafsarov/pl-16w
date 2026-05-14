@@ -671,7 +671,7 @@ function Dashboard() {
                     to="/reconciliation"
                     className="inline-flex items-center justify-center h-10 w-10 rounded-xl border border-border/60 bg-card/70 text-muted-foreground hover:text-foreground hover:bg-muted/70 hover:border-border transition-all shadow-sm"
                   >
-                    <CheckCircle2 className="h-4.5 w-4.5 text-emerald-500" />
+                    <CheckCircle2 className="h-4 w-4 text-emerald-500" />
                   </Link>
                 </TooltipTrigger>
                 <TooltipContent side="bottom" className="text-xs">Построчная сверка Excel ↔ JSON</TooltipContent>
