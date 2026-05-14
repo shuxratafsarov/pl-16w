@@ -228,6 +228,34 @@ function AdminPage() {
             </div>
           )}
         </Card>
+        <Card className="p-6 space-y-3">
+          <h2 className="font-semibold">Финансовая API (Antria)</h2>
+          <p className="text-sm text-muted-foreground">
+            Отправляет все партии (<code>batch_number</code>, <code>project</code>, <code>revenue</code>, <code>cost</code>, <code>currency=USD</code>)
+            в финансовый отдел. Запускается автоматически после загрузки Excel и сидинга, либо вручную.
+          </p>
+          <Button onClick={handleSync} disabled={loading} variant="secondary">Синхронизировать вручную</Button>
+          {syncResult && (
+            <div className="text-sm space-y-1 pt-2 border-t">
+              <div className="font-mono">
+                Отправлено: {syncResult.attempted} · created: {syncResult.created} · updated: {syncResult.updated} · 404 (нет в их БД): {syncResult.notFound} · ошибок: {syncResult.failed}
+              </div>
+              {syncResult.errors?.length > 0 && (
+                <details className="text-xs text-muted-foreground">
+                  <summary className="cursor-pointer">Показать ошибки ({syncResult.errors.length})</summary>
+                  <div className="mt-2 space-y-1 max-h-64 overflow-auto">
+                    {syncResult.errors.map((er: any, i: number) => (
+                      <div key={i} className="font-mono">
+                        [{er.status}] {er.project} #{er.batch_number}: {er.message}
+                      </div>
+                    ))}
+                  </div>
+                </details>
+              )}
+            </div>
+          )}
+        </Card>
+
       </div>
     </div>
   );
