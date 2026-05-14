@@ -11,6 +11,7 @@ import {
   seedWeeksFromJson,
   uploadExcel,
   deleteWeek,
+  syncToAntria,
 } from "@/lib/admin.functions";
 import type { WeekData } from "@/lib/types";
 
@@ -39,12 +40,14 @@ function AdminPage() {
   const [authed, setAuthed] = useState(false);
   const [loading, setLoading] = useState(false);
   const [dbWeeks, setDbWeeks] = useState<{ week: number; period: string }[]>([]);
+  const [syncResult, setSyncResult] = useState<any>(null);
 
   const verifyFn = useServerFn(verifyAdminPassword);
   const listFn = useServerFn(listWeeksFromDb);
   const seedFn = useServerFn(seedWeeksFromJson);
   const uploadFn = useServerFn(uploadExcel);
   const deleteFn = useServerFn(deleteWeek);
+  const syncFn = useServerFn(syncToAntria);
 
   async function refresh() {
     const r = await listFn();
@@ -80,8 +83,9 @@ function AdminPage() {
     try {
       const weeks = gatherJsonWeeks();
       const monthly = MONTHLY_JSON.map((m: any) => ({ month: m.month, data: m }));
-      const r = await seedFn({ data: { password: pwd, weeks, monthly } });
+      const r: any = await seedFn({ data: { password: pwd, weeks, monthly } });
       toast.success(`Засеяно ${r.weeks} недель и ${r.months} месяцев`);
+      if (r.sync) { setSyncResult(r.sync); toastSync(r.sync); }
       await refresh();
     } catch (e: any) {
       toast.error(e?.message ?? "Ошибка");
@@ -104,8 +108,9 @@ function AdminPage() {
         bin += String.fromCharCode(...u8.subarray(i, i + chunk));
       }
       const fileBase64 = btoa(bin);
-      const r = await uploadFn({ data: { password: pwd, fileBase64, replaceAll: true } });
+      const r: any = await uploadFn({ data: { password: pwd, fileBase64, replaceAll: true } });
       toast.success(`Загружено: недель ${r.weeksParsed}, месяцев ${r.monthsParsed}`);
+      if (r.sync) { setSyncResult(r.sync); toastSync(r.sync); }
       await refresh();
     } catch (e: any) {
       toast.error(e?.message ?? "Ошибка загрузки");
@@ -124,6 +129,29 @@ function AdminPage() {
       await refresh();
     } catch (e: any) {
       toast.error(e?.message ?? "Ошибка");
+    } finally {
+      setLoading(false);
+    }
+  }
+
+  function toastSync(s: any) {
+    if (!s) return;
+    const ok = (s.created ?? 0) + (s.updated ?? 0);
+    if (s.failed || s.notFound) {
+      toast.warning(`Финансовая API: ✓${ok} · 404:${s.notFound} · ошибок:${s.failed}`);
+    } else if (ok > 0) {
+      toast.success(`Финансовая API: создано ${s.created}, обновлено ${s.updated}`);
+    }
+  }
+
+  async function handleSync() {
+    setLoading(true);
+    try {
+      const r: any = await syncFn({ data: { password: pwd } });
+      setSyncResult(r);
+      toastSync(r);
+    } catch (e: any) {
+      toast.error(e?.message ?? "Ошибка синхронизации");
     } finally {
       setLoading(false);
     }
@@ -200,6 +228,34 @@ function AdminPage() {
             </div>
           )}
         </Card>
+        <Card className="p-6 space-y-3">
+          <h2 className="font-semibold">Финансовая API (Antria)</h2>
+          <p className="text-sm text-muted-foreground">
+            Отправляет все партии (<code>batch_number</code>, <code>project</code>, <code>revenue</code>, <code>cost</code>, <code>currency=USD</code>)
+            в финансовый отдел. Запускается автоматически после загрузки Excel и сидинга, либо вручную.
+          </p>
+          <Button onClick={handleSync} disabled={loading} variant="secondary">Синхронизировать вручную</Button>
+          {syncResult && (
+            <div className="text-sm space-y-1 pt-2 border-t">
+              <div className="font-mono">
+                Отправлено: {syncResult.attempted} · created: {syncResult.created} · updated: {syncResult.updated} · 404 (нет в их БД): {syncResult.notFound} · ошибок: {syncResult.failed}
+              </div>
+              {syncResult.errors?.length > 0 && (
+                <details className="text-xs text-muted-foreground">
+                  <summary className="cursor-pointer">Показать ошибки ({syncResult.errors.length})</summary>
+                  <div className="mt-2 space-y-1 max-h-64 overflow-auto">
+                    {syncResult.errors.map((er: any, i: number) => (
+                      <div key={i} className="font-mono">
+                        [{er.status}] {er.project} #{er.batch_number}: {er.message}
+                      </div>
+                    ))}
+                  </div>
+                </details>
+              )}
+            </div>
+          )}
+        </Card>
+
       </div>
     </div>
   );
