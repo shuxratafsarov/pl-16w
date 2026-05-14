@@ -458,32 +458,34 @@ function Dashboard() {
     <TooltipProvider delayDuration={150}>
       <div className="min-h-screen">
         {/* Header */}
-        <header className="border-b border-border/60 bg-card/60 backdrop-blur-xl sticky top-0 z-30">
-          <div className="mx-auto max-w-[1440px] px-5 h-14 flex items-center gap-3">
+        <header className="border-b border-border/40 bg-gradient-to-b from-card/80 to-card/50 backdrop-blur-2xl sticky top-0 z-30 shadow-[0_1px_0_0_hsl(var(--border)/0.4),0_8px_24px_-12px_hsl(var(--primary)/0.12)]">
+          <div className="mx-auto max-w-[1440px] px-6 h-16 flex items-center gap-3">
             {/* Brand */}
-            <div className="flex items-center gap-2.5 min-w-0 shrink-0">
-              <div className="h-8 w-8 rounded-xl gradient-primary shadow-glow flex items-center justify-center">
-                <LineChartIcon className="h-4 w-4 text-white" />
+            <div className="flex items-center gap-3 min-w-0 shrink-0">
+              <div className="relative h-10 w-10 rounded-2xl gradient-primary shadow-glow flex items-center justify-center ring-1 ring-white/20">
+                <LineChartIcon className="h-5 w-5 text-white" strokeWidth={2.5} />
+                <span className="absolute inset-0 rounded-2xl bg-gradient-to-tr from-white/0 via-white/15 to-white/0 pointer-events-none" />
               </div>
               <div className="hidden lg:flex flex-col leading-none min-w-0">
-                <span className="text-[9px] font-semibold uppercase tracking-[0.14em] text-muted-foreground">3PL · P&amp;L</span>
-                <span className="text-sm font-bold tracking-tight truncate mt-0.5">
+                <span className="text-[10px] font-bold uppercase tracking-[0.18em] text-muted-foreground/80">3PL · P&amp;L</span>
+                <span className="text-[15px] font-bold tracking-tight truncate mt-1 bg-gradient-to-r from-foreground to-foreground/70 bg-clip-text text-transparent">
                   {isOverview ? `Общий свод` : `Неделя ${week.week}`}
                 </span>
               </div>
             </div>
 
-            <div className="h-5 w-px bg-border/60 hidden lg:block" />
+            <div className="h-7 w-px bg-gradient-to-b from-transparent via-border to-transparent hidden lg:block mx-1" />
 
             {/* Week selector */}
             <DropdownMenu>
               <DropdownMenuTrigger asChild>
                 <button
                   type="button"
-                  className="inline-flex items-center gap-1.5 h-9 rounded-lg border border-border/60 bg-card/60 px-3 text-xs font-semibold hover:bg-muted/60 transition-colors shrink-0"
+                  className="group inline-flex items-center gap-2 h-10 rounded-xl border border-border/60 bg-card/70 px-3.5 text-sm font-semibold hover:bg-muted/70 hover:border-border transition-all shrink-0 shadow-sm"
                 >
-                  <Calendar className="h-3.5 w-3.5 text-primary shrink-0" />
-                  <span className="truncate max-w-[140px]">{isOverview ? `Общий свод` : `Неделя ${week.week}`}</span>
+                  <Calendar className="h-4 w-4 text-primary shrink-0" />
+                  <span className="truncate max-w-[160px]">{isOverview ? `Общий свод` : `Неделя ${week.week}`}</span>
+                  <span className="text-muted-foreground text-xs font-normal opacity-60 group-hover:opacity-100 transition-opacity">▾</span>
                 </button>
               </DropdownMenuTrigger>
                 <DropdownMenuContent align="center" className="max-h-[60vh] overflow-y-auto w-56">
