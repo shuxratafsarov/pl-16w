@@ -108,8 +108,9 @@ function AdminPage() {
         bin += String.fromCharCode(...u8.subarray(i, i + chunk));
       }
       const fileBase64 = btoa(bin);
-      const r = await uploadFn({ data: { password: pwd, fileBase64, replaceAll: true } });
+      const r: any = await uploadFn({ data: { password: pwd, fileBase64, replaceAll: true } });
       toast.success(`Загружено: недель ${r.weeksParsed}, месяцев ${r.monthsParsed}`);
+      if (r.sync) { setSyncResult(r.sync); toastSync(r.sync); }
       await refresh();
     } catch (e: any) {
       toast.error(e?.message ?? "Ошибка загрузки");
