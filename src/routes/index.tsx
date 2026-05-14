@@ -458,32 +458,34 @@ function Dashboard() {
     <TooltipProvider delayDuration={150}>
       <div className="min-h-screen">
         {/* Header */}
-        <header className="border-b border-border/60 bg-card/60 backdrop-blur-xl sticky top-0 z-30">
-          <div className="mx-auto max-w-[1440px] px-5 h-14 flex items-center gap-3">
+        <header className="border-b border-border/40 bg-gradient-to-b from-card/80 to-card/50 backdrop-blur-2xl sticky top-0 z-30 shadow-[0_1px_0_0_hsl(var(--border)/0.4),0_8px_24px_-12px_hsl(var(--primary)/0.12)]">
+          <div className="mx-auto max-w-[1440px] px-6 h-16 flex items-center gap-3">
             {/* Brand */}
-            <div className="flex items-center gap-2.5 min-w-0 shrink-0">
-              <div className="h-8 w-8 rounded-xl gradient-primary shadow-glow flex items-center justify-center">
-                <LineChartIcon className="h-4 w-4 text-white" />
+            <div className="flex items-center gap-3 min-w-0 shrink-0">
+              <div className="relative h-10 w-10 rounded-2xl gradient-primary shadow-glow flex items-center justify-center ring-1 ring-white/20">
+                <LineChartIcon className="h-5 w-5 text-white" strokeWidth={2.5} />
+                <span className="absolute inset-0 rounded-2xl bg-gradient-to-tr from-white/0 via-white/15 to-white/0 pointer-events-none" />
               </div>
               <div className="hidden lg:flex flex-col leading-none min-w-0">
-                <span className="text-[9px] font-semibold uppercase tracking-[0.14em] text-muted-foreground">3PL · P&amp;L</span>
-                <span className="text-sm font-bold tracking-tight truncate mt-0.5">
+                <span className="text-[10px] font-bold uppercase tracking-[0.18em] text-muted-foreground/80">3PL · P&amp;L</span>
+                <span className="text-[15px] font-bold tracking-tight truncate mt-1 bg-gradient-to-r from-foreground to-foreground/70 bg-clip-text text-transparent">
                   {isOverview ? `Общий свод` : `Неделя ${week.week}`}
                 </span>
               </div>
             </div>
 
-            <div className="h-5 w-px bg-border/60 hidden lg:block" />
+            <div className="h-7 w-px bg-gradient-to-b from-transparent via-border to-transparent hidden lg:block mx-1" />
 
             {/* Week selector */}
             <DropdownMenu>
               <DropdownMenuTrigger asChild>
                 <button
                   type="button"
-                  className="inline-flex items-center gap-1.5 h-9 rounded-lg border border-border/60 bg-card/60 px-3 text-xs font-semibold hover:bg-muted/60 transition-colors shrink-0"
+                  className="group inline-flex items-center gap-2 h-10 rounded-xl border border-border/60 bg-card/70 px-3.5 text-sm font-semibold hover:bg-muted/70 hover:border-border transition-all shrink-0 shadow-sm"
                 >
-                  <Calendar className="h-3.5 w-3.5 text-primary shrink-0" />
-                  <span className="truncate max-w-[140px]">{isOverview ? `Общий свод` : `Неделя ${week.week}`}</span>
+                  <Calendar className="h-4 w-4 text-primary shrink-0" />
+                  <span className="truncate max-w-[160px]">{isOverview ? `Общий свод` : `Неделя ${week.week}`}</span>
+                  <span className="text-muted-foreground text-xs font-normal opacity-60 group-hover:opacity-100 transition-opacity">▾</span>
                 </button>
               </DropdownMenuTrigger>
                 <DropdownMenuContent align="center" className="max-h-[60vh] overflow-y-auto w-56">
@@ -542,15 +544,16 @@ function Dashboard() {
                 </DropdownMenuContent>
               </DropdownMenu>
 
+
             {/* Marker quick-jump buttons */}
-            <div className="hidden md:inline-flex h-9 items-center rounded-lg border border-border/60 bg-card/60 px-1 gap-0.5 shrink-0">
+            <div className="hidden md:inline-flex h-10 items-center rounded-xl border border-border/60 bg-card/70 px-1 gap-0.5 shrink-0 shadow-sm">
               {MARKER_BUTTONS.map((b) => (
                 <UITooltip key={b.id}>
                   <TooltipTrigger asChild>
                     <button
                       type="button"
                       onClick={() => scrollToMarker(b.id)}
-                      className="px-2 h-7 rounded-md text-[11px] font-bold text-muted-foreground hover:text-foreground hover:bg-primary/15 transition-colors tabular-nums"
+                      className="px-2.5 h-8 rounded-lg text-xs font-bold text-muted-foreground hover:text-primary hover:bg-primary/10 transition-all tabular-nums"
                     >
                       {b.short}
                     </button>
@@ -571,23 +574,23 @@ function Dashboard() {
                   <button
                     type="button"
                     className={cn(
-                      "inline-flex items-center gap-1.5 h-9 rounded-lg border px-2.5 text-xs font-semibold transition-colors cursor-help",
+                      "inline-flex items-center gap-1.5 h-10 rounded-xl border px-3 text-sm font-semibold transition-all cursor-help shadow-sm",
                       sourceMatch.ok
-                        ? "border-success/40 bg-success/10 text-success hover:bg-success/15"
-                        : "border-warning/40 bg-warning/10 text-warning hover:bg-warning/15"
+                        ? "border-success/40 bg-gradient-to-b from-success/15 to-success/5 text-success hover:from-success/20 hover:to-success/10"
+                        : "border-warning/40 bg-gradient-to-b from-warning/15 to-warning/5 text-warning hover:from-warning/20 hover:to-warning/10"
                     )}
                   >
                     {sourceMatch.ok ? (
                       <>
-                        <CheckCircle2 className="h-3.5 w-3.5" />
+                        <CheckCircle2 className="h-4 w-4" />
                         <span className="hidden xl:inline">100% соответствие</span>
-                        <span className="xl:hidden">100%</span>
+                        <span className="xl:hidden font-bold">100%</span>
                       </>
                     ) : (
                       <>
-                        <ShieldCheck className="h-3.5 w-3.5" />
+                        <ShieldCheck className="h-4 w-4" />
                         <span className="hidden xl:inline">Авто-сверено · {sourceMatch.issues.length}</span>
-                        <span className="xl:hidden">{sourceMatch.issues.length}</span>
+                        <span className="xl:hidden font-bold">{sourceMatch.issues.length}</span>
                       </>
                     )}
                   </button>
@@ -648,15 +651,15 @@ function Dashboard() {
               </UITooltip>
 
               {(criticalCount > 0 || warningCount > 0) && (
-                <div className="hidden xl:flex h-9 items-center gap-2 rounded-lg border border-border/60 bg-card/60 px-2.5 text-xs">
+                <div className="hidden xl:flex h-10 items-center gap-2.5 rounded-xl border border-border/60 bg-card/70 px-3 text-sm shadow-sm">
                   {criticalCount > 0 && (
-                    <span className="inline-flex items-center gap-1 text-destructive font-semibold">
-                      <Flame className="h-3.5 w-3.5" /> {criticalCount}
+                    <span className="inline-flex items-center gap-1.5 text-destructive font-semibold">
+                      <Flame className="h-4 w-4" /> {criticalCount}
                     </span>
                   )}
                   {warningCount > 0 && (
-                    <span className="inline-flex items-center gap-1 text-warning font-semibold">
-                      <AlertTriangle className="h-3.5 w-3.5" /> {warningCount}
+                    <span className="inline-flex items-center gap-1.5 text-warning font-semibold">
+                      <AlertTriangle className="h-4 w-4" /> {warningCount}
                     </span>
                   )}
                 </div>
@@ -666,7 +669,7 @@ function Dashboard() {
                 <TooltipTrigger asChild>
                   <Link
                     to="/reconciliation"
-                    className="inline-flex items-center justify-center h-9 w-9 rounded-lg border border-border/60 bg-card/60 text-muted-foreground hover:text-foreground hover:bg-muted/60 transition-colors"
+                    className="inline-flex items-center justify-center h-10 w-10 rounded-xl border border-border/60 bg-card/70 text-muted-foreground hover:text-foreground hover:bg-muted/70 hover:border-border transition-all shadow-sm"
                   >
                     <CheckCircle2 className="h-4 w-4 text-emerald-500" />
                   </Link>
@@ -678,7 +681,7 @@ function Dashboard() {
                 <TooltipTrigger asChild>
                   <Link
                     to="/admin"
-                    className="inline-flex items-center justify-center h-9 w-9 rounded-lg border border-border/60 bg-card/60 text-muted-foreground hover:text-foreground hover:bg-muted/60 transition-colors"
+                    className="inline-flex items-center justify-center h-10 w-10 rounded-xl border border-border/60 bg-card/70 text-muted-foreground hover:text-foreground hover:bg-muted/70 hover:border-border transition-all shadow-sm"
                   >
                     <Lock className="h-4 w-4" />
                   </Link>
