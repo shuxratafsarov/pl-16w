@@ -652,15 +652,15 @@ function Dashboard() {
               </UITooltip>
 
               {(criticalCount > 0 || warningCount > 0) && (
-                <div className="hidden xl:flex h-10 items-center gap-2.5 rounded-xl border border-border/60 bg-card/70 px-3 text-sm shadow-sm">
+                <div className="hidden md:flex h-10 items-center gap-3 rounded-xl border border-border/60 bg-card/70 px-3.5 text-sm shadow-sm">
                   {criticalCount > 0 && (
                     <span className="inline-flex items-center gap-1.5 text-destructive font-semibold">
-                      <Flame className="h-4 w-4" /> {criticalCount}
+                      <Flame className="h-4 w-4" /> {criticalCount} критич.
                     </span>
                   )}
                   {warningCount > 0 && (
                     <span className="inline-flex items-center gap-1.5 text-warning font-semibold">
-                      <AlertTriangle className="h-4 w-4" /> {warningCount}
+                      <AlertTriangle className="h-4 w-4" /> {warningCount} внимание
                     </span>
                   )}
                 </div>
@@ -670,9 +670,10 @@ function Dashboard() {
                 <TooltipTrigger asChild>
                   <Link
                     to="/reconciliation"
-                    className="inline-flex items-center justify-center h-10 w-10 rounded-xl border border-border/60 bg-card/70 text-muted-foreground hover:text-foreground hover:bg-muted/70 hover:border-border transition-all shadow-sm"
+                    className="inline-flex items-center gap-1.5 h-10 rounded-xl border border-border/60 bg-card/70 px-3 text-sm font-semibold text-muted-foreground hover:text-foreground hover:bg-muted/70 hover:border-border transition-all shadow-sm"
                   >
                     <CheckCircle2 className="h-4 w-4 text-emerald-500" />
+                    <span className="hidden lg:inline">Сверка 100%</span>
                   </Link>
                 </TooltipTrigger>
                 <TooltipContent side="bottom" className="text-xs">Построчная сверка Excel ↔ JSON</TooltipContent>
