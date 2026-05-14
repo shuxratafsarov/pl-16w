@@ -586,14 +586,12 @@ function Dashboard() {
                     {sourceMatch.ok ? (
                       <>
                         <CheckCircle2 className="h-4 w-4" />
-                        <span className="hidden xl:inline">100% соответствие</span>
-                        <span className="xl:hidden font-bold">100%</span>
+                        <span>100% соответствие источнику</span>
                       </>
                     ) : (
                       <>
                         <ShieldCheck className="h-4 w-4" />
-                        <span className="hidden xl:inline">Авто-сверено · {sourceMatch.issues.length}</span>
-                        <span className="xl:hidden font-bold">{sourceMatch.issues.length}</span>
+                        <span>Авто-сверено · {sourceMatch.issues.length}</span>
                       </>
                     )}
                   </button>
