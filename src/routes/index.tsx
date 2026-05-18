@@ -1091,6 +1091,14 @@ function Dashboard() {
                           {worst === "critical" && <Flame className="h-3.5 w-3.5 text-destructive shrink-0" />}
                           {worst === "warning" && <AlertTriangle className="h-3.5 w-3.5 text-warning shrink-0" />}
                           {partyLabel(p)}
+                          {p.type === "MPO" && p.mpo_num && (
+                            <span
+                              title={`Внутренний номер MPO: ${p.mpo_num}`}
+                              className="inline-flex items-center gap-1 rounded-md border border-primary/40 bg-primary/10 px-1.5 py-0.5 text-[10px] font-bold tracking-wide text-primary"
+                            >
+                              MPO №{p.mpo_num}
+                            </span>
+                          )}
                           {p.is_hk_danger && (
                             <span
                               title="ОПАСНИК (JM HK) — груз HONG KONG"
