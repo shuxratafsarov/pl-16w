@@ -707,7 +707,8 @@
           "kg": 21.55
         }
       ],
-      "is_auto": false
+      "is_auto": false,
+      "mpo_num": null
     },
     {
       "col": "DM",

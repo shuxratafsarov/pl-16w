@@ -20,6 +20,8 @@ export type Party = {
   mix?: MixRow[];
   is_auto?: boolean;
   is_hk_danger?: boolean;
+  /** Внутренний номер MPO-партии (строка 4 Excel-колонки). Может содержать несколько номеров через запятую, напр. "133, 134". Только для type === "MPO". */
+  mpo_num?: string | null;
 };
 
 export type CountryCode = "UZ" | "BY" | "AZ" | "KG" | "KZ";

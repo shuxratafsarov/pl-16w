@@ -615,7 +615,8 @@
           "kg": 98.75
         }
       ],
-      "is_auto": false
+      "is_auto": false,
+      "mpo_num": null
     },
     {
       "col": "BF",

@@ -1167,7 +1167,8 @@
           "kg": 31.75
         }
       ],
-      "is_auto": false
+      "is_auto": false,
+      "mpo_num": "133, 134"
     },
     {
       "col": "EP",
@@ -1194,7 +1195,8 @@
           "kg": 19.1
         }
       ],
-      "is_auto": false
+      "is_auto": false,
+      "mpo_num": null
     },
     {
       "col": "EQ",
@@ -1221,7 +1223,8 @@
           "kg": 23.35
         }
       ],
-      "is_auto": false
+      "is_auto": false,
+      "mpo_num": null
     },
     {
       "col": "ER",
@@ -1248,7 +1251,8 @@
           "kg": 36.75
         }
       ],
-      "is_auto": false
+      "is_auto": false,
+      "mpo_num": null
     },
     {
       "col": "ES",
@@ -1275,7 +1279,8 @@
           "kg": 18.2
         }
       ],
-      "is_auto": false
+      "is_auto": false,
+      "mpo_num": null
     },
     {
       "col": "ET",
@@ -1302,7 +1307,8 @@
           "kg": 19.1
         }
       ],
-      "is_auto": false
+      "is_auto": false,
+      "mpo_num": null
     },
     {
       "col": "EU",
@@ -1329,7 +1335,8 @@
           "kg": 36.7
         }
       ],
-      "is_auto": false
+      "is_auto": false,
+      "mpo_num": null
     },
     {
       "col": "EV",
@@ -1356,7 +1363,8 @@
           "kg": 22.55
         }
       ],
-      "is_auto": false
+      "is_auto": false,
+      "mpo_num": null
     },
     {
       "col": "EW",
@@ -1383,7 +1391,8 @@
           "kg": 15.75
         }
       ],
-      "is_auto": false
+      "is_auto": false,
+      "mpo_num": null
     },
     {
       "col": "EX",

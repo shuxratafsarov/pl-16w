@@ -115,6 +115,22 @@ def main():
                     f"W{week} MKO {p['num']} is_auto excel={auto_map.get(key, False)} json={bool(p.get('is_auto'))}"
                 )
 
+            # MPO internal number (row 4 of MPO column). Normalised by stripping
+            # trailing "UZUM MPO" suffix. May be None.
+            if p["type"] == "MPO":
+                raw = ws.cell(4, c).value
+                if raw is None:
+                    x_mpo_num = None
+                else:
+                    import re as _re
+                    s = _re.sub(r"\s*UZUM\s+MPO\s*$", "", str(raw).strip(), flags=_re.I).strip()
+                    x_mpo_num = s or None
+                j_mpo_num = p.get("mpo_num")
+                if (x_mpo_num or None) != (j_mpo_num or None):
+                    issues.append(
+                        f"W{week} MPO {p['num']} mpo_num excel={x_mpo_num!r} json={j_mpo_num!r}"
+                    )
+
             # Revenue / Expense
             xr = num(ws.cell(REVENUE_ROW, c).value) or 0.0
             xe = num(ws.cell(EXPENSE_ROW, c).value) or 0.0

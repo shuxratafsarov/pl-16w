@@ -615,7 +615,8 @@
           "kg": 12.05
         }
       ],
-      "is_auto": false
+      "is_auto": false,
+      "mpo_num": null
     },
     {
       "col": "HO",
@@ -642,7 +643,8 @@
           "kg": 20.75
         }
       ],
-      "is_auto": false
+      "is_auto": false,
+      "mpo_num": null
     },
     {
       "col": "HP",
@@ -669,7 +671,8 @@
           "kg": 21.85
         }
       ],
-      "is_auto": false
+      "is_auto": false,
+      "mpo_num": null
     },
     {
       "col": "HQ",
@@ -696,7 +699,8 @@
           "kg": 17.2
         }
       ],
-      "is_auto": false
+      "is_auto": false,
+      "mpo_num": null
     },
     {
       "col": "HR",
@@ -723,7 +727,8 @@
           "kg": 16.25
         }
       ],
-      "is_auto": false
+      "is_auto": false,
+      "mpo_num": null
     },
     {
       "col": "HS",
@@ -750,7 +755,8 @@
           "kg": 17.2
         }
       ],
-      "is_auto": false
+      "is_auto": false,
+      "mpo_num": null
     },
     {
       "col": "HT",

@@ -615,7 +615,8 @@
           "kg": 17.15
         }
       ],
-      "is_auto": false
+      "is_auto": false,
+      "mpo_num": null
     },
     {
       "col": "JD",
@@ -642,7 +643,8 @@
           "kg": 38.0
         }
       ],
-      "is_auto": false
+      "is_auto": false,
+      "mpo_num": "135, 136"
     },
     {
       "col": "JE",
@@ -669,7 +671,8 @@
           "kg": 17.9
         }
       ],
-      "is_auto": false
+      "is_auto": false,
+      "mpo_num": null
     },
     {
       "col": "JF",
@@ -696,7 +699,8 @@
           "kg": 14.85
         }
       ],
-      "is_auto": false
+      "is_auto": false,
+      "mpo_num": null
     },
     {
       "col": "JG",

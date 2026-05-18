@@ -707,7 +707,8 @@
           "kg": 18.1
         }
       ],
-      "is_auto": false
+      "is_auto": false,
+      "mpo_num": null
     },
     {
       "col": "IL",
@@ -734,7 +735,8 @@
           "kg": 7.85
         }
       ],
-      "is_auto": false
+      "is_auto": false,
+      "mpo_num": null
     },
     {
       "col": "IM",
@@ -761,7 +763,8 @@
           "kg": 34.35
         }
       ],
-      "is_auto": false
+      "is_auto": false,
+      "mpo_num": null
     },
     {
       "col": "IN",
@@ -788,7 +791,8 @@
           "kg": 18.9
         }
       ],
-      "is_auto": false
+      "is_auto": false,
+      "mpo_num": null
     },
     {
       "col": "IO",
@@ -815,7 +819,8 @@
           "kg": 14.4
         }
       ],
-      "is_auto": false
+      "is_auto": false,
+      "mpo_num": null
     },
     {
       "col": "IP",

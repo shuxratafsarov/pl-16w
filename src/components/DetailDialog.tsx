@@ -364,6 +364,14 @@ function PartyDetails({ col, week }: { col: string; week: WeekData }) {
           <div>
             <DialogTitle className="text-xl flex items-center gap-2 flex-wrap">
               Партия №{party.num}
+              {party.type === "MPO" && party.mpo_num && (
+                <span
+                  title={`Внутренний номер MPO: ${party.mpo_num}`}
+                  className="inline-flex items-center rounded-md border border-primary/30 bg-primary/10 px-2 py-0.5 text-[11px] font-bold tabular-nums tracking-wide text-primary shadow-sm"
+                >
+                  MPO №{party.mpo_num}
+                </span>
+              )}
               {party.is_hk_danger && (
                 <span
                   title="ОПАСНИК (JM HK) — груз HONG KONG"
@@ -546,6 +554,14 @@ function PartyRow({
           {tMeta.label}
         </span>
         <span className="text-sm font-semibold tabular-nums truncate">№{party.num}</span>
+        {party.type === "MPO" && party.mpo_num && (
+          <span
+            title={`Внутренний номер MPO: ${party.mpo_num}`}
+            className="inline-flex items-center rounded-md border border-primary/30 bg-primary/10 px-1.5 py-0.5 text-[10px] font-bold tabular-nums tracking-wide text-primary shrink-0"
+          >
+            №{party.mpo_num}
+          </span>
+        )}
         {party.date && <span className="text-[11px] text-muted-foreground tabular-nums shrink-0">· {party.date}</span>}
       </div>
       <span className="text-sm font-bold tabular-nums shrink-0">{value}</span>

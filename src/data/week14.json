@@ -707,7 +707,8 @@
           "kg": 26.3
         }
       ],
-      "is_auto": false
+      "is_auto": false,
+      "mpo_num": null
     },
     {
       "col": "GI",
@@ -734,7 +735,8 @@
           "kg": 17.6
         }
       ],
-      "is_auto": false
+      "is_auto": false,
+      "mpo_num": null
     },
     {
       "col": "GJ",
@@ -761,7 +763,8 @@
           "kg": 12.85
         }
       ],
-      "is_auto": false
+      "is_auto": false,
+      "mpo_num": null
     },
     {
       "col": "GK",
@@ -788,7 +791,8 @@
           "kg": 19.15
         }
       ],
-      "is_auto": false
+      "is_auto": false,
+      "mpo_num": null
     },
     {
       "col": "GL",
@@ -815,7 +819,8 @@
           "kg": 11.45
         }
       ],
-      "is_auto": false
+      "is_auto": false,
+      "mpo_num": null
     },
     {
       "col": "GM",
