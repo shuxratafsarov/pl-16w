@@ -26,6 +26,7 @@ with `PNL_XLSX` env var). No other sheet, no manual numbers.
 | CAINIAO pieces AZ        | 41   |
 | CAINIAO pieces KG        | 50   |
 | CAINIAO subtype ratios   | 354–374 (see validator) |
+| **MPO internal number**  | 4 (only on MPO columns)  |
 
 Party type detection on row 8: string contains `MPO` → MPO, contains `MKO`
 → MKO, otherwise numeric → CAINIAO. If the MKO source header contains
