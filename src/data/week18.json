@@ -642,7 +642,8 @@
           "kg": 38.0
         }
       ],
-      "is_auto": false
+      "is_auto": false,
+      "mpo_num": "135, 136"
     },
     {
       "col": "JE",

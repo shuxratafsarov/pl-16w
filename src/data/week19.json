@@ -615,7 +615,8 @@
           "kg": 33.35
         }
       ],
-      "is_auto": false
+      "is_auto": false,
+      "mpo_num": "75"
     },
     {
       "col": "JW",
@@ -642,7 +643,8 @@
           "kg": 27.3
         }
       ],
-      "is_auto": false
+      "is_auto": false,
+      "mpo_num": "76"
     },
     {
       "col": "JX",
