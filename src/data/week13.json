@@ -983,7 +983,8 @@
           "kg": 28.65
         }
       ],
-      "is_auto": false
+      "is_auto": false,
+      "mpo_num": null
     },
     {
       "col": "FQ",
@@ -1010,7 +1011,8 @@
           "kg": 30.85
         }
       ],
-      "is_auto": false
+      "is_auto": false,
+      "mpo_num": null
     },
     {
       "col": "FR",
@@ -1037,7 +1039,8 @@
           "kg": 19.75
         }
       ],
-      "is_auto": false
+      "is_auto": false,
+      "mpo_num": null
     },
     {
       "col": "FS",
@@ -1064,7 +1067,8 @@
           "kg": 16.35
         }
       ],
-      "is_auto": false
+      "is_auto": false,
+      "mpo_num": null
     },
     {
       "col": "FT",

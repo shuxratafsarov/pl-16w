@@ -707,7 +707,8 @@
           "kg": 119.75
         }
       ],
-      "is_auto": false
+      "is_auto": false,
+      "mpo_num": null
     },
     {
       "col": "AT",

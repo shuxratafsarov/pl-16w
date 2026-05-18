@@ -891,7 +891,8 @@
           "kg": 106.2
         }
       ],
-      "is_auto": false
+      "is_auto": false,
+      "mpo_num": null
     },
     {
       "col": "T",

@@ -891,7 +891,8 @@
           "kg": 119.0
         }
       ],
-      "is_auto": false
+      "is_auto": false,
+      "mpo_num": null
     },
     {
       "col": "AI",
