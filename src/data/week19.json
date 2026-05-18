@@ -616,7 +616,7 @@
         }
       ],
       "is_auto": false,
-      "mpo_num": "75"
+      "mpo_num": null
     },
     {
       "col": "JW",
@@ -644,7 +644,7 @@
         }
       ],
       "is_auto": false,
-      "mpo_num": "76"
+      "mpo_num": null
     },
     {
       "col": "JX",

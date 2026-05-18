@@ -1,0 +1,1 @@
+UPDATE weeks SET data = jsonb_set(data, '{parties}', (SELECT jsonb_agg(CASE WHEN (p->>'type')='MPO' AND p->>'mpo_num' IN ('75','76') THEN jsonb_set(p, '{mpo_num}', 'null'::jsonb) ELSE p END) FROM jsonb_array_elements(data->'parties') p)) WHERE week = 19;

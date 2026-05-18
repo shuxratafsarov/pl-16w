@@ -115,16 +115,18 @@ def main():
                     f"W{week} MKO {p['num']} is_auto excel={auto_map.get(key, False)} json={bool(p.get('is_auto'))}"
                 )
 
-            # MPO internal number (row 4 of MPO column). Normalised by stripping
-            # trailing "UZUM MPO" suffix. May be None.
+            # MPO internal number (row 4 of MPO column).
+            # Only accept pure-digit values (digits, spaces, commas).
+            # Any cell with non-digit text (labels like "MPO №75", "75 UZUM MPO")
+            # is treated as null and skipped.
             if p["type"] == "MPO":
                 raw = ws.cell(4, c).value
-                if raw is None:
-                    x_mpo_num = None
-                else:
+                x_mpo_num = None
+                if raw is not None:
                     import re as _re
-                    s = _re.sub(r"\s*UZUM\s+MPO\s*$", "", str(raw).strip(), flags=_re.I).strip()
-                    x_mpo_num = s or None
+                    s = str(raw).strip()
+                    if s and _re.fullmatch(r"[\d,\s]+", s):
+                        x_mpo_num = _re.sub(r"\s+", " ", s).strip() or None
                 j_mpo_num = p.get("mpo_num")
                 if (x_mpo_num or None) != (j_mpo_num or None):
                     issues.append(

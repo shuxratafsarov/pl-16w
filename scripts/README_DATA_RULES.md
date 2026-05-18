@@ -31,9 +31,11 @@ with `PNL_XLSX` env var). No other sheet, no manual numbers.
 Party type detection on row 8: string contains `MPO` → MPO, contains `MKO`
 → MKO, otherwise numeric → CAINIAO. If the MKO source header contains
 `(А)` / `(A)`, set `is_auto=true` for that party; otherwise `is_auto=false`.
-For every MPO party copy row 4 of its column into `mpo_num` (string|null) —
-strip trailing " UZUM MPO" if present (e.g. `"75 UZUM MPO"` → `"75"`,
-`"133, 134"` stays as is). Always set the field on MPO parties even when null.
+For every MPO party read row 4 of its column into `mpo_num` (string|null).
+**Only accept pure-digit values** (digits, optional spaces and commas — e.g.
+`"133, 134"`, `"135, 136"`). If the cell contains any non-digit text such as
+`"MPO №75"`, `"75 UZUM MPO"` or any label — set `mpo_num=null` and do NOT
+strip the text. Empty cell → `null`. Field is always present on MPO parties.
 
 ## JSON conventions in `src/data/week*.json`
 
