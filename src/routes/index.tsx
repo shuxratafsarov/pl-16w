@@ -694,7 +694,7 @@ function Dashboard() {
           </div>
         </header>
 
-      <main className="mx-auto max-w-[1720px] px-8 py-8 space-y-8">
+      <main className="mx-auto max-w-[1880px] px-10 py-8 space-y-8">
         {isOverview ? (
           <Tabs defaultValue="weekly" className="space-y-4">
             <TabsList>
