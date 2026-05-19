@@ -137,7 +137,8 @@ function buildOverview(weeks: Record<number, WeekData>): WeekData {
     parties,
   };
 }
-const OVERVIEW_WEEK: WeekData = buildOverview(ALL_WEEKS);
+const OVERVIEW_BY_YEAR: Record<number, WeekData> = {};
+for (const y of AVAILABLE_YEARS) OVERVIEW_BY_YEAR[y] = buildOverview(WEEKS_BY_YEAR[y]);
 
 /** Расхождение по одной строке (до пересчёта). */
 type Discrepancy = {
