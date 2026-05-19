@@ -346,15 +346,22 @@ function computeTypeAverages(parties: Party[]) {
 }
 
 function Dashboard() {
+  const [selectedYear, setSelectedYear] = useState<number>(DEFAULT_YEAR);
   const [selectedWeek, setSelectedWeek] = useState<number>(DEFAULT_WEEK);
   const [filter, setFilter] = useState<"ALL" | "UZUM" | PartyType>("ALL");
   const [detail, setDetail] = useState<DetailTarget | null>(null);
 
+  const yearWeeks = WEEKS_BY_YEAR[selectedYear] ?? {};
+  const yearAvailableWeeks = useMemo(() => Object.keys(yearWeeks).map(Number).sort((a, b) => a - b), [yearWeeks]);
+  const WEEKS_FOR_YEAR = useMemo(() => getWeeksForYear(selectedYear), [selectedYear]);
+
   const isOverview = selectedWeek === OVERVIEW_KEY;
   const { week, discrepancies: SOURCE_DISCREPANCIES } = useMemo(() => {
-    const raw = isOverview ? OVERVIEW_WEEK : ALL_WEEKS[selectedWeek];
+    const raw = isOverview
+      ? (OVERVIEW_BY_YEAR[selectedYear] ?? buildOverview(yearWeeks))
+      : (yearWeeks[selectedWeek] ?? OVERVIEW_BY_YEAR[selectedYear]);
     return reconcileWeek(raw);
-  }, [selectedWeek, isOverview]);
+  }, [selectedWeek, isOverview, selectedYear, yearWeeks]);
 
   const typeAverages = useMemo(() => computeTypeAverages(week.parties), [week]);
 
