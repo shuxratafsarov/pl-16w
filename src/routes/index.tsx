@@ -764,7 +764,7 @@ function Dashboard() {
               <TabsTrigger value="monthly">3PL Monthly</TabsTrigger>
             </TabsList>
             <TabsContent value="weekly" className="space-y-4">
-              <OverviewAnalytics weeksMap={ALL_WEEKS} />
+              <OverviewAnalytics weeksMap={yearWeeks} />
             </TabsContent>
             <TabsContent value="monthly" className="space-y-4">
               <MonthlyView />
