@@ -270,8 +270,8 @@ const MARKER_BUTTONS: Array<{ id: string; short: string; title: string; descript
   { id: "marker-4", short: "M4", title: "Соотношение продуктов", description: "Структура микса по странам и подтипам (RM/SRM/NRM и т. д.) в штуках или килограммах. Показывает, какие категории дают основной объём." },
 ];
 
-/** Доступные недели (1–16). Даты-периоды для tooltip. */
-const WEEKS: Array<{ week: number; period: string }> = [
+/** Жёстко прописанные периоды для 2026 (для tooltip). 2025 строится из data.period. */
+const WEEKS_2026: Array<{ week: number; period: string }> = [
   { week: 1, period: "2025-12-29 — 2026-01-04" },
   { week: 2, period: "2026-01-05 — 2026-01-11" },
   { week: 3, period: "2026-01-12 — 2026-01-18" },
@@ -292,6 +292,16 @@ const WEEKS: Array<{ week: number; period: string }> = [
   { week: 18, period: "2026-04-27 — 2026-05-03" },
   { week: 19, period: "2026-05-04 — 2026-05-10" },
 ];
+
+/** Список недель для выбранного года: из захардкоженного списка (2026) или из data (другие годы). */
+function getWeeksForYear(year: number): Array<{ week: number; period: string }> {
+  if (year === 2026) return WEEKS_2026;
+  const yearMap = WEEKS_BY_YEAR[year] ?? {};
+  return Object.keys(yearMap)
+    .map(Number)
+    .sort((a, b) => a - b)
+    .map((w) => ({ week: w, period: yearMap[w].period ?? `W${w} ${year}` }));
+}
 
 function scrollToMarker(id: string) {
   const el = document.getElementById(id);
