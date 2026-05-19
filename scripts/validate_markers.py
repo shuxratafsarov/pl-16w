@@ -116,22 +116,25 @@ def main():
                 )
 
             # MPO internal number (row 4 of MPO column).
-            # Only accept pure-digit values (digits, spaces, commas).
-            # Any cell with non-digit text (labels like "MPO №75", "75 UZUM MPO")
-            # is treated as null and skipped.
+            # Strip optional " UZUM MPO" suffix (case-insensitive). Accept the
+            # remainder only if it is purely digits, spaces and commas — e.g.
+            # "133, 134" or "133, 134 UZUM MPO". Anything else (labels like
+            # "MPO №75", text-only cells) → null.
             if p["type"] == "MPO":
                 raw = ws.cell(4, c).value
                 x_mpo_num = None
                 if raw is not None:
                     import re as _re
                     s = str(raw).strip()
-                    if s and _re.fullmatch(r"[\d,\s]+", s):
-                        x_mpo_num = _re.sub(r"\s+", " ", s).strip() or None
+                    s2 = _re.sub(r"\s*UZUM\s*MPO\s*$", "", s, flags=_re.IGNORECASE).strip()
+                    if s2 and _re.fullmatch(r"[\d,\s]+", s2):
+                        x_mpo_num = _re.sub(r"\s+", " ", s2).strip() or None
                 j_mpo_num = p.get("mpo_num")
                 if (x_mpo_num or None) != (j_mpo_num or None):
                     issues.append(
                         f"W{week} MPO {p['num']} mpo_num excel={x_mpo_num!r} json={j_mpo_num!r}"
                     )
+
 
             # Revenue / Expense
             xr = num(ws.cell(REVENUE_ROW, c).value) or 0.0
