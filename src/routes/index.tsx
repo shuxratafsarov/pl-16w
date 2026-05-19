@@ -505,6 +505,39 @@ function Dashboard() {
 
             <div className="h-7 w-px bg-gradient-to-b from-transparent via-border to-transparent hidden lg:block mx-1" />
 
+            {/* Year selector */}
+            <DropdownMenu>
+              <DropdownMenuTrigger asChild>
+                <button
+                  type="button"
+                  className="group inline-flex items-center gap-2 h-10 rounded-xl border border-border/60 bg-card/70 px-3.5 text-sm font-semibold hover:bg-muted/70 hover:border-border transition-all shrink-0 shadow-sm"
+                >
+                  <span className="tabular-nums">{selectedYear}</span>
+                  <span className="text-muted-foreground text-xs font-normal opacity-60 group-hover:opacity-100 transition-opacity">▾</span>
+                </button>
+              </DropdownMenuTrigger>
+              <DropdownMenuContent align="center" className="w-32">
+                <DropdownMenuLabel className="text-[10px] uppercase tracking-wider text-muted-foreground">Год</DropdownMenuLabel>
+                <DropdownMenuSeparator />
+                {AVAILABLE_YEARS.map((y) => (
+                  <DropdownMenuItem
+                    key={y}
+                    onSelect={() => {
+                      setSelectedYear(y);
+                      setSelectedWeek(OVERVIEW_KEY);
+                    }}
+                    className={cn(
+                      "flex items-center justify-between gap-2 text-xs cursor-pointer tabular-nums",
+                      y === selectedYear && "bg-primary/10 text-primary font-semibold"
+                    )}
+                  >
+                    <span>{y}</span>
+                    {y === selectedYear && <span className="text-[10px] uppercase">текущий</span>}
+                  </DropdownMenuItem>
+                ))}
+              </DropdownMenuContent>
+            </DropdownMenu>
+
             {/* Week selector */}
             <DropdownMenu>
               <DropdownMenuTrigger asChild>
@@ -519,7 +552,7 @@ function Dashboard() {
               </DropdownMenuTrigger>
                 <DropdownMenuContent align="center" className="max-h-[60vh] overflow-y-auto w-56">
                   <DropdownMenuLabel className="text-[10px] uppercase tracking-wider text-muted-foreground">
-                    Выбрать неделю (наведите для дат)
+                    Выбрать неделю · {selectedYear}
                   </DropdownMenuLabel>
                   <DropdownMenuSeparator />
                   <DropdownMenuItem
@@ -540,9 +573,9 @@ function Dashboard() {
                     )}
                   </DropdownMenuItem>
                   <DropdownMenuSeparator />
-                  {WEEKS.map((w) => {
+                  {WEEKS_FOR_YEAR.map((w) => {
                     const isCurrent = !isOverview && w.week === week.week;
-                    const hasData = AVAILABLE_WEEKS.includes(w.week);
+                    const hasData = yearAvailableWeeks.includes(w.week);
                     return (
                       <UITooltip key={w.week}>
                         <TooltipTrigger asChild>
