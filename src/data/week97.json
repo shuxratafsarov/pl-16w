@@ -1,0 +1,546 @@
+{
+  "week": 97,
+  "year": 2025,
+  "period": "W3 2025 (ПИЛОТ)",
+  "totals": {
+    "revenue": 122551.89,
+    "expense": 91348.67,
+    "gross_profit": 31203.22,
+    "margin_pct": 25.46
+  },
+  "byType": {
+    "CAINIAO": {
+      "count": 7,
+      "revenue": 122551.89,
+      "expense": 91348.67,
+      "gross_profit": 31203.2,
+      "margin_pct": 25.46
+    },
+    "MPO": {
+      "count": 0,
+      "revenue": 0,
+      "expense": 0,
+      "gross_profit": 0,
+      "margin_pct": 0
+    },
+    "MKO": {
+      "count": 0,
+      "revenue": 0,
+      "expense": 0,
+      "gross_profit": 0,
+      "margin_pct": 0
+    }
+  },
+  "umbrella_uzum_cb": {
+    "revenue": 0,
+    "expense": 0,
+    "gross_profit": 0,
+    "margin_pct": 0
+  },
+  "parties": [
+    {
+      "col": "23",
+      "type": "CAINIAO",
+      "num": "592",
+      "date": "2025-01-13T00:00:00",
+      "revenue": 17080.51,
+      "expense": 12636.88,
+      "gross_profit": 4443.62,
+      "margin_pct": 26.02,
+      "weight_net": null,
+      "weight_gross": null,
+      "weight_vol": null,
+      "marker1_tariff": 4.15,
+      "marker2_volnet": 1.1587530943020028,
+      "marker3_grossnet": 1.0249000302429507,
+      "total_kg": null,
+      "total_pcs": 10808,
+      "mix": [
+        {
+          "country": "UZ",
+          "subtype": "RM",
+          "pcs": 550,
+          "kg": 40.12
+        },
+        {
+          "country": "UZ",
+          "subtype": "SRM",
+          "pcs": 56,
+          "kg": 4.09
+        },
+        {
+          "country": "UZ",
+          "subtype": "SRMA",
+          "pcs": 732,
+          "kg": 53.4
+        },
+        {
+          "country": "UZ",
+          "subtype": "SRMB",
+          "pcs": 922,
+          "kg": 67.26
+        },
+        {
+          "country": "UZ",
+          "subtype": "SRMC",
+          "pcs": 195,
+          "kg": 14.23
+        },
+        {
+          "country": "BY",
+          "subtype": "RRM",
+          "pcs": 1473,
+          "kg": 120.03
+        },
+        {
+          "country": "BY",
+          "subtype": "SRM",
+          "pcs": 1487,
+          "kg": 121.17
+        },
+        {
+          "country": "BY",
+          "subtype": "NRM",
+          "pcs": 3642,
+          "kg": 296.77
+        },
+        {
+          "country": "KG",
+          "subtype": "RM",
+          "pcs": 108,
+          "kg": 8.89
+        },
+        {
+          "country": "KG",
+          "subtype": "NRM",
+          "pcs": 265,
+          "kg": 21.83
+        },
+        {
+          "country": "AZ",
+          "subtype": "RM",
+          "pcs": 534,
+          "kg": 56.19
+        },
+        {
+          "country": "AZ",
+          "subtype": "NRM",
+          "pcs": 844,
+          "kg": 88.8
+        }
+      ]
+    },
+    {
+      "col": "24",
+      "type": "CAINIAO",
+      "num": "593",
+      "date": "2025-01-15T00:00:00",
+      "revenue": 33126.38,
+      "expense": 25119.56,
+      "gross_profit": 8006.82,
+      "margin_pct": 24.17,
+      "weight_net": null,
+      "weight_gross": null,
+      "weight_vol": null,
+      "marker1_tariff": 4.15,
+      "marker2_volnet": 1.2522330029072775,
+      "marker3_grossnet": 1.0245542751059542,
+      "total_kg": null,
+      "total_pcs": 21615,
+      "mix": [
+        {
+          "country": "UZ",
+          "subtype": "RM",
+          "pcs": 1003,
+          "kg": 74.53
+        },
+        {
+          "country": "UZ",
+          "subtype": "SRM",
+          "pcs": 121,
+          "kg": 8.99
+        },
+        {
+          "country": "UZ",
+          "subtype": "SRMA",
+          "pcs": 1411,
+          "kg": 104.85
+        },
+        {
+          "country": "UZ",
+          "subtype": "SRMB",
+          "pcs": 1923,
+          "kg": 142.9
+        },
+        {
+          "country": "UZ",
+          "subtype": "SRMC",
+          "pcs": 352,
+          "kg": 26.16
+        },
+        {
+          "country": "BY",
+          "subtype": "RRM",
+          "pcs": 2788,
+          "kg": 208.17
+        },
+        {
+          "country": "BY",
+          "subtype": "SRM",
+          "pcs": 3875,
+          "kg": 289.33
+        },
+        {
+          "country": "BY",
+          "subtype": "NRM",
+          "pcs": 6980,
+          "kg": 521.17
+        },
+        {
+          "country": "KG",
+          "subtype": "RM",
+          "pcs": 161,
+          "kg": 12.58
+        },
+        {
+          "country": "KG",
+          "subtype": "NRM",
+          "pcs": 552,
+          "kg": 43.15
+        },
+        {
+          "country": "AZ",
+          "subtype": "RM",
+          "pcs": 919,
+          "kg": 105.48
+        },
+        {
+          "country": "AZ",
+          "subtype": "NRM",
+          "pcs": 1530,
+          "kg": 175.61
+        }
+      ]
+    },
+    {
+      "col": "25",
+      "type": "CAINIAO",
+      "num": "594",
+      "date": "2025-01-16T00:00:00",
+      "revenue": 598.7,
+      "expense": 590.21,
+      "gross_profit": 8.48,
+      "margin_pct": 1.42,
+      "weight_net": null,
+      "weight_gross": null,
+      "weight_vol": null,
+      "marker1_tariff": 0,
+      "marker2_volnet": 4.578267477203648,
+      "marker3_grossnet": 1.2917933130699089,
+      "total_kg": null,
+      "total_pcs": 518,
+      "mix": [
+        {
+          "country": "BY",
+          "subtype": "SRMDG",
+          "pcs": 518,
+          "kg": 26.32
+        }
+      ]
+    },
+    {
+      "col": "26",
+      "type": "CAINIAO",
+      "num": "595",
+      "date": "2025-01-17T00:00:00",
+      "revenue": 32629.56,
+      "expense": 25058.91,
+      "gross_profit": 7570.65,
+      "margin_pct": 23.2,
+      "weight_net": null,
+      "weight_gross": null,
+      "weight_vol": null,
+      "marker1_tariff": 4.1499999999999995,
+      "marker2_volnet": 1.2942357516846625,
+      "marker3_grossnet": 1.0339458861577426,
+      "total_kg": null,
+      "total_pcs": 23411,
+      "mix": [
+        {
+          "country": "UZ",
+          "subtype": "RM",
+          "pcs": 848,
+          "kg": 56.52
+        },
+        {
+          "country": "UZ",
+          "subtype": "SRM",
+          "pcs": 115,
+          "kg": 7.67
+        },
+        {
+          "country": "UZ",
+          "subtype": "SRMA",
+          "pcs": 1452,
+          "kg": 96.78
+        },
+        {
+          "country": "UZ",
+          "subtype": "SRMB",
+          "pcs": 1795,
+          "kg": 119.64
+        },
+        {
+          "country": "UZ",
+          "subtype": "SRMC",
+          "pcs": 355,
+          "kg": 23.66
+        },
+        {
+          "country": "BY",
+          "subtype": "RRM",
+          "pcs": 2943,
+          "kg": 196.08
+        },
+        {
+          "country": "BY",
+          "subtype": "SRM",
+          "pcs": 3740,
+          "kg": 249.18
+        },
+        {
+          "country": "BY",
+          "subtype": "NRM",
+          "pcs": 8929,
+          "kg": 594.89
+        },
+        {
+          "country": "KG",
+          "subtype": "RM",
+          "pcs": 162,
+          "kg": 11.33
+        },
+        {
+          "country": "KG",
+          "subtype": "NRM",
+          "pcs": 638,
+          "kg": 44.63
+        },
+        {
+          "country": "AZ",
+          "subtype": "RM",
+          "pcs": 842,
+          "kg": 91.04
+        },
+        {
+          "country": "AZ",
+          "subtype": "NRM",
+          "pcs": 1592,
+          "kg": 172.12
+        }
+      ]
+    },
+    {
+      "col": "27",
+      "type": "CAINIAO",
+      "num": "596",
+      "date": "2025-01-19T00:00:00",
+      "revenue": 21321.75,
+      "expense": 15200.9,
+      "gross_profit": 6120.85,
+      "margin_pct": 28.71,
+      "weight_net": null,
+      "weight_gross": null,
+      "weight_vol": null,
+      "marker1_tariff": 4.15,
+      "marker2_volnet": 1.0234470804097462,
+      "marker3_grossnet": 1.0234470804097462,
+      "total_kg": null,
+      "total_pcs": 14928,
+      "mix": [
+        {
+          "country": "UZ",
+          "subtype": "RM",
+          "pcs": 524,
+          "kg": 35.97
+        },
+        {
+          "country": "UZ",
+          "subtype": "SRM",
+          "pcs": 86,
+          "kg": 5.9
+        },
+        {
+          "country": "UZ",
+          "subtype": "SRMA",
+          "pcs": 828,
+          "kg": 56.84
+        },
+        {
+          "country": "UZ",
+          "subtype": "SRMB",
+          "pcs": 1129,
+          "kg": 77.5
+        },
+        {
+          "country": "UZ",
+          "subtype": "SRMC",
+          "pcs": 238,
+          "kg": 16.34
+        },
+        {
+          "country": "BY",
+          "subtype": "RRM",
+          "pcs": 1867,
+          "kg": 126.67
+        },
+        {
+          "country": "BY",
+          "subtype": "SRM",
+          "pcs": 2793,
+          "kg": 189.5
+        },
+        {
+          "country": "BY",
+          "subtype": "NRM",
+          "pcs": 5304,
+          "kg": 359.86
+        },
+        {
+          "country": "KG",
+          "subtype": "RM",
+          "pcs": 96,
+          "kg": 5.6
+        },
+        {
+          "country": "KG",
+          "subtype": "NRM",
+          "pcs": 425,
+          "kg": 24.77
+        },
+        {
+          "country": "AZ",
+          "subtype": "RM",
+          "pcs": 548,
+          "kg": 62.1
+        },
+        {
+          "country": "AZ",
+          "subtype": "NRM",
+          "pcs": 1090,
+          "kg": 123.51
+        }
+      ]
+    },
+    {
+      "col": "28",
+      "type": "CAINIAO",
+      "num": "597",
+      "date": "2025-01-19T00:00:00",
+      "revenue": 14375.29,
+      "expense": 10790.54,
+      "gross_profit": 3584.75,
+      "margin_pct": 24.94,
+      "weight_net": null,
+      "weight_gross": null,
+      "weight_vol": null,
+      "marker1_tariff": 4,
+      "marker2_volnet": 1.2421684945841978,
+      "marker3_grossnet": 1.0301572416792362,
+      "total_kg": null,
+      "total_pcs": 8606,
+      "mix": [
+        {
+          "country": "UZ",
+          "subtype": "RM",
+          "pcs": 384,
+          "kg": 28.73
+        },
+        {
+          "country": "UZ",
+          "subtype": "SRM",
+          "pcs": 38,
+          "kg": 2.84
+        },
+        {
+          "country": "UZ",
+          "subtype": "SRMA",
+          "pcs": 480,
+          "kg": 35.92
+        },
+        {
+          "country": "UZ",
+          "subtype": "SRMB",
+          "pcs": 459,
+          "kg": 34.35
+        },
+        {
+          "country": "UZ",
+          "subtype": "SRMC",
+          "pcs": 97,
+          "kg": 7.26
+        },
+        {
+          "country": "BY",
+          "subtype": "RRM",
+          "pcs": 1515,
+          "kg": 120.81
+        },
+        {
+          "country": "BY",
+          "subtype": "SRM",
+          "pcs": 1650,
+          "kg": 131.58
+        },
+        {
+          "country": "BY",
+          "subtype": "NRM",
+          "pcs": 2786,
+          "kg": 222.17
+        },
+        {
+          "country": "KG",
+          "subtype": "RM",
+          "pcs": 79,
+          "kg": 5.41
+        },
+        {
+          "country": "KG",
+          "subtype": "NRM",
+          "pcs": 208,
+          "kg": 14.25
+        },
+        {
+          "country": "AZ",
+          "subtype": "RM",
+          "pcs": 440,
+          "kg": 64.06
+        },
+        {
+          "country": "AZ",
+          "subtype": "NRM",
+          "pcs": 470,
+          "kg": 68.43
+        }
+      ]
+    },
+    {
+      "col": "29",
+      "type": "CAINIAO",
+      "num": "52 YANDEX FARFETCH",
+      "date": "2025-01-17T00:00:00",
+      "revenue": 3419.7,
+      "expense": 1951.67,
+      "gross_profit": 1468.03,
+      "margin_pct": 42.93,
+      "weight_net": null,
+      "weight_gross": null,
+      "weight_vol": null,
+      "marker1_tariff": null,
+      "marker2_volnet": null,
+      "marker3_grossnet": null,
+      "total_kg": null,
+      "total_pcs": 0
+    }
+  ]
+}
