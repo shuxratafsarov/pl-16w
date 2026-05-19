@@ -63,15 +63,26 @@ import {
 } from "@/components/ui/dropdown-menu";
 import { cn } from "@/lib/utils";
 
-// Загружаем все недели из src/data/week*.json (eager — запекаются в бандл, фолбэк если БД пуста).
-const WEEK_MODULES = import.meta.glob("@/data/week*.json", { eager: true, import: "default" }) as Record<string, WeekData>;
-const JSON_WEEKS: Record<number, WeekData> = {};
+// Загружаем все недели из src/data/week*.json (eager — запекаются в бандл).
+// Поддерживаем два формата имён файлов:
+//   weekN.json            → year=2026 (legacy, без префикса)
+//   week-YYYY-N.json      → year=YYYY (новый формат, многолетний)
+const WEEK_MODULES = import.meta.glob("@/data/week*.json", { eager: true, import: "default" }) as Record<string, WeekData & { year?: number }>;
+const WEEKS_BY_YEAR: Record<number, Record<number, WeekData>> = {};
 for (const path in WEEK_MODULES) {
-  const m = path.match(/week(\d+)\.json$/);
-  if (m) JSON_WEEKS[Number(m[1])] = WEEK_MODULES[path];
+  const data = WEEK_MODULES[path];
+  const mYear = path.match(/week-(\d{4})-(\d+)\.json$/);
+  const mLegacy = path.match(/week(\d+)\.json$/);
+  let year: number | null = null;
+  let week: number | null = null;
+  if (mYear) { year = Number(mYear[1]); week = Number(mYear[2]); }
+  else if (mLegacy) { year = data.year ?? 2026; week = Number(mLegacy[1]); }
+  if (year == null || week == null) continue;
+  (WEEKS_BY_YEAR[year] ||= {})[week] = data;
 }
-// ALL_WEEKS будет переопределён хуком useDbWeeks ниже; на старте — JSON.
-const ALL_WEEKS: Record<number, WeekData> = { ...JSON_WEEKS };
+const AVAILABLE_YEARS = Object.keys(WEEKS_BY_YEAR).map(Number).sort((a, b) => b - a);
+const DEFAULT_YEAR = AVAILABLE_YEARS[0] ?? 2026;
+const ALL_WEEKS: Record<number, WeekData> = WEEKS_BY_YEAR[DEFAULT_YEAR] ?? {};
 const AVAILABLE_WEEKS = Object.keys(ALL_WEEKS).map(Number).sort((a, b) => a - b);
 const DEFAULT_WEEK = AVAILABLE_WEEKS[AVAILABLE_WEEKS.length - 1] ?? 16;
 /** Сентинел: «Общий свод» = агрегат по всем неделям. */
