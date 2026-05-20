@@ -10,25 +10,25 @@
   },
   "byType": {
     "CAINIAO": {
-      "count": 16,
-      "revenue": 134463.27,
-      "expense": 110279.57,
-      "gross_profit": 24183.7,
-      "margin_pct": 17.99
+      "count": 10,
+      "revenue": 102026.49,
+      "expense": 88262.05,
+      "gross_profit": 13764.44,
+      "margin_pct": 13.49
     },
     "MPO": {
-      "count": 0,
-      "revenue": 0,
-      "expense": 0,
-      "gross_profit": 0,
-      "margin_pct": 0
+      "count": 2,
+      "revenue": 3470.26,
+      "expense": 2620.56,
+      "gross_profit": 849.69,
+      "margin_pct": 24.48
     },
     "MKO": {
-      "count": 0,
-      "revenue": 0,
-      "expense": 0,
-      "gross_profit": 0,
-      "margin_pct": 0
+      "count": 4,
+      "revenue": 28966.52,
+      "expense": 19396.96,
+      "gross_profit": 9569.56,
+      "margin_pct": 33.04
     }
   },
   "umbrella_uzum_cb": {
@@ -894,7 +894,7 @@
     },
     {
       "col": "580",
-      "type": "CAINIAO",
+      "type": "MPO",
       "num": "944 UZUM MPO",
       "date": "2025-12-15T00:00:00",
       "revenue": 1749.4,
@@ -912,7 +912,7 @@
     },
     {
       "col": "581",
-      "type": "CAINIAO",
+      "type": "MPO",
       "num": "951 UZUM MPO",
       "date": "2025-12-20T00:00:00",
       "revenue": 1720.86,
@@ -930,7 +930,7 @@
     },
     {
       "col": "582",
-      "type": "CAINIAO",
+      "type": "MKO",
       "num": "22 UZUM MKO",
       "date": "2025-12-15T00:00:00",
       "revenue": 6511.76,
@@ -948,7 +948,7 @@
     },
     {
       "col": "583",
-      "type": "CAINIAO",
+      "type": "MKO",
       "num": "25 UZUM MKO",
       "date": "2025-12-18T00:00:00",
       "revenue": 8299.45,
@@ -966,7 +966,7 @@
     },
     {
       "col": "584",
-      "type": "CAINIAO",
+      "type": "MKO",
       "num": "26 UZUM MKO",
       "date": "2025-12-20T00:00:00",
       "revenue": 8573.89,
@@ -984,7 +984,7 @@
     },
     {
       "col": "585",
-      "type": "CAINIAO",
+      "type": "MKO",
       "num": "27 UZUM MKO",
       "date": "2025-12-21T00:00:00",
       "revenue": 5581.42,

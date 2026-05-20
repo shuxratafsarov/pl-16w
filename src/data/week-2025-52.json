@@ -10,25 +10,25 @@
   },
   "byType": {
     "CAINIAO": {
-      "count": 12,
-      "revenue": 100413.16,
-      "expense": 80349.62,
-      "gross_profit": 20063.54,
-      "margin_pct": 19.98
+      "count": 8,
+      "revenue": 70148.44,
+      "expense": 62982.92,
+      "gross_profit": 7165.53,
+      "margin_pct": 10.21
     },
     "MPO": {
       "count": 0,
-      "revenue": 0,
-      "expense": 0,
-      "gross_profit": 0,
+      "revenue": 0.0,
+      "expense": 0.0,
+      "gross_profit": 0.0,
       "margin_pct": 0
     },
     "MKO": {
-      "count": 0,
-      "revenue": 0,
-      "expense": 0,
-      "gross_profit": 0,
-      "margin_pct": 0
+      "count": 4,
+      "revenue": 30264.72,
+      "expense": 17366.7,
+      "gross_profit": 12898.02,
+      "margin_pct": 42.62
     }
   },
   "umbrella_uzum_cb": {
@@ -710,7 +710,7 @@
     },
     {
       "col": "595",
-      "type": "CAINIAO",
+      "type": "MKO",
       "num": "28 UZUM MKO",
       "date": "2025-12-23T00:00:00",
       "revenue": 11878.35,
@@ -728,7 +728,7 @@
     },
     {
       "col": "596",
-      "type": "CAINIAO",
+      "type": "MKO",
       "num": "29 UZUM MKO",
       "date": "2025-12-25T00:00:00",
       "revenue": 5320.46,
@@ -746,7 +746,7 @@
     },
     {
       "col": "597",
-      "type": "CAINIAO",
+      "type": "MKO",
       "num": "30 UZUM MKO",
       "date": "2025-12-27T00:00:00",
       "revenue": 5361.98,
@@ -764,7 +764,7 @@
     },
     {
       "col": "598",
-      "type": "CAINIAO",
+      "type": "MKO",
       "num": "32 UZUM MKO",
       "date": "2025-12-26T00:00:00",
       "revenue": 7703.93,
