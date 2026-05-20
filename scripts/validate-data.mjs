@@ -3,7 +3,7 @@
  * Data integrity gate. Runs before `vite build`.
  *
  * Two layers:
- *  1) Pure-JS invariants on src/data/week*.json (always run, no source needed):
+ *  1) Pure-JS invariants on src/data/week*.json and week-YYYY-N.json (always run, no source needed):
  *     - sum(party.revenue) == totals.revenue (≤ $5)
  *     - sum(party.expense) == totals.expense (≤ $5)
  *     - sum(party.total_pcs) per type == byType[type].count expectation:
@@ -34,7 +34,9 @@ function near(a, b, tol) {
   return Math.abs(a - b) <= tol;
 }
 
-const files = fs.readdirSync(DATA_DIR).filter((f) => /^week\d+\.json$/.test(f));
+const files = fs
+  .readdirSync(DATA_DIR)
+  .filter((f) => /^week(?:-\d{4}-)?\d+\.json$/.test(f));
 for (const f of files) {
   const data = JSON.parse(fs.readFileSync(path.join(DATA_DIR, f), "utf8"));
   const w = data.week;
@@ -55,8 +57,27 @@ for (const f of files) {
   // total_pcs is now stored per-party for ALL types (M4 by party).
   // Sanity check only — must be a non-negative number when present.
   for (const p of parties) {
+    const label = String(p.num ?? "").toUpperCase();
+    if (label.includes("UZUM MPO") && p.type !== "MPO") {
+      issues.push(`W${w} ${p.num}: UZUM MPO party must have type=MPO, got ${p.type}`);
+    }
+    if (label.includes("UZUM MKO") && p.type !== "MKO") {
+      issues.push(`W${w} ${p.num}: UZUM MKO party must have type=MKO, got ${p.type}`);
+    }
     if (p.total_pcs != null && (typeof p.total_pcs !== "number" || p.total_pcs < 0)) {
       issues.push(`W${w} ${p.type} ${p.num}: total_pcs must be a non-negative number`);
+    }
+  }
+
+  for (const type of ["CAINIAO", "MPO", "MKO"]) {
+    const inType = parties.filter((p) => p.type === type);
+    const sumRevType = inType.reduce((s, p) => s + (p.revenue ?? 0), 0);
+    const sumExpType = inType.reduce((s, p) => s + (p.expense ?? 0), 0);
+    if (!near(sumRevType, data.byType?.[type]?.revenue, TOL_MONEY)) {
+      issues.push(`W${w} ${type}.revenue=${data.byType?.[type]?.revenue} but sum(parties)=${sumRevType.toFixed(2)}`);
+    }
+    if (!near(sumExpType, data.byType?.[type]?.expense, TOL_MONEY)) {
+      issues.push(`W${w} ${type}.expense=${data.byType?.[type]?.expense} but sum(parties)=${sumExpType.toFixed(2)}`);
     }
   }
 }
