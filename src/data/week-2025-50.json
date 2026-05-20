@@ -10,25 +10,25 @@
   },
   "byType": {
     "CAINIAO": {
-      "count": 10,
-      "revenue": 105450.53,
-      "expense": 90744.02,
-      "gross_profit": 14706.51,
-      "margin_pct": 13.95
+      "count": 14,
+      "revenue": 132989.38,
+      "expense": 110188.1,
+      "gross_profit": 22801.28,
+      "margin_pct": 17.15
     },
     "MPO": {
-      "count": 1,
-      "revenue": 1606.64,
-      "expense": 1222.33,
-      "gross_profit": 384.31,
-      "margin_pct": 23.92
+      "count": 0,
+      "revenue": 0,
+      "expense": 0,
+      "gross_profit": 0,
+      "margin_pct": 0
     },
     "MKO": {
-      "count": 3,
-      "revenue": 25932.21,
-      "expense": 18221.75,
-      "gross_profit": 7710.46,
-      "margin_pct": 29.73
+      "count": 0,
+      "revenue": 0,
+      "expense": 0,
+      "gross_profit": 0,
+      "margin_pct": 0
     }
   },
   "umbrella_uzum_cb": {
@@ -894,8 +894,8 @@
     },
     {
       "col": "565",
-      "type": "MPO",
-      "num": "936",
+      "type": "CAINIAO",
+      "num": "936 UZUM MPO",
       "date": "2025-12-09T00:00:00",
       "revenue": 1606.64,
       "expense": 1222.33,
@@ -908,13 +908,12 @@
       "marker2_volnet": null,
       "marker3_grossnet": null,
       "total_kg": null,
-      "total_pcs": 0,
-      "mpo_num": null
+      "total_pcs": 0
     },
     {
       "col": "566",
-      "type": "MKO",
-      "num": "21",
+      "type": "CAINIAO",
+      "num": "21 UZUM MKO",
       "date": "2025-12-09T00:00:00",
       "revenue": 6416.26,
       "expense": 4547.52,
@@ -927,13 +926,12 @@
       "marker2_volnet": null,
       "marker3_grossnet": null,
       "total_kg": null,
-      "total_pcs": 0,
-      "is_auto": false
+      "total_pcs": 0
     },
     {
       "col": "567",
-      "type": "MKO",
-      "num": "23",
+      "type": "CAINIAO",
+      "num": "23 UZUM MKO",
       "date": "2025-12-09T00:00:00",
       "revenue": 6682.71,
       "expense": 5044.44,
@@ -946,13 +944,12 @@
       "marker2_volnet": null,
       "marker3_grossnet": null,
       "total_kg": null,
-      "total_pcs": 0,
-      "is_auto": false
+      "total_pcs": 0
     },
     {
       "col": "568",
-      "type": "MKO",
-      "num": "24",
+      "type": "CAINIAO",
+      "num": "24 UZUM MKO",
       "date": "2025-12-13T00:00:00",
       "revenue": 12833.24,
       "expense": 8629.79,
@@ -965,8 +962,7 @@
       "marker2_volnet": null,
       "marker3_grossnet": null,
       "total_kg": null,
-      "total_pcs": 0,
-      "is_auto": false
+      "total_pcs": 0
     }
   ]
 }
