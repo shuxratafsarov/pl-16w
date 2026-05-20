@@ -192,17 +192,12 @@ function reconcileWeek(src: WeekData): { week: WeekData; discrepancies: Discrepa
       discrepancies.push({ scope: "TOTAL", metric: "Прибыль", source: src.totals.gross_profit, computed: tGp, diff: tGp - src.totals.gross_profit });
   }
 
-  const uRevFromParties = newByType.MPO.revenue + newByType.MKO.revenue;
-  const uExpFromParties = newByType.MPO.expense + newByType.MKO.expense;
-  const uGpFromParties = newByType.MPO.gross_profit + newByType.MKO.gross_profit;
+  const uRev = newByType.MPO.revenue + newByType.MKO.revenue;
+  const uExp = newByType.MPO.expense + newByType.MKO.expense;
+  const uGp = newByType.MPO.gross_profit + newByType.MKO.gross_profit;
   const oldU = src.umbrella_uzum_cb;
-  const oldUHas = oldU && (oldU.revenue || oldU.expense || oldU.gross_profit);
-  const partiesHas = uRevFromParties || uExpFromParties || uGpFromParties;
-  // 2025: UZUM CB tracked отдельным потоком (row 16/583), без MPO/MKO партий — берём значение из источника.
-  const uRev = partiesHas ? uRevFromParties : (oldUHas ? oldU.revenue : 0);
-  const uExp = partiesHas ? uExpFromParties : (oldUHas ? oldU.expense : 0);
-  const uGp = partiesHas ? uGpFromParties : (oldUHas ? oldU.gross_profit : 0);
-  if (oldUHas && partiesHas) {
+  const uHas = oldU && (oldU.revenue || oldU.expense || oldU.gross_profit);
+  if (uHas) {
     if (Math.abs(uRev - oldU.revenue) > EPS)
       discrepancies.push({ scope: "UZUM CB", metric: "Выручка", source: oldU.revenue, computed: uRev, diff: uRev - oldU.revenue });
     if (Math.abs(uExp - oldU.expense) > EPS)
