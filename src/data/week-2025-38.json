@@ -10,24 +10,24 @@
   },
   "byType": {
     "CAINIAO": {
-      "count": 13,
-      "revenue": 101822.83,
-      "expense": 76227.0,
-      "gross_profit": 25595.83,
-      "margin_pct": 25.14
+      "count": 9,
+      "revenue": 93766.67,
+      "expense": 71406.51,
+      "gross_profit": 22360.16,
+      "margin_pct": 23.85
     },
     "MPO": {
-      "count": 0,
-      "revenue": 0,
-      "expense": 0,
-      "gross_profit": 0,
-      "margin_pct": 0
+      "count": 4,
+      "revenue": 8056.16,
+      "expense": 4820.49,
+      "gross_profit": 3235.67,
+      "margin_pct": 40.16
     },
     "MKO": {
       "count": 0,
-      "revenue": 0,
-      "expense": 0,
-      "gross_profit": 0,
+      "revenue": 0.0,
+      "expense": 0.0,
+      "gross_profit": 0.0,
       "margin_pct": 0
     }
   },
@@ -728,8 +728,8 @@
     },
     {
       "col": "409",
-      "type": "CAINIAO",
-      "num": "826 UZUM MPO",
+      "type": "MPO",
+      "num": "826",
       "date": "2025-09-15T00:00:00",
       "revenue": 191.47,
       "expense": 110.51,
@@ -742,12 +742,13 @@
       "marker2_volnet": null,
       "marker3_grossnet": null,
       "total_kg": null,
-      "total_pcs": 0
+      "total_pcs": 0,
+      "mpo_num": null
     },
     {
       "col": "410",
-      "type": "CAINIAO",
-      "num": "835 UZUM MPO",
+      "type": "MPO",
+      "num": "835",
       "date": "2025-09-15T00:00:00",
       "revenue": 1355.42,
       "expense": 782.01,
@@ -760,12 +761,13 @@
       "marker2_volnet": null,
       "marker3_grossnet": null,
       "total_kg": null,
-      "total_pcs": 0
+      "total_pcs": 0,
+      "mpo_num": null
     },
     {
       "col": "411",
-      "type": "CAINIAO",
-      "num": "840 UZUM MPO",
+      "type": "MPO",
+      "num": "840",
       "date": "2025-09-15T00:00:00",
       "revenue": 3286.38,
       "expense": 2063.69,
@@ -778,12 +780,13 @@
       "marker2_volnet": null,
       "marker3_grossnet": null,
       "total_kg": null,
-      "total_pcs": 0
+      "total_pcs": 0,
+      "mpo_num": null
     },
     {
       "col": "421",
-      "type": "CAINIAO",
-      "num": "843 UZUM MPO",
+      "type": "MPO",
+      "num": "843",
       "date": "2025-09-15T00:00:00",
       "revenue": 3222.89,
       "expense": 1864.28,
@@ -796,7 +799,8 @@
       "marker2_volnet": null,
       "marker3_grossnet": null,
       "total_kg": null,
-      "total_pcs": 0
+      "total_pcs": 0,
+      "mpo_num": null
     }
   ]
 }

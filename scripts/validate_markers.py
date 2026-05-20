@@ -30,7 +30,7 @@ Aggregation rules enforced:
   - For Marker 4 (total_pcs) the JSON stores the group total on the FIRST
     party of each type and 0 on the rest, so sum() across parties = group total.
 """
-import sys, os, json
+import sys, os, json, re
 import openpyxl
 
 XLSX = sys.argv[1] if len(sys.argv) > 1 else "/tmp/pnl.xlsx"
@@ -71,12 +71,13 @@ def main():
     ws = wb["3PL_weekly"]
     issues = []
 
-    week_files = [f for f in os.listdir(DATA_DIR) if f.startswith("week") and f.endswith(".json")]
-    weeks = sorted(int(f[4:-5]) for f in week_files if f[4:-5].isdigit())
-    for week in weeks:
-        path = os.path.join(DATA_DIR, f"week{week}.json")
-        if not os.path.exists(path):
-            continue
+    week_entries = []
+    for f in os.listdir(DATA_DIR):
+        m = re.fullmatch(r"week(?:-\d{4}-)?(\d+)\.json", f)
+        if m:
+            week_entries.append((int(m.group(1)), f))
+    for week, filename in sorted(week_entries, key=lambda x: (x[0], x[1])):
+        path = os.path.join(DATA_DIR, filename)
         data = json.load(open(path))
 
         # Build column map for this week
