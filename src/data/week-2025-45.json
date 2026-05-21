@@ -32,10 +32,10 @@
     }
   },
   "umbrella_uzum_cb": {
-    "revenue": 12438.86,
-    "expense": 8283.59,
-    "gross_profit": 4155.27,
-    "margin_pct": 33.41
+    "revenue": 0,
+    "expense": 0,
+    "gross_profit": 0,
+    "margin_pct": 0
   },
   "parties": [
     {
