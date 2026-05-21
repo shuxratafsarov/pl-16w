@@ -63,26 +63,15 @@ import {
 } from "@/components/ui/dropdown-menu";
 import { cn } from "@/lib/utils";
 
-// Загружаем все недели из src/data/week*.json (eager — запекаются в бандл).
-// Поддерживаем два формата имён файлов:
-//   weekN.json            → year=2026 (legacy, без префикса)
-//   week-YYYY-N.json      → year=YYYY (новый формат, многолетний)
-const WEEK_MODULES = import.meta.glob("@/data/week*.json", { eager: true, import: "default" }) as Record<string, WeekData & { year?: number }>;
-const WEEKS_BY_YEAR: Record<number, Record<number, WeekData>> = {};
+// Загружаем все недели из src/data/week*.json (eager — запекаются в бандл, фолбэк если БД пуста).
+const WEEK_MODULES = import.meta.glob("@/data/week*.json", { eager: true, import: "default" }) as Record<string, WeekData>;
+const JSON_WEEKS: Record<number, WeekData> = {};
 for (const path in WEEK_MODULES) {
-  const data = WEEK_MODULES[path];
-  const mYear = path.match(/week-(\d{4})-(\d+)\.json$/);
-  const mLegacy = path.match(/week(\d+)\.json$/);
-  let year: number | null = null;
-  let week: number | null = null;
-  if (mYear) { year = Number(mYear[1]); week = Number(mYear[2]); }
-  else if (mLegacy) { year = data.year ?? 2026; week = Number(mLegacy[1]); }
-  if (year == null || week == null) continue;
-  (WEEKS_BY_YEAR[year] ||= {})[week] = data;
+  const m = path.match(/week(\d+)\.json$/);
+  if (m) JSON_WEEKS[Number(m[1])] = WEEK_MODULES[path];
 }
-const AVAILABLE_YEARS = Object.keys(WEEKS_BY_YEAR).map(Number).sort((a, b) => b - a);
-const DEFAULT_YEAR = AVAILABLE_YEARS[0] ?? 2026;
-const ALL_WEEKS: Record<number, WeekData> = WEEKS_BY_YEAR[DEFAULT_YEAR] ?? {};
+// ALL_WEEKS будет переопределён хуком useDbWeeks ниже; на старте — JSON.
+const ALL_WEEKS: Record<number, WeekData> = { ...JSON_WEEKS };
 const AVAILABLE_WEEKS = Object.keys(ALL_WEEKS).map(Number).sort((a, b) => a - b);
 const DEFAULT_WEEK = AVAILABLE_WEEKS[AVAILABLE_WEEKS.length - 1] ?? 16;
 /** Сентинел: «Общий свод» = агрегат по всем неделям. */
@@ -137,8 +126,7 @@ function buildOverview(weeks: Record<number, WeekData>): WeekData {
     parties,
   };
 }
-const OVERVIEW_BY_YEAR: Record<number, WeekData> = {};
-for (const y of AVAILABLE_YEARS) OVERVIEW_BY_YEAR[y] = buildOverview(WEEKS_BY_YEAR[y]);
+const OVERVIEW_WEEK: WeekData = buildOverview(ALL_WEEKS);
 
 /** Расхождение по одной строке (до пересчёта). */
 type Discrepancy = {
@@ -270,8 +258,8 @@ const MARKER_BUTTONS: Array<{ id: string; short: string; title: string; descript
   { id: "marker-4", short: "M4", title: "Соотношение продуктов", description: "Структура микса по странам и подтипам (RM/SRM/NRM и т. д.) в штуках или килограммах. Показывает, какие категории дают основной объём." },
 ];
 
-/** Жёстко прописанные периоды для 2026 (для tooltip). 2025 строится из data.period. */
-const WEEKS_2026: Array<{ week: number; period: string }> = [
+/** Доступные недели (1–16). Даты-периоды для tooltip. */
+const WEEKS: Array<{ week: number; period: string }> = [
   { week: 1, period: "2025-12-29 — 2026-01-04" },
   { week: 2, period: "2026-01-05 — 2026-01-11" },
   { week: 3, period: "2026-01-12 — 2026-01-18" },
@@ -292,16 +280,6 @@ const WEEKS_2026: Array<{ week: number; period: string }> = [
   { week: 18, period: "2026-04-27 — 2026-05-03" },
   { week: 19, period: "2026-05-04 — 2026-05-10" },
 ];
-
-/** Список недель для выбранного года: из захардкоженного списка (2026) или из data (другие годы). */
-function getWeeksForYear(year: number): Array<{ week: number; period: string }> {
-  if (year === 2026) return WEEKS_2026;
-  const yearMap = WEEKS_BY_YEAR[year] ?? {};
-  return Object.keys(yearMap)
-    .map(Number)
-    .sort((a, b) => a - b)
-    .map((w) => ({ week: w, period: yearMap[w].period ?? `W${w} ${year}` }));
-}
 
 function scrollToMarker(id: string) {
   const el = document.getElementById(id);
@@ -346,22 +324,15 @@ function computeTypeAverages(parties: Party[]) {
 }
 
 function Dashboard() {
-  const [selectedYear, setSelectedYear] = useState<number>(DEFAULT_YEAR);
   const [selectedWeek, setSelectedWeek] = useState<number>(DEFAULT_WEEK);
   const [filter, setFilter] = useState<"ALL" | "UZUM" | PartyType>("ALL");
   const [detail, setDetail] = useState<DetailTarget | null>(null);
 
-  const yearWeeks = WEEKS_BY_YEAR[selectedYear] ?? {};
-  const yearAvailableWeeks = useMemo(() => Object.keys(yearWeeks).map(Number).sort((a, b) => a - b), [yearWeeks]);
-  const WEEKS_FOR_YEAR = useMemo(() => getWeeksForYear(selectedYear), [selectedYear]);
-
   const isOverview = selectedWeek === OVERVIEW_KEY;
   const { week, discrepancies: SOURCE_DISCREPANCIES } = useMemo(() => {
-    const raw = isOverview
-      ? (OVERVIEW_BY_YEAR[selectedYear] ?? buildOverview(yearWeeks))
-      : (yearWeeks[selectedWeek] ?? OVERVIEW_BY_YEAR[selectedYear]);
+    const raw = isOverview ? OVERVIEW_WEEK : ALL_WEEKS[selectedWeek];
     return reconcileWeek(raw);
-  }, [selectedWeek, isOverview, selectedYear, yearWeeks]);
+  }, [selectedWeek, isOverview]);
 
   const typeAverages = useMemo(() => computeTypeAverages(week.parties), [week]);
 
@@ -505,39 +476,6 @@ function Dashboard() {
 
             <div className="h-7 w-px bg-gradient-to-b from-transparent via-border to-transparent hidden lg:block mx-1" />
 
-            {/* Year selector */}
-            <DropdownMenu>
-              <DropdownMenuTrigger asChild>
-                <button
-                  type="button"
-                  className="group inline-flex items-center gap-2 h-10 rounded-xl border border-border/60 bg-card/70 px-3.5 text-sm font-semibold hover:bg-muted/70 hover:border-border transition-all shrink-0 shadow-sm"
-                >
-                  <span className="tabular-nums">{selectedYear}</span>
-                  <span className="text-muted-foreground text-xs font-normal opacity-60 group-hover:opacity-100 transition-opacity">▾</span>
-                </button>
-              </DropdownMenuTrigger>
-              <DropdownMenuContent align="center" className="w-32">
-                <DropdownMenuLabel className="text-[10px] uppercase tracking-wider text-muted-foreground">Год</DropdownMenuLabel>
-                <DropdownMenuSeparator />
-                {AVAILABLE_YEARS.map((y) => (
-                  <DropdownMenuItem
-                    key={y}
-                    onSelect={() => {
-                      setSelectedYear(y);
-                      setSelectedWeek(OVERVIEW_KEY);
-                    }}
-                    className={cn(
-                      "flex items-center justify-between gap-2 text-xs cursor-pointer tabular-nums",
-                      y === selectedYear && "bg-primary/10 text-primary font-semibold"
-                    )}
-                  >
-                    <span>{y}</span>
-                    {y === selectedYear && <span className="text-[10px] uppercase">текущий</span>}
-                  </DropdownMenuItem>
-                ))}
-              </DropdownMenuContent>
-            </DropdownMenu>
-
             {/* Week selector */}
             <DropdownMenu>
               <DropdownMenuTrigger asChild>
@@ -552,7 +490,7 @@ function Dashboard() {
               </DropdownMenuTrigger>
                 <DropdownMenuContent align="center" className="max-h-[60vh] overflow-y-auto w-56">
                   <DropdownMenuLabel className="text-[10px] uppercase tracking-wider text-muted-foreground">
-                    Выбрать неделю · {selectedYear}
+                    Выбрать неделю (наведите для дат)
                   </DropdownMenuLabel>
                   <DropdownMenuSeparator />
                   <DropdownMenuItem
@@ -573,9 +511,9 @@ function Dashboard() {
                     )}
                   </DropdownMenuItem>
                   <DropdownMenuSeparator />
-                  {WEEKS_FOR_YEAR.map((w) => {
+                  {WEEKS.map((w) => {
                     const isCurrent = !isOverview && w.week === week.week;
-                    const hasData = yearAvailableWeeks.includes(w.week);
+                    const hasData = AVAILABLE_WEEKS.includes(w.week);
                     return (
                       <UITooltip key={w.week}>
                         <TooltipTrigger asChild>
@@ -764,7 +702,7 @@ function Dashboard() {
               <TabsTrigger value="monthly">3PL Monthly</TabsTrigger>
             </TabsList>
             <TabsContent value="weekly" className="space-y-4">
-              <OverviewAnalytics weeksMap={yearWeeks} />
+              <OverviewAnalytics weeksMap={ALL_WEEKS} />
             </TabsContent>
             <TabsContent value="monthly" className="space-y-4">
               <MonthlyView />
