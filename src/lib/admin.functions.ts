@@ -502,15 +502,37 @@ async function syncAllToAntria(): Promise<SyncResult> {
     for (const p of parties) {
       const project = projectFor(p.type);
       if (!project) continue;
-      const batch_number = String(p.num ?? "").trim();
-      if (!batch_number) continue;
-      dedup.set(`${batch_number}|${project}`, {
-        batch_number,
-        project,
-        revenue: Number(p.revenue) || 0,
-        cost: Number(p.expense) || 0,
-        currency: "USD",
-      });
+
+      // For MPO parties use the internal MPO number(s) as batch_number.
+      // mpo_num may be a single number ("140") or comma-separated ("137, 138").
+      // For multi-number MPO split revenue/cost evenly across numbers.
+      let batchNumbers: string[] = [];
+      if (p.type === "MPO") {
+        const raw = String(p.mpo_num ?? "").trim();
+        if (!raw) continue; // skip MPO without internal number
+        batchNumbers = raw
+          .split(",")
+          .map((s: string) => s.trim())
+          .filter(Boolean);
+      } else {
+        const n = String(p.num ?? "").trim();
+        if (!n) continue;
+        batchNumbers = [n];
+      }
+
+      const share = batchNumbers.length || 1;
+      const revenue = (Number(p.revenue) || 0) / share;
+      const cost = (Number(p.expense) || 0) / share;
+
+      for (const batch_number of batchNumbers) {
+        dedup.set(`${batch_number}|${project}`, {
+          batch_number,
+          project,
+          revenue: Math.round(revenue * 100) / 100,
+          cost: Math.round(cost * 100) / 100,
+          currency: "USD",
+        });
+      }
     }
   }
 
