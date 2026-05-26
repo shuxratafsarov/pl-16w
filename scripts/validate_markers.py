@@ -79,8 +79,20 @@ def main():
             continue
         data = json.load(open(path))
 
-        # Build column map for this week
-        cols = [c for c in range(5, ws.max_column + 1) if ws.cell(6, c).value == week]
+        # Build column map for this week using POSITIONAL rule:
+        # parties belong to the totals column on their right, regardless of
+        # the row-6 week label (which can lag for late-arriving parties).
+        totals_cols = []
+        for c in range(5, ws.max_column + 1):
+            if ws.cell(8, c).value is None and ws.cell(10, c).value is not None:
+                totals_cols.append((c, ws.cell(6, c).value))
+        tot_idx = next((i for i, (c, w) in enumerate(totals_cols) if w == week), None)
+        if tot_idx is None or tot_idx == 0:
+            issues.append(f"W{week}: totals column not found in Excel")
+            continue
+        tot_col = totals_cols[tot_idx][0]
+        prev_col = totals_cols[tot_idx - 1][0]
+        cols = list(range(prev_col + 1, tot_col))
         excel_map = {}
         auto_map = {}
         for c in cols:
