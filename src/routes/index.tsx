@@ -1095,10 +1095,10 @@ function Dashboard() {
                           {partyLabel(p)}
                           {p.type === "MPO" && p.mpo_num && (
                             <span
-                              title={`Внутренний номер MPO: ${p.mpo_num}`}
+                              title={`Номер партии: ${p.num}`}
                               className="inline-flex items-center gap-1 rounded-md border border-primary/40 bg-primary/10 px-1.5 py-0.5 text-[10px] font-bold tracking-wide text-primary"
                             >
-                              MPO №{p.mpo_num}
+                              MPO №{p.num}
                             </span>
                           )}
                           {p.is_hk_danger && (
