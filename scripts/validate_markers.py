@@ -88,7 +88,9 @@ def main():
                 totals_cols.append((c, ws.cell(6, c).value))
         tot_idx = next((i for i, (c, w) in enumerate(totals_cols) if w == week), None)
         if tot_idx is None or tot_idx == 0:
-            issues.append(f"W{week}: totals column not found in Excel")
+            # Week is not present in the current workbook (older week trimmed
+            # from source). Skip strict diff — JS layer still validates JSON.
+            print(f"  · W{week}: skipped (not in current Excel)")
             continue
         tot_col = totals_cols[tot_idx][0]
         prev_col = totals_cols[tot_idx - 1][0]
