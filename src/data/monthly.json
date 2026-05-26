@@ -1,11 +1,8 @@
 [
   {
     "month": 1,
-    "name": "Январь",
     "revenue": 464802.05,
     "expense": 426086.83,
-    "gross_profit": 38715.22,
-    "margin_pct": 8.33,
     "by_country": {
       "UZ": {
         "revenue": 102225.19,
@@ -32,88 +29,88 @@
         "kg": 361.7
       }
     },
+    "name": "Январь",
+    "gross_profit": 38715.22,
+    "margin_pct": 8.33,
     "pcs": 247522,
     "kg": 20133.88
   },
   {
     "month": 2,
-    "name": "Февраль",
     "revenue": 386217.72,
-    "expense": 343981.51,
-    "gross_profit": 42236.21,
-    "margin_pct": 10.94,
+    "expense": 343706.62,
     "by_country": {
       "UZ": {
         "revenue": 77745.37,
-        "expense": 53525.38,
+        "expense": 53494.12,
         "pcs": 54505,
         "kg": 4057.96
       },
       "BY": {
         "revenue": 188010.22,
-        "expense": 195752.17,
+        "expense": 195568.83,
         "pcs": 135694,
         "kg": 9735.12
       },
       "AZ": {
         "revenue": 40066.59,
-        "expense": 36678.14,
+        "expense": 36640.77,
         "pcs": 20287,
         "kg": 2159.66
       },
       "KG": {
         "revenue": 5184.15,
-        "expense": 3084.96,
+        "expense": 3082.17,
         "pcs": 3195,
         "kg": 274.93
       }
     },
+    "name": "Февраль",
+    "gross_profit": 42236.21,
+    "margin_pct": 10.94,
     "pcs": 213681,
     "kg": 16227.67
   },
   {
     "month": 3,
-    "name": "Март",
     "revenue": 597789.66,
-    "expense": 487599.39,
-    "gross_profit": 110190.27,
-    "margin_pct": 18.43,
+    "expense": 487950.24,
     "by_country": {
       "UZ": {
         "revenue": 111266.86,
-        "expense": 71902.32,
+        "expense": 71924.01,
         "pcs": 72830,
         "kg": 5952.9
       },
       "BY": {
         "revenue": 276409.14,
-        "expense": 282423.78,
+        "expense": 282602.74,
         "pcs": 185755,
         "kg": 14572.32
       },
       "AZ": {
         "revenue": 57759.83,
-        "expense": 51559.61,
+        "expense": 51598.03,
         "pcs": 27706,
         "kg": 3145.36
       },
       "KG": {
         "revenue": 7503.37,
-        "expense": 4231.34,
+        "expense": 4233.87,
         "pcs": 4192,
         "kg": 411.59
       }
     },
+    "name": "Март",
+    "gross_profit": 110190.27,
+    "margin_pct": 18.43,
     "pcs": 290483,
     "kg": 24082.17
   },
   {
     "month": 4,
-    "name": "Апрель",
-    "revenue": 483084.0,
-    "expense": 367091.5,
-    "gross_profit": 115992.5,
-    "margin_pct": 24.01,
+    "revenue": 488474.96,
+    "expense": 370965.76,
     "by_country": {
       "UZ": {
         "revenue": 82663.18,
@@ -140,42 +137,45 @@
         "kg": 325.91
       }
     },
+    "name": "Апрель",
+    "gross_profit": 115992.5,
+    "margin_pct": 24.01,
     "pcs": 216836,
     "kg": 17700.01
   },
   {
     "month": 5,
-    "name": "Май",
-    "revenue": 138304.42,
-    "expense": 104227.05,
-    "gross_profit": 34077.37,
-    "margin_pct": 24.64,
+    "revenue": 395324.59,
+    "expense": 286237.98,
     "by_country": {
       "UZ": {
-        "revenue": 24208.18,
-        "expense": 14760.11,
-        "pcs": 15358,
-        "kg": 1303.76
+        "revenue": 66170.6,
+        "expense": 39801.44,
+        "pcs": 42410,
+        "kg": 3550.5
       },
       "BY": {
-        "revenue": 63166.88,
-        "expense": 59014.62,
-        "pcs": 40373,
-        "kg": 3049.82
+        "revenue": 170902.75,
+        "expense": 158147.25,
+        "pcs": 104208,
+        "kg": 8302.79
       },
       "AZ": {
-        "revenue": 13583.36,
-        "expense": 11730.23,
-        "pcs": 6717,
-        "kg": 735.01
+        "revenue": 35841.14,
+        "expense": 30652.13,
+        "pcs": 17007,
+        "kg": 1950.17
       },
       "KG": {
-        "revenue": 1553.59,
-        "expense": 830.49,
-        "pcs": 870,
-        "kg": 84.52
+        "revenue": 3878.78,
+        "expense": 2027.29,
+        "pcs": 2136,
+        "kg": 212.34
       }
     },
+    "name": "Май",
+    "gross_profit": 34077.37,
+    "margin_pct": 24.64,
     "pcs": 63318,
     "kg": 5173.11
   }
