@@ -2,9 +2,9 @@
   "week": 6,
   "period": "2026-02-02 — 2026-02-07",
   "totals": {
-    "revenue": 111476.27,
-    "expense": 98987.22,
-    "gross_profit": 12489.05,
+    "revenue": 111470.8,
+    "expense": 98987.21,
+    "gross_profit": 12483.59,
     "margin_pct": 11.2
   },
   "byType": {
