@@ -113,19 +113,92 @@ const TYPE_COLORS: Record<string, string> = {
   MKO: "var(--mko)",
 };
 
+type ChannelFilter = "ALL" | "CAINIAO" | "UZUM";
+
+/** Пересборка месячных агрегатов из недельных партий с фильтром по каналу. */
+function buildFilteredMonthly(channel: ChannelFilter): MonthRow[] {
+  if (channel === "ALL") return DATA;
+  const typeMatch = (t: string) =>
+    channel === "CAINIAO" ? t === "CAINIAO" : t === "MPO" || t === "MKO";
+
+  const months = new Map<number, MonthRow>();
+  for (const base of DATA) {
+    const emptyCountry = { revenue: 0, expense: 0, gross_profit: 0, margin_pct: 0, pcs: 0, kg: 0 };
+    months.set(base.month, {
+      month: base.month,
+      month_name: base.month_name,
+      period: base.period,
+      revenue: 0,
+      expense: 0,
+      gross_profit: 0,
+      margin_pct: 0,
+      by_country: { UZ: { ...emptyCountry }, BY: { ...emptyCountry }, AZ: { ...emptyCountry }, KG: { ...emptyCountry } },
+      by_type: { CAINIAO: { revenue: 0, pcs: 0 }, MPO: { revenue: 0, pcs: 0 }, MKO: { revenue: 0, pcs: 0 } },
+    });
+  }
+
+  for (const week of WEEKS) {
+    for (const party of week.parties) {
+      if (!party.date) continue;
+      const mo = parseInt(party.date.slice(5, 7), 10);
+      const row = months.get(mo);
+      if (!row || !typeMatch(party.type)) continue;
+      row.revenue += party.revenue;
+      row.expense += party.expense;
+      row.by_type[party.type].revenue += party.revenue;
+      row.by_type[party.type].pcs += party.total_pcs ?? 0;
+      // Country distribution
+      if (party.type === "CAINIAO" && party.mix?.length) {
+        const totalPcsParty = party.mix.reduce((s, m) => s + m.pcs, 0);
+        for (const mix of party.mix) {
+          const cc = mix.country as CountryKey;
+          if (!row.by_country[cc]) continue;
+          const share = totalPcsParty > 0 ? mix.pcs / totalPcsParty : 0;
+          row.by_country[cc].pcs += mix.pcs;
+          row.by_country[cc].kg += mix.kg;
+          row.by_country[cc].revenue += party.revenue * share;
+          row.by_country[cc].expense += party.expense * share;
+        }
+      } else {
+        // MPO/MKO — относим к UZ
+        row.by_country.UZ.pcs += party.total_pcs ?? 0;
+        row.by_country.UZ.kg += party.total_kg ?? 0;
+        row.by_country.UZ.revenue += party.revenue;
+        row.by_country.UZ.expense += party.expense;
+      }
+    }
+  }
+
+  const out: MonthRow[] = [];
+  for (const row of months.values()) {
+    if (row.revenue === 0 && row.expense === 0) continue;
+    row.gross_profit = row.revenue - row.expense;
+    row.margin_pct = row.revenue ? (row.gross_profit / row.revenue) * 100 : 0;
+    for (const cc of Object.keys(row.by_country) as CountryKey[]) {
+      const c = row.by_country[cc];
+      c.gross_profit = c.revenue - c.expense;
+      c.margin_pct = c.revenue ? (c.gross_profit / c.revenue) * 100 : 0;
+    }
+    out.push(row);
+  }
+  return out.sort((a, b) => a.month - b.month);
+}
+
 export function MonthlyView() {
   const [countryDrill, setCountryDrill] = useState<string | null>(null);
+  const [channel, setChannel] = useState<ChannelFilter>("ALL");
+
+  const filteredData = useMemo(() => buildFilteredMonthly(channel), [channel]);
 
   const totals = useMemo(() => {
-    const revenue = DATA.reduce((s, m) => s + m.revenue, 0);
-    const expense = DATA.reduce((s, m) => s + m.expense, 0);
+    const revenue = filteredData.reduce((s, m) => s + m.revenue, 0);
+    const expense = filteredData.reduce((s, m) => s + m.expense, 0);
     const gp = revenue - expense;
-    const totalPcs = DATA.reduce(
+    const totalPcs = filteredData.reduce(
       (s, m) =>
         s +
         Object.values(m.by_country).reduce((ss, c) => ss + c.pcs, 0) +
-        m.by_type.MPO.pcs +
-        m.by_type.MKO.pcs,
+        (channel === "ALL" ? m.by_type.MPO.pcs + m.by_type.MKO.pcs : 0),
       0
     );
     return {
@@ -135,30 +208,30 @@ export function MonthlyView() {
       margin_pct: revenue ? (gp / revenue) * 100 : 0,
       pcs: totalPcs,
     };
-  }, []);
+  }, [filteredData, channel]);
 
   const trendData = useMemo(
     () =>
-      DATA.map((m) => ({
+      filteredData.map((m) => ({
         name: m.month_name,
         Выручка: Math.round(m.revenue),
         Расходы: Math.round(m.expense),
         Прибыль: Math.round(m.gross_profit),
         Маржа: Number(m.margin_pct.toFixed(2)),
       })),
-    []
+    [filteredData]
   );
 
   const countryAggregate = useMemo(() => {
     const countries: CountryKey[] = ["BY", "UZ", "AZ", "KG"];
     return countries.map((cc) => {
-      const pcs = DATA.reduce((s, m) => s + m.by_country[cc].pcs, 0);
-      const kg = DATA.reduce((s, m) => s + m.by_country[cc].kg, 0);
-      const revenue = DATA.reduce((s, m) => s + m.by_country[cc].revenue, 0);
-      const expense = DATA.reduce((s, m) => s + m.by_country[cc].expense, 0);
+      const pcs = filteredData.reduce((s, m) => s + m.by_country[cc].pcs, 0);
+      const kg = filteredData.reduce((s, m) => s + m.by_country[cc].kg, 0);
+      const revenue = filteredData.reduce((s, m) => s + m.by_country[cc].revenue, 0);
+      const expense = filteredData.reduce((s, m) => s + m.by_country[cc].expense, 0);
       return { country: cc, pcs, kg, revenue, expense, gross_profit: revenue - expense };
     });
-  }, []);
+  }, [filteredData]);
 
   const totalCountryPcs = countryAggregate.reduce((s, c) => s + c.pcs, 0);
 
@@ -166,7 +239,7 @@ export function MonthlyView() {
   const countryDetail = useMemo<CountryDetailData | null>(() => {
     if (!countryDrill) return null;
     const cc = countryDrill as CountryKey;
-    const trend = DATA.map((m) => ({
+    const trend = filteredData.map((m) => ({
       label: m.month_name,
       period: m.period,
       pcs: m.by_country[cc].pcs,
@@ -193,20 +266,25 @@ export function MonthlyView() {
       trend,
       trendKind: "month",
     };
-  }, [countryDrill, countryAggregate, totalCountryPcs]);
+  }, [countryDrill, countryAggregate, totalCountryPcs, filteredData]);
 
   /** Per-type aggregate. */
   const typeAggregate = useMemo(() => {
-    return (["CAINIAO", "MPO", "MKO"] as const).map((t) => ({
+    const types = channel === "CAINIAO"
+      ? (["CAINIAO"] as const)
+      : channel === "UZUM"
+        ? (["MPO", "MKO"] as const)
+        : (["CAINIAO", "MPO", "MKO"] as const);
+    return types.map((t) => ({
       type: t,
-      revenue: DATA.reduce((s, m) => s + m.by_type[t].revenue, 0),
-      pcs: DATA.reduce((s, m) => s + m.by_type[t].pcs, 0),
+      revenue: filteredData.reduce((s, m) => s + m.by_type[t].revenue, 0),
+      pcs: filteredData.reduce((s, m) => s + m.by_type[t].pcs, 0),
     }));
-  }, []);
+  }, [filteredData, channel]);
 
   /** Данные для VolumeAndBreakdown — по месяцам. */
   const volumeMonthlyData = useMemo<VBPeriodPoint[]>(() => {
-    return DATA.map((m) => {
+    return filteredData.map((m) => {
       const byCountry: VBPeriodPoint["byCountry"] = {};
       (Object.keys(m.by_country) as CountryKey[]).forEach((cc) => {
         const v = m.by_country[cc];
@@ -221,12 +299,11 @@ export function MonthlyView() {
       const byType: VBPeriodPoint["byType"] = {};
       (["CAINIAO", "MPO", "MKO"] as const).forEach((t) => {
         const tv = m.by_type[t];
-        // Расходы по типам в monthly не выделены — оценим пропорционально доле выручки типа.
         const typeShare = m.revenue > 0 ? tv.revenue / m.revenue : 0;
         const expense = m.expense * typeShare;
         byType[t] = {
           pcs: tv.pcs,
-          kg: 0, // в monthly нет кг по типу — оставим 0 (страновой агрегат kg показан в KPI)
+          kg: 0,
           revenue: tv.revenue,
           expense,
           gross_profit: tv.revenue - expense,
@@ -246,23 +323,54 @@ export function MonthlyView() {
         byType,
       };
     });
-  }, []);
+  }, [filteredData]);
 
   /** MoM deltas. */
   const momRows = useMemo(
     () =>
-      DATA.map((m, i) => {
-        const prev = DATA[i - 1];
+      filteredData.map((m, i) => {
+        const prev = filteredData[i - 1];
         const dRev = prev && prev.revenue > 0 ? ((m.revenue - prev.revenue) / prev.revenue) * 100 : null;
         const dGp = prev && prev.gross_profit !== 0 ? ((m.gross_profit - prev.gross_profit) / Math.abs(prev.gross_profit)) * 100 : null;
         const dMargin = prev ? m.margin_pct - prev.margin_pct : null;
         return { ...m, dRev, dGp, dMargin };
       }),
-    []
+    [filteredData]
   );
+
+
+  const channelOptions: { value: ChannelFilter; label: string }[] = [
+    { value: "ALL", label: "Все направления" },
+    { value: "CAINIAO", label: "Cainiao" },
+    { value: "UZUM", label: "Uzum (MPO + MKO)" },
+  ];
 
   return (
     <div className="space-y-6">
+      {/* === Channel filter === */}
+      <div className="flex items-center gap-2 flex-wrap">
+        <span className="text-xs font-semibold uppercase tracking-wider text-muted-foreground">
+          Направление:
+        </span>
+        <div className="inline-flex rounded-lg border border-border bg-card/60 p-1">
+          {channelOptions.map((opt) => (
+            <button
+              key={opt.value}
+              type="button"
+              onClick={() => setChannel(opt.value)}
+              className={cn(
+                "px-3 py-1.5 text-xs font-medium rounded-md transition-all",
+                channel === opt.value
+                  ? "bg-primary text-primary-foreground shadow-sm"
+                  : "text-muted-foreground hover:text-foreground hover:bg-muted/50"
+              )}
+            >
+              {opt.label}
+            </button>
+          ))}
+        </div>
+      </div>
+
       {/* === KPI === */}
       <div className="grid grid-cols-2 lg:grid-cols-5 gap-3">
         <StatCard
@@ -270,8 +378,9 @@ export function MonthlyView() {
           value={fmtUSD(totals.revenue)}
           icon={<Wallet className="h-5 w-5" />}
           accent="primary"
-          hint={`${DATA.length} мес. · ${fmtNum(totals.pcs, 0)} шт`}
+          hint={`${filteredData.length} мес. · ${fmtNum(totals.pcs, 0)} шт`}
         />
+
         <StatCard
           label="Σ Расходы"
           value={fmtUSD(totals.expense)}
