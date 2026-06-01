@@ -339,8 +339,38 @@ export function MonthlyView() {
   );
 
 
+  const channelOptions: { value: ChannelFilter; label: string }[] = [
+    { value: "ALL", label: "Все направления" },
+    { value: "CAINIAO", label: "Cainiao" },
+    { value: "UZUM", label: "Uzum (MPO + MKO)" },
+  ];
+
   return (
     <div className="space-y-6">
+      {/* === Channel filter === */}
+      <div className="flex items-center gap-2 flex-wrap">
+        <span className="text-xs font-semibold uppercase tracking-wider text-muted-foreground">
+          Направление:
+        </span>
+        <div className="inline-flex rounded-lg border border-border bg-card/60 p-1">
+          {channelOptions.map((opt) => (
+            <button
+              key={opt.value}
+              type="button"
+              onClick={() => setChannel(opt.value)}
+              className={cn(
+                "px-3 py-1.5 text-xs font-medium rounded-md transition-all",
+                channel === opt.value
+                  ? "bg-primary text-primary-foreground shadow-sm"
+                  : "text-muted-foreground hover:text-foreground hover:bg-muted/50"
+              )}
+            >
+              {opt.label}
+            </button>
+          ))}
+        </div>
+      </div>
+
       {/* === KPI === */}
       <div className="grid grid-cols-2 lg:grid-cols-5 gap-3">
         <StatCard
@@ -348,8 +378,9 @@ export function MonthlyView() {
           value={fmtUSD(totals.revenue)}
           icon={<Wallet className="h-5 w-5" />}
           accent="primary"
-          hint={`${DATA.length} мес. · ${fmtNum(totals.pcs, 0)} шт`}
+          hint={`${filteredData.length} мес. · ${fmtNum(totals.pcs, 0)} шт`}
         />
+
         <StatCard
           label="Σ Расходы"
           value={fmtUSD(totals.expense)}
