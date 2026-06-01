@@ -212,26 +212,26 @@ export function MonthlyView() {
 
   const trendData = useMemo(
     () =>
-      DATA.map((m) => ({
+      filteredData.map((m) => ({
         name: m.month_name,
         Выручка: Math.round(m.revenue),
         Расходы: Math.round(m.expense),
         Прибыль: Math.round(m.gross_profit),
         Маржа: Number(m.margin_pct.toFixed(2)),
       })),
-    []
+    [filteredData]
   );
 
   const countryAggregate = useMemo(() => {
     const countries: CountryKey[] = ["BY", "UZ", "AZ", "KG"];
     return countries.map((cc) => {
-      const pcs = DATA.reduce((s, m) => s + m.by_country[cc].pcs, 0);
-      const kg = DATA.reduce((s, m) => s + m.by_country[cc].kg, 0);
-      const revenue = DATA.reduce((s, m) => s + m.by_country[cc].revenue, 0);
-      const expense = DATA.reduce((s, m) => s + m.by_country[cc].expense, 0);
+      const pcs = filteredData.reduce((s, m) => s + m.by_country[cc].pcs, 0);
+      const kg = filteredData.reduce((s, m) => s + m.by_country[cc].kg, 0);
+      const revenue = filteredData.reduce((s, m) => s + m.by_country[cc].revenue, 0);
+      const expense = filteredData.reduce((s, m) => s + m.by_country[cc].expense, 0);
       return { country: cc, pcs, kg, revenue, expense, gross_profit: revenue - expense };
     });
-  }, []);
+  }, [filteredData]);
 
   const totalCountryPcs = countryAggregate.reduce((s, c) => s + c.pcs, 0);
 
@@ -239,7 +239,7 @@ export function MonthlyView() {
   const countryDetail = useMemo<CountryDetailData | null>(() => {
     if (!countryDrill) return null;
     const cc = countryDrill as CountryKey;
-    const trend = DATA.map((m) => ({
+    const trend = filteredData.map((m) => ({
       label: m.month_name,
       period: m.period,
       pcs: m.by_country[cc].pcs,
@@ -266,20 +266,25 @@ export function MonthlyView() {
       trend,
       trendKind: "month",
     };
-  }, [countryDrill, countryAggregate, totalCountryPcs]);
+  }, [countryDrill, countryAggregate, totalCountryPcs, filteredData]);
 
   /** Per-type aggregate. */
   const typeAggregate = useMemo(() => {
-    return (["CAINIAO", "MPO", "MKO"] as const).map((t) => ({
+    const types = channel === "CAINIAO"
+      ? (["CAINIAO"] as const)
+      : channel === "UZUM"
+        ? (["MPO", "MKO"] as const)
+        : (["CAINIAO", "MPO", "MKO"] as const);
+    return types.map((t) => ({
       type: t,
-      revenue: DATA.reduce((s, m) => s + m.by_type[t].revenue, 0),
-      pcs: DATA.reduce((s, m) => s + m.by_type[t].pcs, 0),
+      revenue: filteredData.reduce((s, m) => s + m.by_type[t].revenue, 0),
+      pcs: filteredData.reduce((s, m) => s + m.by_type[t].pcs, 0),
     }));
-  }, []);
+  }, [filteredData, channel]);
 
   /** Данные для VolumeAndBreakdown — по месяцам. */
   const volumeMonthlyData = useMemo<VBPeriodPoint[]>(() => {
-    return DATA.map((m) => {
+    return filteredData.map((m) => {
       const byCountry: VBPeriodPoint["byCountry"] = {};
       (Object.keys(m.by_country) as CountryKey[]).forEach((cc) => {
         const v = m.by_country[cc];
@@ -294,12 +299,11 @@ export function MonthlyView() {
       const byType: VBPeriodPoint["byType"] = {};
       (["CAINIAO", "MPO", "MKO"] as const).forEach((t) => {
         const tv = m.by_type[t];
-        // Расходы по типам в monthly не выделены — оценим пропорционально доле выручки типа.
         const typeShare = m.revenue > 0 ? tv.revenue / m.revenue : 0;
         const expense = m.expense * typeShare;
         byType[t] = {
           pcs: tv.pcs,
-          kg: 0, // в monthly нет кг по типу — оставим 0 (страновой агрегат kg показан в KPI)
+          kg: 0,
           revenue: tv.revenue,
           expense,
           gross_profit: tv.revenue - expense,
@@ -319,20 +323,21 @@ export function MonthlyView() {
         byType,
       };
     });
-  }, []);
+  }, [filteredData]);
 
   /** MoM deltas. */
   const momRows = useMemo(
     () =>
-      DATA.map((m, i) => {
-        const prev = DATA[i - 1];
+      filteredData.map((m, i) => {
+        const prev = filteredData[i - 1];
         const dRev = prev && prev.revenue > 0 ? ((m.revenue - prev.revenue) / prev.revenue) * 100 : null;
         const dGp = prev && prev.gross_profit !== 0 ? ((m.gross_profit - prev.gross_profit) / Math.abs(prev.gross_profit)) * 100 : null;
         const dMargin = prev ? m.margin_pct - prev.margin_pct : null;
         return { ...m, dRev, dGp, dMargin };
       }),
-    []
+    [filteredData]
   );
+
 
   return (
     <div className="space-y-6">
