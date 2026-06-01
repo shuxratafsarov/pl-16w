@@ -113,19 +113,92 @@ const TYPE_COLORS: Record<string, string> = {
   MKO: "var(--mko)",
 };
 
+type ChannelFilter = "ALL" | "CAINIAO" | "UZUM";
+
+/** Пересборка месячных агрегатов из недельных партий с фильтром по каналу. */
+function buildFilteredMonthly(channel: ChannelFilter): MonthRow[] {
+  if (channel === "ALL") return DATA;
+  const typeMatch = (t: string) =>
+    channel === "CAINIAO" ? t === "CAINIAO" : t === "MPO" || t === "MKO";
+
+  const months = new Map<number, MonthRow>();
+  for (const base of DATA) {
+    const emptyCountry = { revenue: 0, expense: 0, gross_profit: 0, margin_pct: 0, pcs: 0, kg: 0 };
+    months.set(base.month, {
+      month: base.month,
+      month_name: base.month_name,
+      period: base.period,
+      revenue: 0,
+      expense: 0,
+      gross_profit: 0,
+      margin_pct: 0,
+      by_country: { UZ: { ...emptyCountry }, BY: { ...emptyCountry }, AZ: { ...emptyCountry }, KG: { ...emptyCountry } },
+      by_type: { CAINIAO: { revenue: 0, pcs: 0 }, MPO: { revenue: 0, pcs: 0 }, MKO: { revenue: 0, pcs: 0 } },
+    });
+  }
+
+  for (const week of WEEKS) {
+    for (const party of week.parties) {
+      if (!party.date) continue;
+      const mo = parseInt(party.date.slice(5, 7), 10);
+      const row = months.get(mo);
+      if (!row || !typeMatch(party.type)) continue;
+      row.revenue += party.revenue;
+      row.expense += party.expense;
+      row.by_type[party.type].revenue += party.revenue;
+      row.by_type[party.type].pcs += party.total_pcs ?? 0;
+      // Country distribution
+      if (party.type === "CAINIAO" && party.mix?.length) {
+        const totalPcsParty = party.mix.reduce((s, m) => s + m.pcs, 0);
+        for (const mix of party.mix) {
+          const cc = mix.country as CountryKey;
+          if (!row.by_country[cc]) continue;
+          const share = totalPcsParty > 0 ? mix.pcs / totalPcsParty : 0;
+          row.by_country[cc].pcs += mix.pcs;
+          row.by_country[cc].kg += mix.kg;
+          row.by_country[cc].revenue += party.revenue * share;
+          row.by_country[cc].expense += party.expense * share;
+        }
+      } else {
+        // MPO/MKO — относим к UZ
+        row.by_country.UZ.pcs += party.total_pcs ?? 0;
+        row.by_country.UZ.kg += party.total_kg ?? 0;
+        row.by_country.UZ.revenue += party.revenue;
+        row.by_country.UZ.expense += party.expense;
+      }
+    }
+  }
+
+  const out: MonthRow[] = [];
+  for (const row of months.values()) {
+    if (row.revenue === 0 && row.expense === 0) continue;
+    row.gross_profit = row.revenue - row.expense;
+    row.margin_pct = row.revenue ? (row.gross_profit / row.revenue) * 100 : 0;
+    for (const cc of Object.keys(row.by_country) as CountryKey[]) {
+      const c = row.by_country[cc];
+      c.gross_profit = c.revenue - c.expense;
+      c.margin_pct = c.revenue ? (c.gross_profit / c.revenue) * 100 : 0;
+    }
+    out.push(row);
+  }
+  return out.sort((a, b) => a.month - b.month);
+}
+
 export function MonthlyView() {
   const [countryDrill, setCountryDrill] = useState<string | null>(null);
+  const [channel, setChannel] = useState<ChannelFilter>("ALL");
+
+  const filteredData = useMemo(() => buildFilteredMonthly(channel), [channel]);
 
   const totals = useMemo(() => {
-    const revenue = DATA.reduce((s, m) => s + m.revenue, 0);
-    const expense = DATA.reduce((s, m) => s + m.expense, 0);
+    const revenue = filteredData.reduce((s, m) => s + m.revenue, 0);
+    const expense = filteredData.reduce((s, m) => s + m.expense, 0);
     const gp = revenue - expense;
-    const totalPcs = DATA.reduce(
+    const totalPcs = filteredData.reduce(
       (s, m) =>
         s +
         Object.values(m.by_country).reduce((ss, c) => ss + c.pcs, 0) +
-        m.by_type.MPO.pcs +
-        m.by_type.MKO.pcs,
+        (channel === "ALL" ? m.by_type.MPO.pcs + m.by_type.MKO.pcs : 0),
       0
     );
     return {
@@ -135,7 +208,7 @@ export function MonthlyView() {
       margin_pct: revenue ? (gp / revenue) * 100 : 0,
       pcs: totalPcs,
     };
-  }, []);
+  }, [filteredData, channel]);
 
   const trendData = useMemo(
     () =>
