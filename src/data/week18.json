@@ -547,7 +547,8 @@
           "kg": 288.8
         }
       ],
-      "is_auto": false
+      "is_auto": false,
+      "is_hk_danger": true
     },
     {
       "col": "JL",

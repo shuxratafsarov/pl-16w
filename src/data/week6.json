@@ -426,7 +426,8 @@
           "kg": 224.7
         }
       ],
-      "is_auto": false
+      "is_auto": false,
+      "is_hk_danger": true
     },
     {
       "col": "BT",
