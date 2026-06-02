@@ -477,7 +477,8 @@
           "kg": 214.15
         }
       ],
-      "is_auto": false
+      "is_auto": false,
+      "is_hk_danger": true
     },
     {
       "col": "KP",
