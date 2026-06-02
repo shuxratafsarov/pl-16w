@@ -281,6 +281,7 @@ const WEEKS: Array<{ week: number; period: string }> = [
   { week: 19, period: "2026-05-04 — 2026-05-10" },
   { week: 20, period: "2026-05-11 — 2026-05-17" },
   { week: 21, period: "2026-05-18 — 2026-05-24" },
+  { week: 22, period: "2026-05-24 — 2026-05-31" },
 ];
 
 function scrollToMarker(id: string) {
