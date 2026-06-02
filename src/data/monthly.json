@@ -29,11 +29,11 @@
         "kg": 361.7
       }
     },
+    "pcs": 247522,
+    "kg": 20133.88,
     "name": "Январь",
     "gross_profit": 38715.22,
-    "margin_pct": 8.33,
-    "pcs": 247522,
-    "kg": 20133.88
+    "margin_pct": 8.33
   },
   {
     "month": 2,
@@ -65,11 +65,11 @@
         "kg": 274.93
       }
     },
-    "name": "Февраль",
-    "gross_profit": 42236.21,
-    "margin_pct": 10.94,
     "pcs": 213681,
-    "kg": 16227.67
+    "kg": 16227.67,
+    "name": "Февраль",
+    "gross_profit": 42511.1,
+    "margin_pct": 11.01
   },
   {
     "month": 3,
@@ -101,11 +101,11 @@
         "kg": 411.59
       }
     },
-    "name": "Март",
-    "gross_profit": 110190.27,
-    "margin_pct": 18.43,
     "pcs": 290483,
-    "kg": 24082.17
+    "kg": 24082.17,
+    "name": "Март",
+    "gross_profit": 109839.42,
+    "margin_pct": 18.37
   },
   {
     "month": 4,
@@ -137,46 +137,46 @@
         "kg": 325.91
       }
     },
-    "name": "Апрель",
-    "gross_profit": 115992.5,
-    "margin_pct": 24.01,
     "pcs": 216836,
-    "kg": 17700.01
+    "kg": 17700.01,
+    "name": "Апрель",
+    "gross_profit": 117509.2,
+    "margin_pct": 24.06
   },
   {
     "month": 5,
-    "revenue": 395324.59,
-    "expense": 286237.98,
+    "revenue": 524031.96,
+    "expense": 378712.93,
     "by_country": {
       "UZ": {
-        "revenue": 66170.6,
-        "expense": 39801.44,
-        "pcs": 42410,
-        "kg": 3550.5
+        "revenue": 82000.28,
+        "expense": 48811.28,
+        "pcs": 51701,
+        "kg": 4416.48
       },
       "BY": {
-        "revenue": 170902.75,
-        "expense": 158147.25,
-        "pcs": 104208,
-        "kg": 8302.79
+        "revenue": 227101,
+        "expense": 210184.97,
+        "pcs": 136870,
+        "kg": 11048.57
       },
       "AZ": {
-        "revenue": 35841.14,
-        "expense": 30652.13,
-        "pcs": 17007,
-        "kg": 1950.17
+        "revenue": 46660.36,
+        "expense": 39950.93,
+        "pcs": 21843,
+        "kg": 2546.41
       },
       "KG": {
-        "revenue": 3878.78,
-        "expense": 2027.29,
-        "pcs": 2136,
-        "kg": 212.34
+        "revenue": 5121.15,
+        "expense": 2668.92,
+        "pcs": 2786,
+        "kg": 280.77
       }
     },
+    "pcs": 213200,
+    "kg": 18292.23,
     "name": "Май",
-    "gross_profit": 34077.37,
-    "margin_pct": 24.64,
-    "pcs": 63318,
-    "kg": 5173.11
+    "gross_profit": 145319.03,
+    "margin_pct": 27.73
   }
 ]
