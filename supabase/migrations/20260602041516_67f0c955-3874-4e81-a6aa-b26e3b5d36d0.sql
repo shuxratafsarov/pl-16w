@@ -1,0 +1,1 @@
+UPDATE public.weeks SET data = jsonb_set(data, '{parties,14,is_hk_danger}', 'true'::jsonb, true), updated_at = now() WHERE week = 22;
