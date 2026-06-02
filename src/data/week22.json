@@ -755,7 +755,8 @@
           "kg": 287.35
         }
       ],
-      "is_auto": false
+      "is_auto": false,
+      "is_hk_danger": true
     },
     {
       "col": "MC",
