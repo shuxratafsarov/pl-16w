@@ -1,0 +1,493 @@
+{
+  "week": 23,
+  "period": "2026-06-01 — 2026-06-07",
+  "totals": {
+    "revenue": 116361.36,
+    "expense": 81538.71,
+    "gross_profit": 34822.65,
+    "margin_pct": 29.93
+  },
+  "byType": {
+    "CAINIAO": {
+      "count": 5,
+      "revenue": 67889.04,
+      "expense": 59779.54,
+      "gross_profit": 8109.5,
+      "margin_pct": 11.95,
+      "note": "Marker 4 теперь хранится по партии: total_pcs = sum по странам (rows 23/32/41/50). UI суммирует партии."
+    },
+    "MPO": {
+      "count": 4,
+      "revenue": 949.63,
+      "expense": 536.4,
+      "gross_profit": 413.23,
+      "margin_pct": 43.51
+    },
+    "MKO": {
+      "count": 9,
+      "revenue": 47522.7,
+      "expense": 21222.78,
+      "gross_profit": 26299.92,
+      "margin_pct": 55.34
+    }
+  },
+  "umbrella_uzum_cb": {
+    "revenue": 48472.33,
+    "expense": 21759.18,
+    "gross_profit": 26713.15,
+    "margin_pct": 55.11
+  },
+  "parties": [
+    {
+      "col": "MK",
+      "type": "CAINIAO",
+      "num": "1115",
+      "date": "2026-06-01",
+      "revenue": 18554.53,
+      "expense": 16305.2,
+      "gross_profit": 2249.33,
+      "margin_pct": 12.12,
+      "weight_net": 930.1400000000015,
+      "weight_gross": 18554.53330000002,
+      "weight_vol": 18554.53330000002,
+      "marker1_tariff": 2.87,
+      "marker2_volnet": 1.4052,
+      "marker3_grossnet": 1.0644,
+      "total_kg": 930.14,
+      "total_pcs": 10442,
+      "mix": []
+    },
+    {
+      "col": "ML",
+      "type": "CAINIAO",
+      "num": "1116",
+      "date": "2026-06-02",
+      "revenue": 10702.96,
+      "expense": 9408.8,
+      "gross_profit": 1294.16,
+      "margin_pct": 12.09,
+      "weight_net": 535.8400000000012,
+      "weight_gross": 10702.957100000016,
+      "weight_vol": 10702.957100000016,
+      "marker1_tariff": 3.04,
+      "marker2_volnet": 1.2802,
+      "marker3_grossnet": 1.0358,
+      "total_kg": 535.84,
+      "total_pcs": 6453,
+      "mix": []
+    },
+    {
+      "col": "MM",
+      "type": "CAINIAO",
+      "num": "1117",
+      "date": "2026-06-04",
+      "revenue": 16613.88,
+      "expense": 14491.39,
+      "gross_profit": 2122.49,
+      "margin_pct": 12.78,
+      "weight_net": 838.6200000000018,
+      "weight_gross": 16613.87950000003,
+      "weight_vol": 16613.87950000003,
+      "marker1_tariff": 2.87,
+      "marker2_volnet": 1.3951,
+      "marker3_grossnet": 1.0982,
+      "total_kg": 838.62,
+      "total_pcs": 9338,
+      "mix": []
+    },
+    {
+      "col": "MN",
+      "type": "CAINIAO",
+      "num": "1118",
+      "date": "2026-06-05",
+      "revenue": 4804.8,
+      "expense": 4593.61,
+      "gross_profit": 211.18,
+      "margin_pct": 4.4,
+      "weight_net": 238.8100000000003,
+      "weight_gross": 4804.796600000003,
+      "weight_vol": 4804.796600000004,
+      "marker1_tariff": 4.27,
+      "marker2_volnet": 1.3002,
+      "marker3_grossnet": 1.1097,
+      "total_kg": 238.81,
+      "total_pcs": 3341,
+      "mix": []
+    },
+    {
+      "col": "MO",
+      "type": "CAINIAO",
+      "num": "1119",
+      "date": "2026-06-06",
+      "revenue": 17212.87,
+      "expense": 14980.54,
+      "gross_profit": 2232.33,
+      "margin_pct": 12.97,
+      "weight_net": 860.1900000000004,
+      "weight_gross": 17212.865600000005,
+      "weight_vol": 17212.86560000001,
+      "marker1_tariff": 2.87,
+      "marker2_volnet": 1.3311,
+      "marker3_grossnet": 1.0533,
+      "total_kg": 860.19,
+      "total_pcs": 9374,
+      "mix": []
+    },
+    {
+      "col": "MP",
+      "type": "MPO",
+      "num": "167",
+      "date": "2026-06-01",
+      "revenue": 137.21,
+      "expense": 73.79,
+      "gross_profit": 63.42,
+      "margin_pct": 46.22,
+      "weight_net": 8.98,
+      "weight_gross": 76.779,
+      "weight_vol": 137.21399999999997,
+      "marker1_tariff": 2.87,
+      "marker2_volnet": null,
+      "marker3_grossnet": null,
+      "total_pcs": 33,
+      "total_kg": 8.55,
+      "mix": [
+        {
+          "country": "UZ",
+          "subtype": "MPO",
+          "pcs": 33,
+          "kg": 8.55
+        }
+      ],
+      "is_auto": false,
+      "mpo_num": "167"
+    },
+    {
+      "col": "MQ",
+      "type": "MPO",
+      "num": "170",
+      "date": "2026-06-04",
+      "revenue": 288.73,
+      "expense": 156.13,
+      "gross_profit": 132.6,
+      "margin_pct": 45.93,
+      "weight_net": 8.98,
+      "weight_gross": 176.00799999999998,
+      "weight_vol": 288.72799999999995,
+      "marker1_tariff": 2.87,
+      "marker2_volnet": null,
+      "marker3_grossnet": null,
+      "total_pcs": 60,
+      "total_kg": 19.6,
+      "mix": [
+        {
+          "country": "UZ",
+          "subtype": "MPO",
+          "pcs": 60,
+          "kg": 19.6
+        }
+      ],
+      "is_auto": false,
+      "mpo_num": "170"
+    },
+    {
+      "col": "MR",
+      "type": "MPO",
+      "num": "172",
+      "date": "2026-06-04",
+      "revenue": 280.3,
+      "expense": 151.29,
+      "gross_profit": 129.02,
+      "margin_pct": 46.03,
+      "weight_net": 8.98,
+      "weight_gross": 169.72200000000007,
+      "weight_vol": 280.3020000000001,
+      "marker1_tariff": 2.87,
+      "marker2_volnet": null,
+      "marker3_grossnet": null,
+      "total_pcs": 59,
+      "total_kg": 18.9,
+      "mix": [
+        {
+          "country": "UZ",
+          "subtype": "MPO",
+          "pcs": 59,
+          "kg": 18.9
+        }
+      ],
+      "is_auto": false,
+      "mpo_num": "172"
+    },
+    {
+      "col": "MS",
+      "type": "MPO",
+      "num": "174",
+      "date": "2026-06-05",
+      "revenue": 243.39,
+      "expense": 155.19,
+      "gross_profit": 88.2,
+      "margin_pct": 36.24,
+      "weight_net": 8.98,
+      "weight_gross": 147.721,
+      "weight_vol": 243.38599999999997,
+      "marker1_tariff": 4.27,
+      "marker2_volnet": null,
+      "marker3_grossnet": null,
+      "total_pcs": 51,
+      "total_kg": 16.45,
+      "mix": [
+        {
+          "country": "UZ",
+          "subtype": "MPO",
+          "pcs": 51,
+          "kg": 16.45
+        }
+      ],
+      "is_auto": false,
+      "mpo_num": "174"
+    },
+    {
+      "col": "MT",
+      "type": "MKO",
+      "num": "168",
+      "date": "2026-06-01",
+      "revenue": 5365.79,
+      "expense": 1972.15,
+      "gross_profit": 3393.64,
+      "margin_pct": 63.25,
+      "weight_net": 10.9,
+      "weight_gross": 3497.8100000000063,
+      "weight_vol": 5365.790000000006,
+      "marker1_tariff": 3.2,
+      "marker2_volnet": null,
+      "marker3_grossnet": null,
+      "total_pcs": 899,
+      "total_kg": 320.9,
+      "mix": [
+        {
+          "country": "UZ",
+          "subtype": "MKO",
+          "pcs": 899,
+          "kg": 320.9
+        }
+      ],
+      "is_auto": true
+    },
+    {
+      "col": "MU",
+      "type": "MKO",
+      "num": "169",
+      "date": "2026-06-02",
+      "revenue": 4335.72,
+      "expense": 1631.37,
+      "gross_profit": 2704.35,
+      "margin_pct": 62.37,
+      "weight_net": 10.899999999999999,
+      "weight_gross": 2819.829999999999,
+      "weight_vol": 4335.719999999999,
+      "marker1_tariff": 3.2,
+      "marker2_volnet": 1.2717,
+      "marker3_grossnet": 1.0089,
+      "total_pcs": 712,
+      "total_kg": 258.7,
+      "mix": [
+        {
+          "country": "UZ",
+          "subtype": "MKO",
+          "pcs": 712,
+          "kg": 258.7
+        }
+      ],
+      "is_auto": true
+    },
+    {
+      "col": "MV",
+      "type": "MKO",
+      "num": "171",
+      "date": "2026-06-03",
+      "revenue": 5375.47,
+      "expense": 2578.97,
+      "gross_profit": 2796.5,
+      "margin_pct": 52.02,
+      "weight_net": 10.9,
+      "weight_gross": 3593.7299999999996,
+      "weight_vol": 5375.469999999999,
+      "marker1_tariff": 4.27,
+      "marker2_volnet": 1.3088,
+      "marker3_grossnet": 1.0161,
+      "total_pcs": 843,
+      "total_kg": 329.7,
+      "mix": [
+        {
+          "country": "UZ",
+          "subtype": "MKO",
+          "pcs": 843,
+          "kg": 329.7
+        }
+      ],
+      "is_auto": true
+    },
+    {
+      "col": "MW",
+      "type": "MKO",
+      "num": "173",
+      "date": "2026-06-04",
+      "revenue": 4935.08,
+      "expense": 1813.25,
+      "gross_profit": 3121.83,
+      "margin_pct": 63.26,
+      "weight_net": 10.899999999999999,
+      "weight_gross": 3196.9699999999993,
+      "weight_vol": 4935.08,
+      "marker1_tariff": 3.2,
+      "marker2_volnet": 1.2376,
+      "marker3_grossnet": 1.0058,
+      "total_pcs": 832,
+      "total_kg": 293.3,
+      "mix": [
+        {
+          "country": "UZ",
+          "subtype": "MKO",
+          "pcs": 832,
+          "kg": 293.3
+        }
+      ],
+      "is_auto": true
+    },
+    {
+      "col": "MX",
+      "type": "MKO",
+      "num": "175",
+      "date": "2026-06-05",
+      "revenue": 5466.68,
+      "expense": 2547.83,
+      "gross_profit": 2918.85,
+      "margin_pct": 53.39,
+      "weight_net": 10.9,
+      "weight_gross": 3701.095000000004,
+      "weight_vol": 5466.680000000004,
+      "marker1_tariff": 4.27,
+      "marker2_volnet": 1.2281,
+      "marker3_grossnet": 1.0308,
+      "total_pcs": 926,
+      "total_kg": 339.55,
+      "mix": [
+        {
+          "country": "UZ",
+          "subtype": "MKO",
+          "pcs": 926,
+          "kg": 339.55
+        }
+      ],
+      "is_auto": true
+    },
+    {
+      "col": "MY",
+      "type": "MKO",
+      "num": "176",
+      "date": "2026-06-06",
+      "revenue": 5437.63,
+      "expense": 2055.03,
+      "gross_profit": 3382.6,
+      "margin_pct": 62.21,
+      "weight_net": 10.9,
+      "weight_gross": 3662.9449999999983,
+      "weight_vol": 5437.629999999998,
+      "marker1_tariff": 3.2,
+      "marker2_volnet": 1.2141,
+      "marker3_grossnet": 1.0147,
+      "total_pcs": 933,
+      "total_kg": 336.05,
+      "mix": [
+        {
+          "country": "UZ",
+          "subtype": "MKO",
+          "pcs": 933,
+          "kg": 336.05
+        }
+      ],
+      "is_auto": true
+    },
+    {
+      "col": "MZ",
+      "type": "MKO",
+      "num": "177",
+      "date": "2026-06-05",
+      "revenue": 6809.19,
+      "expense": 4210.98,
+      "gross_profit": 2598.21,
+      "margin_pct": 38.16,
+      "weight_net": 16.7,
+      "weight_gross": 4769.52,
+      "weight_vol": 6809.1900000000005,
+      "marker1_tariff": 8.41,
+      "marker2_volnet": 1.313,
+      "marker3_grossnet": 0.9874,
+      "total_pcs": 1115,
+      "total_kg": 285.6,
+      "mix": [
+        {
+          "country": "UZ",
+          "subtype": "MKO",
+          "pcs": 1115,
+          "kg": 285.6
+        }
+      ],
+      "is_auto": false,
+      "is_hk_danger": true
+    },
+    {
+      "col": "NA",
+      "type": "MKO",
+      "num": "179",
+      "date": "2026-06-07",
+      "revenue": 5018.35,
+      "expense": 2210.15,
+      "gross_profit": 2808.2,
+      "margin_pct": 55.96,
+      "weight_net": 10.9,
+      "weight_gross": 3299.975000000003,
+      "weight_vol": 5018.350000000003,
+      "marker1_tariff": 4.27,
+      "marker2_volnet": 1.1891,
+      "marker3_grossnet": 1.0074,
+      "total_pcs": 913,
+      "total_kg": 302.75,
+      "mix": [
+        {
+          "country": "UZ",
+          "subtype": "MKO",
+          "pcs": 913,
+          "kg": 302.75
+        }
+      ],
+      "is_auto": true
+    },
+    {
+      "col": "NB",
+      "type": "MKO",
+      "num": "180",
+      "date": "2026-06-07",
+      "revenue": 4778.79,
+      "expense": 2203.05,
+      "gross_profit": 2575.74,
+      "margin_pct": 53.9,
+      "weight_net": 10.900000000000002,
+      "weight_gross": 3135.385,
+      "weight_vol": 4778.79,
+      "marker1_tariff": 4.27,
+      "marker2_volnet": 1.2689,
+      "marker3_grossnet": 1.0151,
+      "total_pcs": 777,
+      "total_kg": 287.65,
+      "mix": [
+        {
+          "country": "UZ",
+          "subtype": "MKO",
+          "pcs": 777,
+          "kg": 287.65
+        }
+      ],
+      "is_auto": true
+    }
+  ]
+}
