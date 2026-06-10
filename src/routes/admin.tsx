@@ -257,7 +257,7 @@ function AdminPage() {
           <h2 className="font-semibold">Финансовая API (Antria)</h2>
           <p className="text-sm text-muted-foreground">
             Отправляет все партии (<code>batch_number</code>, <code>project</code>, <code>revenue</code>, <code>cost</code>, <code>currency=USD</code>)
-            в финансовый отдел. Запускается автоматически после загрузки Excel и сидинга, либо вручную.
+            в финансовый отдел. Запускается автоматически при входе, после загрузки Excel, сидинга, удаления недели и каждые 5 минут. Можно также вручную.
           </p>
           <Button onClick={handleSync} disabled={loading} variant="secondary">Синхронизировать вручную</Button>
           {syncResult && (
