@@ -140,12 +140,15 @@ function AdminPage() {
       await deleteFn({ data: { password: pwd, week } });
       toast.success(`Неделя ${week} удалена`);
       await refresh();
+      // авто-синхронизация после изменения данных
+      autoSync();
     } catch (e: any) {
       toast.error(e?.message ?? "Ошибка");
     } finally {
       setLoading(false);
     }
   }
+
 
   function toastSync(s: any) {
     if (!s) return;
