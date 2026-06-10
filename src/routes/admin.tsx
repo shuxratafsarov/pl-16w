@@ -67,6 +67,8 @@ function AdminPage() {
         sessionStorage.setItem(PWD_KEY, p);
         setAuthed(true);
         await refresh();
+        // авто-синхронизация сразу после входа
+        autoSync(p);
       } else {
         toast.error("Неверный пароль");
         sessionStorage.removeItem(PWD_KEY);
@@ -77,6 +79,17 @@ function AdminPage() {
       setLoading(false);
     }
   }
+
+  async function autoSync(p: string = pwd) {
+    try {
+      const r: any = await syncFn({ data: { password: p } });
+      setSyncResult(r);
+      toastSync(r);
+    } catch (e: any) {
+      console.error("auto-sync failed", e);
+    }
+  }
+
 
   async function handleSeed() {
     setLoading(true);
