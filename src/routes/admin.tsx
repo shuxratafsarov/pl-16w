@@ -59,6 +59,15 @@ function AdminPage() {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
+  // периодическая авто-синхронизация каждые 5 минут пока админ открыт
+  useEffect(() => {
+    if (!authed) return;
+    const id = setInterval(() => { autoSync(); }, 5 * 60 * 1000);
+    return () => clearInterval(id);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [authed]);
+
+
   async function tryLogin(p: string) {
     setLoading(true);
     try {
