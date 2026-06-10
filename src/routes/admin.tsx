@@ -59,6 +59,15 @@ function AdminPage() {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
+  // периодическая авто-синхронизация каждые 5 минут пока админ открыт
+  useEffect(() => {
+    if (!authed) return;
+    const id = setInterval(() => { autoSync(); }, 5 * 60 * 1000);
+    return () => clearInterval(id);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [authed]);
+
+
   async function tryLogin(p: string) {
     setLoading(true);
     try {
@@ -67,6 +76,8 @@ function AdminPage() {
         sessionStorage.setItem(PWD_KEY, p);
         setAuthed(true);
         await refresh();
+        // авто-синхронизация сразу после входа
+        autoSync(p);
       } else {
         toast.error("Неверный пароль");
         sessionStorage.removeItem(PWD_KEY);
@@ -77,6 +88,17 @@ function AdminPage() {
       setLoading(false);
     }
   }
+
+  async function autoSync(p: string = pwd) {
+    try {
+      const r: any = await syncFn({ data: { password: p } });
+      setSyncResult(r);
+      toastSync(r);
+    } catch (e: any) {
+      console.error("auto-sync failed", e);
+    }
+  }
+
 
   async function handleSeed() {
     setLoading(true);
@@ -127,12 +149,15 @@ function AdminPage() {
       await deleteFn({ data: { password: pwd, week } });
       toast.success(`Неделя ${week} удалена`);
       await refresh();
+      // авто-синхронизация после изменения данных
+      autoSync();
     } catch (e: any) {
       toast.error(e?.message ?? "Ошибка");
     } finally {
       setLoading(false);
     }
   }
+
 
   function toastSync(s: any) {
     if (!s) return;
@@ -232,7 +257,7 @@ function AdminPage() {
           <h2 className="font-semibold">Финансовая API (Antria)</h2>
           <p className="text-sm text-muted-foreground">
             Отправляет все партии (<code>batch_number</code>, <code>project</code>, <code>revenue</code>, <code>cost</code>, <code>currency=USD</code>)
-            в финансовый отдел. Запускается автоматически после загрузки Excel и сидинга, либо вручную.
+            в финансовый отдел. Запускается автоматически при входе, после загрузки Excel, сидинга, удаления недели и каждые 5 минут. Можно также вручную.
           </p>
           <Button onClick={handleSync} disabled={loading} variant="secondary">Синхронизировать вручную</Button>
           {syncResult && (
